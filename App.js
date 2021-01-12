@@ -3,15 +3,18 @@ import React from 'react';
 import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} from 'react-native';
 import Inputs from './Components/Inputs.js';
 import TrainerProgressPage from './Pages/TrainerProgressPage.js';
+import TrainerExpandablePage from './Pages/TrainerExpandablePage.js';
 
 
 
 
 export default function App() {
   return (
-    <TrainerProgressPage/>   
+   // <TrainerProgressPage/> 
+    <TrainerExpandablePage/>  
   );
 }
+
 
 
 const styles = StyleSheet.create({
