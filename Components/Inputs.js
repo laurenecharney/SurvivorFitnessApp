@@ -23,8 +23,9 @@ class Inputs extends Component{
                   <TextInput style = {styles.input}
                      underlineColorAndroid = "transparent"
                      placeholder = {this.props.propertyName}
-                     placeholderTextColor = "#9a73ef"
-                     autoCapitalize = "none"
+                     placeholderTextColor = "black"
+                     color="black"
+                     autoCapitalize = "sentences"
                      onChangeText={this.handleInput}
                      />
             </View>
@@ -38,15 +39,16 @@ export default Inputs;
 const styles = StyleSheet.create({
     container: { //outer parent
     //    padding: 23,
-       flex: 1,
+    //    flex: 1,
       flexDirection: "row",
-      justifyContent: 'space-between'
+      justifyContent: 'center'
     //    margin: 15
     },
     text:{
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: "bold",
         marginBottom: -12,
+        color: 'black'
       
     },
     inputWrap: {
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
     },
     input: {
     //    margin: 15,
-       height: 40,
-       borderColor: '#7a42f4',
+      height: 40,
+       borderColor: 'black',
        borderWidth: 1,
     //    flex: .5,
        maxWidth: '60%',
