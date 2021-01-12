@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} from 'react-native';
-import Inputs from './Inputs.js';
+import Inputs from '../Components/Inputs.js';
 
 
 
