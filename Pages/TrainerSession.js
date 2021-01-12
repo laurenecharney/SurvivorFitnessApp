@@ -1,83 +1,117 @@
 import React, {useState} from 'react';
-import { StyleSheet, TextInput, View, Button} from 'react-native';
+import { StyleSheet, TextInput, View, Button, SafeAreaView, Text} from 'react-native';
 
-export default function App() {
+export default function TrainerSession() {
   const [enteredTrainerNotes, setTrainerNotes] = useState('');
 
   const trainerNotesHandler = (enteredText) => {
       setTrainerNotes(enteredText);
-    };
+  };
 
   const [enteredAdminNotes, setAdminNotes] = useState('');
 
   const adminNotesHandler = (enteredText) => {
       setAdminNotes(enteredText);
-    };
+  };
+
+  function showSaveButton() {
+    this.setState({
+      show: true
+    });
+    console.log("trainer notes edited")
+  }
 
   return (
     <View style={styles.container}>
-        <View style={styles.dateOutline}>
-          <TextInput
-            placeholder="Date"
-          />
+      <SafeAreaView style={{alignItems: 'center',top:50,flex: 1}}>
+        <Text style={{fontSize: 25}}>Session 6</Text>
+      </SafeAreaView>
+      <View style={styles.dateContainer}>
+        <Text style={styles.headingText}>
+          Date:
+        </Text>
+        <TextInput 
+          style = {styles.dateOutline}
+          placeholder="Enter Date"
+        />
+      </View>
+      <View style={styles.notes}>
+        <Text style={styles.headingText}>
+          Trainer Notes:
+        </Text>
+        <TextInput
+          style = {styles.notesOutline}
+          placeholder="Notes for trainer"
+          onChangeText={trainerNotesHandler}
+          value={enteredTrainerNotes}
+          multiline
+        />
+        <Text style={{fontSize: 10, padding: 10}}>
+          *If needed, please contact ____ with any concerns or questions.
+        </Text>
+      </View>
+      <View style={styles.notes}>
+        <Text style={styles.headingText}>
+          Admin Notes:
+        </Text>
+        <TextInput
+          style = {styles.notesOutline}
+          placeholder="Notes for admin"
+          onChangeText={adminNotesHandler}
+          value={enteredAdminNotes}
+          multiline
+          onChangeText={showSaveButton}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <View style={styles.button}>
+            <Button title="SAVE"/>
         </View>
-        <View style={styles.inputOutline}>
-          <TextInput
-            placeholder="Notes for trainer"
-            onChangeText={trainerNotesHandler}
-            value={enteredTrainerNotes}
-            multiline
-          />
+        <View style={styles.button}>
+            <Button title="EDIT"/>
         </View>
-        <View style={styles.inputOutline}>
-          <TextInput
-            placeholder="Notes for admin"
-            onChangeText={adminNotesHandler}
-            value={enteredAdminNotes}
-            multiline
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-              <Button title="SAVE"/>
-          </View>
-          <View style={styles.button}>
-              <Button title="EDIT"/>
-          </View>
-        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 100,
     backgroundColor: '#fff',
     alignItems: 'center',
   },
   dateOutline: {
     width: '80%', 
-    borderColor: 'black',
+    borderColor: 'gray',
     borderWidth: 1, 
+    borderRadius: 10,
     padding: 10,
-    margin: 10,
+    marginLeft: 10
   },
-  inputOutline: {
-    width: '80%', 
-    borderColor: 'black',
-    borderWidth: 1, 
+  notes: {
+    width: '90%',
     padding: 10,
     margin: 10,
     height: '35%',
-
+    marginBottom: 20
   },
-  buttonContainer: {
+  notesOutline: { 
+    borderColor: 'gray',
+    borderWidth: 1, 
+    borderRadius: 10,
+    padding: 10,
+    height: 250,
+    marginHorizontal: 10,
+  },
+  dateContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '60%',
-    paddingTop: 10,
+    justifyContent: 'space-evenly',
+    width: '50%',
+    marginTop: 50
   },
-  button: {
-    width: '40%',
-  }
+  headingText: {
+    padding: 10,
+    fontSize: 20,
+    fontWeight: "bold"
+  },
 });
