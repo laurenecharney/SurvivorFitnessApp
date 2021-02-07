@@ -4,14 +4,15 @@ import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} f
 import Inputs from './Components/Inputs.js';
 import TrainerProgressPage from './Pages/TrainerProgressPage.js';
 import TrainerExpandablePage from './Pages/TrainerExpandablePage.js';
-
+import TrainerSession from './Pages/TrainerSession.js';
 
 
 
 export default function App() {
   return (
-   // <TrainerProgressPage/> 
+  //  <TrainerProgressPage/> 
     <TrainerExpandablePage/>  
+    // <TrainerSession />
   );
 }
 

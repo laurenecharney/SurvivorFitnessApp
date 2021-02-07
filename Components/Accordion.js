@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, LayoutAnimation, Platform, UIManager,ScrollView,FlatList} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import TrainerProgressInputGroup from './TrainerProgressInputGroup';
+import Inputs from '../Components/Inputs.js';
+
 
 export default class Accordian extends Component{
 
@@ -18,6 +20,11 @@ export default class Accordian extends Component{
     }
   
   render() {
+      const items = []
+    for (const [index, value] of this.state.data.entries()) {
+        
+        items.push(<Inputs propertyName = {value}/>);
+      }
 
     return (
        <View>
@@ -29,7 +36,11 @@ export default class Accordian extends Component{
             {
                 this.state.expanded &&
                 <View style={styles.child}>
-                        <TrainerProgressInputGroup/>
+                    {items}
+                    {/* <Inputs>
+                    
+                    </Inputs> */}
+                        {/* <TrainerProgressInputGroup/> */}
                 </View>
             }
             
