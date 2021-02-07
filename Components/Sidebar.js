@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 
 class SidebarTestPage extends Component {
     state = {
@@ -28,11 +28,29 @@ class SidebarTestPage extends Component {
             {id: 22, name: '22',},
             {id: 23, name: '23',},
             {id: 24, name: '24',}
+        ],
+        addSession: [
+            {id: 1, name: '+'}
         ]
     }
     alertItemName = (item) => {
         alert("Jump to session " + item.name)
     }
+    alertAddSession = (item) => {
+        Alert.alert('Add Another Session?', '',
+        [
+            {
+                text: 'No',
+                onPress: () => console.log('No Pressed')
+            },
+            {
+                text: 'Yes',
+                onPress: () => console.log('Yes Pressed')
+            },
+        ]
+        )
+    }
+
     render() {
         return (
             <View>
@@ -42,6 +60,18 @@ class SidebarTestPage extends Component {
                             key = {item.id}
                             style = {styles.container}
                             onPress = {() => this.alertItemName(item)}>
+                            <Text style = {styles.text}>
+                                {item.name}
+                            </Text>
+                        </TouchableOpacity>
+                    ))
+                }
+                {
+                    this.state.addSession.map((item) => (
+                        <TouchableOpacity
+                            key = {item.id}
+                            style = {styles.container}
+                            onPress = {() => this.alertAddSession(item)}>
                             <Text style = {styles.text}>
                                 {item.name}
                             </Text>
