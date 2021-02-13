@@ -20,6 +20,9 @@ export default function App() {
    // <SidebarTestPage/>
    // <TrainerSession/>
     <AllPatientsPage/>
+  //  <TrainerProgressPage/> 
+  //  <TrainerExpandablePage/>  
+    // <TrainerSession />
   );
 }
 

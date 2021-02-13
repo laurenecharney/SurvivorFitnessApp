@@ -8,7 +8,6 @@ class Inputs extends Component{
     }
     constructor(props){
         super(props)
-        console.log(this.props)
     
     }
     handleInput = (text)=>{
@@ -23,10 +22,11 @@ class Inputs extends Component{
                   <TextInput style = {styles.input}
                      underlineColorAndroid = "transparent"
                      placeholder = {this.props.propertyName}
-                     placeholderTextColor = "black"
+                     placeholderTextColor = "gray"
                      color="black"
                      autoCapitalize = "sentences"
                      onChangeText={this.handleInput}
+                    //  keyboardType = {'numeric'}
                      />
             </View>
             </SafeAreaView>);

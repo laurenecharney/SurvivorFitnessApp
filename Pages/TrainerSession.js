@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { StyleSheet, TextInput, View, Button, SafeAreaView, Text} from 'react-native';
+import Sidebar from '../Components/Sidebar.js';
 
 export default function TrainerSession() {
   const [enteredTrainerNotes, setTrainerNotes] = useState('');
@@ -8,10 +9,12 @@ export default function TrainerSession() {
       setTrainerNotes(enteredText);
   };
 
-  const [enteredAdminNotes, setAdminNotes] = useState('');
+  const adminNotes = '';
 
-  const adminNotesHandler = (enteredText) => {
-      setAdminNotes(enteredText);
+  const [enteredDate, setDate] = useState('');
+
+  const dateHandler = (enteredText) => {
+      setDate(enteredText);
   };
 
   function showSaveButton() {
@@ -22,6 +25,8 @@ export default function TrainerSession() {
   }
 
   return (
+    <View style={{flexDirection: 'row', left: 10, position: 'relative',flex: 2}}>
+    <Sidebar/>
     <View style={styles.container}>
       <SafeAreaView style={{alignItems: 'center',top:50,flex: 1}}>
         <Text style={{fontSize: 25}}>Session 6</Text>
@@ -33,6 +38,7 @@ export default function TrainerSession() {
         <TextInput 
           style = {styles.dateOutline}
           placeholder="Enter Date"
+          value={enteredDate}
         />
       </View>
       <View style={styles.notes}>
@@ -54,14 +60,9 @@ export default function TrainerSession() {
         <Text style={styles.headingText}>
           Admin Notes:
         </Text>
-        <TextInput
-          style = {styles.notesOutline}
-          placeholder="Notes for admin"
-          onChangeText={adminNotesHandler}
-          value={enteredAdminNotes}
-          multiline
-          onChangeText={showSaveButton}
-        />
+        <Text>
+          {adminNotes}
+        </Text>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
@@ -71,6 +72,7 @@ export default function TrainerSession() {
             <Button title="EDIT"/>
         </View>
       </View>
+    </View>
     </View>
   );
 }
