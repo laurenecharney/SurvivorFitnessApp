@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
-class SidebarTestPage extends Component {
+class Sidebar extends Component {
     state = {
         sessions: [
             {id: 1, name: '1',},
@@ -53,52 +54,68 @@ class SidebarTestPage extends Component {
 
     render() {
         return (
-            <View>
+            <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true}>
                 {
                     this.state.sessions.map((item, index) => (
                         <TouchableOpacity
-                            key = {item.id}
-                            style = {styles.container}
-                            onPress = {() => this.alertItemName(item)}>
-                            <Text style = {styles.text}>
-                                {item.name}
-                            </Text>
+                            style = {styles.row}>
+                            <TouchableOpacity
+                                key = {item.id}
+                                style = {styles.numberContainer}
+                                onPress = {() => this.alertItemName(item)}>
+                                <Text style = {styles.text}>
+                                    {item.name}
+                                </Text>
+                            </TouchableOpacity>
                         </TouchableOpacity>
                     ))
                 }
                 {
                     this.state.addSession.map((item) => (
                         <TouchableOpacity
-                            key = {item.id}
-                            style = {styles.container}
-                            onPress = {() => this.alertAddSession(item)}>
-                            <Text style = {styles.text}>
-                                {item.name}
-                            </Text>
-                        </TouchableOpacity>
+                            style = {styles.row}>
+                            <TouchableOpacity
+                                key = {item.id}
+                                style = {styles.container}
+                                onPress = {() => this.alertAddSession(item)}>
+                                <Text style = {styles.text}>
+                                    {item.name}
+                                </Text>
+                            </TouchableOpacity>
+                            </TouchableOpacity>
                     ))
                 }
-            </View>
+            </KeyboardAwareScrollView>
         )
     }
 }
-export default SidebarTestPage
+export default Sidebar
 
 const styles = StyleSheet.create ({
-    container: {
+    row: {
         flexDirection: 'column',
-        marginTop: 6,
         alignItems: 'center',
-        width: 28,
+        borderColor: '#E6E6E6',
+        backgroundColor: '#fff',
+        width: '100%',
+        height: '4%',
+        borderWidth: 0.25,
+        padding: 5,
+    },
+    numberContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '70%',
         height: 28,
         borderWidth: .5,
-        borderColor: '#5df56b',
+        borderColor: '#C6E05A',
         borderRadius: 90,
 
     },
     text: {
-        color: '#5df56b',
-        fontSize: 18,
+        color: '#C6E05A',
+        fontSize: 16,
         textAlign: 'center',
+        paddingTop: '15%',
     }
 })
