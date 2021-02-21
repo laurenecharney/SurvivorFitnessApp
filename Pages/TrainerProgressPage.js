@@ -11,13 +11,11 @@ const TrainerProgressPage=()=> {
       <SafeAreaView style={{alignItems: 'center',top:50,flex: 1}}>
       <Text style={{fontSize: 25}}>Session 6</Text>
       </SafeAreaView>
-      <View style={{top: 50, left: 25, position: 'relative',flex: 2}}>
+      <View 
+      style={{top: 50, left: 25, position: 'relative',flex: 2}}
+      >
       <Inputs propertyName={"Date"}/>
-      <Inputs propertyName={"Weight (lbs)"}/>
-      <Inputs propertyName={"Resting HR (bpm)"}/>
-      <Inputs propertyName={"Range of Motion"}/>
-      <Inputs propertyName={"Skin Fold"}/>
-      <Inputs propertyName={"Chest"}/>
+     
       <Inputs propertyName={"Abdominal"}/>
       <Inputs propertyName={"Thigh"}/>
       <Inputs propertyName={"Tricep"}/>
