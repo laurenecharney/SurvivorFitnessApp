@@ -4,6 +4,10 @@ import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} f
 import Inputs from './Components/Inputs.js';
 import TrainerProgressPage from './Pages/TrainerProgressPage.js';
 import TrainerExpandablePage from './Pages/TrainerExpandablePage.js';
+import LoginPage from './Pages/LoginPage.js';
+import TrainerSession from './Pages/TrainerSession.js';
+import SidebarTestPage from './Pages/SidebarTestPage.js';
+import AllPatientsPage from './Pages/AllPatientsPage.js';
 
 
 
@@ -11,7 +15,14 @@ import TrainerExpandablePage from './Pages/TrainerExpandablePage.js';
 export default function App() {
   return (
    // <TrainerProgressPage/> 
-    <TrainerExpandablePage/>  
+   //<TrainerExpandablePage/> 
+   // <LoginPage/> 
+   // <SidebarTestPage/>
+   // <TrainerSession/>
+    <AllPatientsPage/>
+  //  <TrainerProgressPage/> 
+  //  <TrainerExpandablePage/>  
+    // <TrainerSession />
   );
 }
 
