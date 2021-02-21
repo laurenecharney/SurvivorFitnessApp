@@ -4,7 +4,7 @@ import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import NotesTextBox from '../Components/NotesTextBox.js'
 
-export default class TrainerSession extends Component {
+export default class DieticianSession extends Component {
   render() {
     return (
       <View style={{flexDirection: 'row', left: 10, position: 'relative',flex: 2}}>
@@ -14,10 +14,10 @@ export default class TrainerSession extends Component {
             <Text style={{fontSize: 25}}>Session 6</Text>
           </SafeAreaView>
           <DateTextBox/>
-          <NotesTextBox name={"Trainer"}/>
+          <NotesTextBox name={"Dietician"}/>
           <Text style={{fontSize: 10, padding: 5, width: '90%', marginLeft: 30}}>
             *If needed, please contact ____ with any concerns or questions.
-          </Text>
+          </Text> 
           <NotesTextBox name = {"Admin"}/>
           <View>
               <Button title="SAVE"/>
