@@ -10,7 +10,6 @@ import {
   FlatList,
   Button,
 } from 'react-native';
-import {InfoIcon} from '../assets/information-icon.png'
 
 export default class AllPatientsPage extends Component {
 
