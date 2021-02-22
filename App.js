@@ -3,11 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} from 'react-native';
 import Inputs from './Components/Inputs.js';
 import TrainerProgressPage from './Pages/TrainerProgressPage.js';
-import TrainerExpandablePage from './Pages/TrainerExpandablePage.js';
 import LoginPage from './Pages/LoginPage.js';
 import TrainerSession from './Pages/TrainerSession.js';
 import SidebarTestPage from './Pages/SidebarTestPage.js';
 import AllPatientsPage from './Pages/AllPatientsPage.js';
+import TrainerCheckpointPage from './Pages/TrainerCheckpointPage'
 
 
 
@@ -15,14 +15,14 @@ import AllPatientsPage from './Pages/AllPatientsPage.js';
 export default function App() {
   return (
    // <TrainerProgressPage/> 
-   //<TrainerExpandablePage/> 
-   // <LoginPage/> 
-   // <SidebarTestPage/>
+  //  <TrainerExpandablePage/> 
+  //  <LoginPage/> 
+  //  <SidebarTestPage/>
    // <TrainerSession/>
-    <AllPatientsPage/>
+  //  <AllPatientsPage/>
   //  <TrainerProgressPage/> 
-  //  <TrainerExpandablePage/>  
     // <TrainerSession />
+    <TrainerCheckpointPage/>
   );
 }
 
