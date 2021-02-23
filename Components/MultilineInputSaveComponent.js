@@ -3,12 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-  LayoutAnimation,
   TextInput,
-  Button,
 } from 'react-native';
 
 export default class MultilineInputSaveComponent  extends Component{

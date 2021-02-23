@@ -10,7 +10,8 @@ import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import Sidebar from '../Components/Sidebar.js';
 import AppContainer from "react-native-web/dist/exports/AppRegistry/AppContainer";
 import AllPatientsPage from "./AllPatientsPage";
-import TrainerExpandablePage from "./TrainerExpandablePage";
+import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+import TrainerExpandablePage from './TrainerExpandablePage.js';
 
 
 
@@ -59,7 +60,7 @@ export default class SidebarTestPage extends Component {
                     <View style={{ width: '13.5%' }}>
                         <Sidebar/>
                     </View>
-                    <TrainerExpandablePage />
+                    <TrainerCheckpointPage />
                 </View>
             </KeyboardAwareScrollView>
         );
