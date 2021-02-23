@@ -92,9 +92,8 @@ export default class TrainerCheckpointPage  extends Component{
         return(
             <View style = {styles.container}>
             <View style={styles.fixedHeader}>
-            <Text>
-            Hi
-            </Text>
+
+            
             </View>
                 <ScrollView contentContainerStyle = {
 
@@ -107,6 +106,14 @@ export default class TrainerCheckpointPage  extends Component{
                             style={{maxHeight: '100%'}}
                 
                 >
+
+            <Text>
+            Session {this.props.session}
+            </Text>
+            <Text>
+                Date
+            </Text>
+            {/* {this.state.edit ? <TextInput placeholder = {}>} */}
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
@@ -624,7 +631,7 @@ const styles = StyleSheet.create({
     },
     scroll: {
         // paddingTop: 165,
-        paddingBottom: 200,
+        // paddingBottom: 200,
         overflow: 'hidden',
         // width: '100%'
         // zIndex: 0
@@ -674,7 +681,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         top: 0,
         left: 0,
-        padding: 50
+        padding: 20
 
         // position: 'absolute'
     }

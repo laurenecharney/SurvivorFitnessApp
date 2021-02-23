@@ -8,6 +8,7 @@ import TrainerSession from './Pages/TrainerSession.js';
 import SidebarTestPage from './Pages/SidebarTestPage.js';
 import AllPatientsPage from './Pages/AllPatientsPage.js';
 import TrainerCheckpointPage from './Pages/TrainerCheckpointPage'
+import TrainerCheckpointWithSidebarPage from './Pages/TrainerCheckpointWithSidebarPage.js';
 
 
 
@@ -22,7 +23,8 @@ export default function App() {
   //  <AllPatientsPage/>
   //  <TrainerProgressPage/> 
     // <TrainerSession />
-    <TrainerCheckpointPage/>
+    // <TrainerCheckpointPage/>
+    <TrainerCheckpointWithSidebarPage/>
   );
 }
 
