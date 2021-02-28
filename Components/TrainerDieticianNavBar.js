@@ -12,18 +12,18 @@ class TrainerDieticianNavBar extends Component{
         return(
         <View style = {{flexDirection: 'row'}}>
 
-        <TouchableOpacity style={{borderWidth: 1}}>
-        <Entypo name = {'bar-graph'} size = {50}/>
+        <TouchableOpacity style={{borderWidth: 1, borderColor: '#E6E6E6' }}>
+        <Entypo name = {'bar-graph'} size = {50} color = {'#BEBEBE'}/>
         </TouchableOpacity>
         
-        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center'}}>
-        <Text style={{fontSize: '25'}}>Trainer</Text><MaterialCommunityIcons name = {'dumbbell'} size = {30}/>
+        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6'}}>
+        <Text style={{fontSize: '25', color: '#AED804'}}>Trainer</Text><MaterialCommunityIcons name = {'dumbbell'} size = {30} color={'#AED804'}/>
         </TouchableOpacity>
 
         
-        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center'}}>
+        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6'}}>
 
-        <Text style = {{fontSize: '25'}}>Dietician</Text><MaterialCommunityIcons name = {'fruit-pineapple'} size = {30}/>
+        <Text style = {{fontSize: '25', color: '#AED804'}}>Dietician</Text><MaterialCommunityIcons name = {'fruit-pineapple'} size = {30} color={'#AED804'}/>
         </TouchableOpacity>
         </View>
         

@@ -1,3 +1,4 @@
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View,SafeAreaView,Dimensions,ScrollView ,TextInput} from 'react-native';
@@ -15,7 +16,6 @@ import TrainerCheckpointWithSidebarPage from './Pages/TrainerCheckpointWithSideb
 
 export default function App() {
   return (
-   // <TrainerProgressPage/> 
   //  <TrainerExpandablePage/> 
   //  <LoginPage/> 
   //  <SidebarTestPage/>
@@ -24,7 +24,7 @@ export default function App() {
   //  <TrainerProgressPage/> 
     // <TrainerSession />
     // <TrainerCheckpointPage/>
-    <TrainerCheckpointWithSidebarPage/>
+   <TrainerCheckpointWithSidebarPage/>
   );
 }
 
@@ -38,3 +38,4 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
 });
+

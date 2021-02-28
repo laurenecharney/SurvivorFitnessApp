@@ -1,35 +1,51 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
+import { createStackNavigator } from 'react-navigation';
+
 export default class LoginPage extends React.Component {
     state={
       email:"",
       password:""
     }
+
+    handleEmailChange = email => {
+      this.setState({ email })
+    }
+  
+    handlePasswordChange = password => {
+      this.setState({ password })
+    }
+
     render(){
+      const { email, password } = this.state
       return (
         <View style={styles.container}>
           <Text style={styles.logo}>Survivor Fitness</Text>
           <View style={styles.inputView} >
             <TextInput  
+              name='email'
+              value={email}
               style={styles.inputText}
-              placeholder="Email..." 
+              placeholder="" 
               placeholderTextColor="#003f5c"
-              onChangeText={text => this.setState({email:text})}/>
+              onChangeText={this.handleEmailChange}/>
           </View>
           <View style={styles.inputView} >
             <TextInput  
+              name='password'
+              value={password}
               secureTextEntry
               style={styles.inputText}
-              placeholder="Password..." 
+              placeholder="" 
               placeholderTextColor="#003f5c"
-              onChangeText={text => this.setState({password:text})}/>
+              onChangeText={this.handlePasswordChange}/>
           </View>
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginBtn}>
-            <Text style={styles.loginText}>LOGIN</Text>
+            <Text style={styles.loginText} >LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.loginText}>Signup</Text>
