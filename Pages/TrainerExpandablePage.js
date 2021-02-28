@@ -80,5 +80,4 @@ export default class TrainerExpandablePage extends Component {
      flex:1,
      paddingTop:100,
      backgroundColor:'#fff',
-     
     }})

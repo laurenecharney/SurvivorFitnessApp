@@ -10,7 +10,6 @@ import {
   FlatList,
   Button,
 } from 'react-native';
-import {InfoIcon} from '../assets/information-icon.png'
 
 export default class AllPatientsPage extends Component {
 
@@ -67,7 +66,7 @@ export default class AllPatientsPage extends Component {
 
   render() {
     return(
-      <View style={{ flex: 1 }} >
+      <View style={{ flex: 1, backgroundColor:'fff' }} >
         <Text style={styles.headline}>Clients</Text>
         <FlatList 
           extraData={this.state}
