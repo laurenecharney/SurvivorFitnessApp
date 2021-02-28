@@ -46,7 +46,6 @@ export default class LoginPage extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginBtn}>
             <Text style={styles.loginText} >LOGIN</Text>
-          <Button title="Login" onPress={() => this.props.navigation.navigate("Home")}/>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.loginText}>Signup</Text>

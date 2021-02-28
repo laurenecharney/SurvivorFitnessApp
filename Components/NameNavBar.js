@@ -13,10 +13,10 @@ export default class NameNavBarComponent extends Component{
         return (
             <View style={styles.headline}>
             <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Icon name = {'keyboard-arrow-left'} size = {50} color = {'black'}/>
+            <Icon name = {'keyboard-arrow-left'} size = {50} color = {'#BEBEBE'}/>
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style = {{fontSize: 30}}>{this.props.name}</Text>
+            <Text style = {{fontSize: 30, color: '#3E3E3E'}}>{this.props.name}</Text>
             </View>
             </View>
         )

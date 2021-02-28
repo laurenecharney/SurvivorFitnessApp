@@ -16,7 +16,6 @@ import TrainerCheckpointWithSidebarPage from './Pages/TrainerCheckpointWithSideb
 
 export default function App() {
   return (
-   // <TrainerProgressPage/> 
   //  <TrainerExpandablePage/> 
   //  <LoginPage/> 
   //  <SidebarTestPage/>
@@ -25,7 +24,7 @@ export default function App() {
   //  <TrainerProgressPage/> 
     // <TrainerSession />
     // <TrainerCheckpointPage/>
-    <TrainerCheckpointWithSidebarPage/>
+   <TrainerCheckpointWithSidebarPage/>
   );
 }
 

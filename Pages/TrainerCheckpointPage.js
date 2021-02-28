@@ -116,7 +116,7 @@ export default class TrainerCheckpointPage  extends Component{
             {/* {this.state.edit ? <TextInput placeholder = {}>} */}
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
-                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
+                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                         <View style={styles.parentHr}/>
                             {
@@ -227,7 +227,7 @@ export default class TrainerCheckpointPage  extends Component{
                 
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandSkinFold()}>
                         <Text style={[styles.title, styles.font]}>Skin Fold Tests</Text>
-                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
+                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                         <View style={styles.parentHr}/>
     
@@ -352,7 +352,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 </View>}
                      <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGirth()}>
                         <Text style={[styles.title, styles.font]}>Girth</Text>
-                        <Icon name={this.state.expanded_girth ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
+                        <Icon name={this.state.expanded_girth ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                         {
                             this.state.expanded_girth &&
@@ -509,7 +509,7 @@ export default class TrainerCheckpointPage  extends Component{
                         </View>}
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandTreadmill()}>
                         <Text style={[styles.title, styles.font]}>Treadmill</Text>
-                        <Icon name={this.state.expanded_treadmill ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
+                        <Icon name={this.state.expanded_treadmill ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                     {
                             this.state.expanded_treadmill &&
@@ -643,7 +643,7 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 14,
         fontWeight:'bold',
-        color: 'white',
+        color: '#838383',
     },
     
     row:{
@@ -653,7 +653,9 @@ const styles = StyleSheet.create({
         paddingLeft:25,
         paddingRight:18,
         alignItems:'center',
-        backgroundColor: 'gray',
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderColor: "#C9C9C9"
     },
     parentHr:{
         height:1,
@@ -672,7 +674,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         top: 2,
         fontSize: 15,
-        position: 'relative'
+        position: 'relative',
     },
 
     fixedHeader: {

@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         paddingTop:100,
         backgroundColor:'#fff',
         justifyContent: 'flex-start',
+        borderColor: "#E6E6E6"
     },
     header:{
         position: 'absolute',
