@@ -131,13 +131,13 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.weight ? this.state.weight : "Weight (lbs)"}
                                     defaultValue = {this.state.weight == "Weight (lbs)" ? null : this.state.weight}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newWeight => this.setState({weight: newWeight})}
                                     keyboardType = {'numeric'}
                                     />:
-                                    <Text style = {{color: this.state.weight =="Weight (lbs)" ? "gray" : "black"}}>Weight: 
+                                    <Text style = {{color: this.state.weight =="Weight (lbs)" ? "#D5D5D5" : "black"}}>Weight: 
                                     {this.state.weight =="Weight (lbs)" ? " X": this.state.weight} lbs</Text>
                                     }
                                 </View>}
@@ -149,7 +149,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.BMI ? this.state.BMI : "BMI"}
                                 defaultValue = {this.state.BMI == "BMI" ? null : this.state.BMI}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newBMI => this.setState({BMI: newBMI})}
@@ -163,7 +163,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.body_fat_pct ? this.state.body_fat_pct : "Body Fat Percentage"}
                                 defaultValue = {this.state.body_fat_pct == "Body Fat Percentage" ? null : this.state.body_fat_pct}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {new_body_fat_pct => this.setState({body_fat_pct: new_body_fat_pct})}
@@ -177,7 +177,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.lean_mass ? this.state.lean_mass : "Lean Mass"}
                                 defaultValue = {this.state.lean_mass == "Lean Mass" ? null : this.state.lean_mass}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {new_value => this.setState({lean_mass: new_value})}
@@ -191,7 +191,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.blood_pressure ? this.state.blood_pressure : "Blood Pressure (mm Hg)"}
                                 defaultValue = {this.state.blood_pressure == "Blood Pressure (mm Hg)" ? null : this.state.blood_pressure}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {new_value => this.setState({blood_pressure: new_value})}
@@ -205,7 +205,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.range_of_motion ? this.state.range_of_motion : "Range of Motion"}
                                 defaultValue = {this.state.range_of_motion == "Range of Motion" ? null : this.state.range_of_motion}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {new_value => this.setState({range_of_motion: new_value})}
@@ -218,7 +218,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.resting_hr ? this.state.resting_hr : "Resting HR (bpm)"}
                                 defaultValue = {this.state.resting_hr == "Resting HR (bpm)" ? null : this.state.resting_hr}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {new_value => this.setState({resting_hr: new_value})}
@@ -241,7 +241,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Abdominal_skin_fold ? this.state.Abdominal_skin_fold : "Abdominal"}
                                     defaultValue = {this.state.Abdominal_skin_fold == "Abdominal" ? null : this.state.Abdominal_skin_fold}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Abdominal_skin_fold: newValue})}
@@ -258,7 +258,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Chest ? this.state.Chest : "Chest"}
                                     defaultValue = {this.state.Chest == "Chest" ? null : this.state.Chest}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Chest: newValue})}
@@ -275,7 +275,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Midaxillary ? this.state.Midaxillary : "Midaxillary"}
                                     defaultValue = {this.state.Midaxillary == "Midaxillary" ? null : this.state.Midaxillary}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Midaxillary: newValue})}
@@ -292,7 +292,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Subscapular ? this.state.Subscapular : "Subscapular"}
                                     defaultValue = {this.state.Subscapular == "Subscapular" ? null : this.state.Subscapular}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Subscapular: newValue})}
@@ -309,7 +309,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Supraillac ? this.state.Supraillac : "Supraillac"}
                                     defaultValue = {this.state.Supraillac == "Supraillac" ? null : this.state.Supraillac}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Supraillac: newValue})}
@@ -326,7 +326,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Thigh ? this.state.Thigh : "Thigh"}
                                     defaultValue = {this.state.Thigh == "Thigh" ? null : this.state.Thigh}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Thigh: newValue})}
@@ -343,7 +343,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     underlineColorAndroid = "transparent"
                                     placeholder = {this.state.Tricep ? this.state.Tricep : "Tricep"}
                                     defaultValue = {this.state.Tricep == "Tricep" ? null : this.state.Tricep}
-                                    placeholderTextColor = "gray"
+                                    placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newValue => this.setState({Tricep: newValue})}
@@ -364,7 +364,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Abdominal_girth ? this.state.Abdominal_girth : "Abdominal"}
                                 defaultValue = {this.state.Abdominal_girth == "Abdominal" ? null : this.state.Abdominal_girth}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Abdominal_girth: newValue})}
@@ -381,7 +381,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Biceps ? this.state.Biceps : "Biceps"}
                                 defaultValue = {this.state.Biceps == "Biceps" ? null : this.state.Biceps}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Biceps: newValue})}
@@ -398,7 +398,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Calf ? this.state.Calf : "Calf"}
                                 defaultValue = {this.state.Calf == "Calf" ? null : this.state.Calf}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Calf: newValue})}
@@ -415,7 +415,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Chest ? this.state.Chest : "Chest"}
                                 defaultValue = {this.state.Chest == "Chest" ? null : this.state.Chest}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Chest: newValue})}
@@ -432,7 +432,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Hip ? this.state.Hip : "Hip"}
                                 defaultValue = {this.state.Hip == "Hip" ? null : this.state.Hip}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Hip: newValue})}
@@ -449,7 +449,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Shoulders ? this.state.Shoulders : "Shoulders"}
                                 defaultValue = {this.state.Shoulders == "Shoulders" ? null : this.state.Shoulders}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Shoulders: newValue})}
@@ -466,7 +466,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Thigh ? this.state.Thigh : "Thigh"}
                                 defaultValue = {this.state.Thigh == "Thigh" ? null : this.state.Thigh}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Thigh: newValue})}
@@ -483,7 +483,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Waist ? this.state.Waist : "Waist"}
                                 defaultValue = {this.state.Waist == "Waist" ? null : this.state.Waist}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Waist: newValue})}
@@ -500,7 +500,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Total_Inches_Lost ? this.state.Total_Inches_Lost : "Total Inches Lost"}
                                 defaultValue = {this.state.Total_Inches_Lost == "Total Inches Lost" ? null : this.state.Total_Inches_Lost}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Total_Inches_Lost: newValue})}
@@ -521,7 +521,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Distance ? this.state.Distance : "Distance"}
                                 defaultValue = {this.state.Distance == "Distance" ? null : this.state.Distance}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Distance: newValue})}
@@ -539,7 +539,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.Speed ? this.state.Speed : "Speed"}
                                 defaultValue = {this.state.Speed == "Speed" ? null : this.state.Speed}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({Speed: newValue})}
@@ -556,7 +556,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.HR ? this.state.HR : "HR"}
                                 defaultValue = {this.state.HR == "HR" ? null : this.state.HR}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({HR: newValue})}
@@ -573,7 +573,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 underlineColorAndroid = "transparent"
                                 placeholder = {this.state.BR ? this.state.BR : "BR"}
                                 defaultValue = {this.state.BR == "BR" ? null : this.state.BR}
-                                placeholderTextColor = "gray"
+                                placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
                                 onChangeText = {newValue => this.setState({BR: newValue})}
@@ -655,7 +655,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         backgroundColor: 'white',
         borderBottomWidth: 1,
-        borderColor: "#C9C9C9"
+        borderColor: "#C9C9C9",
+        marginLeft: 15,
+        marginRight: 15
     },
     parentHr:{
         height:1,
@@ -663,8 +665,13 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     child:{
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         padding:16,
+        borderBottomWidth: 1,
+        borderColor: "#D5D5D5",
+        width:'60%',
+        marginLeft:30
+
     },
     notes: {
         width: '90%',
