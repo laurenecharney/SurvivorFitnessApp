@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import { createStackNavigator } from 'react-navigation';
 
 export default class LoginPage extends React.Component {
     state={
@@ -44,7 +44,7 @@ export default class LoginPage extends React.Component {
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn}>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => this.props.navigation.navigate('AllPatientsPage')}>
             <Text style={styles.loginText} >LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity>
