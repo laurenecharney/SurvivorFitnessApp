@@ -22,6 +22,7 @@ export default function App() {
   //  <SidebarTestPage/>
    // <TrainerSession/>
   //  <AllPatientsPage/>
+  //  <TrainerProgressPage/> 
     // <TrainerSession />
     // <TrainerCheckpointPage/>
     <TrainerCheckpointWithSidebarPage/>
