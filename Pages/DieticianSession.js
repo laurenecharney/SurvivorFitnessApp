@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent} from 'react-native';
-import Sidebar from '../Components/Sidebar.js';
+import SidebarDietician from '../Components/SidebarDietician.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import NameNavBar from "../Components/NameNavBar";
@@ -34,7 +34,7 @@ export default class DieticianSession extends Component {
                 <TrainerDieticianNavBar/>
                 <View style={{flexDirection: 'row', position: 'relative', flex: 2}}>
                     <View style={{width: '13.5%'}}>
-                        <Sidebar/>
+                        <SidebarDietician/>
                     </View>
                     <View style={styles.container}>
                         <Text style={{fontSize: 25, paddingTop: 10, alignItems: 'center'}}>Session 6</Text>
@@ -44,7 +44,7 @@ export default class DieticianSession extends Component {
                         value={this.state.trainerNotes}
                         placeholder = "Record Routine, exercise reps ... "
                         changeText = {newValue => this.changeText(newValue)}
-                        heading = "Trainer Notes"
+                        heading = "Dietician Notes"
                     />
                     
                 <Text style={{fontSize: 10, padding: 10,margin:10}}>
