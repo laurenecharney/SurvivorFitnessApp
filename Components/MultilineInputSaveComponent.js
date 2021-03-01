@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
       },
       notesSaved: { 
-        // borderColor: '#d3d3d3',
-        borderColor: 'white',
+         borderColor: '#d3d3d3',
         borderWidth: 1, 
         borderRadius: 10,
         padding: 10,
