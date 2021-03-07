@@ -5,9 +5,15 @@ import { StyleSheet, Text, View,TouchableOpacity,Dimensions,ScrollView ,TextInpu
 import Entypo from 'react-native-vector-icons/Entypo';
 class TrainerDieticianNavBar extends Component{
     constructor(props){
-        super(props)
-    
+        super(props);
     }
+    pressTrainer = () => {
+        this.props.pressTrainer();
+    }
+    pressDietician = () => {
+        this.props.pressDietician();
+    }
+
     render(){
         return(
         <View style = {{flexDirection: 'row'}}>
@@ -16,14 +22,26 @@ class TrainerDieticianNavBar extends Component{
         <Entypo name = {'bar-graph'} size = {50} color = {'#BEBEBE'}/>
         </TouchableOpacity>
         
-        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6'}}>
-        <Text style={{fontSize: '25', color: '#AED804'}}>Trainer</Text><MaterialCommunityIcons name = {'dumbbell'} size = {30} color={'#AED804'}/>
+        <TouchableOpacity 
+        onPress = {()=>this.pressTrainer()}
+        style = 
+            {
+                {flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6',
+                borderTopColor: this.props.dietician ? '#e6e6e6' : '#AED804', borderTopWidth: this.props.dietician ? 1 : 3}}>
+        <Text style={{fontSize: '25', color: this.props.dietician ? '#E6E6E6':'#AED804'}}>Trainer</Text>
+        <MaterialCommunityIcons name = {'dumbbell'} size = {30} 
+        color={!this.props.dietician ? '#AED804' : '#E6E6E6'}/>
         </TouchableOpacity>
 
         
-        <TouchableOpacity style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6'}}>
+        <TouchableOpacity 
+                onPress = {()=>this.pressDietician()}
 
-        <Text style = {{fontSize: '25', color: '#AED804'}}>Dietician</Text><MaterialCommunityIcons name = {'fruit-pineapple'} size = {30} color={'#AED804'}/>
+        style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6',
+        borderTopColor: !this.props.dietician ? '#e6e6e6' : '#AED804', borderTopWidth: !this.props.dietician ? 1 : 3}}>
+
+        <Text style = {{fontSize: '25', color: !this.props.dietician ? '#E6E6E6':'#AED804'}}>Dietician</Text>
+        <MaterialCommunityIcons name = {'fruit-pineapple'} size = {30} color={this.props.dietician ? '#AED804' : '#E6E6E6'}/>
         </TouchableOpacity>
         </View>
         

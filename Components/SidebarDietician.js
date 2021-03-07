@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
-class Sidebar extends Component {
+class SidebarDietician extends Component {
     state = {
         sessions: [
             {id: 1, name: '1',},
@@ -68,7 +68,7 @@ class Sidebar extends Component {
         )
     }
 }
-export default Sidebar
+export default SidebarDietician;
 
 const styles = StyleSheet.create ({
     row: {
