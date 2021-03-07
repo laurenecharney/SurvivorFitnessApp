@@ -21,11 +21,11 @@ export default function App() {
   //  <TrainerExpandablePage/> 
   //  <LoginPage/> 
   //  <SidebarTestPage/>
-  //  <TrainerDieticianSessionWithSidebarPage/>
+   <TrainerDieticianSessionWithSidebarPage/>
       //  <AllPatientsPage/>
   //  <TrainerProgressPage/> 
     // <TrainerCheckpointPage/>
-  <TrainerCheckpointWithSidebarPage/>
+  // <TrainerCheckgipointWithSidebarPage/>
   );
 }
 

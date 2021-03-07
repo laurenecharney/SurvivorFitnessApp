@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 class SidebarDietician extends Component {
     state = {
+        numSessions: 3,
         sessions: [
             {id: 1, name: '1',},
             {id: 2, name: '2',},
@@ -25,7 +26,11 @@ class SidebarDietician extends Component {
             },
             {
                 text: 'Yes',
-                onPress: () => console.log('Yes Pressed')
+                onPress: () => {
+                this.setState({numSessions: this.state.numSessions + 1})
+                var joined = this.state.sessions.concat({id: this.state.numSessions, name: this.state.numSessions.toString()});
+                this.setState({ sessions: joined })
+                }
             },
         ]
         )
