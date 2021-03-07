@@ -9,11 +9,26 @@ import { StyleSheet, View,TouchableOpacity,Text,Button} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+import SidebarDietician from '../Components/SidebarDietician';
+import DieticianSession from './DieticianSession';
 
-export default class TrainerCheckpointWithSidebarPage extends Component{
+export default class TrainerDieticianSessionWithSidebarPage extends Component{
     constructor(props){
         super(props);
+        this.state={
+            session: 1,
+            dietician: false
+        }
     }
+
+    pressTrainer = ()=>{
+        this.setState({dietician: false});
+    }
+    pressDietician = ()=>{
+        this.setState({dietician: true});
+    }
+
     render(){
         return(
             <View style={styles.container}
@@ -22,16 +37,30 @@ export default class TrainerCheckpointWithSidebarPage extends Component{
                     <NameNavBar name = "Alicia Yang"/>
                 </View>
                 <View>
-                    <TrainerDieticianNavBar/>
+                    <TrainerDieticianNavBar
+                        pressTrainer = {()=>this.pressTrainer()}
+                        pressDietician = {()=>this.pressDietician()}
+                        dietician={this.state.dietician}
+                        />
                 </View>
                 <View style={{
                     flex: 2,
                     flexDirection: 'row',
                 }}>
                     <View style={{ width: '13.5%', paddingTop: 10 }}>
-                        <Sidebar/>
+                    {this.state.dietician && 
+                    <SidebarDietician/>}
+                    {!this.state.dietician && <Sidebar/>}
                     </View>
-                    <TrainerSession session = {6}  />
+                    {!this.state.dietician && 
+                    <TrainerSession session={6}/>
+                    }
+                    {this.state.dietician && 
+                    <DieticianSession session={6}/>
+                    }
+                    
+                    
+
                 </View>
             </View>
         )

@@ -11,7 +11,7 @@ import SidebarTestPage from './Pages/SidebarTestPage.js';
 import AllPatientsPage from './Pages/AllPatientsPage.js';
 import TrainerCheckpointPage from './Pages/TrainerCheckpointPage'
 import TrainerCheckpointWithSidebarPage from './Pages/TrainerCheckpointWithSidebarPage.js';
-import TrainerSessionWithSidebarPage from "./Pages/TrainerSessionWithSidebarPage";
+import TrainerDieticianSessionWithSidebarPage from "./Pages/TrainerDieticianSessionWithSidebarPage";
 
 
 
@@ -21,13 +21,11 @@ export default function App() {
   //  <TrainerExpandablePage/> 
   //  <LoginPage/> 
   //  <SidebarTestPage/>
-      //<TrainerSession/>
-   <TrainerSessionWithSidebarPage/>
+  //  <TrainerDieticianSessionWithSidebarPage/>
       //  <AllPatientsPage/>
   //  <TrainerProgressPage/> 
     // <TrainerCheckpointPage/>
-  // <TrainerCheckpointWithSidebarPage/>
-  //<DieticianSession/>
+  <TrainerCheckpointWithSidebarPage/>
   );
 }
 
