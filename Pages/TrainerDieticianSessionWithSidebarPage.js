@@ -18,7 +18,9 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         super(props);
         this.state={
             session: 1,
-            dietician: false
+            dietician: false,
+            numTrainerSessions: 3,
+            numDieticianSessions: 24
         }
     }
 
