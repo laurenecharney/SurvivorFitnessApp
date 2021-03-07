@@ -16,6 +16,7 @@ import Accordion from '../Components/Accordion.js';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+import DateTextBox from '../Components/DateTextBox'
 // import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-flat-list';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -47,10 +48,10 @@ export default class TrainerCheckpointPage  extends Component{
             Abdominal_girth: "Abdominal",
             Biceps: "Biceps",
             Calf: "Calf",
-            Chest: "Chest",
+            //Chest: "Chest",
             Hip: "Hip",
             Shoulders: "Shoulders",
-            Thigh: "Thigh",
+           // Thigh: "Thigh",
             Waist: "Waist",
             Total_Inches_Lost: "Total Inches Lost",
             Distance: "Distance",
@@ -106,14 +107,8 @@ export default class TrainerCheckpointPage  extends Component{
                             style={{maxHeight: '100%'}}
                 
                 >
-
-            <Text>
-            Session {this.props.session}
-            </Text>
-            <Text>
-                Date
-            </Text>
-            {/* {this.state.edit ? <TextInput placeholder = {}>} */}
+            <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
+            <DateTextBox/>
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
@@ -351,7 +346,7 @@ export default class TrainerCheckpointPage  extends Component{
                                     />
                                 </View>}
                      <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGirth()}>
-                        <Text style={[styles.title, styles.font]}>Girth</Text>
+                        <Text style={[styles.title, styles.font]}>Girth Measurements (in)</Text>
                         <Icon name={this.state.expanded_girth ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                         {
@@ -508,7 +503,7 @@ export default class TrainerCheckpointPage  extends Component{
                                 />
                         </View>}
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandTreadmill()}>
-                        <Text style={[styles.title, styles.font]}>Treadmill</Text>
+                        <Text style={[styles.title, styles.font]}>6 Minute Treadmill Test</Text>
                         <Icon name={this.state.expanded_treadmill ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                     {
@@ -582,23 +577,26 @@ export default class TrainerCheckpointPage  extends Component{
                     </View>}
             <View style={styles.wrapper}>     
                 <View style={styles.notes}>
+                    <Text style = {styles.title}> Trainer Notes: </Text>
                     <MultilineInputSaveComponent
                         edit={this.state.edit}
                         value={this.state.trainerNotes}
                         placeholder = "Record Routine, exercise reps ... "
                         changeText = {newValue => this.changeText(newValue)}
-                        heading = "Trainer Notes"
+                        //heading = "Trainer Notes"
                     />
-                    
+
                 <Text style={{fontSize: 10, padding: 10,margin:10}}>
                     *If needed, please contact ____ with any concerns or questions.
                     </Text>
+
+                <Text style = {styles.title}> Admin Notes: </Text>
                 <MultilineInputSaveComponent
                         edit={false}
                         value={"Lorem Impsum dolor"}
                         placeholder = ""
                         changeText = {newValue => this.changeText(newValue)}
-                        heading = "Admin Notes"
+                        //heading = "Admin Notes"
                     />
                     <Button 
                         title = {this.state.edit ? "SAVE" : "EDIT"}
@@ -640,8 +638,14 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // flexDirection: 'row',
     },
+    heading:{
+        fontSize: 16,
+        fontWeight:'bold',
+        color: '#838383',
+    },
+
     title:{
-        fontSize: 14,
+        fontSize: 16,
         fontWeight:'bold',
         color: '#838383',
     },
@@ -693,5 +697,15 @@ const styles = StyleSheet.create({
         padding: 20
 
         // position: 'absolute'
+    },
+
+    sessionNumber:{
+       fontSize: 17,
+        textAlign: 'center',
+        fontFamily: 'Helvetica',
+        color: '#838383',
+        fontWeight: 'bold',
+        paddingBottom: 20,
     }
+
 });
