@@ -38,7 +38,7 @@ changeText = (newValue)=>{
 
             >
                 <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
-                <DateTextBox/>
+                <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Trainer Notes: </Text>
                         <MultilineInputSaveComponent
@@ -46,7 +46,6 @@ changeText = (newValue)=>{
                             value={this.state.trainerNotes}
                             placeholder = "Record Routine, exercise reps ... "
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Trainer Notes"
                         />
 
                         <Text style={{fontSize: 10, padding: 10,margin:10}}>
@@ -59,7 +58,6 @@ changeText = (newValue)=>{
                             value={"Lorem Impsum dolor"}
                             placeholder = ""
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Admin Notes"
                         />
                         <Button
                             title = {this.state.edit ? "SAVE" : "EDIT"}

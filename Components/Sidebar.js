@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 class Sidebar extends Component {
     state = {
+        numSessions: 24,
         sessions: [
             {id: 1, name: '1',},
             {id: 2, name: '2',},
@@ -46,7 +47,11 @@ class Sidebar extends Component {
             },
             {
                 text: 'Yes',
-                onPress: () => console.log('Yes Pressed')
+                onPress: () => {
+                this.setState({numSessions: this.state.numSessions + 1})
+                var joined = this.state.sessions.concat({id: this.state.numSessions, name: this.state.numSessions.toString()});
+                this.setState({ sessions: joined })
+                }
             },
         ]
         )
@@ -54,7 +59,9 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true}>
+            <KeyboardAwareScrollView 
+            resetScrollToCoords={{ x: 0, y: 0 }}
+             scrollEnabled={true}>
                 {
                     this.state.sessions.map((item, index) => (
                         <TouchableOpacity

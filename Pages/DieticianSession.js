@@ -1,84 +1,104 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent} from 'react-native';
-import SidebarDietician from '../Components/SidebarDietician.js';
+import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import NameNavBar from "../Components/NameNavBar";
-import TrainerDieticianNavBar from "../Components/TrainerDieticianNavBar";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 
 export default class DieticianSession extends Component {
-    constructor(props){
-        super(props);
-    
-        this.state = {
-            trainerNotes: "",
-            edit: false
-    
-        }
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+  constructor(props){
+    super(props);
+
+    this.state = {
+        trainerNotes: "",
+        edit: false
+
     }
-    changeText = (newValue)=>{
-        this.setState({trainerNotes: newValue});
+    if (Platform.OS === 'android') {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
     }
-    render() {
-        return (
-            <KeyboardAwareScrollView
-                resetScrollToCoords={{x: 0, y: 0}}
-                contentContainerStyle={styles.bigContainer}
-                scrollEnabled={true}
+}
+changeText = (newValue)=>{
+    this.setState({trainerNotes: newValue});
+}
+  render() {
+    return (
+        <View style = {styles.container}>
+            <View style={styles.fixedHeader}>
+
+
+            </View>
+            <ScrollView contentContainerStyle = {
+                {
+                    position: 'fixed',
+                    paddingBottom: 150,
+                    overflow: 'hidden',
+                }
+            }
+                        style={{maxHeight: '100%'}}
+
             >
-                <NameNavBar/>
-                <TrainerDieticianNavBar/>
-                <View style={{flexDirection: 'row', position: 'relative', flex: 2}}>
-                    <View style={{width: '13.5%'}}>
-                        <SidebarDietician/>
-                    </View>
-                    <View style={styles.container}>
-                        <Text style={{fontSize: 25, paddingTop: 10, alignItems: 'center'}}>Session 6</Text>
-                        <DateTextBox/>
+                <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
+                <DateTextBox edit = {this.state.edit}/>
+                    <View style={styles.notes}>
+                        <Text style = {styles.title}> Dietician Notes: </Text>
                         <MultilineInputSaveComponent
-                        edit={this.state.edit}
-                        value={this.state.trainerNotes}
-                        placeholder = "Record Routine, exercise reps ... "
-                        changeText = {newValue => this.changeText(newValue)}
-                        heading = "Dietician Notes"
-                    />
-                    
-                <Text style={{fontSize: 10, padding: 10,margin:10}}>
-                    *If needed, please contact ____ with any concerns or questions.
-                    </Text>
-                <MultilineInputSaveComponent
-                        edit={false}
-                        value={"Lorem Impsum dolor"}
-                        placeholder = ""
-                        changeText = {newValue => this.changeText(newValue)}
-                        heading = "Admin Notes"
-                    />
-                    <Button 
-                                    title = {this.state.edit ? "SAVE" : "EDIT"}
-                                    onPress={()=>this.setState({edit: !this.state.edit})}
-                                    color={'black'}
-                    />
+                            edit={this.state.edit}
+                            value={this.state.trainerNotes}
+                            placeholder = "Record diet recommendations, reminders, etc..."
+                            changeText = {newValue => this.changeText(newValue)}
+                            //heading = "Trainer Notes"
+                        />
+
+                        <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                            *If needed, please contact ____ with any concerns or questions.
+                        </Text>
+
+                        <Text style = {styles.title}> Admin Notes: </Text>
+                        <MultilineInputSaveComponent
+                            edit={false}
+                            value={"Lorem Impsum dolor"}
+                            placeholder = ""
+                            changeText = {newValue => this.changeText(newValue)}
+                            //heading = "Admin Notes"
+                        />
+                        <Button
+                            title = {this.state.edit ? "SAVE" : "EDIT"}
+                            onPress={()=>this.setState({edit: !this.state.edit})}
+                        />
                     </View>
-                </View>
-            </KeyboardAwareScrollView>
-        );
-    }
+            </ScrollView>
+        </View>
+    );
+  } 
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        alignItems: 'center',
-
+  container: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+    sessionNumber:{
+        fontSize: 17,
+        textAlign: 'center',
+        fontFamily: 'Helvetica',
+        color: '#838383',
+        fontWeight: 'bold',
+        paddingBottom: 20,
+        paddingTop: 45,
     },
-    bigContainer: {
-        flex: 2,
-        paddingTop: 50,
-        backgroundColor: '#fff',
-        justifyContent: 'flex-start',
+    notes: {
+        width: '90%',
+        padding: 10,
+        margin: 10,
+        height: '35%',
+        marginBottom: 20,
+        top: 2,
+        fontSize: 15,
+        position: 'relative',
+    },
+    title:{
+        fontSize: 16,
+        fontWeight:'bold',
+        color: '#838383',
     },
 });
