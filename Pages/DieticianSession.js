@@ -1,11 +1,27 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent} from 'react-native';
+import {
+    StyleSheet,
+    TextInput,
+    View,
+    Button,
+    SafeAreaView,
+    Text,
+    ListViewComponent,
+    ScrollView,
+    TouchableOpacity
+} from 'react-native';
 import SidebarDietician from '../Components/SidebarDietician.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import NameNavBar from "../Components/NameNavBar";
 import TrainerDieticianNavBar from "../Components/TrainerDieticianNavBar";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+
+const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
 
 export default class DieticianSession extends Component {
     constructor(props){
@@ -25,60 +41,98 @@ export default class DieticianSession extends Component {
     }
     render() {
         return (
-            <KeyboardAwareScrollView
-                resetScrollToCoords={{x: 0, y: 0}}
-                contentContainerStyle={styles.bigContainer}
-                scrollEnabled={true}
-            >
-                <NameNavBar/>
-                <TrainerDieticianNavBar/>
-                <View style={{flexDirection: 'row', position: 'relative', flex: 2}}>
-                    <View style={{width: '13.5%'}}>
-                        <SidebarDietician/>
-                    </View>
-                    <View style={styles.container}>
-                        <Text style={{fontSize: 25, paddingTop: 10, alignItems: 'center'}}>Session 6</Text>
-                        <DateTextBox/>
+            <View style = {styles.container}>
+                <ScrollView contentContainerStyle = {
+                    {
+                        position: 'fixed',
+                        paddingBottom: 150,
+                        overflow: 'hidden',
+                    }
+                }
+                            style={{maxHeight: '100%'}}
+
+                >
+                    <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
+                    <DateTextBox/>
+                    <View style={styles.notes}>
+                        <Text style = {styles.title}> Dietician Notes: </Text>
                         <MultilineInputSaveComponent
                         edit={this.state.edit}
                         value={this.state.trainerNotes}
                         placeholder = "Record Routine, exercise reps ... "
                         changeText = {newValue => this.changeText(newValue)}
-                        heading = "Dietician Notes"
                     />
                     
-                <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                <Text style={styles.finePrint}>
                     *If needed, please contact ____ with any concerns or questions.
                     </Text>
-                <MultilineInputSaveComponent
+                        <Text style = {styles.title}> Admin Notes: </Text>
+                        <MultilineInputSaveComponent
                         edit={false}
                         value={"Lorem Impsum dolor"}
                         placeholder = ""
                         changeText = {newValue => this.changeText(newValue)}
-                        heading = "Admin Notes"
                     />
-                    <Button 
-                                    title = {this.state.edit ? "SAVE" : "EDIT"}
-                                    onPress={()=>this.setState({edit: !this.state.edit})}
-                                    color={'black'}
-                    />
+                        <AppButton
+                            title = {this.state.edit ? "SAVE" : "EDIT"}
+                            onPress={()=>this.setState({edit: !this.state.edit})}
+                        />
                     </View>
-                </View>
-            </KeyboardAwareScrollView>
+            </ScrollView>
+            </View>
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+    },
+    sessionNumber:{
+        fontSize: 17,
+        textAlign: 'center',
+        fontFamily: 'Helvetica',
+        color: '#838383',
+        fontWeight: 'bold',
+        paddingBottom: 20,
+        paddingTop: 45,
+    },
 
+    notes: {
+        padding: 5,
+        margin: 5,
+        height: '35%',
+        marginBottom: 20,
+        fontSize: 15,
+        position: 'relative',
     },
-    bigContainer: {
-        flex: 2,
-        paddingTop: 50,
-        backgroundColor: '#fff',
-        justifyContent: 'flex-start',
+    title:{
+        fontSize: 16,
+        fontWeight:'bold',
+        color: '#838383',
     },
+    finePrint:{
+        fontSize: 8,
+        padding: 10,
+        margin:10,
+        color: '#838383',
+    },
+
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        width: 150,
+        alignSelf: "center",
+        margin: 20
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
 });

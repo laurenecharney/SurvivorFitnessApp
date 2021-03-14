@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Sidebar from '../Components/Sidebar.js';
-import TrainerSession from './TrainerSession.js';
+import DieticianSession from './DieticianSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View,TouchableOpacity,Text,Button} from 'react-native';
@@ -10,7 +10,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default class TrainerCheckpointWithSidebarPage extends Component{
+export default class DieticianSessionWithSidebarPage extends Component{
     constructor(props){
         super(props);
     }
@@ -31,7 +31,7 @@ export default class TrainerCheckpointWithSidebarPage extends Component{
                     <View style={{ width: '13.5%', paddingTop: 10 }}>
                         <Sidebar/>
                     </View>
-                    <TrainerSession session = {6} />
+                    <DieticianSession session = {6}/>
                 </View>
             </View>
         )
