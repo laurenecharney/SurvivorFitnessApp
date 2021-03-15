@@ -2,16 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7343e61d-90ec-469e-9240-8d1bbddcfe6e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Components/SaveEditButton.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pages/DieticianSessionWithSidebarPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Navigation/MainStackNavigation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/DateTextBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/DateTextBox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Components/MultilineInputSaveComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/MultilineInputSaveComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/NameNavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/NameNavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/Sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/SidebarDietician.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/SidebarDietician.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/TrainerDieticianNavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Components/TrainerDieticianNavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/AllPatientsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/AllPatientsPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/DieticianSession.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/DieticianSession.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/TrainerCheckpointPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/TrainerCheckpointPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/TrainerDieticianSessionWithSidebarPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/TrainerDieticianSessionWithSidebarPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/TrainerSession.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/TrainerSession.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/TrainerSessionWithSidebarPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/TrainerSessionWithSidebarPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/TrainerSessionWithSidebarPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +48,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -71,7 +79,7 @@
       <workItem from="1614986144207" duration="468000" />
       <workItem from="1615155515326" duration="2487000" />
       <workItem from="1615574779737" duration="2667000" />
-      <workItem from="1615762610918" duration="2751000" />
+      <workItem from="1615762610918" duration="3918000" />
     </task>
     <servers />
   </component>

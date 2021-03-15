@@ -10,22 +10,16 @@ import DieticianSession from './Pages/DieticianSession.js';
 import DieticianSessionWithSidebarPage from './Pages/DieticianSessionWithSidebarPage.js';
 import SidebarTestPage from './Pages/SidebarTestPage.js';
 import AllPatientsPage from './Pages/AllPatientsPage.js';
-import TrainerCheckpointPage from './Pages/TrainerCheckpointPage'
+import TrainerCheckpointPage from './Pages/TrainerCheckpointPage';
 import TrainerCheckpointWithSidebarPage from './Pages/TrainerCheckpointWithSidebarPage.js';
-import TrainerSessionWithSidebarPage from "./Pages/TrainerSessionWithSidebarPage";
+import MainStackNavigator from './Navigation/MainStackNavigation.js';
+import TrainerDieticianSessionWithSidebarPage from "./Pages/TrainerDieticianSessionWithSidebarPage";
 
 
 
 
 export default function App() {
-  return (
-      //  <LoginPage/>
-      //  <AllPatientsPage/>
-      // <TrainerSessionWithSidebarPage/>
-      //  <TrainerCheckpointWithSidebarPage/>
-       <DieticianSessionWithSidebarPage/>
-
-  );
+  return <MainStackNavigator />
 }
 
 

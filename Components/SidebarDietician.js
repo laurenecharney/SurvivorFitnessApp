@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
-class Sidebar extends Component {
+class SidebarDietician extends Component {
     state = {
+        numSessions: 3,
         sessions: [
             {id: 1, name: '1',},
             {id: 2, name: '2',},
@@ -25,7 +26,11 @@ class Sidebar extends Component {
             },
             {
                 text: 'Yes',
-                onPress: () => console.log('Yes Pressed')
+                onPress: () => {
+                this.setState({numSessions: this.state.numSessions + 1})
+                var joined = this.state.sessions.concat({id: this.state.numSessions, name: this.state.numSessions.toString()});
+                this.setState({ sessions: joined })
+                }
             },
         ]
         )
@@ -68,7 +73,7 @@ class Sidebar extends Component {
         )
     }
 }
-export default Sidebar
+export default SidebarDietician;
 
 const styles = StyleSheet.create ({
     row: {
