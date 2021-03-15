@@ -1,36 +1,17 @@
 import React, {Component} from 'react';
-import {
-    StyleSheet,
-    TextInput,
-    View,
-    Button,
-    SafeAreaView,
-    Text,
-    ListViewComponent,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
-import SidebarDietician from '../Components/SidebarDietician.js';
+import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import NameNavBar from "../Components/NameNavBar";
-import TrainerDieticianNavBar from "../Components/TrainerDieticianNavBar";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-
-const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
-        <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
-);
 
 export default class DieticianSession extends Component {
     constructor(props){
         super(props);
-    
+
         this.state = {
             trainerNotes: "",
             edit: false
-    
+
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -42,6 +23,10 @@ export default class DieticianSession extends Component {
     render() {
         return (
             <View style = {styles.container}>
+                <View style={styles.fixedHeader}>
+
+
+                </View>
                 <ScrollView contentContainerStyle = {
                     {
                         position: 'fixed',
@@ -53,36 +38,40 @@ export default class DieticianSession extends Component {
 
                 >
                     <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
-                    <DateTextBox/>
+                    <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Dietician Notes: </Text>
                         <MultilineInputSaveComponent
-                        edit={this.state.edit}
-                        value={this.state.trainerNotes}
-                        placeholder = "Record Routine, exercise reps ... "
-                        changeText = {newValue => this.changeText(newValue)}
-                    />
-                    
-                <Text style={styles.finePrint}>
-                    *If needed, please contact ____ with any concerns or questions.
-                    </Text>
+                            edit={this.state.edit}
+                            value={this.state.trainerNotes}
+                            placeholder = "Record diet recommendations, reminders, etc..."
+                            changeText = {newValue => this.changeText(newValue)}
+                            //heading = "Trainer Notes"
+                        />
+
+                        <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                            *If needed, please contact ____ with any concerns or questions.
+                        </Text>
+
                         <Text style = {styles.title}> Admin Notes: </Text>
                         <MultilineInputSaveComponent
-                        edit={false}
-                        value={"Lorem Impsum dolor"}
-                        placeholder = ""
-                        changeText = {newValue => this.changeText(newValue)}
-                    />
+                            edit={false}
+                            value={"Lorem Impsum dolor"}
+                            placeholder = ""
+                            changeText = {newValue => this.changeText(newValue)}
+                            //heading = "Admin Notes"
+                        />
                         <AppButton
                             title = {this.state.edit ? "SAVE" : "EDIT"}
                             onPress={()=>this.setState({edit: !this.state.edit})}
                         />
                     </View>
-            </ScrollView>
+                </ScrollView>
             </View>
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',

@@ -4,18 +4,25 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TouchableHighlight,
   Image,
   Alert,
   ScrollView,
+  Dimensions,
   FlatList,
   Button,
 } from 'react-native';
+import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class AllPatientsPage extends Component {
-
+  state = {
+    isModalVisible:false
+  }
   constructor(props) {
     super(props);
     this.state = {
+      isModalVisible: false,
       calls: [
         {id:1,  name: "First Last"},
         {id:2,  name: "First Last"} ,
@@ -38,15 +45,31 @@ export default class AllPatientsPage extends Component {
       ]
     };
   }
+  openModal = () =>{
+    this.setState({
+    isModalVisible:true
+    })
+  }
 
+  toggleModal = () =>{
+    this.setState({
+    isModalVisible:!this.state.isModalVisible
+    })
+  }
+  closeModal = () =>{
+    this.setState({
+    isModalVisible:false
+    })
+  }
   renderItem = ({item}) => {
     return (
         <ScrollView>
             <View style={styles.row}>
                 <View>
                     <View style={styles.nameContainer}>
-                        <TouchableOpacity><Text style={styles.nameTxt}>{item.name}</Text></TouchableOpacity>
-                        <TouchableOpacity style={{
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}><Text style={styles.nameTxt}>{item.name}</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.openModal()}
+                          style={{
                             borderWidth:1,
                             borderColor:"#AED803",
                             alignItems:'center',
@@ -54,8 +77,10 @@ export default class AllPatientsPage extends Component {
                             width:25,
                             height:25,
                             backgroundColor:'#fff',
-                            borderRadius:50,}}>
-                                <Text style={{color:"#AED803"}}>i</Text>
+                            borderRadius:50,
+                          }}>
+                            
+                              <Text style={{color:"#AED803"}}>i</Text> 
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -75,6 +100,54 @@ export default class AllPatientsPage extends Component {
             return item.id;
           }}
           renderItem={this.renderItem}/>
+        <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'}}>
+                  <View style={{
+                    backgroundColor: "#fff",
+                    width: '90%',
+                    height: '75%',
+                    borderRadius:'19'}}>
+                      <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeModal()}>
+                        <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                      </TouchableOpacity>
+                      <View style={{flex: 1}}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                          <Text style={{fontSize: '19', color: '#AED803'}} >Client Information</Text>
+                        </View>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Name: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Age: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Email: </Text>
+                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Phone Number: </Text>
+                        </View>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Type of Cancer: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Treatment Facility: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Surgeries: </Text>
+                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Forms of Treatment: </Text>
+                        </View>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
+                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
+                        </View>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Physician Notes: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
+                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
+                        </View>
+                      </ScrollView>
+                    </View>
+                      
+                  </View>  
+              </View> 
+        </Modal>
       </View>
     );
   }

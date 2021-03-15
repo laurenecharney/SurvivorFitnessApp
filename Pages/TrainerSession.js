@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
-import SaveEditButton from '../Components/SaveEditButton.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 
@@ -46,7 +45,7 @@ changeText = (newValue)=>{
 
             >
                 <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
-                <DateTextBox/>
+                <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Trainer Notes: </Text>
                         <MultilineInputSaveComponent
@@ -54,7 +53,6 @@ changeText = (newValue)=>{
                             value={this.state.trainerNotes}
                             placeholder = "Record Routine, exercise reps ... "
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Trainer Notes"
                         />
 
                         <Text style={styles.finePrint}>
@@ -67,7 +65,6 @@ changeText = (newValue)=>{
                             value={"Lorem Impsum dolor"}
                             placeholder = ""
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Admin Notes"
                         />
                         <AppButton
                             title = {this.state.edit ? "SAVE" : "EDIT"}

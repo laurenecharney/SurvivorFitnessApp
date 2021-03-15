@@ -19,7 +19,6 @@ export default class MultilineInputSaveComponent  extends Component{
         <Text style={styles.headingText}>
         {this.props.heading}
         </Text>
-        {this.props.edit ? 
         <TextInput
             returnKeyType = "done"
             style = {styles.notesOutline}
@@ -29,11 +28,10 @@ export default class MultilineInputSaveComponent  extends Component{
             value={this.props.value}
             multiline
             blurOnSubmit = {false}
-        /> : 
-        <Text style={styles.notesSaved}>
-            {this.props.value}
-        </Text>
-        }
+            editable={this.props.edit}
+        /> 
+        
+        
         </View>)}}
 
 
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
       },
       notesSaved: { 
-         borderColor: '#d3d3d3',
+        borderColor: '#d3d3d3',
         borderWidth: 1, 
         borderRadius: 10,
         padding: 10,
