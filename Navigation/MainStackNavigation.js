@@ -5,6 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginPage from '../Pages/LoginPage.js';
 import AllPatientsPage from '../Pages/AllPatientsPage.js';
 import ClientInformationPage from '../Pages/TrainerCheckpointWithSidebarPage.js';
+import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
+import AdminClientPage from '../Pages/AdminClientPage.js';
+import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
+import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
 
 const Stack = createStackNavigator()
 
