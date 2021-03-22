@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
       },
       headingText: {
-        padding: 10,
         fontSize: 20,
         fontWeight: "bold"
       },

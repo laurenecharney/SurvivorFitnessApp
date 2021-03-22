@@ -21,12 +21,12 @@ const UselessTextInput = () => {
 
 const styles = StyleSheet.create({
     dateOutline: {
-        width: '80%', 
+        width: '75%',
         borderColor: 'gray',
         borderWidth: 1, 
         borderRadius: 10,
         padding: 10,
-        marginLeft: 10
+        marginLeft: 0
       },
       dateContainer: {
         flexDirection: 'row',
