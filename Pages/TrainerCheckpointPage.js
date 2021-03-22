@@ -21,6 +21,12 @@ import DateTextBox from '../Components/DateTextBox'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 export default class TrainerCheckpointPage  extends Component{
     constructor(props){
         super(props);
@@ -598,11 +604,10 @@ export default class TrainerCheckpointPage  extends Component{
                         changeText = {newValue => this.changeText(newValue)}
                         //heading = "Admin Notes"
                     />
-                    <Button 
+                    <AppButton
                         title = {this.state.edit ? "SAVE" : "EDIT"}
                         onPress={()=>this.setState({edit: !this.state.edit})}
-                        color={'black'}
-                    />  
+                    />
                 </View>
         
                     
@@ -706,6 +711,23 @@ const styles = StyleSheet.create({
         color: '#838383',
         fontWeight: 'bold',
         paddingBottom: 20,
-    }
+    },
 
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        width: 150,
+        alignSelf: "center",
+        margin: 20
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
 });

@@ -2,35 +2,18 @@
 import React, { Component } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Sidebar from '../Components/Sidebar.js';
-import TrainerSession from './TrainerSession.js';
+import DieticianSession from './DieticianSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View,TouchableOpacity,Text,Button} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import TrainerCheckpointPage from './TrainerCheckpointPage.js';
-import SidebarDietician from '../Components/SidebarDietician';
-import DieticianSession from './DieticianSession';
 
-export default class TrainerDieticianSessionWithSidebarPage extends Component{
+export default class DieticianSessionWithSidebarPage extends Component{
     constructor(props){
         super(props);
-        this.state={
-            session: 1,
-            dietician: false,
-            numTrainerSessions: 3,
-            numDieticianSessions: 24
-        }
     }
-
-    pressTrainer = ()=>{
-        this.setState({dietician: false});
-    }
-    pressDietician = ()=>{
-        this.setState({dietician: true});
-    }
-
     render(){
         return(
             <View style={styles.container}
@@ -39,27 +22,16 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     <NameNavBar name = "Alicia Yang"/>
                 </View>
                 <View>
-                    <TrainerDieticianNavBar
-                        pressTrainer = {()=>this.pressTrainer()}
-                        pressDietician = {()=>this.pressDietician()}
-                        dietician={this.state.dietician}
-                        />
+                    <TrainerDieticianNavBar/>
                 </View>
                 <View style={{
                     flex: 2,
                     flexDirection: 'row',
                 }}>
                     <View style={{ width: '13.5%', paddingTop: 10 }}>
-                    {this.state.dietician && 
-                    <SidebarDietician/>}
-                    {!this.state.dietician && <Sidebar/>}
+                        <Sidebar/>
                     </View>
-                    {!this.state.dietician && 
-                    <TrainerSession session={6}/>
-                    }
-                    {this.state.dietician && 
-                    <DieticianSession session={6}/>
-                    }
+                    <DieticianSession session = {6}/>
                 </View>
             </View>
         )

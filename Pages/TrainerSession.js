@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+
+const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
 
 export default class TrainerSession extends Component {
   constructor(props){
@@ -17,6 +23,7 @@ export default class TrainerSession extends Component {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
 }
+
 changeText = (newValue)=>{
     this.setState({trainerNotes: newValue});
 }
@@ -48,7 +55,7 @@ changeText = (newValue)=>{
                             changeText = {newValue => this.changeText(newValue)}
                         />
 
-                        <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                        <Text style={styles.finePrint}>
                             *If needed, please contact ____ with any concerns or questions.
                         </Text>
 
@@ -59,7 +66,7 @@ changeText = (newValue)=>{
                             placeholder = ""
                             changeText = {newValue => this.changeText(newValue)}
                         />
-                        <Button
+                        <AppButton
                             title = {this.state.edit ? "SAVE" : "EDIT"}
                             onPress={()=>this.setState({edit: !this.state.edit})}
                         />
@@ -72,8 +79,8 @@ changeText = (newValue)=>{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
+      backgroundColor: '#fff',
+      alignItems: 'flex-start',
   },
     sessionNumber:{
         fontSize: 17,
@@ -84,13 +91,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingTop: 45,
     },
+
     notes: {
-        width: '90%',
-        padding: 10,
-        margin: 10,
+        padding: 5,
+        margin: 5,
         height: '35%',
         marginBottom: 20,
-        top: 2,
         fontSize: 15,
         position: 'relative',
     },
@@ -99,4 +105,28 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color: '#838383',
     },
+    finePrint:{
+        fontSize: 8,
+        padding: 10,
+        margin:10,
+        color: '#838383',
+    },
+
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        width: 150,
+        alignSelf: "center",
+        margin: 20
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
 });

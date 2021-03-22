@@ -5,40 +5,40 @@ import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 
 export default class DieticianSession extends Component {
-  constructor(props){
-    super(props);
+    constructor(props){
+        super(props);
 
-    this.state = {
-        trainerNotes: "",
-        edit: false
+        this.state = {
+            trainerNotes: "",
+            edit: false
 
+        }
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
     }
-    if (Platform.OS === 'android') {
-        UIManager.setLayoutAnimationEnabledExperimental(true);
+    changeText = (newValue)=>{
+        this.setState({trainerNotes: newValue});
     }
-}
-changeText = (newValue)=>{
-    this.setState({trainerNotes: newValue});
-}
-  render() {
-    return (
-        <View style = {styles.container}>
-            <View style={styles.fixedHeader}>
+    render() {
+        return (
+            <View style = {styles.container}>
+                <View style={styles.fixedHeader}>
 
 
-            </View>
-            <ScrollView contentContainerStyle = {
-                {
-                    position: 'fixed',
-                    paddingBottom: 150,
-                    overflow: 'hidden',
+                </View>
+                <ScrollView contentContainerStyle = {
+                    {
+                        position: 'fixed',
+                        paddingBottom: 150,
+                        overflow: 'hidden',
+                    }
                 }
-            }
-                        style={{maxHeight: '100%'}}
+                            style={{maxHeight: '100%'}}
 
-            >
-                <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
-                <DateTextBox edit = {this.state.edit}/>
+                >
+                    <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
+                    <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Dietician Notes: </Text>
                         <MultilineInputSaveComponent
@@ -61,22 +61,22 @@ changeText = (newValue)=>{
                             changeText = {newValue => this.changeText(newValue)}
                             //heading = "Admin Notes"
                         />
-                        <Button
+                        <AppButton
                             title = {this.state.edit ? "SAVE" : "EDIT"}
                             onPress={()=>this.setState({edit: !this.state.edit})}
                         />
                     </View>
-            </ScrollView>
-        </View>
-    );
-  } 
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
+    container: {
+        backgroundColor: '#fff',
+        alignItems: 'flex-start',
+    },
     sessionNumber:{
         fontSize: 17,
         textAlign: 'center',
@@ -86,13 +86,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingTop: 45,
     },
+
     notes: {
-        width: '90%',
-        padding: 10,
-        margin: 10,
+        padding: 5,
+        margin: 5,
         height: '35%',
         marginBottom: 20,
-        top: 2,
         fontSize: 15,
         position: 'relative',
     },
@@ -101,4 +100,28 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color: '#838383',
     },
+    finePrint:{
+        fontSize: 8,
+        padding: 10,
+        margin:10,
+        color: '#838383',
+    },
+
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        width: 150,
+        alignSelf: "center",
+        margin: 20
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
 });
