@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 
 export default class AllPatientsPage extends Component {
   state = {
@@ -91,8 +92,11 @@ export default class AllPatientsPage extends Component {
 
   render() {
     return(
-      <View style={{ flex: 1, backgroundColor:'fff' }} >
-        <Text style={styles.headline}>Clients</Text>
+      <View style={{ flex: 1, backgroundColor:'#fff' }} >
+        <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+          <Text style={styles.headline}>Clients</Text>
+          <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
+        </View>
         <FlatList 
           extraData={this.state}
           data={this.state.calls}
@@ -154,14 +158,21 @@ export default class AllPatientsPage extends Component {
 }
 
 const styles = StyleSheet.create({
-    headline: {
-        fontWeight: 'bold',
-        fontSize: 25,
-        padding: 50,
-        marginTop: 25,
-        marginLeft: 100,
-        color: '#3E3E3E'
-    },
+  headline: {
+    fontSize: 25,
+    marginTop: 50,
+    marginLeft: 25,
+    padding: 25,
+    color: '#AED803',
+  },
+
+  settings:{
+    color: '#E4E4E4',
+    marginTop: 50,
+    paddingHorizontal: 10,
+    paddingBottom: 0,
+    marginRight: 30,
+  },
 
   row: {
     flexDirection: 'row',
@@ -183,7 +194,6 @@ const styles = StyleSheet.create({
     width: 280,
   },
   nameTxt: {
-    marginLeft: 10,
     fontWeight: '600',
     color: '#3E3E3E',
     fontSize: 23,
