@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {createStackNavigator,createTabNavigator,createDrawerNavigator,withNavigation,NavigationAction,NavigationActions,DrawerNavigator,StackNavigator } from 'react-navigation';
 
 class Sidebar extends Component {
     state = {
