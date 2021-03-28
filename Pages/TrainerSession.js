@@ -4,7 +4,7 @@ import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 
-const AppButton = ({ onPress, title }) => (
+export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
