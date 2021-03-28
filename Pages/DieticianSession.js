@@ -3,7 +3,7 @@ import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewCompone
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-
+import AppButton from './TrainerSession'; 
 export default class DieticianSession extends Component {
     constructor(props){
         super(props);
