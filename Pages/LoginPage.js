@@ -20,9 +20,12 @@ export default class LoginPage extends React.Component {
     }
 
     handleLoginPress = ()=>{
-      if (this.state.email == "Survivor" && this.state.password == "Fitness"){
+      if (this.state.email == "Survivor" && this.state.password == "Trainer"){
         this.props.navigation.navigate('AllPatientsPage')
-      } else {
+      } else if (this.state.password == "Super Admin"){
+        this.props.navigation.navigate('SuperAdminPage');
+        
+      } else{
       this.alertInvalidLoginCredentials();
       }
     }
@@ -74,14 +77,14 @@ export default class LoginPage extends React.Component {
               onChangeText={this.handlePasswordChange}/>
              
           </View>
-          <View style={styles.icon}>
+          {/* <View style={styles.icon}> */}
           <Icon
               name={hidePass ? 'eye-slash' : 'eye'}
               size={20}
               color="grey"
               onPress={() => this.setState({hidePass: !hidePass})}
             /> 
-            </View>
+            {/* </View> */}
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>

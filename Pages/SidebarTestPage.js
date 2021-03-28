@@ -11,7 +11,7 @@ import Sidebar from '../Components/Sidebar.js';
 import AppContainer from "react-native-web/dist/exports/AppRegistry/AppContainer";
 import AllPatientsPage from "./AllPatientsPage";
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
-import TrainerExpandablePage from './TrainerExpandablePage.js';
+// import TrainerExpandablePage from './TrainerExpandablePage.js';
 
 
 
