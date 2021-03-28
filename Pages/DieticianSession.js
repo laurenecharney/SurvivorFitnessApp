@@ -3,7 +3,6 @@ import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Tex
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-//import AppButton from './TrainerSession';
 
 
 const AppButton = ({ onPress, title }) => (
@@ -17,7 +16,7 @@ export default class DieticianSession extends Component {
         super(props);
 
         this.state = {
-            trainerNotes: "",
+            dieticianNotes: "",
             edit: false
 
         }
@@ -25,8 +24,9 @@ export default class DieticianSession extends Component {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+
     changeText = (newValue)=>{
-        this.setState({trainerNotes: newValue});
+        this.setState({dieticianNotes: newValue});
     }
     render() {
         return (
@@ -51,13 +51,12 @@ export default class DieticianSession extends Component {
                         <Text style = {styles.title}> Dietician Notes: </Text>
                         <MultilineInputSaveComponent
                             edit={this.state.edit}
-                            value={this.state.trainerNotes}
-                            placeholder = "Record diet recommendations, reminders, etc..."
+                            value={this.state.dieticianNotes}
+                            placeholder = "Record Routine, exercise reps ... "
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Trainer Notes"
                         />
 
-                        <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                        <Text style={styles.finePrint}>
                             *If needed, please contact ____ with any concerns or questions.
                         </Text>
 
@@ -67,7 +66,6 @@ export default class DieticianSession extends Component {
                             value={"Lorem Impsum dolor"}
                             placeholder = ""
                             changeText = {newValue => this.changeText(newValue)}
-                            //heading = "Admin Notes"
                         />
                         <AppButton
                             title = {this.state.edit ? "SAVE" : "EDIT"}
