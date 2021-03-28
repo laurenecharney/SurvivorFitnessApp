@@ -4,19 +4,12 @@ import {
     Text,
     View,
     TouchableOpacity,
-    TouchableHighlight,
-    Image,
-    Alert,
     ScrollView,
-    Dimensions,
-    FlatList,
-    Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-
-
+import { AlphabetList } from "react-native-section-alphabet-list";
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -27,25 +20,25 @@ export default class AdminLocationsPage extends Component {
         this.state = {
             isModalVisible: false,
             calls: [
-                {id:1,  name: "Effects Fitness", icon: "dumbbell"},
-                {id:2,  name: "Balance Nutrition", icon:"food-apple"} ,
-                {id:3,  name: "Free Method Nutrition", icon:"food-apple"} ,
-                {id:4,  name: "Horizon Nutrition", icon:"food-apple"} ,
-                {id:5,  name: "Next Level Fitness", icon:"dumbbell"} ,
-                {id:6,  name: "Orange Theory", icon:"dumbbell"} ,
-                {id:8,  name: "Renu Health", icon:"dumbbell"} ,
-                {id:9,  name: "Location 9", icon:"?"} ,
-                {id:10, name: "Location 10", icon:"?"} ,
-                {id:11, name: "Location 11", icon:"?"},
-                {id:12,  name: "Location 12", icon:"?"} ,
-                {id:13,  name: "Location 13", icon:"?"} ,
-                {id:14,  name: "Location 14", icon:"?"} ,
-                {id:15,  name: "Location 15", icon:"?"} ,
-                {id:16,  name: "Location 16", icon:"?"} ,
-                {id:17,  name: "Location 17", icon:"?"} ,
-                {id:18, name: "Location 18", icon:"?"} ,
-                {id:19, name: "Location 19", icon:"?"},
-            ]
+                {id:1,  value: "Effects Fitness", icon: "dumbbell"},
+                {id:2,  value: "Balance Nutrition", icon:"food-apple"} ,
+                {id:3,  value: "Free Method Nutrition", icon:"food-apple"} ,
+                {id:4,  value: "Horizon Nutrition", icon:"food-apple"} ,
+                {id:5,  value: "Next Level Fitness", icon:"dumbbell"} ,
+                {id:6,  value: "Orange Theory", icon:"dumbbell"} ,
+                {id:8,  value: "Renu Health", icon:"dumbbell"} ,
+                {id:9,  value: "Location 9", icon:"?"} ,
+                {id:10, value: "Location 10", icon:"?"} ,
+                {id:11, value: "Location 11", icon:"?"},
+                {id:12,  value: "Location 12", icon:"?"} ,
+                {id:13,  value: "Location 13", icon:"?"} ,
+                {id:14,  value: "Location 14", icon:"?"} ,
+                {id:15,  value: "Location 15", icon:"?"} ,
+                {id:16,  value: "Location 16", icon:"?"} ,
+                {id:17,  value: "Location 17", icon:"?"} ,
+                {id:18, value: "Location 18", icon:"?"} ,
+                {id:19, value: "Location 19", icon:"?"},
+            ],
         };
     }
     openModal = () =>{
@@ -64,39 +57,6 @@ export default class AdminLocationsPage extends Component {
             isModalVisible:false
         })
     }
-    renderItem = ({item}) => {
-        return (
-            <ScrollView>
-                <View style={styles.row}>
-                    <View>
-                        <View style={styles.nameContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
-                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                <Icon name={item.icon} style={styles.icon} size={25}/>
-                                <Text style={styles.nameTxt}>{item.name}</Text>
-                            </View>
-
-                                </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this.openModal()}
-                                              style={{
-                                                  borderWidth:1,
-                                                  borderColor:"#AED803",
-                                                  alignItems:'center',
-                                                  justifyContent:'center',
-                                                  width:25,
-                                                  height:25,
-                                                  backgroundColor:'#fff',
-                                                  borderRadius:50,
-                                              }}>
-
-                                <Text style={{color:"#AED803"}}>i</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-        );
-    }
 
     render() {
         return(
@@ -105,13 +65,46 @@ export default class AdminLocationsPage extends Component {
                     <Text style={styles.headline}>Locations</Text>
                     <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
                 </View>
-                <FlatList
-                    extraData={this.state}
+                <AlphabetList
                     data={this.state.calls}
-                    keyExtractor = {(item) => {
-                        return item.id;
-                    }}
-                    renderItem={this.renderItem}/>
+                    indexLetterColor={'#AED803'}
+                    renderCustomSectionHeader={(section) => (
+                        <View style={{visibility: 'hidden'}}/>
+                        // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
+                       // <View style={styles.sectionHeaderContainer}>
+                       //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
+                       // </View>
+                    )}
+                    renderCustomItem={(item) => (
+                        <View style={styles.row}>
+                            <View>
+                                <View style={styles.nameContainer}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                            <Icon name={item.icon} style={styles.icon} size={25}/>
+                                            <Text style={styles.nameTxt}>{item.value}</Text>
+                                        </View>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>this.openModal()}
+                                                      style={{
+                                                          borderWidth:1,
+                                                          borderColor:"#AED803",
+                                                          alignItems:'center',
+                                                          justifyContent:'center',
+                                                          width:25,
+                                                          height:25,
+                                                          backgroundColor:'#fff',
+                                                          borderRadius:50,
+                                                      }}>
+
+                                        <Text style={{color:"#AED803"}}>i</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    )}
+                />
                 <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
@@ -205,5 +198,12 @@ const styles = StyleSheet.create({
     icon:{
         color: '#E4E4E4',
         paddingRight: 10,
+    },
+    sectionHeaderContainer:{
+        backgroundColor: '#E4E4E4'
+    },
+    sectionHeaderLabel:{
+        fontSize: 16,
+        paddingLeft: 10
     }
 });
