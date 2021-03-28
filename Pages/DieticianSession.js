@@ -52,7 +52,7 @@ export default class DieticianSession extends Component {
                         <MultilineInputSaveComponent
                             edit={this.state.edit}
                             value={this.state.dieticianNotes}
-                            placeholder = "Record Routine, exercise reps ... "
+                            placeholder = "diet recommendations, reminders, etc "
                             changeText = {newValue => this.changeText(newValue)}
                         />
 
