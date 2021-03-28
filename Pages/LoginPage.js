@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity,Alert } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
 export default class LoginPage extends React.Component {
     state={
       email:"",
-      password:""
+      password:"",
+      hidePass: true
     }
 
     handleEmailChange = email => {
@@ -17,11 +19,42 @@ export default class LoginPage extends React.Component {
       this.setState({ password })
     }
 
+    handleLoginPress = ()=>{
+      if (this.state.email == "Survivor" && this.state.password == "Trainer"){
+        this.props.navigation.navigate('AllPatientsPage')
+      } else if (this.state.password == "Super Admin"){
+        this.props.navigation.navigate('SuperAdminPage');
+        
+      } else{
+      this.alertInvalidLoginCredentials();
+      }
+    }
+    
+
+    alertInvalidLoginCredentials = () => {
+
+      Alert.alert(
+        //title
+        'Invalid Username or Password',
+        //body
+        '',
+        [
+          {
+            text: 'Try Again',
+          },
+    
+        ],
+        //clicking out side of alert will not cancel
+      );
+
+  }
+
     render(){
-      const { email, password } = this.state
+      const { email, password, hidePass } = this.state
       return (
         <View style={styles.container}>
           <Text style={styles.logo}>Survivor Fitness</Text>
+          <Text>Welcome, log in to continue</Text>
           <View style={styles.inputView} >
             <TextInput  
               name='email'
@@ -35,17 +68,28 @@ export default class LoginPage extends React.Component {
             <TextInput  
               name='password'
               value={password}
-              secureTextEntry
+              secureTextEntry = {hidePass ? true: false}
               style={styles.inputText}
               placeholder="" 
               placeholderTextColor="#003f5c"
+              returnKeyType='done'
+              onSubmitEditing={()=>this.handleLoginPress()}
               onChangeText={this.handlePasswordChange}/>
+             
           </View>
+          {/* <View style={styles.icon}> */}
+          <Icon
+              name={hidePass ? 'eye-slash' : 'eye'}
+              size={20}
+              color="grey"
+              onPress={() => this.setState({hidePass: !hidePass})}
+            /> 
+            {/* </View> */}
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => this.props.navigation.navigate('AllPatientsPage')}>
-            <Text style={styles.loginText} >LOGIN</Text>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => this.handleLoginPress()}>
+            <Text style={styles.loginText} >Log In</Text>
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.loginText}>Signup</Text>
@@ -81,7 +125,12 @@ export default class LoginPage extends React.Component {
     },
     inputText:{
       height:50,
-      color:"white"
+      color:"black"
+    },
+    icon:{
+      position: 'absolute',
+      paddingTop: 30,
+      paddingLeft: 225
     },
     forgot:{
       color:"#3E3E3E",
