@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import AppButton from './TrainerSession'; 
+import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent';
+
+
+const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 export default class DieticianSession extends Component {
     constructor(props){
         super(props);
