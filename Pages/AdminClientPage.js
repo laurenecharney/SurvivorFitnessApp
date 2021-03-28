@@ -107,7 +107,7 @@ export default class AdminClientPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Clients</Text>
+                    <Text style={styles.headline}>Participants</Text>
                     <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
                 </View>
                 <FlatList
@@ -133,7 +133,7 @@ export default class AdminClientPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Client Information</Text>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Name: </Text>
