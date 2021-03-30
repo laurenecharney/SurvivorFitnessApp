@@ -16,7 +16,6 @@ export default class NameNavBarComponent extends Component{
             <TouchableOpacity>
             <View style={styles.row}>
                  <Text style={styles.text}>{this.props.name}</Text>
-            <Icon style={{paddingLeft:100, paddingTop:10}}  name = {'keyboard-arrow-right'} size = {50} color = {'#BEBEBE'}/>
             </View>
             </TouchableOpacity>
 
