@@ -15,10 +15,7 @@ export default class NameNavBarComponent extends Component{
 
         return (
             <View style={styles.headline}>
-            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 9}}>
-                <Icon name = {'arrow-back'} size = {30} color = {'#BEBEBE'}/>
-            </TouchableOpacity>
-            <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center', marginLeft: 50}}>
             <Text style = {{fontSize: 30, color: '#3E3E3E'}}>{this.props.name}</Text>
             </View>
             </View>
