@@ -3,8 +3,6 @@ import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Tex
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-import AppButton from './TrainerSession'; 
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent';
 
 
 const AppButton = ({ onPress, title }) => (
