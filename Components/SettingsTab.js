@@ -40,5 +40,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         textAlign: 'left',
-    }
+    },
 });
