@@ -7,13 +7,13 @@ import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View,TouchableOpacity,Text,Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import 'react-native-gesture-handler';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TrainerSession from './TrainerSession';
 
-const Drawer = createDrawerNavigator();
+// const Drawer = createDrawerNavigator();
 
 export default class TrainerCheckpointWithSidebarPage extends Component{
     constructor(props){
@@ -30,14 +30,14 @@ export default class TrainerCheckpointWithSidebarPage extends Component{
                 <TrainerDieticianNavBar/>
             </View>
             <View>
-                <NavigationContainer>
+                {/* <NavigationContainer>
                     <Drawer.Navigator>
                         <Drawer.Screen name="1" component={ TrainerCheckpointPage } />
                         <Drawer.Screen name="2" component={ TrainerSession } />
                         <Drawer.Screen name="3" component={ TrainerSession } />
 
                     </Drawer.Navigator>
-                </NavigationContainer>
+                </NavigationContainer> */}
             </View>
             </View>
         )
