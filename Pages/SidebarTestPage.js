@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import { StyleSheet, View,ScrollView,TextInput,Button} from 'react-native';
-import Accordion from '../Components/Accordion.js';
 import TrainerProgressInputGroup from '../Components/TrainerProgressInputGroup';
 import Inputs from '../Components/Inputs.js';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NameNavBar from '../Components/NameNavBar.js';
-import TrainerProgressPage from '../Pages/TrainerProgressPage';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import Sidebar from '../Components/Sidebar.js';
-import AppContainer from "react-native-web/dist/exports/AppRegistry/AppContainer";
-import AllPatientsPage from "./AllPatientsPage";
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 // import TrainerExpandablePage from './TrainerExpandablePage.js';
 

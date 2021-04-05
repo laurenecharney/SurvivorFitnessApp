@@ -1,14 +1,10 @@
 
 import React, { Component } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Sidebar from '../Components/Sidebar.js';
 import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
-import { StyleSheet, View,TouchableOpacity,Text,Button} from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, View} from 'react-native';
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
@@ -17,10 +13,23 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     constructor(props){
         super(props);
         this.state={
-            session: 1,
             dietician: false,
-            numTrainerSessions: 3,
-            numDieticianSessions: 24
+            numTrainerSessions: 24,
+            trainerSessionsArray:  [],
+            
+            numDieticianSessions: 3,
+            dieticianSessionsArray: [],
+            sessionTrainer: 1,
+            sessionDietician: 1,
+            addSessionArray:  [
+                {id: 1, name: '+'}
+            ]
+        }
+        for (let i = 1; i <= this.state.numTrainerSessions; ++i){
+            this.state.trainerSessionsArray.push({id: i, name: i.toString()})
+        }
+        for (let i = 1; i <= this.state.numDieticianSessions; ++i){
+            this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
     }
 
@@ -30,10 +39,33 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     pressDietician = ()=>{
         this.setState({dietician: true});
     }
+    updateSessionTrainer(newSessionTrainer){
+        this.setState({sessionTrainer:newSessionTrainer})// or with es6 this.setState({name})
+     }
+
+
+
+     updateSessionDietician(sessionDietician){
+        this.setState({sessionDietician:sessionDietician})// or with es6 this.setState({name})
+     }
+
+
+     addSessionDietician(){
+        this.setState({numDieticianSessions: this.state.numDieticianSessions + 1})
+        var joined = this.state.dieticianSessionsArray.concat({id: this.state.numDieticianSessions, name: this.state.numDieticianSessions.toString()});
+        this.setState({ dieticianSessionsArray: joined })
+     }
+
+     addSessionTrainer(){
+        this.setState({numTrainerSessions: this.state.numTrainerSessions + 1})
+        var joined = this.state.trainerSessionsArray.concat({id: this.state.numTrainerSessions, name: this.state.numTrainerSessions.toString()});
+        this.setState({ trainerSessionsArray: joined })
+     }
 
     render(){
         return(
             <View style={styles.container}
+            
             >
                 <View style={styles.header}>
                     <NameNavBar name = "Alicia Yang"/>
@@ -51,14 +83,29 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                 }}>
                     <View style={{ width: '13.5%', paddingTop: 10 }}>
                     {this.state.dietician && 
-                    <SidebarDietician/>}
-                    {!this.state.dietician && <Sidebar/>}
+                    <SidebarDietician
+                        updateSession = {newSession => this.updateSessionDietician(newSession)}
+                        sessionsArray = {this.state.dieticianSessionsArray}
+                        addSessionArray = {this.state.addSessionArray}
+                        addSession = {()=>this.addSessionDietician()}
+                    />}
+                    {!this.state.dietician && <Sidebar
+                    updateSession={newSession=>this.updateSessionTrainer(newSession)}
+                    sessionsArray = {this.state.trainerSessionsArray}
+                    addSessionArray = {this.state.addSessionArray}
+                    addSession = {()=>this.addSessionTrainer()}
+                    />}
                     </View>
-                    {!this.state.dietician && 
-                    <TrainerSession session={6}/>
+                    {!this.state.dietician && (
+                        this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1 ?
+                        <TrainerCheckpointPage session = {this.state.sessionTrainer}/> 
+                        : <TrainerSession session = {this.state.sessionTrainer}/>
+
+                    )
                     }
+
                     {this.state.dietician && 
-                    <DieticianSession session={6}/>
+                    <DieticianSession session={this.state.sessionDietician}/>
                     }
                 </View>
             </View>

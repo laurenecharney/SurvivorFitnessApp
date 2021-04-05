@@ -3,8 +3,13 @@ import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 class SidebarDietician extends Component {
+    constructor(props){
+        super(props);
+
+    }
     state = {
         numSessions: 3,
+        // sessionNumber: 1,
         sessions: [
             {id: 1, name: '1',},
             {id: 2, name: '2',},
@@ -15,7 +20,8 @@ class SidebarDietician extends Component {
         ]
     }
     alertItemName = (item) => {
-        alert("Jump to session " + item.name)
+        this.props.updateSession(item.name);
+        // alert("Jump to session " + item.name)
     }
     alertAddSession = (item) => {
         Alert.alert('Add Another Session?', '',
@@ -27,9 +33,10 @@ class SidebarDietician extends Component {
             {
                 text: 'Yes',
                 onPress: () => {
-                this.setState({numSessions: this.state.numSessions + 1})
-                var joined = this.state.sessions.concat({id: this.state.numSessions, name: this.state.numSessions.toString()});
-                this.setState({ sessions: joined })
+                    this.props.addSession();
+                    // this.setState({numSessions: this.state.numSessions + 1})
+                    // var joined = this.state.sessions.concat({id: this.state.numSessions, name: this.state.numSessions.toString()});
+                    // this.setState({ sessions: joined })
                 }
             },
         ]
@@ -37,10 +44,11 @@ class SidebarDietician extends Component {
     }
 
     render() {
+        console.log(this.props.sessionsArray);
         return (
             <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true}>
                 {
-                    this.state.sessions.map((item, index) => (
+                    this.props.sessionsArray.map((item, index) => (
                         <TouchableOpacity
                             style = {styles.row}>
                             <TouchableOpacity
@@ -55,7 +63,7 @@ class SidebarDietician extends Component {
                     ))
                 }
                 {
-                    this.state.addSession.map((item) => (
+                    this.props.addSessionArray.map((item) => (
                         <TouchableOpacity
                             style = {styles.row}>
                             <TouchableOpacity
