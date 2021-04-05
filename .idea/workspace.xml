@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7343e61d-90ec-469e-9240-8d1bbddcfe6e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/ProfilePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ProfilePage.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +79,7 @@
       <workItem from="1617570325208" duration="1125000" />
       <workItem from="1617576166163" duration="17000" />
       <workItem from="1617584309323" duration="41000" />
-      <workItem from="1617584375624" duration="3222000" />
+      <workItem from="1617584375624" duration="5206000" />
     </task>
     <servers />
   </component>
