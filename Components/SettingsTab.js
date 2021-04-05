@@ -2,6 +2,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import React,{Component} from 'react';
 import { StyleSheet, Text, View,TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Dimensions } from "react-native";
+
 
 
 export default class NameNavBarComponent extends Component{
@@ -11,29 +13,32 @@ export default class NameNavBarComponent extends Component{
     }
     render(){
         return (
-            <View style={styles.headline}>
-            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity>
+            <View style={styles.row}>
+                 <Text style={styles.text}>{this.props.name}</Text>
+            </View>
             </TouchableOpacity>
-            <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style = {{fontSize: 20, color: '#3E3E3E'}}>{this.props.name}</Text>
-            <Icon name = {'keyboard-arrow-right'} size = {50} color = {'#BEBEBE'}/>
-            </View>
-            </View>
+
         )
     }
 
 }
 const styles = StyleSheet.create({
-    headline: {
-        fontWeight: 'bold',
-        marginTop: 45,
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#E6E6E6',
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        padding: 25,
+        justifyContent: 'space-between',
+    },
+
+    text: {
+        fontSize: 20,
         color: '#3E3E3E',
-        flexDirection:'row',
-        flexWrap:'wrap',
-        flex: 1,
-        opacity: 1,
-        zIndex: 15,
-        borderBottomColor: '#BEBEBE',
-        borderBottomWidth: 1
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        textAlign: 'left',
     }
 });

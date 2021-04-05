@@ -16,13 +16,15 @@ export default class SettingsPage extends React.Component {
                 <Text style = {{fontSize: 30, color: '#3E3E3E'}}> Settings </Text>
                 </View>
             </View>
-            <View style={{flexDirection: 'column', alignItems: 'center', paddingTop: 50}}>
+            <View style={{flexDirection: 'column', paddingTop: 100}}>
                 <SettingsTab name = "Profile"/>
                 <SettingsTab name = "Switch to Trainer Account"/>
                 <SettingsTab name = "Download Data"/>
+                <View style={{alignItems: 'center'}}>
                 <TouchableOpacity style={styles.loginBtn}>
                   <Text style={styles.loginText} >Log Out</Text>
                 </TouchableOpacity>
+                </View>
             </View>
         </View>
       );
@@ -49,9 +51,9 @@ export default class SettingsPage extends React.Component {
         zIndex: 15
     },
     loginBtn:{
-      width:"80%",
+      width:"60%",
       backgroundColor:"#A1C703",
-      borderRadius:25,
+      borderRadius:10,
       height:50,
       alignItems:"center",
       justifyContent:"center",

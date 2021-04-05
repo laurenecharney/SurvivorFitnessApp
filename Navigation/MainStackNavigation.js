@@ -12,6 +12,7 @@ import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
 import AdminClientPage from '../Pages/AdminClientPage.js';
 import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
 import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
+import SettingsPage from "../Pages/SettingsPage.js";
 
 const Stack = createStackNavigator()
 

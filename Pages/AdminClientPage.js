@@ -11,12 +11,19 @@ import {
     Dimensions,
     FlatList,
     Button,
+    TextInput
 } from 'react-native';
+//import AlphabetList from "react-native-flatlist-alphabet";
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
+import DropDownPicker from 'react-native-dropdown-picker';
 
-
+export const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
 
 export default class AdminClientPage extends Component {
     state = {
@@ -26,6 +33,7 @@ export default class AdminClientPage extends Component {
         super(props);
         this.state = {
             isModalVisible: false,
+            isAddModalVisible: false,
             calls: [
                 {id:1,  name: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
                 {id:2,  name: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
@@ -62,6 +70,23 @@ export default class AdminClientPage extends Component {
     closeModal = () =>{
         this.setState({
             isModalVisible:false
+        })
+    }
+
+    openAddModal = () =>{
+        this.setState({
+            isAddModalVisible:true
+        })
+    }
+
+    toggleAddModal = () =>{
+        this.setState({
+            isAddModalVisible:!this.state.isModalVisible
+        })
+    }
+    closeAddModal = () =>{
+        this.setState({
+            isAddModalVisible:false
         })
     }
     renderItem = ({item}) => {
@@ -107,8 +132,12 @@ export default class AdminClientPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Clients</Text>
-                    <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
+                    <Text style={styles.headline}>Participants</Text>
+                    <View style={styles.addButtonContainer} >
+                        <TouchableOpacity onPress={()=>this.openAddModal()}>
+                            <Text style={styles.addButtonText}>+</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <FlatList
                     extraData={this.state}
@@ -133,7 +162,7 @@ export default class AdminClientPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Client Information</Text>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Name: </Text>
@@ -164,7 +193,118 @@ export default class AdminClientPage extends Component {
 
                         </View>
                     </View>
+                    </Modal>
+                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeAddModal()} onSwipeComplete={()=>this.closeAddModal()} transparent={true} isVisible={this.state.isAddModalVisible}>
+                    <View style={{ flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        <View style={{
+                            backgroundColor: "#fff",
+                            width: '95%',
+                            height: '95%',
+                            borderRadius:'19'}}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeAddModal()}>
+                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1}}>
+                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <View style={{paddingBottom:10, width:'100%'}}>
+                                        <Text style={styles.modalText} >Add Participant</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.childText}>Name</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+                                        <Text style={styles.childText} >Age</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+                                        <Text style={styles.childText}>Email</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+                                        <Text style={styles.childText}>Phone Number</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+                                        <Text style={styles.childText}>Gym</Text>
+                                        <DropDownPicker
+                                            items={[
+                                                {label: 'Orange Theory', value: 'item1'},
+                                                {label: 'Effects Fitness', value: 'item2'},
+                                                {label: 'Next Level Fitness', value: 'item3'},
+                                            ]}
+                                            defaultIndex={0}
+                                            containerStyle={styles.dropdown}
+                                            onChangeItem={item => console.log(item.label, item.value)}
+                                        />
+                                        
+                                        <Text style={styles.childText}>Dietician Office</Text>
+                                        <DropDownPicker
+                                            items={[
+                                                {label: 'Renu Health', value: 'item1'},
+                                                {label: 'Balance Nutrition', value: 'item2'},
+                                                {label: 'ree Method Nutrition', value: 'item3'},
+                                            ]}
+                                            textColor = "#E6E7E6"
+                                            defaultIndex={0}
+                                            containerStyle={styles.dropdown}
+                                            onChangeItem={item => console.log(item.label, item.value)}
+                                        />
+                                        <Text style={styles.childText}>Start Date</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+                                        <Text style={styles.childText}>Goal(s)</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                blurOnSubmit={false}
+                                                underlineColorAndroid = "transparent"
+                                                color="black"
+                                                autoCapitalize = "sentences"
+                                                />
+                                        </View>
+
+                                    </View>
+                                    <View style={{marginTop: 20}}>
+                                        <AppButton
+                                            title = {"Add"}/>
+                                    </View>
+                                    
+                                </ScrollView>
+                            </View>
+
+                        </View>
+                    </View>
                 </Modal>
+                
             </View>
         );
     }
@@ -211,12 +351,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         width:170,
     },
-    gymTxt: {
-        marginLeft: 10,
-        color: '#cfcfcf',
-        fontSize: 12,
-        width:170,
-    },
     mblTxt: {
         fontWeight: '200',
         color: '#777',
@@ -232,4 +366,88 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginLeft: 15,
     },
+    icon:{
+        color: '#E4E4E4',
+        paddingRight: 10,
+    },
+    addButtonContainer: {
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        width: 48,
+        alignSelf: "center",
+        margin: 5,
+        marginTop: 50
+    },
+    addButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    },
+    modalText:{
+            fontSize: 18,
+            paddingTop: 20,
+            alignSelf: "center",
+            fontWeight: "bold",
+            color: "#AED803",
+    },
+    addNewContainer: {
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        width: 75,
+        alignSelf: "center",
+        margin: 5,
+        marginTop: 50
+    },
+    addNewText: {
+        fontSize: 25,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+    },
+
+    appButtonContainer: {
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: 12,
+        width: 150,
+        alignSelf: "center",
+        margin: 10
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        alignSelf: "center",
+    },
+
+    child:{
+        backgroundColor: 'white',
+        padding:10,
+        borderWidth: 1,
+        borderColor: "#E7E7E7",
+        width:'75%',
+        borderRadius: 5,
+        alignSelf:"center"
+
+    },
+    childText:{
+        fontSize:13,
+        color:"#B7DC21",
+        marginLeft: 30,
+        padding: 12     
+    },
+    dropdown:{
+        backgroundColor: 'white',
+        padding:3,
+        width:'78%',
+        borderRadius: 5,
+        alignSelf:"center"
+    }
+
 });
