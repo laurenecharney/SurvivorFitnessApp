@@ -23,11 +23,8 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
-<<<<<<< HEAD
     "react-native-dropdown-picker": "^4.0.2",
-=======
     "react-native-flatlist-alphabet": "^1.1.2",
->>>>>>> 55a338564df1af06b59235ee40b49c9c53aaa37d
     "react-native-gesture-handler": "~1.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-modal": "^11.7.0",
