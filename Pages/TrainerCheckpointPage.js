@@ -8,18 +8,10 @@ import {
   Platform,
   LayoutAnimation,
   TextInput,
-  Button,
 } from 'react-native';
-import NameNavBarComponent from'../Components/NameNavBar.js';
-import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
-import Accordion from '../Components/Accordion.js';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
-// import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-flat-list';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -45,7 +37,7 @@ export default class TrainerCheckpointPage  extends Component{
             range_of_motion:  "Range of Motion",
             resting_hr: "Resting HR (bpm)",
             Abdominal_skin_fold: "Abdominal",
-            Chest: "Chest",
+            ChestSkinFold: "Chest",
             Midaxillary: "Midaxillary",
             Subscapular: "Subscapular",
             Supraillac: "Supraillac",
@@ -54,10 +46,10 @@ export default class TrainerCheckpointPage  extends Component{
             Abdominal_girth: "Abdominal",
             Biceps: "Biceps",
             Calf: "Calf",
-            //Chest: "Chest",
+            ChestGirth: "Chest",
             Hip: "Hip",
             Shoulders: "Shoulders",
-           // Thigh: "Thigh",
+           ThighGirth: "Thigh",
             Waist: "Waist",
             Total_Inches_Lost: "Total Inches Lost",
             Distance: "Distance",
@@ -114,7 +106,7 @@ export default class TrainerCheckpointPage  extends Component{
                 
                 >
             <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
-            <DateTextBox/>
+            <DateTextBox edit = {this.state.edit}/>
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
@@ -136,12 +128,21 @@ export default class TrainerCheckpointPage  extends Component{
                                     color="black"
                                     autoCapitalize = "sentences"
                                     onChangeText = {newWeight => this.setState({weight: newWeight})}
-                                    keyboardType = {'numeric'}
                                     />:
                                     <Text style = {{color: this.state.weight =="Weight (lbs)" ? "#D5D5D5" : "black"}}>Weight: 
-                                    {this.state.weight =="Weight (lbs)" ? " X": this.state.weight} lbs</Text>
+                                    {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
                                     }
-                                </View>}
+                                    {/* {
+                                        <TextInputAccordion
+                                            edit={this.state.edit}
+                                            attribute={this.state.weight}
+                                            defaultValue = {"Weight (lbs)"}
+                                            label={"Weight (lbs): "}
+                                            setVal={(newVal) => {this.setState({ weight: newVal})}}/>
+
+                                    } */}
+                                </View>
+                            }
                             {
                             this.state.expanded_general &&
                             <View style={styles.child}>
@@ -257,12 +258,12 @@ export default class TrainerCheckpointPage  extends Component{
                                     // onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                     blurOnSubmit={false}
                                     underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Chest ? this.state.Chest : "Chest"}
-                                    defaultValue = {this.state.Chest == "Chest" ? null : this.state.Chest}
+                                    placeholder = {this.state.ChestSkinFold ? this.state.ChestSkinFold : "Chest"}
+                                    defaultValue = {this.state.ChestSkinFold == "Chest" ? null : this.state.ChestSkinFold}
                                     placeholderTextColor = "#D5D5D5"
                                     color="black"
                                     autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Chest: newValue})}
+                                    onChangeText = {newValue => this.setState({ChestSkinFold: newValue})}
                                     keyboardType = {'numeric'}
                                     />
                                 </View>}
@@ -414,12 +415,12 @@ export default class TrainerCheckpointPage  extends Component{
                                 // onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                 blurOnSubmit={false}
                                 underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Chest ? this.state.Chest : "Chest"}
-                                defaultValue = {this.state.Chest == "Chest" ? null : this.state.Chest}
+                                placeholder = {this.state.ChestGirth ? this.state.ChestGirth : "Chest"}
+                                defaultValue = {this.state.ChestGirth == "Chest" ? null : this.state.ChestGirth}
                                 placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Chest: newValue})}
+                                onChangeText = {newValue => this.setState({ChestGirth: newValue})}
                                 keyboardType = {'numeric'}
                                 />
                         </View>}
@@ -465,12 +466,12 @@ export default class TrainerCheckpointPage  extends Component{
                                 // onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                 blurOnSubmit={false}
                                 underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Thigh ? this.state.Thigh : "Thigh"}
-                                defaultValue = {this.state.Thigh == "Thigh" ? null : this.state.Thigh}
+                                placeholder = {this.state.ThighGirth ? this.state.ThighGirth : "Thigh"}
+                                defaultValue = {this.state.ThighGirth == "Thigh" ? null : this.state.ThighGirth}
                                 placeholderTextColor = "#D5D5D5"
                                 color="black"
                                 autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Thigh: newValue})}
+                                onChangeText = {newValue => this.setState({ThighGirth: newValue})}
                                 keyboardType = {'numeric'}
                                 />
                         </View>}
@@ -679,7 +680,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#D5D5D5",
         width:'60%',
-        marginLeft:30
+        marginLeft:30,
+        flexDirection: 'row'
 
     },
     notes: {

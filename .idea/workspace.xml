@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7343e61d-90ec-469e-9240-8d1bbddcfe6e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/AdminClientPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/AdminClientPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/AdminLocationsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/AdminLocationsPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/ProfilePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ProfilePage.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +36,11 @@
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -73,7 +75,11 @@
       <workItem from="1616442814528" duration="56000" />
       <workItem from="1616442885388" duration="6893000" />
       <workItem from="1616958723806" duration="620000" />
-      <workItem from="1616966684959" duration="7628000" />
+      <workItem from="1616966684959" duration="7784000" />
+      <workItem from="1617570325208" duration="1125000" />
+      <workItem from="1617576166163" duration="17000" />
+      <workItem from="1617584309323" duration="41000" />
+      <workItem from="1617584375624" duration="5206000" />
     </task>
     <servers />
   </component>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, StyleSheet, View, Text} from 'react-native';
 
-const UselessTextInput = () => {
+const UselessTextInput = (props) => {
   const [value, onChangeText] = React.useState('');
 
   return (
@@ -10,6 +10,7 @@ const UselessTextInput = () => {
             Date:
         </Text>
         <TextInput
+            editable = {props.edit}
             style={styles.dateOutline}
             onChangeText={text => onChangeText(text)}
             value={value}
