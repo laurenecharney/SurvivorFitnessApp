@@ -16,6 +16,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
+import {AlphabetList} from "react-native-section-alphabet-list";
 
 
 
@@ -28,24 +29,18 @@ export default class AdminDieticianPage extends Component {
         this.state = {
             isModalVisible: false,
             calls: [
-                {id:1,  name: "Abby Cohen", gym: "Balance Nutrition"},
-                {id:2,  name: "Alicia Yang", gym: "Free Method Nutrition"} ,
-                {id:3,  name: "Charles Wang", gym: "Horizon Nutrition"} ,
-                {id:4,  name: "Grace Jeong", gym: "Renu Health"} ,
-                {id:5,  name: "Ilya Ermakov", gym: "Balance Nutrition"} ,
-                {id:6,  name: "Lauren Charney", gym: "Renu Health"} ,
-                {id:9,  name: "First Last"} ,
-                {id:9,  name: "First Last"} ,
-                {id:10, name: "First Last"} ,
-                {id:11, name: "First Last"},
-                {id:12,  name: "First Last"} ,
-                {id:13,  name: "First Last"} ,
-                {id:14,  name: "First Last"} ,
-                {id:15,  name: "First Last"} ,
-                {id:16,  name: "First Last"} ,
-                {id:17,  name: "First Last"} ,
-                {id:18, name: "First Last"} ,
-                {id:19, name: "First Last"},
+                {id:1,  value: "Abby Cohen", gym: "Balance Nutrition"},
+                {id:2,  value: "Alicia Yang", gym: "Free Method Nutrition"} ,
+                {id:3,  value: "Charles Wang", gym: "Horizon Nutrition"} ,
+                {id:4,  value: "Grace Jeong", gym: "Renu Health"} ,
+                {id:5,  value: "Ilya Ermakov", gym: "Balance Nutrition"} ,
+                {id:6,  value: "Lauren Charney", gym: "Renu Health"} ,
+                {id:7,  value: "Gabby Cohen", gym: "Balance Nutrition"},
+                {id:8,  value: "Felicia Yang", gym: "Free Method Nutrition"} ,
+                {id:9,  value: "Bucky Wang", gym: "Horizon Nutrition"} ,
+                {id:10,  value: "Gracie Jeong", gym: "Renu Health"} ,
+                {id:11,  value: "Bilya Ermakov", gym: "Balance Nutrition"} ,
+                {id:12,  value: "Corinne Charney", gym: "Renu Health"} ,
             ]
         };
     }
@@ -65,40 +60,6 @@ export default class AdminDieticianPage extends Component {
             isModalVisible:false
         })
     }
-    renderItem = ({item}) => {
-        return (
-            <ScrollView>
-                <View style={styles.row}>
-                    <View>
-                        <View style={styles.nameContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
-                                <Text style={styles.nameTxt}>{item.name}</Text>
-                                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                    <Icon3 name={"location"} size={20} color={"#AED803"}/>
-                                    <Text style={styles.gymTxt}>{item.gym}</Text>
-                                </View>
-
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this.openModal()}
-                                              style={{
-                                                  borderWidth:1,
-                                                  borderColor:"#AED803",
-                                                  alignItems:'center',
-                                                  justifyContent:'center',
-                                                  width:25,
-                                                  height:25,
-                                                  backgroundColor:'#fff',
-                                                  borderRadius:50,
-                                              }}>
-
-                                <Text style={{color:"#AED803"}}>i</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-        );
-    }
 
     render() {
         return(
@@ -107,13 +68,50 @@ export default class AdminDieticianPage extends Component {
                     <Text style={styles.headline}>Dieticians</Text>
                     <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
                 </View>
-                <FlatList
-                    extraData={this.state}
+                <AlphabetList
                     data={this.state.calls}
-                    keyExtractor = {(item) => {
-                        return item.id;
-                    }}
-                    renderItem={this.renderItem}/>
+                    indexLetterColor={'#AED803'}
+                    renderCustomSectionHeader={(section) => (
+                        <View style={{visibility: 'hidden'}}/>
+                        // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
+                        // <View style={styles.sectionHeaderContainer}>
+                        //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
+                        // </View>
+                    )}
+                    renderCustomItem={(item) => (
+                        <ScrollView>
+                            <View style={styles.row}>
+                                <View>
+                                    <View style={styles.nameContainer}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                                            <Text style={styles.nameTxt}>{item.value}</Text>
+                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                                <Icon3 name={"location"} size={20} color={"#AED803"}/>
+                                                <Text style={styles.gymTxt}>{item.gym}</Text>
+                                            </View>
+
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={()=>this.openModal()}
+                                                          style={{
+                                                              borderWidth:1,
+                                                              borderColor:"#AED803",
+                                                              alignItems:'center',
+                                                              justifyContent:'center',
+                                                              width:25,
+                                                              height:25,
+                                                              backgroundColor:'#fff',
+                                                              borderRadius:50,
+                                                          }}>
+
+                                            <Text style={{color:"#AED803"}}>i</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    )}
+                />
+
                 <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
