@@ -120,43 +120,24 @@ export default class AdminDieticianPage extends Component {
                         <View style={{
                             backgroundColor: "#fff",
                             width: '90%',
-                            height: '40%',
+                            height: '25%',
                             borderRadius:'19'}}>
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Dietician Information</Text>
                                     </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Name: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Age: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Email: </Text>
-                                        <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Phone Number: </Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Type of Cancer: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Treatment Facility: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Surgeries: </Text>
-                                        <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Forms of Treatment: </Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
-                                        <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Physician Notes: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
-                                        <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
+                                    <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Affiliate Location: </Text>
+                                        <Text style={{padding:5,fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Email: </Text>
                                     </View>
                                 </ScrollView>
                             </View>
-
                         </View>
                     </View>
                 </Modal>
