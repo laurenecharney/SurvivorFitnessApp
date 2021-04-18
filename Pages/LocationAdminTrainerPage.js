@@ -20,7 +20,7 @@ import {AlphabetList} from "react-native-section-alphabet-list";
 
 
 
-export default class AdminTrainerPage extends Component {
+export default class LocationAdminTrainerPage extends Component {
     state = {
         isModalVisible:false
     }
@@ -67,7 +67,11 @@ export default class AdminTrainerPage extends Component {
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Trainers</Text>
-                    <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
+                    <View style={styles.addButtonContainer} >
+                        <TouchableOpacity onPress={()=>this.openAddModal()}>
+                            <Text style={styles.addButtonText}>+</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <AlphabetList
                     data={this.state.calls}
@@ -86,11 +90,6 @@ export default class AdminTrainerPage extends Component {
                                     <View style={styles.nameContainer}>
                                         <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                                <Icon3 name={"location"} size={20} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym}</Text>
-                                            </View>
-
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>this.openModal()}
                                                           style={{
@@ -132,7 +131,6 @@ export default class AdminTrainerPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Affiliate Location: </Text>
                                         <Text style={{padding:5,fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
                                         <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Email: </Text>
                                     </View>
@@ -206,5 +204,22 @@ const styles = StyleSheet.create({
         color: '#008B8B',
         fontSize: 12,
         marginLeft: 15,
+    },
+    addButtonContainer: {
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        width: 48,
+        alignSelf: "center",
+        margin: 5,
+        marginTop: 50
+    },
+    addButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
     },
 });
