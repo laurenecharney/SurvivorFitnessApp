@@ -26,6 +26,9 @@ export default class LoginPage extends React.Component {
         } else if (this.state.password == "Super Admin") {
             this.props.navigation.navigate('SuperAdminPage');
 
+        } else if (this.state.password == "Location Admin") {
+            this.props.navigation.navigate('LocationAdminPage');
+
         } else {
             this.alertInvalidLoginCredentials();
         }

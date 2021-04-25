@@ -8,6 +8,7 @@ import ClientInformationPage from '../Pages/TrainerDieticianSessionWithSidebarPa
 import SuperAdminNav from './SuperAdminNavigation';
 import TrainerSession from '../Pages/TrainerSession.js';
 import TrainerCheckpointPage from '../Pages/TrainerCheckpointPage.js';
+import LocationAdminPage from './LocationAdminNavigation';
 import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
 import AdminClientPage from '../Pages/AdminClientPage.js';
 import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
@@ -26,6 +27,8 @@ function MainStackNavigator() {
         <Stack.Screen name='SuperAdminPage' component={SuperAdminNav}/>
         <Stack.Screen name='TrainerSession' headerMode="none" component={TrainerSession} />
         <Stack.Screen name='TrainerCheckpointPage'  component={TrainerCheckpointPage} />
+        <Stack.Screen name='LocationAdminPage'  component={LocationAdminPage} />
+
       </Stack.Navigator>
     </NavigationContainer>
   )
