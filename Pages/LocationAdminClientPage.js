@@ -16,7 +16,7 @@ import {
 //import AlphabetList from "react-native-flatlist-alphabet";
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
+import Icon2 from "react-native-vector-icons/MaterialIcons";
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
 
@@ -26,7 +26,7 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export default class AdminClientPage extends Component {
+export default class LocationAdminClientPage extends Component {
     state = {
         isModalVisible:false
     }
@@ -36,18 +36,18 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             calls: [
-                {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
+                {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
+                {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"}
             ]
         };
     }
@@ -91,11 +91,17 @@ export default class AdminClientPage extends Component {
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Participants</Text>
-                    <View style={styles.addButtonContainer} >
-                        <TouchableOpacity onPress={()=>this.openAddModal()}>
-                            <Text style={styles.addButtonText}>+</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {/*<View style={styles.addButtonContainer} >*/}
+                    {/*    <TouchableOpacity onPress={()=>this.openAddModal()}>*/}
+                    {/*        <Text style={styles.newButtonText}>+</Text>*/}
+                    {/*    </TouchableOpacity>*/}
+                    {/*</View>*/}
+                </View>
+                <View style={styles.ViewNewButtonContainer} >
+                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={styles.viewNewText}>3 New Participants</Text>
+                        <Icon2 name = {'keyboard-arrow-right'} size = {30} color = {'#fff'} style={styles.arrow}/>
+                    </TouchableOpacity>
                 </View>
                 <AlphabetList
                     data={this.state.calls}
@@ -116,11 +122,7 @@ export default class AdminClientPage extends Component {
                                             <Text style={styles.nameTxt}>{item.value} </Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon name={"dumbbell"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym} > {item.trainer} </Text>
-                                            </View>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                                <Icon name={"food-apple"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.dietician} > {item.nutritionist}</Text>
+                                                <Text style={styles.gymTxt}> {item.trainer} </Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>this.openModal()}
@@ -367,6 +369,15 @@ const styles = StyleSheet.create({
         color: '#E4E4E4',
         paddingRight: 10,
     },
+    ViewNewButtonContainer:{
+        backgroundColor:'#AED804',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        width: '85%',
+        alignSelf: "center",
+        margin: 5
+    },
     addButtonContainer: {
         backgroundColor:'#AED804',
         borderRadius: 10,
@@ -377,12 +388,21 @@ const styles = StyleSheet.create({
         margin: 5,
         marginTop: 50
     },
-    addButtonText: {
+    newButtonText: {
         fontSize: 18,
         color: "#fff",
-        fontWeight: "bold",
         alignSelf: "center",
-        textTransform: "uppercase"
+        fontWeight: '500'
+    },
+    viewNewText:{
+        fontSize: 18,
+        color: "#fff",
+        marginLeft: '5%',
+        alignSelf: "flex-start",
+        marginTop: 8,
+        marginBottom: 8,
+        textAlignVertical: "center",
+        fontWeight: '500'
     },
     modalText:{
         fontSize: 18,
@@ -452,4 +472,7 @@ const styles = StyleSheet.create({
         width:170,
         paddingLeft: 10,
     },
+    arrow:{
+        paddingLeft: '30%'
+    }
 });
