@@ -169,6 +169,7 @@ export default class AdminLocationsPage extends Component {
                 </View>
                 <AlphabetList
                     data={this.state.calls}
+                    indexLetterSize={46}
                     indexLetterColor={'#AED803'}
                     renderCustomSectionHeader={(section) => (
                         <View style={{visibility: 'hidden'}}/>
