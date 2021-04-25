@@ -3,7 +3,7 @@ import AdminParticipantPage from '../Pages/AdminClientPage.js';
 import AdminDieticianPage from '../Pages/AdminDieticianPage.js';
 import AdminLocationsPage from '../Pages/AdminLocationsPage.js';
 import AdminTrainerPage from '../Pages/AdminTrainerPage.js';
-import SettingsPage from '../Pages/SettingsPage.js'
+import SettingsPage from '../Pages/SettingsPage.js';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,7 +26,7 @@ export default function SuperAdminNav() {
               <Icon name="location-on" color={color} size={26} />
             ),
           }} />
-      <Tab.Screen name="Participants" component={AdminParticipantPage} 
+      <Tab.Screen name="Participants" component={AdminParticipantPage}
            options={{
             tabBarLabel: 'Participants',
             tabBarIcon: ({ color }) => (
