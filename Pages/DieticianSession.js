@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView, Alert} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
@@ -25,6 +25,23 @@ export default class DieticianSession extends Component {
         }
     }
 
+    alertLogSession = () => {
+        Alert.alert('Log Session?', '',
+        [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed')
+            },
+            {
+                text: 'Log',
+                onPress: () => {
+                    
+                }
+            },
+        ]
+        )
+    }
+
     changeText = (newValue)=>{
         this.setState({dieticianNotes: newValue});
     }
@@ -46,7 +63,9 @@ export default class DieticianSession extends Component {
 
                 >
                     <View style={styles.sessionNumberContainer}>
-                        <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
+                        <TouchableOpacity onPress = {() => this.alertLogSession()}>
+                            <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
+                        </TouchableOpacity>
                     </View>
                     <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
@@ -103,7 +122,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
     },
-
     notes: {
         padding: 5,
         margin: 5,

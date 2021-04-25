@@ -11,6 +11,7 @@ import {
   Dimensions,
   FlatList,
   Button,
+  Settings,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -64,7 +65,10 @@ export default class AllPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
-          <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
+          <TouchableOpacity>
+            <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
+            {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
+          </TouchableOpacity>
         </View>
         <AlphabetList
             data={this.state.calls}

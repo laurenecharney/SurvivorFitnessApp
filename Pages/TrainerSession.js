@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
@@ -24,6 +24,22 @@ export default class TrainerSession extends Component {
     }
 }
 
+alertLogSession = () => {
+    Alert.alert('Log Session?', '',
+    [
+        {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed')
+        },
+        {
+            text: 'Log',
+            onPress: () => {
+            }
+        },
+    ]
+    )
+}
+
 changeText = (newValue)=>{
     this.setState({trainerNotes: newValue});
 }
@@ -45,7 +61,9 @@ changeText = (newValue)=>{
 
             >
                 <View style={styles.sessionNumberContainer}>
-                    <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
+                    <TouchableOpacity onPress = {() => this.alertLogSession()}>
+                        <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
+                    </TouchableOpacity>
                 </View>
                 <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
