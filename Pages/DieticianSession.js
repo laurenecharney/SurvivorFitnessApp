@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView, Alert} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
@@ -25,6 +25,23 @@ export default class DieticianSession extends Component {
         }
     }
 
+    alertLogSession = () => {
+        Alert.alert('Log Session?', '',
+        [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed')
+            },
+            {
+                text: 'Log',
+                onPress: () => {
+                    
+                }
+            },
+        ]
+        )
+    }
+
     changeText = (newValue)=>{
         this.setState({dieticianNotes: newValue});
     }
@@ -45,7 +62,11 @@ export default class DieticianSession extends Component {
                             style={{maxHeight: '100%'}}
 
                 >
-                    <Text style={styles.sessionNumber}> Session {this.props.session} </Text>
+                    <View style={styles.sessionNumberContainer}>
+                        <TouchableOpacity onPress = {() => this.alertLogSession()}>
+                            <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
+                        </TouchableOpacity>
+                    </View>
                     <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Dietician Notes: </Text>
@@ -83,16 +104,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'flex-start',
     },
-    sessionNumber:{
-        fontSize: 17,
-        textAlign: 'center',
-        fontFamily: 'Helvetica',
-        color: '#838383',
-        fontWeight: 'bold',
-        paddingBottom: 20,
-        paddingTop: 45,
+    sessionNumberContainer: {
+            elevation: 8,
+            backgroundColor:'#AED804',
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            width: '90%',
+            height: '7%',
+            alignSelf: "center",
+            margin: 20,
+            justifyContent: "center",
+        },
+    sessionNumberText: {
+        fontSize: 15,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
     },
-
     notes: {
         padding: 5,
         margin: 5,
