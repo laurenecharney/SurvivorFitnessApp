@@ -66,7 +66,6 @@ export default class AdminDieticianPage extends Component {
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Dieticians</Text>
-                    <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
                 </View>
                 <AlphabetList
                     data={this.state.calls}
