@@ -88,6 +88,7 @@ export default class TrainerCheckpointPage  extends Component{
 
 
     render(){
+        // const {edit,} = this.state;
         return(
             <View style = {styles.container}>
             <View style={styles.fixedHeader}>
@@ -102,20 +103,19 @@ export default class TrainerCheckpointPage  extends Component{
                         overflow: 'hidden',
                     }
                 } 
-                            style={{maxHeight: '100%'}}
-                
+                    style={{maxHeight: '100%'}}
                 >
                     <View style={styles.sessionNumberContainer}>
                         <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
-                    </View>            <DateTextBox edit = {this.state.edit}/>
+                    </View>
+                        <DateTextBox edit = {this.state.edit}/>
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                     </TouchableOpacity>
                         <View style={styles.parentHr}/>
                             {
-                                this.state.expanded_general &&
-                                
+                                this.state.expanded_general &&                
                                 <View style={styles.child}>
                                     {this.state.edit ? 
                                     <TextInput style = {styles.input}

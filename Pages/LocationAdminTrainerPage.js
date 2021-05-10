@@ -88,7 +88,7 @@ export default class LocationAdminTrainerPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('AllPatientsPage')}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>this.openModal()}
