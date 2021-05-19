@@ -88,6 +88,7 @@ export default class TrainerCheckpointPage  extends Component{
 
 
     render(){
+        // const {edit,} = this.state;
         return(
             <View style = {styles.container}>
             <View style={styles.fixedHeader}>
@@ -102,8 +103,7 @@ export default class TrainerCheckpointPage  extends Component{
                         overflow: 'hidden',
                     }
                 } 
-                            style={{maxHeight: '100%'}}
-                
+                    style={{maxHeight: '100%'}}
                 >
                     <AppButton
                             title = {this.state.edit ? "Save" : "Log Session"}
@@ -116,8 +116,7 @@ export default class TrainerCheckpointPage  extends Component{
                     </TouchableOpacity>
                         <View style={styles.parentHr}/>
                             {
-                                this.state.expanded_general &&
-                                
+                                this.state.expanded_general &&                
                                 <View style={styles.child}>
                                     {this.state.edit ? 
                                     <TextInput style = {styles.input}

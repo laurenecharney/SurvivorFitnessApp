@@ -85,7 +85,10 @@ export default class AllPatientsPage extends Component {
                   <View style={styles.row}>
                     <View>
                       <View style={styles.nameContainer}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}><Text style={styles.nameTxt}>{item.value}</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                          <Text style={styles.nameTxt}>{item.value}</Text>
+                        
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={()=>this.openModal()}
                                           style={{
                                             borderWidth:1,
