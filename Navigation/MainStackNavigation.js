@@ -12,6 +12,7 @@ import LocationAdminPage from './LocationAdminNavigation';
 import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
 import AdminClientPage from '../Pages/AdminClientPage.js';
 import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
+import TrainerPatientsPage from "../Pages/TrainerPatientPage";
 import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
 import SettingsPage from "../Pages/SettingsPage.js";
 
@@ -23,12 +24,14 @@ function MainStackNavigator() {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name='LoginPage' headerMode="none" component={LoginPage} />
         <Stack.Screen name='AllPatientsPage' headerMode="none" component={AllPatientsPage} />
+        <Stack.Screen name='TrainerPatientsPage' headerMode="none" component={TrainerPatientsPage} />
         <Stack.Screen name='ClientInformationPage'  component={ClientInformationPage} />
         <Stack.Screen name='SuperAdminPage' component={SuperAdminNav}/>
         <Stack.Screen name='TrainerSession' headerMode="none" component={TrainerSession} />
         <Stack.Screen name='TrainerCheckpointPage'  component={TrainerCheckpointPage} />
         <Stack.Screen name='LocationAdminPage'  component={LocationAdminPage} />
-
+        <Stack.Screen name='AdminTrainerPage'  component={AdminTrainerPage} />
+        <Stack.Screen name='SettingsPage'  component={SettingsPage} />
       </Stack.Navigator>
     </NavigationContainer>
   )

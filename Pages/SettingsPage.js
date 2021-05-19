@@ -8,15 +8,10 @@ export default class SettingsPage extends React.Component {
     render(){
       return (
         <View style={styles.container}>
-            <View style={styles.headline}>
-                <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <Icon name = {'keyboard-arrow-left'} size = {50} color = {'#BEBEBE'}/>
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style = {{fontSize: 30, color: '#3E3E3E'}}> Settings </Text>
-                </View>
+            <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+                    <Text style={styles.workHeadline}>Settings</Text>
             </View>
-            <View style={{flexDirection: 'column', paddingTop: 100}}>
+            <View style={{flexDirection: 'column'}}>
                 <SettingsTab name = "Profile"/>
                 <SettingsTab name = "Switch to Trainer Account"/>
                 <SettingsTab name = "Download Data"/>
@@ -49,6 +44,13 @@ export default class SettingsPage extends React.Component {
         flex: 1,
         opacity: 1,
         zIndex: 15
+    },
+    workHeadline:{
+      fontSize: 25,
+      marginTop: 50,
+      marginLeft: 15,
+      padding: 25,
+      color: '#AED803',
     },
     loginBtn:{
       width:"60%",

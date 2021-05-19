@@ -1,8 +1,8 @@
 import React from 'react';
-import AdminParticipantPage from '../Pages/AdminClientPage.js';
+import LocationAdminClientPage from '../Pages/LocationAdminClientPage.js';
 import AdminDieticianPage from '../Pages/AdminDieticianPage.js';
 import AdminLocationsPage from '../Pages/AdminLocationsPage.js';
-import AdminTrainerPage from '../Pages/AdminTrainerPage.js';
+import LocationAdminTrainerPage from '../Pages/LocationAdminTrainerPage.js';
 import SettingsPage from '../Pages/SettingsPage.js'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,14 +19,14 @@ export default function LocationAdminNav() {
     barStyle={{ backgroundColor: 'white' }}
     shifting={false}
     >
-        <Tab.Screen name="Trainers" component={AdminTrainerPage}
+        <Tab.Screen name="Trainers" component={LocationAdminTrainerPage}
           options={{
           tabBarLabel: 'Trainers',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcon name="dumbbell" color={color} size={26} />
           ),
           }}/>
-      <Tab.Screen name="Participants" component={AdminParticipantPage} 
+      <Tab.Screen name="Participants" component={LocationAdminClientPage} 
            options={{
             tabBarLabel: 'Participants',
             tabBarIcon: ({ color }) => (

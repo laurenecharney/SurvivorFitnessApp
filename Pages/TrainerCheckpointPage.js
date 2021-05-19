@@ -98,16 +98,18 @@ export default class TrainerCheckpointPage  extends Component{
 
                     {
                         position: 'fixed',
-                        paddingBottom: 150,
+                        paddingBottom: 75,
                         overflow: 'hidden',
                     }
                 } 
                             style={{maxHeight: '100%'}}
                 
                 >
-                    <View style={styles.sessionNumberContainer}>
-                        <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
-                    </View>            <DateTextBox edit = {this.state.edit}/>
+                    <AppButton
+                            title = {this.state.edit ? "Save" : "Log Session"}
+                            onPress={()=>this.setState({edit: !this.state.edit})}
+                        />          
+                    <DateTextBox edit = {this.state.edit}/>
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
@@ -605,10 +607,6 @@ export default class TrainerCheckpointPage  extends Component{
                         placeholder = ""
                         changeText = {newValue => this.changeText(newValue)}
                         //heading = "Admin Notes"
-                    />
-                    <AppButton
-                        title = {this.state.edit ? "SAVE" : "EDIT"}
-                        onPress={()=>this.setState({edit: !this.state.edit})}
                     />
                 </View>
         

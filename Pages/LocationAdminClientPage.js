@@ -91,17 +91,6 @@ export default class LocationAdminClientPage extends Component {
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Participants</Text>
-                    {/*<View style={styles.addButtonContainer} >*/}
-                    {/*    <TouchableOpacity onPress={()=>this.openAddModal()}>*/}
-                    {/*        <Text style={styles.newButtonText}>+</Text>*/}
-                    {/*    </TouchableOpacity>*/}
-                    {/*</View>*/}
-                </View>
-                <View style={styles.ViewNewButtonContainer} >
-                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.viewNewText}>3 New Participants</Text>
-                        <Icon2 name = {'keyboard-arrow-right'} size = {30} color = {'#fff'} style={styles.arrow}/>
-                    </TouchableOpacity>
                 </View>
                 <AlphabetList
                     data={this.state.calls}

@@ -19,13 +19,14 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 
 
-export default class AllPatientsPage extends Component {
+export default class TrainerPatientsPage extends Component {
   state = {
     isModalVisible:false
   }
   constructor(props) {
     super(props);
     this.state = {
+      edit:false,
       isModalVisible: false,
       calls: [
         {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
@@ -65,10 +66,6 @@ export default class AllPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('SettingsPage')}>
-            <Icon2 style={styles.settings} size={50} name={'md-ellipsis-horizontal'}/>
-            {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
-          </TouchableOpacity>
         </View>
         <AlphabetList
             data={this.state.calls}
@@ -138,7 +135,7 @@ export default class AllPatientsPage extends Component {
                         </View>
                         <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietitian: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                           <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
                         </View>

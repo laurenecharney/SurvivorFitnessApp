@@ -62,14 +62,13 @@ export default class DieticianSession extends Component {
                             style={{maxHeight: '100%'}}
 
                 >
-                    <View style={styles.sessionNumberContainer}>
-                        <TouchableOpacity onPress = {() => this.alertLogSession()}>
-                            <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <AppButton
+                            title = {this.state.edit ? "Save" : "Log Session"}
+                            onPress={()=>this.setState({edit: !this.state.edit})}
+                        />
                     <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
-                        <Text style = {styles.title}> Dietician Notes: </Text>
+                        <Text style = {styles.title}> Dietitian Notes: </Text>
                         <MultilineInputSaveComponent
                             edit={this.state.edit}
                             value={this.state.dieticianNotes}
