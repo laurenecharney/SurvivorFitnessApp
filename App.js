@@ -19,6 +19,7 @@ import TrainerDieticianSessionWithSidebarPage from "./Pages/TrainerDieticianSess
 
 
 export default function App() {
+  console.disableYellowBox = true;  //hide warnings
   return <MainStackNavigator />
 }
 
