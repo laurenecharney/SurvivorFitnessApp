@@ -11,6 +11,12 @@ Expo is a tool we use to generate builds for our apps. This repo already include
 * To view your app, open the Expo Development Client App and follow the instructions.
 
 To create an expo app from scratch, see [this guide](https://docs.expo.io/get-started/create-a-new-app/). 
+## Running backend
+1. Download https://docs.docker.com/get-docker/ and open docker on machine. c
+2. Clone repo https://github.com/i1uxaermakov/survivorfitness-backend-api and navigate on terminal to repo folder
+3. Run docker-compose up --detach
+4. Containers should be running on localhost:8080 – open http://localhost:8080/swagger-ui/#/ to see available API services.
+5. To close, run docker-compose down --remove-orphans
 
 ## Looking at the Code
 1. Begin first by going through App.js and the files in the Pages/ folder. This should give you a general idea of the project structure.
