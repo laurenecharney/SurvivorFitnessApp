@@ -44,7 +44,6 @@ export default class AdminLocationsPage extends Component {
         }
     }
     async componentDidMount(){
-        console.log("ADMIN LOCATIONS PAGE")
 
         try {
         const arr = await getLocations();
@@ -166,7 +165,8 @@ export default class AdminLocationsPage extends Component {
                 <View style={styles.row}>
                     <View>
                         <View style={styles.nameContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('AdminTrainerPage')}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('AdminTrainerPage',{item: '3'})
+                            }>
                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                 <Icon name={item.icon} style={styles.icon} size={25}/>
                                 <Text style={styles.nameTxt}>{item.name}</Text>

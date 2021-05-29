@@ -43,6 +43,8 @@ export default class TrainerPatientsPage extends Component {
         {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
       ]
     };
+    console.log('constructor');
+    console.log(this.props.route);
   }
   openModal = () =>{
     this.setState({
@@ -64,8 +66,10 @@ export default class TrainerPatientsPage extends Component {
   render() {
     return(
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
-        <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-          <Text style={styles.headline}>Participants</Text>
+         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+          <Text style={styles.headline}>Trainer 1's Participants</Text>
+          <TouchableOpacity onPress={()=>this.props.navigation.goBack()}><Text>Go back</Text></TouchableOpacity>
+
         </View>
         <AlphabetList
             data={this.state.calls}
@@ -164,6 +168,8 @@ const styles = StyleSheet.create({
     padding: 25,
     color: '#AED803',
   },
+  
+  
 
   settings:{
     color: '#E4E4E4',

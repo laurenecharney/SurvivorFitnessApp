@@ -48,8 +48,6 @@ export default class AdminTrainerPage extends Component {
     async componentDidMount(){
         try {
             const arr = await getTrainers();
-            console.log("COMPONENT DID MOUNT");
-            console.log(arr);
             this.setState({
                calls: arr.map(
                 item => {
@@ -84,6 +82,9 @@ export default class AdminTrainerPage extends Component {
 
 
     render() {
+        console.log("ADMIN TRAINER")
+        console.log(this.props.route);
+        console.log(this.props.navigation.state)
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
@@ -104,7 +105,7 @@ export default class AdminTrainerPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerPatientsPage')}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerPatientsPage', {trainer: item})}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"}/>}

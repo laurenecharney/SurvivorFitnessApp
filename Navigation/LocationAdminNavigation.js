@@ -1,6 +1,8 @@
 import React from 'react';
 import AdminParticipantPage from '../Pages/Admin/AdminClientPage.js';
 import AdminTrainerPage from '../Pages/Admin/AdminTrainerPage.js';
+import LocationAdminClientPage from '../Pages/LocationAdmin/LocationAdminClientPage.js';
+import LocationAdminTrainerPage from '../Pages/LocationAdmin/LocationAdminTrainerPage.js';
 import SettingsPage from '../Pages/SettingsPage.js'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";

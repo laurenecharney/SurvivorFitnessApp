@@ -6,15 +6,9 @@ import {
     TouchableOpacity,
     ScrollView,
     TextInput,
-    Dimensions,
-    FlatList,
-    Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
-import TextBoxSingleLine from '../Components/TextBoxSingleLine.js';
-import TextBoxComponent from "../Components/TextBoxComponent";
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
