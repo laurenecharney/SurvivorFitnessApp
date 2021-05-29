@@ -68,7 +68,6 @@ export default class TrainerPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
          <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Trainer 1's Participants</Text>
-          <TouchableOpacity onPress={()=>this.props.navigation.goBack()}><Text>Go back</Text></TouchableOpacity>
 
         </View>
         <AlphabetList
