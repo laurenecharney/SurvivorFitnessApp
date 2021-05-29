@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import NameNavBar from '../Components/NameNavBar.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import Sidebar from '../Components/Sidebar.js';
-import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+import TrainerCheckpointPage from './TrainerDietician/TrainerCheckpointPage.js';
 // import TrainerExpandablePage from './TrainerExpandablePage.js';
 
 

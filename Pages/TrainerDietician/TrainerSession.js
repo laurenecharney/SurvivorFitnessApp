@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
-import Sidebar from '../Components/Sidebar.js';
-import DateTextBox from '../Components/DateTextBox.js';
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+import Sidebar from '../../Components/Sidebar.js';
+import DateTextBox from '../../Components/DateTextBox.js';
+import MultilineInputSaveComponent from '../../Components/MultilineInputSaveComponent'
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>

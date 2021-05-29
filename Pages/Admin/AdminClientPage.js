@@ -4,21 +4,15 @@ import {
     Text,
     View,
     TouchableOpacity,
-    TouchableHighlight,
-    Image,
-    Alert,
     ScrollView,
-    Dimensions,
-    FlatList,
-    Button,
     TextInput
 } from 'react-native';
-//import AlphabetList from "react-native-flatlist-alphabet";
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
+import {getParticipants} from '../../services/APIUtilities';
+
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -36,20 +30,48 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             calls: [
-                {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"},
-                {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietitian"}
+                // {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+                // {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
             ]
         };
+    }
+     async componentDidMount(){
+         console.log("ADMIN CLIENT PAGE");
+         try {
+             const res = await getParticipants();
+            console.log(res);
+            this.setState({calls: res
+                .map(
+                item => {
+                 let newI = item;
+
+                 newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+                 newI.id = parseInt(item.id);
+                 newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
+                 newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+                 newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
+                 newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
+                 console.log(newI)
+                 return newI; 
+                 // item.id = parseInt(item.id);
+                
+                })})
+           
+        } catch (e){
+            console.log(e);
+            alert("Could not fetch participants data");
+        }
+
     }
     openModal = () =>{
         this.setState({
@@ -85,8 +107,12 @@ export default class AdminClientPage extends Component {
         })
     }
 
+    renderModalSection = () => {
+
+    }
 
     render() {
+        console.log(this.state.calls);
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
@@ -210,7 +236,16 @@ export default class AdminClientPage extends Component {
                                         <Text style={styles.modalText} >Add Participant</Text>
                                     </View>
                                     <View>
-                                        <Text style={styles.childText}>Name</Text>
+                                        <Text style={styles.childText}>First Name</Text>
+                                        <View style={styles.child}>
+                                            <TextInput style = {styles.input}
+                                                       blurOnSubmit={false}
+                                                       underlineColorAndroid = "transparent"
+                                                       color="black"
+                                                       autoCapitalize = "sentences"
+                                            />
+                                        </View>
+                                        <Text style={styles.childText}>Last Name</Text>
                                         <View style={styles.child}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
@@ -268,7 +303,7 @@ export default class AdminClientPage extends Component {
                                             textColor = "#E6E7E6"
                                             defaultIndex={0}
                                             containerStyle={styles.dropdown}
-                                            onChangeItem={item => console.log(item.label, item.value)}
+                                            onChangeItem={item => console.log(item)}
                                         />
                                         <Text style={styles.childText}>Start Date</Text>
                                         <View style={styles.child}>
@@ -306,6 +341,9 @@ export default class AdminClientPage extends Component {
         );
     }
 }
+
+//diff sections of the modal for attributes to display. 
+//Each one contains a prop name + key 
 
 const styles = StyleSheet.create({
     headline: {

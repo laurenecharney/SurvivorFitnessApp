@@ -6,17 +6,10 @@ import {
     TouchableOpacity,
     ScrollView,
     TextInput,
-    Dimensions,
-    FlatList,
-    Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
-import TextBoxSingleLine from '../Components/TextBoxSingleLine.js';
-import TextBoxComponent from "../Components/TextBoxComponent";
-import DateTextBox from '../Components/DateTextBox.js';
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+import {getLocations, getLocationByID} from '../../services/APIUtilities';
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -42,39 +35,61 @@ export default class AdminLocationsPage extends Component {
             location:"",
             admin:"",
             calls: [
-                {id:1,  value: "Effects Fitness", icon: "dumbbell"},
-                {id:2,  value: "Balance Nutrition", icon:"food-apple"} ,
-                {id:3,  value: "Free Method Nutrition", icon:"food-apple"} ,
-                {id:4,  value: "Horizon Nutrition", icon:"food-apple"} ,
-                {id:5,  value: "Next Level Fitness", icon:"dumbbell"} ,
-                {id:6,  value: "Orange Theory", icon:"dumbbell"} ,
-                {id:8,  value: "Renu Health", icon:"dumbbell"} ,
-                {id:9,  value: "Location 9", icon:"?"} ,
-                {id:10, value: "Location 10", icon:"?"} ,
-                {id:11, value: "Location 11", icon:"?"},
-                {id:12,  value: "Location 12", icon:"?"} ,
-                {id:13,  value: "Location 13", icon:"?"} ,
-                {id:14,  value: "Location 14", icon:"?"} ,
-                {id:15,  value: "Location 15", icon:"?"} ,
-                {id:16,  value: "Location 16", icon:"?"} ,
-                {id:17,  value: "Location 17", icon:"?"} ,
-                {id:18, value: "Location 18", icon:"?"} ,
-                {id:19, value: "Location 19", icon:"?"},
+               
             ],
+            selectedLocation: {}
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+    async componentDidMount(){
+        console.log("ADMIN LOCATIONS PAGE")
+
+        try {
+        const arr = await getLocations();
+
+        this.setState({
+           calls: arr.map(
+            item => {
+                let newI = {};
+                newI.value = item.name
+                newI.id = parseInt(item.id)
+                newI.type = item.type
+                newI.icon = item.type === "TRAINER_GYM" ? 'dumbbell' : 'food-apple'
+                return newI;
+            }
+       )})
+            
+       ;
+        } catch (e){
+            alert("Could not fetch locations.");
+        }
+       
+    }
+
     
     changeText = (newValue)=>{
         this.setState({trainerNotes: newValue});
     }
 
-    openModal = () =>{
+     openModal = async (item) =>{
         this.setState({
-            isModalVisible:true
-        })
+            isModalVisible:true,
+            // selectedLocation: item,
+        });
+        try {
+            const res = await getLocationByID(item.id);
+            this.setState({
+                selectedLocation: res,
+                name: res.name,
+                location: res.address,
+                admin: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+            })
+        } catch (e){
+            alert("Could not retrieve location information")
+        }
+        
     }
 
     toggleModal = () =>{
@@ -84,7 +99,8 @@ export default class AdminLocationsPage extends Component {
     }
     closeModal = () =>{
         this.setState({
-            isModalVisible:false
+            isModalVisible:false,
+            edit: false
         })
     }
     openAddModal = () =>{
@@ -95,12 +111,14 @@ export default class AdminLocationsPage extends Component {
 
     toggleAddModal = () =>{
         this.setState({
-            isAddModalVisible:!this.state.isModalVisible
+            isAddModalVisible:!this.state.isAddModalVisible
         })
     }
     closeAddModal = () =>{
         this.setState({
-            isAddModalVisible:false
+            isAddModalVisible:false,
+            edit: false
+
         })
     }
     openGymModal = () =>{
@@ -111,12 +129,14 @@ export default class AdminLocationsPage extends Component {
 
     toggleGymModal = () =>{
         this.setState({
-            isGymModalVisible:!this.state.isModalVisible
+            isGymModalVisible:!this.state.isGymModalVisible
         })
     }
     closeGymModal = () =>{
         this.setState({
-            isGymModalVisible:false
+            isGymModalVisible:false,
+            edit: false
+
         })
     }
 
@@ -133,11 +153,14 @@ export default class AdminLocationsPage extends Component {
     }
     closeDieticianModal = () =>{
         this.setState({
-            isDieticianModalVisible:false
+            isDieticianModalVisible:false,
+            edit: false
         })
     }
 
     renderItem = ({item}) => {
+        console.log("RENDER ITEM")
+        console.log(item);
         return (
             <ScrollView>
                 <View style={styles.row}>
@@ -150,7 +173,7 @@ export default class AdminLocationsPage extends Component {
                             </View>
 
                                 </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this.openModal()}
+                            <TouchableOpacity onPress={()=>this.openModal(item)}
                                               style={{
                                                   borderWidth:1,
                                                   borderColor:"#AED803",
@@ -172,6 +195,8 @@ export default class AdminLocationsPage extends Component {
     }
 
     render() {
+        console.log("RENDER")
+        console.log(this.state)
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
@@ -204,7 +229,7 @@ export default class AdminLocationsPage extends Component {
                                         </View>
 
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={()=>this.openModal()}
+                                    <TouchableOpacity onPress={()=>this.openModal(item)}
                                                       style={{
                                                           borderWidth:1,
                                                           borderColor:"#AED803",
@@ -223,7 +248,9 @@ export default class AdminLocationsPage extends Component {
                         </View>
                     )}
                 />
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
+                <Modal propagateSwipe={true} 
+                animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} 
+                onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -247,65 +274,58 @@ export default class AdminLocationsPage extends Component {
                                        <View style={{flexDirection:"row", padding: 5}}>
                                         <Text style={{padding:5, fontSize: 15, color: '#797979'}} >Name: </Text>
                                         <View style={styles.child}>
-                                        {this.state.edit ? 
+                                        {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
+                                            editable={this.state.edit}
                                             onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
-                                            placeholder = {this.state.name ? this.state.name : "Enter Name"}
-                                            defaultValue = {this.state.name == "Enter Name" ? null : this.state.name}
+                                            defaultValue = {this.state.name || ''}
                                             placeholderTextColor = "#D5D5D5"
                                             color="black"
                                             autoCapitalize = "sentences"
                                             onChangeText = {newName => this.setState({name: newName})}
-                                            />:
-                                            <Text style = {{color: this.state.name =="Weight (lbs)" ? "#D5D5D5" : "black"}}> 
-                                            {this.state.name =="Weight (lbs)" ? "": this.state.name}</Text>
-                                            }
+                                            />
+                                        }
 
                                         </View>
                                         </View>
                                         <View style={{flexDirection:"row", padding: 5}}>
                                         <Text style={{padding:5, fontSize: 15, color: '#797979'}} >Address: </Text>
                                         <View style={styles.child}>
-                                        {this.state.edit ? 
+                                        {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            ref={(input) => { this.secondTextInput = input; }}
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.thirdTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
-                                            placeholder = {this.state.location ? this.state.location : "Enter Address"}
-                                            defaultValue = {this.state.location == "Enter Address" ? null : this.state.location}
+                                            defaultValue = {this.state.location || ''}
                                             placeholderTextColor = "#D5D5D5"
                                             color="black"
                                             autoCapitalize = "sentences"
                                             onChangeText = {newLocation => this.setState({location: newLocation})}
-                                            />:
-                                            <Text style = {{color: this.state.location =="Weight (lbs)" ? "#D5D5D5" : "black"}}> 
-                                            {this.state.location =="Weight (lbs)" ? "": this.state.location}</Text>
-                                            }
+                                            />
+                                        }
 
                                         </View>
                                         </View>
                                         <View style={{flexDirection:"row", padding:5}}>
                                         <Text style={{padding:5, fontSize: 15, color: '#797979'}} >Admin: </Text>
                                         <View style={styles.child}>
-                                        {this.state.edit ? 
+                                        { 
                                             <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
+                                            editable={this.state.edit}
+                                            ref={(input) => { this.thirdTextInput = input; }}
                                             underlineColorAndroid = "transparent"
-                                            placeholder = {this.state.admin ? this.state.admin : "Enter Admin"}
-                                            defaultValue = {this.state.admin == "Enter Admin" ? null : this.state.admin}
+                                            defaultValue = {this.state.admin || ''}
                                             placeholderTextColor = "#D5D5D5"
                                             color="black"
                                             autoCapitalize = "sentences"
                                             onChangeText = {newAdmin => this.setState({admin: newAdmin})}
-                                            />:
-                                            <Text style = {{color: this.state.admin=="Weight (lbs)" ? "#D5D5D5" : "black"}}> 
-                                            {this.state.admin =="Weight (lbs)" ? "": this.state.admin}</Text>
+                                            />
                                             }
 
                                         </View>

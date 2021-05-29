@@ -4,18 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginPage from '../Pages/LoginPage.js';
 import AllPatientsPage from '../Pages/AllPatientsPage.js';
-import ClientInformationPage from '../Pages/TrainerDieticianSessionWithSidebarPage.js';
+import ClientInformationPage from '../Pages/TrainerDietician/TrainerDieticianSessionWithSidebarPage';
 import SuperAdminNav from './SuperAdminNavigation';
-import TrainerSession from '../Pages/TrainerSession.js';
-import TrainerCheckpointPage from '../Pages/TrainerCheckpointPage.js';
+import TrainerSession from '../Pages/TrainerDietician/TrainerSession.js';
+import TrainerCheckpointPage from '../Pages/TrainerDietician/TrainerCheckpointPage.js';
 import LocationAdminPage from './LocationAdminNavigation';
-import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
-import AdminClientPage from '../Pages/AdminClientPage.js';
-import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
 import TrainerPatientsPage from "../Pages/TrainerPatientPage";
-import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
+import AdminTrainerPage from "../Pages/Admin/AdminTrainerPage.js";
 import SettingsPage from "../Pages/SettingsPage.js";
-
 const Stack = createStackNavigator()
 
 function MainStackNavigator() {

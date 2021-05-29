@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View, Button, SafeAreaView, Text, ListViewComponent, ScrollView, Alert} from 'react-native';
-import Sidebar from '../Components/Sidebar.js';
-import DateTextBox from '../Components/DateTextBox.js';
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
+import Sidebar from '../../Components/Sidebar.js';
+import DateTextBox from '../../Components/DateTextBox.js';
+import MultilineInputSaveComponent from '../../Components/MultilineInputSaveComponent'
 
 
 const AppButton = ({ onPress, title }) => (

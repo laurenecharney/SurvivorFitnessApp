@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
-import Sidebar from '../Components/Sidebar.js';
+import Sidebar from '../../Components/Sidebar.js';
 import TrainerSession from './TrainerSession.js';
-import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
-import NameNavBar from '../Components/NameNavBar.js';
+import TrainerDieticianNavBar from '../../Components/TrainerDieticianNavBar';
+import NameNavBar from '../../Components/NameNavBar.js';
 import { StyleSheet, View} from 'react-native';
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
-import SidebarDietician from '../Components/SidebarDietician';
+import SidebarDietician from '../../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
 
 export default class TrainerDieticianSessionWithSidebarPage extends Component{

@@ -17,10 +17,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
+import { getDietitians } from '../../services/APIUtilities';
 
 
 
-export default class AdminTrainerPage extends Component {
+export default class AdminDieticianPage extends Component {
     state = {
         isModalVisible:false
     }
@@ -29,44 +30,66 @@ export default class AdminTrainerPage extends Component {
         this.state = {
             isModalVisible: false,
             calls: [
-                {id:1,  value: "Abby Cohen", gym: "Effects Fitness"},
-                {id:2,  value: "Alicia Yang", gym: "Orange Theory"} ,
-                {id:3,  value: "Charles Wang", gym: "Orange Theory"} ,
-                {id:4,  value: "Grace Jeong", gym: "Effects Fitness"} ,
-                {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness"} ,
-                {id:6,  value: "Lauren Charney", gym: "Effects Fitness"} ,
-                {id:7,  value: "Gabby Cohen", gym: "Effects Fitness"},
-                {id:8,  value: "Felicia Yang", gym: "Orange Theory"} ,
-                {id:9,  value: "Bucky Wang", gym: "Orange Theory"} ,
-                {id:10,  value: "Gracie Jeong", gym: "Effects Fitness"} ,
-                {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness"} ,
-                {id:12,  value: "Corinne Charney", gym: "Effects Fitness"} ,
-            ]
+                // {id:1,  value: "Abby Cohen", gym: "Balance Nutrition"},
+                // {id:2,  value: "Alicia Yang", gym: "Free Method Nutrition"} ,
+                // {id:3,  value: "Charles Wang", gym: "Horizon Nutrition"} ,
+                // {id:4,  value: "Grace Jeong", gym: "Renu Health"} ,
+                // {id:5,  value: "Ilya Ermakov", gym: "Balance Nutrition"} ,
+                // {id:6,  value: "Lauren Charney", gym: "Renu Health"} ,
+                // {id:7,  value: "Gabby Cohen", gym: "Balance Nutrition"},
+                // {id:8,  value: "Felicia Yang", gym: "Free Method Nutrition"} ,
+                // {id:9,  value: "Bucky Wang", gym: "Horizon Nutrition"} ,
+                // {id:10,  value: "Gracie Jeong", gym: "Renu Health"} ,
+                // {id:11,  value: "Bilya Ermakov", gym: "Balance Nutrition"} ,
+                // {id:12,  value: "Corinne Charney", gym: "Renu Health"} ,
+            ],
+            selectedDietician: {}
         };
     }
-    openModal = () =>{
+
+    async componentDidMount(){
+        try {
+            const arr = await getDietitians();
+            console.log("COMPONENT DID MOUNT");
+            console.log(arr);
+            this.setState({
+               calls: arr.map(
+                item => {
+                    let newI = {};
+                    newI.value = item.firstName + " " + item.lastName
+                    newI.id = parseInt(item.id)
+                    newI.gym = item.locations[0] ? item.locations[0].name : '';
+                    return newI;
+                }
+           )})
+                
+           ;
+            } catch (e){
+                alert("Could not fetch locations.");
+            }
+
+    }
+
+    openModal = (item) =>{
         this.setState({
-            isModalVisible:true
+            isModalVisible:true,
+            selectedDietician: item
         })
     }
 
-    toggleModal = () =>{
-        this.setState({
-            isModalVisible:!this.state.isModalVisible
-        })
-    }
+
     closeModal = () =>{
         this.setState({
-            isModalVisible:false
+            isModalVisible:false,
+            selectedDietician: {}
         })
     }
-
 
     render() {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Trainers</Text>
+                    <Text style={styles.headline}>Dietitians</Text>
                 </View>
                 <AlphabetList
                     data={this.state.calls}
@@ -83,7 +106,7 @@ export default class AdminTrainerPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerPatientsPage')}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('AllPatientsPage')}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon3 name={"location"} size={20} color={"#AED803"}/>
@@ -91,7 +114,7 @@ export default class AdminTrainerPage extends Component {
                                             </View>
 
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal()}
+                                        <TouchableOpacity onPress={()=>this.openModal(item)}
                                                           style={{
                                                               borderWidth:1,
                                                               borderColor:"#AED803",
@@ -111,6 +134,7 @@ export default class AdminTrainerPage extends Component {
                         </ScrollView>
                     )}
                 />
+
                 <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
@@ -127,13 +151,21 @@ export default class AdminTrainerPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Trainer Information</Text>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Dietitian Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Affiliate Location: </Text>
-                                        <Text style={{padding:5,fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
+                                            Name:  <Text style={{color: 'black'}}>{this.state.selectedDietician.value}</Text>
+                                        </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
+                                            Affiliate Location:  <Text style={{color: 'black'}} >{this.state.selectedDietician.gym}</Text>
+                                        </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
+                                            Phone Number:  <Text style={{color: 'black'}}></Text>
+                                        </Text>
+                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
+                                            Email:  <Text style={{color: 'black'}}></Text>
+                                        </Text>
                                     </View>
                                 </ScrollView>
                             </View>

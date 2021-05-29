@@ -10,8 +10,8 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-import DateTextBox from '../Components/DateTextBox'
+import MultilineInputSaveComponent from '../../Components/MultilineInputSaveComponent'
+import DateTextBox from '../../Components/DateTextBox'
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
