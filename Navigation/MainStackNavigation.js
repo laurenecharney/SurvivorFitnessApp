@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackView } from '@react-navigation/stack';
 
 import LoginPage from '../Pages/LoginPage.js';
+import ProfilePage from '../Pages/ProfilePage.js'
 import AllPatientsPage from '../Pages/AllPatientsPage.js';
 import ClientInformationPage from '../Pages/TrainerDieticianSessionWithSidebarPage.js';
 import SuperAdminNav from './SuperAdminNavigation';
@@ -23,6 +24,7 @@ function MainStackNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name='LoginPage' headerMode="none" component={LoginPage} />
+        
         <Stack.Screen name='AllPatientsPage' headerMode="none" component={AllPatientsPage} />
         <Stack.Screen name='TrainerPatientsPage' headerMode="none" component={TrainerPatientsPage} />
         <Stack.Screen name='ClientInformationPage'  component={ClientInformationPage} />
@@ -32,6 +34,7 @@ function MainStackNavigator() {
         <Stack.Screen name='LocationAdminPage'  component={LocationAdminPage} />
         <Stack.Screen name='AdminTrainerPage'  component={AdminTrainerPage} />
         <Stack.Screen name='SettingsPage'  component={SettingsPage} />
+        <Stack.Screen name='ProfilePage' headerMode="none" component={ProfilePage}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

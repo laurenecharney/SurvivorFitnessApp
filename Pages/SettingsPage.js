@@ -12,9 +12,21 @@ export default class SettingsPage extends React.Component {
                     <Text style={styles.workHeadline}>Settings</Text>
             </View>
             <View style={{flexDirection: 'column'}}>
-                <SettingsTab name = "Profile"/>
-                <SettingsTab name = "Switch to Trainer Account"/>
-                <SettingsTab name = "Download Data"/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('ProfilePage')}>
+              <View style={styles.row}>
+                  <Text style={styles.text}>Profile</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.row}>
+                  <Text style={styles.text}>Switch to Trainer Account</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.row}>
+                  <Text style={styles.text}>Download Data</Text>
+              </View>
+            </TouchableOpacity>
                 <View style={{alignItems: 'center'}}>
                 <TouchableOpacity style={styles.loginBtn}>
                   <Text style={styles.loginText} >Log Out</Text>
@@ -64,5 +76,22 @@ export default class SettingsPage extends React.Component {
     },
     loginText:{
       color:"white"
-    }
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderColor: '#E6E6E6',
+      backgroundColor: '#fff',
+      borderBottomWidth: 1,
+      padding: 25,
+      justifyContent: 'space-between',
+  },
+
+  text: {
+      fontSize: 20,
+      color: '#3E3E3E',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      textAlign: 'left',
+  },
   });

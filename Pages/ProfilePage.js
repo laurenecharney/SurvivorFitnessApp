@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import {StyleSheet, View, TouchableOpacity, LayoutAnimation, Text, TextInput} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, LayoutAnimation, Text, TextInput, ScrollView} from 'react-native';
 
 export const AppButton = ({onPress, title}) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -39,16 +39,15 @@ export default class ProfilePage extends React.Component {
 
     render() {
         return (
+            <View>
+                <ScrollView>
             <View style={styles.container}>
-                <View style={styles.headline}>
-                    <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                        <Icon name={'keyboard-arrow-left'} size={50} color={'#BEBEBE'}/>
-                    </TouchableOpacity>
-                    <View style={{flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{fontSize: 30, color: '#3E3E3E'}}> Profile </Text>
-                    </View>
-                </View>
-                <View style={{flexDirection: 'column', paddingTop: 100}}>
+
+                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+                    <Text style={styles.workHeadline}>Profile</Text>
+            </View>
+
+                <View style={{flexDirection: 'column', paddingTop: 10}}>
                     <View>
                         <TouchableOpacity style={styles.row} onPress={() => this.toggleExpandInfo()}>
                             <Text style={styles.categoryText}>Contact Information</Text>
@@ -182,7 +181,8 @@ export default class ProfilePage extends React.Component {
                             />
                         </View>}
                 </View>
-
+            </View>
+            </ScrollView>
             </View>
         );
     }
@@ -194,6 +194,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
+    workHeadline:{
+        fontSize: 25,
+        marginTop: 50,
+        marginLeft: 15,
+        padding: 25,
+        color: '#AED803',
+      },
     headline: {
         fontWeight: 'bold',
         fontSize: 25,

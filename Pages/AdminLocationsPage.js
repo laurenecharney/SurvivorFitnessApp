@@ -23,6 +23,8 @@ export const AppButton = ({ onPress, title }) => (
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
+
+
 import { AlphabetList } from "react-native-section-alphabet-list";
 
 export default class AdminLocationsPage extends Component {
@@ -231,7 +233,7 @@ export default class AdminLocationsPage extends Component {
                         <View style={{
                             backgroundColor: "#fff",
                             width: '90%',
-                            height: '40%',
+                            height: '50%',
                             borderRadius:'19'}}>
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>

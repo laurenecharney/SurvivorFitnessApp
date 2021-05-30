@@ -11,7 +11,7 @@ import {
     Dimensions,
     FlatList,
     Button,
-    TextInput
+    TextInput,
 } from 'react-native';
 //import AlphabetList from "react-native-flatlist-alphabet";
 import Modal from 'react-native-modal';
@@ -35,6 +35,7 @@ export default class LocationAdminClientPage extends Component {
         this.state = {
             isModalVisible: false,
             isAddModalVisible: false,
+            isListOpen: false,
             calls: [
                 {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
                 {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
@@ -48,6 +49,13 @@ export default class LocationAdminClientPage extends Component {
                 {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
                 {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"},
                 {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "Trainer Name", nutritionist: "dietician"}
+            ],
+            trainers: [
+                {id:1, title: "Abby Cohen", selected: false, key: 'trainer'},
+                {id:2, value: "Molly Sullivan", selected: false, key: 'trainer'},
+                {id:3, value: "Jenna Lawrence", selected: false, key: 'trainer'},
+                {id:4, value: "Grace Brady", selected: false, key: 'trainer'},
+                {id:5, value: "Abby Minton", selected: false, key: 'trainer'},
             ]
         };
     }
@@ -165,14 +173,24 @@ export default class LocationAdminClientPage extends Component {
                                         <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Forms of Treatment: </Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
+                                    <Text style={{padding:5, fontSize: '15', color: '#797979'}}>Trainer</Text>
+                                        <DropDownPicker
+                                            items={[
+                                                {label: 'Lauren Charney', value: 'item1'},
+                                                {label: 'Abby Cohen', value: 'item2'},
+                                                {label: 'Alicia Yang', value: 'item3'},
+                                            ]}
+                                            textColor = '#797979'
+                                            defaultIndex={0}
+                                            containerStyle={styles.dropdown}
+                                            onChangeItem={item => console.log(item.label, item.value)}
+                                        />
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                                         <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Physician Notes: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                                         <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
                                     </View>
