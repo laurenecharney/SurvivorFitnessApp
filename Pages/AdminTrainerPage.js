@@ -83,7 +83,7 @@ export default class AdminTrainerPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerPatientsPage')}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon3 name={"location"} size={20} color={"#AED803"}/>

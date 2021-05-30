@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, View, Button, SafeAreaView, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import Sidebar from '../Components/Sidebar.js';
 import DateTextBox from '../Components/DateTextBox.js';
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
@@ -24,6 +24,22 @@ export default class TrainerSession extends Component {
     }
 }
 
+alertLogSession = () => {
+    Alert.alert('Log Session?', '',
+    [
+        {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed')
+        },
+        {
+            text: 'Log',
+            onPress: () => {
+            }
+        },
+    ]
+    )
+}
+
 changeText = (newValue)=>{
     this.setState({trainerNotes: newValue});
 }
@@ -44,9 +60,10 @@ changeText = (newValue)=>{
                         style={{maxHeight: '100%'}}
 
             >
-                <View style={styles.sessionNumberContainer}>
-                    <Text style={styles.sessionNumberText}> Log Session {this.props.session} </Text>
-                </View>
+                <AppButton
+                            title = {this.state.edit ? "Save" : "Log Session"}
+                            onPress={()=>this.setState({edit: !this.state.edit})}
+                        />
                 <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Trainer Notes: </Text>
@@ -68,10 +85,7 @@ changeText = (newValue)=>{
                             placeholder = ""
                             changeText = {newValue => this.changeText(newValue)}
                         />
-                        <AppButton
-                            title = {this.state.edit ? "SAVE" : "EDIT"}
-                            onPress={()=>this.setState({edit: !this.state.edit})}
-                        />
+                        
                     </View>
             </ScrollView>
         </View>

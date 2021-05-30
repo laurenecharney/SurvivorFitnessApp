@@ -7,7 +7,7 @@ export function TrainerDieticianTabNavigation() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Trainer" component={TrainerSession} />
-      <Tab.Screen name="Dietician" component={DieticianSession} />
+      <Tab.Screen name="Dietitian" component={DieticianSession} />
     </Tab.Navigator>
   );
 }

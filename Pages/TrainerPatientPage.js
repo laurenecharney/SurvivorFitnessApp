@@ -18,33 +18,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 
-export const AppButton = ({ onPress, title }) => (
-  <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
-      <Text style={styles.appButtonText}>{title}</Text>
-  </TouchableOpacity>
-);
 
-export const showAlert = () =>
-  Alert.alert(
-    "Are you sure you want to remove participant?",
-    "Removal cannnot be undone.",
-    [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel"
-      },
-      { text: "Remove", onPress: () => console.log("Remove Pressed") }
-    ]
-  );
-
-export default class AllPatientsPage extends Component {
+export default class TrainerPatientsPage extends Component {
   state = {
     isModalVisible:false
   }
   constructor(props) {
     super(props);
     this.state = {
+      edit:false,
       isModalVisible: false,
       calls: [
         {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
@@ -84,10 +66,6 @@ export default class AllPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('SettingsPage')}>
-            <Icon2 style={styles.settings} size={30} name={'settings'}/>
-            {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
-          </TouchableOpacity>
         </View>
         <AlphabetList
             data={this.state.calls}
@@ -104,10 +82,7 @@ export default class AllPatientsPage extends Component {
                   <View style={styles.row}>
                     <View>
                       <View style={styles.nameContainer}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
-                          <Text style={styles.nameTxt}>{item.value}</Text>
-                        
-                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}><Text style={styles.nameTxt}>{item.value}</Text></TouchableOpacity>
                         <TouchableOpacity onPress={()=>this.openModal()}
                                           style={{
                                             borderWidth:1,
@@ -160,7 +135,7 @@ export default class AllPatientsPage extends Component {
                         </View>
                         <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietitian: </Text>
+                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                           <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
                         </View>
@@ -169,18 +144,6 @@ export default class AllPatientsPage extends Component {
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
                           <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                           <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
-                        </View>
-                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                          <View>
-                            <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Participant Progress Completed? </Text>
-                            <View style={styles.appButtonContainer}>
-                              <TouchableOpacity onPress={() => showAlert()}>
-                                <Text style={styles.appButtonText}>Remove Participant</Text>
-                              </TouchableOpacity>
-                            </View>
-
-                          </View>
-                          
                         </View>
                       </ScrollView>
                     </View>
@@ -250,18 +213,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 15,
   },
-  appButtonContainer: {
-    backgroundColor:'#AED804',
-    borderRadius: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 12,
-    width: 150,
-    alignSelf: "center",
-    margin: 10
-},
-appButtonText: {
-    fontSize: 12,
-    color: "#fff",
-    alignSelf: "center",
-},
 });

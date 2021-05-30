@@ -65,7 +65,7 @@ export default class AdminDieticianPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Dieticians</Text>
+                    <Text style={styles.headline}>Dietitians</Text>
                 </View>
                 <AlphabetList
                     data={this.state.calls}
@@ -82,7 +82,7 @@ export default class AdminDieticianPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientInformationPage')}>
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('AllPatientsPage')}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon3 name={"location"} size={20} color={"#AED803"}/>
@@ -127,7 +127,7 @@ export default class AdminDieticianPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Dietician Information</Text>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Dietitian Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Name: </Text>
