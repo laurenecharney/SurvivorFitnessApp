@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     header: {
         fontWeight: "500",
         fontSize: 25,
-        color: "#A0C700",
+        color: "#AED803",
         marginLeft: '10%'
     },
     subtitle: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         paddingRight: 24
     },
     forgot: {
-        color: "#A0C700",
+        color: "#AED803",
         fontSize: 15,
         textAlign: "right",
         paddingLeft: 200
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
     loginBtn: {
         width: "45%",
-        backgroundColor: "#A1C703",
+        backgroundColor: "#AED803",
         borderRadius: 7,
         height: 50,
         alignItems: "center",

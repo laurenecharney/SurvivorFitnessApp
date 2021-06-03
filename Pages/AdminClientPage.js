@@ -123,6 +123,7 @@ export default class AdminClientPage extends Component {
                                                 <Text style={styles.gymTxt}>{item.dietician} > {item.nutritionist}</Text>
                                             </View>
                                         </TouchableOpacity>
+                                        <View style={{paddingTop:25}}>
                                         <TouchableOpacity onPress={()=>this.openModal()}
                                                           style={{
                                                               borderWidth:1,
@@ -137,6 +138,7 @@ export default class AdminClientPage extends Component {
 
                                             <Text style={{color:"#AED803"}}>i</Text>
                                         </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
@@ -314,6 +316,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         padding: 25,
         color: '#AED803',
+        fontWeight: "600"
     },
 
     settings:{
@@ -343,10 +346,11 @@ const styles = StyleSheet.create({
         width: 280,
     },
     nameTxt: {
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#3E3E3E',
-        fontSize: 20,
+        fontSize: 18,
         width:170,
+        padding: 10 
     },
     mblTxt: {
         fontWeight: '200',

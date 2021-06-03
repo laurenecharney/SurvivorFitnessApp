@@ -176,7 +176,7 @@ export default class AdminLocationsPage extends Component {
     render() {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
-                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 40}}>
                     <Text style={styles.headline}>Locations</Text>
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
@@ -486,6 +486,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         padding: 25,
         color: '#AED803',
+        fontWeight: "600"
     },
 
     settings:{
@@ -515,9 +516,9 @@ const styles = StyleSheet.create({
         width: 280,
     },
     nameTxt: {
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#3E3E3E',
-        fontSize: 20,
+        fontSize: 18,
         width:170,
     },
     mblTxt: {

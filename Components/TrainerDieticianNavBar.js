@@ -18,8 +18,8 @@ class TrainerDieticianNavBar extends Component{
         return(
         <View style = {{flexDirection: 'row'}}>
 
-        <TouchableOpacity style={{borderWidth: 1, borderColor: '#E6E6E6' }}>
-        <Entypo name = {'bar-graph'} size = {50} color = {'#BEBEBE'}/>
+        <TouchableOpacity style={{borderWidth: 1, borderColor: '#E6E6E6', padding:10}}>
+        <Entypo name = {'bar-graph'} size = {30} color = {'#BEBEBE'}/>
         </TouchableOpacity>
         
         <TouchableOpacity 
@@ -28,8 +28,8 @@ class TrainerDieticianNavBar extends Component{
             {
                 {flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6',
                 borderTopColor: this.props.dietician ? '#e6e6e6' : '#AED804', borderTopWidth: this.props.dietician ? 1 : 3}}>
-        <Text style={{fontSize: 25, color: this.props.dietician ? '#E6E6E6':'#AED804'}}>Trainer</Text>
-        <MaterialCommunityIcons name = {'dumbbell'} size = {30} 
+        <Text style={{fontSize: 18, padding:10, color: this.props.dietician ? '#E6E6E6':'#AED804'}}>Trainer</Text>
+        <MaterialCommunityIcons name = {'dumbbell'} size = {20} 
         color={!this.props.dietician ? '#AED804' : '#E6E6E6'}/>
         </TouchableOpacity>
 
@@ -40,8 +40,8 @@ class TrainerDieticianNavBar extends Component{
         style = {{flex: .5, flexDirection: 'row', justifyContent: 'center', borderWidth: 1, alignItems: 'center', borderColor: '#E6E6E6',
         borderTopColor: !this.props.dietician ? '#e6e6e6' : '#AED804', borderTopWidth: !this.props.dietician ? 1 : 3}}>
 
-        <Text style = {{fontSize: 25, color: !this.props.dietician ? '#E6E6E6':'#AED804'}}>Dietitian</Text>
-        <MaterialCommunityIcons name = {'fruit-pineapple'} size = {30} color={this.props.dietician ? '#AED804' : '#E6E6E6'}/>
+        <Text style = {{fontSize: 18, padding:10, color: !this.props.dietician ? '#E6E6E6':'#AED804'}}>Dietitian</Text>
+        <MaterialCommunityIcons name = {'fruit-pineapple'} size = {20} color={this.props.dietician ? '#AED804' : '#E6E6E6'}/>
         </TouchableOpacity>
         </View>
         

@@ -47,12 +47,12 @@ export default class ProfilePage extends React.Component {
                     <Text style={styles.workHeadline}>Profile</Text>
             </View>
 
-                <View style={{flexDirection: 'column', paddingTop: 10}}>
-                    <View>
+                <View style={{flexDirection: 'column', paddingTop: 10, width:"100%"}}>
+                    <View >
                         <TouchableOpacity style={styles.row} onPress={() => this.toggleExpandInfo()}>
                             <Text style={styles.categoryText}>Contact Information</Text>
                             <Icon name={this.state.expanded_info ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                                  size={30} color={'#838383'}/>
+                                  size={30} color={'#E4E4E4'}/>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.parentHr}/>
@@ -111,7 +111,7 @@ export default class ProfilePage extends React.Component {
                     <TouchableOpacity style={styles.row} onPress={() => this.toggleExpandPassword()}>
                         <Text style={styles.categoryText}>Change Password</Text>
                         <Icon name={this.state.expanded_password ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                              size={30} color={'#838383'}/>
+                              size={30} color={'#E4E4E4'}/>
                     </TouchableOpacity>
                     <View style={styles.parentHr}/>
                     {
@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginLeft: 15,
         padding: 25,
-        color: '#AED803',
+        color: '#3E3E3E',
+        fontWeight:'600'
       },
     headline: {
         fontWeight: 'bold',
@@ -220,14 +221,17 @@ const styles = StyleSheet.create({
     parentHr: {
         height: 1,
         color: 'white',
-        width: '100%'
+        width: '60%',
+        alignSelf:"center"
     },
     child: {
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: "#D5D5D5",
         borderRadius: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        alignSelf:"center",
+        width:"60%"
     },
     appButtonContainer: {
         elevation: 8,
@@ -257,14 +261,16 @@ const styles = StyleSheet.create({
     },
 
     categoryText: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#3E3E3E',
         flexDirection: 'row',
         alignItems: 'flex-start',
         textAlign: 'left',
+        fontWeight:'500'
     },
     childText:{
         paddingTop: 16,
+        paddingLeft: 75,
         paddingBottom: 8,
         color: "#A1C703",
         fontSize: 17,

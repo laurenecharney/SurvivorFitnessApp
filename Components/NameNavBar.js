@@ -16,7 +16,7 @@ export default class NameNavBarComponent extends Component{
         return (
             <View style={styles.headline}>
             <View style={{ flexDirection: 'row', flex: .9, justifyContent: 'center', alignItems: 'center', marginLeft: 50}}>
-            <Text style = {{fontSize: 30, color: '#3E3E3E'}}>{this.props.name}</Text>
+            <Text style = {{fontSize: 25, color: '#3E3E3E', paddingLeft: 20}}>{this.props.name}</Text>
             </View>
             </View>
         )
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
         flex: 1,
         opacity: 1,
-        zIndex: 15
+        zIndex: 15,
+        paddingTop: 10
 
     }
 });

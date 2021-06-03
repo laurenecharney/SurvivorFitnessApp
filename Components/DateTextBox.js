@@ -23,7 +23,7 @@ const UselessTextInput = (props) => {
 const styles = StyleSheet.create({
     dateOutline: {
         width: '75%',
-        borderColor: 'gray',
+        borderColor: '#E7E7E7',
         borderWidth: 1, 
         borderRadius: 10,
         padding: 10,
@@ -32,19 +32,20 @@ const styles = StyleSheet.create({
       dateContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        width: '50%',
+        width: '60%',
         marginTop: 10,
           height: 34
       },
       headingText: {
         padding: 10,
         fontSize: 20,
-        fontWeight: "bold"
+        fontWeight: "bold",
+
       },
     title:{
         top: 7,
         fontSize: 16,
-        fontWeight:'bold',
+        fontWeight:'400',
         color: '#838383',
     },
 
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderColor: "#C9C9C9",
-        marginLeft: 15,
+        marginLeft: 10,
         marginRight: 15
     },
 })

@@ -84,7 +84,7 @@ export default class AllPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('SettingsPage')}>
+          <TouchableOpacity style={{paddingLeft: 87}} onPress={() => this.props.navigation.navigate('TrainerSettingsPage')}>
             <Icon2 style={styles.settings} size={30} name={'settings'}/>
             {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
           </TouchableOpacity>
@@ -143,36 +143,66 @@ export default class AllPatientsPage extends Component {
                       </TouchableOpacity>
                       <View style={{flex: 1}}>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                          <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%', justifyContent: "center"}}>
+                          <Text style={{fontSize: '19', color: '#AED803', fontWeight: "600"}} >Participant Information</Text>
+                        </View>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%', justifyContent:"center"}}>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Name:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Grace Jeong </Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Age:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >45</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Phone Number:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >734-536-3809</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Email:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >grace@survivorfitness.com</Text>
+                          </View>
                         </View>
                         <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Name: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Age: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Email: </Text>
-                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Phone Number: </Text>
+                            <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Trainer:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Lauren Charney</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Dietitian:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Charles Wang</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Start Date</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >1/21/2021</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Goal(s)</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Build muscle</Text>
+                          </View>
                         </View>
                         <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Type of Cancer: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Treatment Facility: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Surgeries: </Text>
-                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Forms of Treatment: </Text>
+                        <View style={{flexDirection:"row", width:"75%"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Type of Cancer:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Lymphoma</Text>
+                          </View>
+                          <View style={{flexDirection:"row", width:"50%"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Treatment Facility:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Vanderbilt Medical Center</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Surgeries:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >N/A</Text>
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                            <Text style={{padding:10, fontSize: '13', color: '#AED803', fontWeight: '500'}} >Forms of Treatment:</Text>
+                            <Text style={{padding:10, fontSize: '13', color: '#797979', fontWeight:'400', width:"75%"}} >Chemotherapy</Text>
+                          </View>
                         </View>
-                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Trainer: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietitian: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
-                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
-                        </View>
-                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Physician Notes: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Dietician: </Text>
-                          <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
-                          <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
-                        </View>
-                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                        <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10}}>
                           <View>
-                            <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Participant Progress Completed? </Text>
+                            <Text style={{padding:10, fontSize: '15', color: '#797979'}} >Participant Progress Completed? </Text>
                             <View style={styles.appButtonContainer}>
                               <TouchableOpacity onPress={() => showAlert()}>
                                 <Text style={styles.appButtonText}>Remove Participant</Text>
@@ -200,6 +230,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     padding: 25,
     color: '#AED803',
+    fontWeight: '500'
   },
 
   settings:{
@@ -230,9 +261,9 @@ const styles = StyleSheet.create({
     width: 280,
   },
   nameTxt: {
-    fontWeight: '600',
+    fontWeight: '400',
     color: '#3E3E3E',
-    fontSize: 23,
+    fontSize: 18,
     width:170,
   },
   mblTxt: {

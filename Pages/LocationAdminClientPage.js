@@ -194,6 +194,10 @@ export default class LocationAdminClientPage extends Component {
                                         <Text style={{padding:5, fontSize: '15', color: '#797979'}} >Start Date: </Text>
                                         <Text style={{padding:5,fontSize: '15', color: '#797979'}} >Goal(s): </Text>
                                     </View>
+                                    <AppButton
+                                        title = {this.state.edit ? "SAVE" : "EDIT"}
+                                        onPress={()=>this.setState({edit: !this.state.edit})}
+                                    />
                                 </ScrollView>
                             </View>
 

@@ -108,8 +108,11 @@ export default class TrainerCheckpointPage  extends Component{
                     <AppButton
                             title = {this.state.edit ? "Save" : "Log Session"}
                             onPress={()=>this.setState({edit: !this.state.edit})}
-                        />          
-                    <DateTextBox edit = {this.state.edit}/>
+                        />   
+                    
+                        <DateTextBox edit = {this.state.edit}/>
+                         
+                    
                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
                         <Text style={[styles.title, styles.font]}>General Data</Text>
                         <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
@@ -586,7 +589,7 @@ export default class TrainerCheckpointPage  extends Component{
                     </View>}
             <View style={styles.wrapper}>     
                 <View style={styles.notes}>
-                    <Text style = {styles.title}> Trainer Notes: </Text>
+                    <Text style = {styles.title}> Notes: </Text>
                     <MultilineInputSaveComponent
                         edit={this.state.edit}
                         value={this.state.trainerNotes}
@@ -643,14 +646,14 @@ const styles = StyleSheet.create({
         // flexDirection: 'row',
     },
     heading:{
-        fontSize: 16,
-        fontWeight:'bold',
+        fontSize: 15,
+        fontWeight:'400',
         color: '#838383',
     },
 
     title:{
-        fontSize: 16,
-        fontWeight:'bold',
+        fontSize: 15,
+        fontWeight:'400',
         color: '#838383',
     },
     
@@ -684,22 +687,21 @@ const styles = StyleSheet.create({
     },
     notes: {
         width: '90%',
-        padding: 10,
         margin: 10,
         height: '35%',
         marginBottom: 20,
         top: 2,
         fontSize: 15,
         position: 'relative',
+        
     },
-
     fixedHeader: {
         zIndex: 1,
         width: '100%',
         backgroundColor:'white',
         top: 0,
         left: 0,
-        padding: 20
+        
 
         // position: 'absolute'
     },
@@ -719,12 +721,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 12,
-        width: 150,
+        width: 200,
         alignSelf: "center",
         margin: 20
     },
     appButtonText: {
-        fontSize: 18,
+        fontSize: 15,
         color: "#fff",
         fontWeight: "bold",
         alignSelf: "center",
