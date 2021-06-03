@@ -39,7 +39,6 @@ export default class AdminLocationsPage extends Component {
             isAddModalVisible: false,
             isGymModalVisible: false,
             isDieticianModalVisible: false,
-            edit: false,
             name:"",
             location:"",
             admin:"",
@@ -184,6 +183,7 @@ export default class AdminLocationsPage extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={styles.listContainer}>
                 <AlphabetList
                     data={this.state.calls}
                     indexLetterSize={46}
@@ -225,6 +225,7 @@ export default class AdminLocationsPage extends Component {
                         </View>
                     )}
                 />
+                </View>
                 <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
@@ -626,13 +627,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
           height: 34
       },
-      dateContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        width: '50%',
-        marginTop: 10,
-          height: 34
-      },
       headingText: {
         padding: 10,
         fontSize: 20,
@@ -644,5 +638,9 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color: '#838383',
     },
+    listContainer: {
+        paddingBottom: '33%'
+    }
+
 
 });
