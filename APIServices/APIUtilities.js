@@ -39,10 +39,7 @@ export async function getParticipantByID(id) {
       "Content-Type": "application/json" // I added this line
     }
   })
-    .then(response => response.json())
-    .catch(err => {
-      throw err;
-    });
+    .then(response => response.json());
   return res.participants;
 }
 
