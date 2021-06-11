@@ -18,7 +18,7 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import { getDietitians } from '../APIServices/APIUtilities';
-
+import ModalRow from '../Components/ModalComponents/ModalRow'
 
 
 export default class AdminDieticianPage extends Component {
@@ -54,11 +54,12 @@ export default class AdminDieticianPage extends Component {
     async refreshDietitians(){
         try {
             const arr = await getDietitians();
+            console.log("REFRESH DIETITIANS")
             console.log(arr);
             this.setState({
                calls: arr.map(
                 item => {
-                    let newI = {};
+                    let newI = item;
                     newI.value = item.firstName + " " + item.lastName
                     newI.id = parseInt(item.id)
                     newI.gym = item.locations[0] ? item.locations[0].name : '';
@@ -162,18 +163,17 @@ export default class AdminDieticianPage extends Component {
                                         <Text style={{fontSize: '19', color: '#AED803'}} >Dietitian Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
-                                            Name:  <Text style={{color: 'black'}}>{this.state.selectedDietician.value}</Text>
-                                        </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
-                                            Affiliate Location:  <Text style={{color: 'black'}} >{this.state.selectedDietician.gym}</Text>
-                                        </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
-                                            Phone Number:  <Text style={{color: 'black'}}></Text>
-                                        </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >
-                                            Email:  <Text style={{color: 'black'}}></Text>
-                                        </Text>
+                                    {[
+                                            {displayKey: 'Name:', displayValue: this.state.selectedDietician.value},
+                                            {displayKey: 'Affiliate Location:', displayValue: this.state.selectedDietician.gym},
+                                            {displayKey: 'Phone Number:', displayValue: this.state.selectedDietician.phoneNumber},
+                                            {displayKey: 'Email', displayValue: this.state.selectedDietician.email}
+                                        ].map(row => 
+                                            <ModalRow 
+                                            displayKey={row.displayKey}
+                                            displayValue={row.displayValue}/>
+                                        
+                                        )}
                                     </View>
                                 </ScrollView>
                             </View>

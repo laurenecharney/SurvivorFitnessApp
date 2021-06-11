@@ -45,7 +45,6 @@ export default class AdminLocationsPage extends Component {
         }
     }
     async componentDidMount(){
-        console.log
         await this.refreshLocations();
     }
 

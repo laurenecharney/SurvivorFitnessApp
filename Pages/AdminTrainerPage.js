@@ -18,7 +18,7 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import {getTrainers} from '../APIServices/APIUtilities';
-
+import ModalRow from '../Components/ModalComponents/ModalRow'
 
 export default class AdminTrainerPage extends Component {
     state = {
@@ -29,28 +29,21 @@ export default class AdminTrainerPage extends Component {
         this.state = {
             isModalVisible: false,
             calls: [
-                // {id:1,  value: "Abby Cohen", gym: "Effects Fitness"},
-                // {id:2,  value: "Alicia Yang", gym: "Orange Theory"} ,
-                // {id:3,  value: "Charles Wang", gym: "Orange Theory"} ,
-                // {id:4,  value: "Grace Jeong", gym: "Effects Fitness"} ,
-                // {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness"} ,
-                // {id:6,  value: "Lauren Charney", gym: "Effects Fitness"} ,
-                // {id:7,  value: "Gabby Cohen", gym: "Effects Fitness"},
-                // {id:8,  value: "Felicia Yang", gym: "Orange Theory"} ,
-                // {id:9,  value: "Bucky Wang", gym: "Orange Theory"} ,
-                // {id:10,  value: "Gracie Jeong", gym: "Effects Fitness"} ,
-                // {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness"} ,
-                // {id:12,  value: "Corinne Charney", gym: "Effects Fitness"} ,
             ],
             selectedTrainer: [],
         };
     }
     async componentDidMount(){
+        await this.refreshTrainers();
+    }
+    
+    async refreshTrainers(){
         try {
             const locationId = this.props.route.params && this.props.route.params.locationId ? 
             this.props.route.params.locationId : null;
             const arr = await getTrainers(locationId);
-            console.log(arr);
+            console.log("REFRESH TRAINERS")
+            console.log(arr)
             this.setState({
                calls: arr.map(
                 item => {
@@ -67,9 +60,7 @@ export default class AdminTrainerPage extends Component {
                 console.log(e);
                 alert("Could not fetch trainers.");
             }
-
     }
-    
 
     openModal = (item) =>{
         this.setState({
@@ -158,17 +149,17 @@ export default class AdminTrainerPage extends Component {
                                         <Text style={{fontSize: '19', color: '#AED803'}} >Trainer Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Name:
-                                            <Text style={{color: 'black'}}> {this.state.selectedTrainer.value}</Text> 
-                                        </Text>
-                                       
-                          
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Affiliate Location:
-                                            <Text style={{color: 'black'}}> {this.state.selectedTrainer.gym}</Text> 
-                                        </Text>
-
-                                        <Text style={{padding:5,fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                        <Text style={{padding:5, fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                        {[
+                                            {displayKey: 'Name:', displayValue: this.state.selectedTrainer.value},
+                                            {displayKey: 'Affiliate Location:', displayValue: this.state.selectedTrainer.gym},
+                                            {displayKey: 'Phone Number:', displayValue: this.state.selectedTrainer.phoneNumber},
+                                            {displayKey: 'Email', displayValue: this.state.selectedTrainer.email}
+                                        ].map(row => 
+                                            <ModalRow 
+                                            displayKey={row.displayKey}
+                                            displayValue={row.displayValue}/>
+                                        
+                                        )}
                                     </View>
                                 </ScrollView>
                             </View>

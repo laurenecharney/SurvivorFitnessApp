@@ -62,6 +62,8 @@ export async function getTrainers(_locationId) {
       console.log("ERR");
       console.log(err);
     });
+  console.log("API RESULT")
+  console.log(res)
   return res && res.specialists ? res.specialists : [];
 }
 
