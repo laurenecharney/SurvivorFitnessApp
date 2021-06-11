@@ -40,9 +40,9 @@ export default class ProfilePage extends React.Component {
     render() {
         return (
             <View>
+                
                 <ScrollView>
             <View style={styles.container}>
-
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.workHeadline}>Profile</Text>
             </View>
@@ -155,7 +155,6 @@ export default class ProfilePage extends React.Component {
                                        color="black"
                                        autoCapitalize="sentences"
                                        onChangeText={newNewPassword => this.setState({new_password: newNewPassword})}
-                                       keyboardType={'numeric'}
                             />
                         </View>}
                     {
@@ -169,7 +168,6 @@ export default class ProfilePage extends React.Component {
                                        color="black"
                                        autoCapitalize="sentences"
                                        onChangeText={newNewPasswordAgain => this.setState({new_password_again: newNewPasswordAgain})}
-                                       keyboardType={'numeric'}
                             />
                         </View>}
                     {

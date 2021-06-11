@@ -34,6 +34,7 @@ function MainStackNavigator() {
         <Stack.Screen name='TrainerCheckpointPage'  component={TrainerCheckpointPage} />
         <Stack.Screen name='LocationAdminPage'  component={LocationAdminPage} />
         <Stack.Screen name='AdminTrainerPage'  component={AdminTrainerPage} />
+        <Stack.Screen name='AdminDieticianPage'  component={AdminDieticianPage} />
         <Stack.Screen name='SettingsPage'  component={SettingsPage} />
         <Stack.Screen name='ProfilePage' headerMode="none" component={ProfilePage}/>
       </Stack.Navigator>

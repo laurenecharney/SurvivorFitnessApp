@@ -34,6 +34,7 @@ export default function SuperAdminNav() {
             ),
            }}/>
       <Tab.Screen name="Trainers" component={AdminTrainerPage}
+          // initialParams={{stackNavigation}}
           options={{
           tabBarLabel: 'Trainers',
           tabBarIcon: ({ color }) => (
