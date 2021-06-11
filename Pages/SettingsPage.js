@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import SettingsTab from "../Components/SettingsTab.js";
+import {deleteJWT} from '../APIServices/deviceStorage';
 
 export default class SettingsPage extends React.Component {
 
@@ -28,7 +29,15 @@ export default class SettingsPage extends React.Component {
               </View>
             </TouchableOpacity>
                 <View style={{alignItems: 'center'}}>
-                <TouchableOpacity style={styles.loginBtn}>
+                <TouchableOpacity style={styles.loginBtn} 
+                onPress={()=> {
+                  deleteJWT();
+                  // this.props.navigation.navigate('LoginPage')
+                  this.props.navigation.reset({
+                    index: 0,
+                    routes: [{name: 'LoginPage'}],
+                  });
+                }}>
                   <Text style={styles.loginText} >Log Out</Text>
                 </TouchableOpacity>
                 </View>

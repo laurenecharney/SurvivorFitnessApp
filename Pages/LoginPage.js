@@ -3,8 +3,8 @@ import {StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
-
-
+import {authenticate} from '../APIServices/APIUtilities';
+import {saveItem} from '../APIServices/deviceStorage';
 export default class LoginPage extends React.Component {
     state = {
         email: "",
@@ -12,6 +12,9 @@ export default class LoginPage extends React.Component {
         hidePass: true
     }
 
+    clearProfile = () => {
+        this.setState({email: '', password: '', hidePass: true})
+    }
     handleEmailChange = email => {
         this.setState({email})
     }
@@ -20,18 +23,48 @@ export default class LoginPage extends React.Component {
         this.setState({password})
     }
 
-    handleLoginPress = () => {
-        if (this.state.email == "Survivor" && this.state.password == "Trainer") {
-            this.props.navigation.navigate('AllPatientsPage')
-        } else if (this.state.password == "Super Admin") {
-            this.props.navigation.navigate('SuperAdminPage');
+    handleLoginPress = async () => {
+        try {
+        const res = await authenticate(this.state.email, this.state.password);
+        if (res && res.jwt && res.user){
+            console.log(res);
+            saveItem("id_token", res.jwt);
+            if (res.user.roles.includes('SUPER_ADMIN')){
+                this.props.navigation.navigate('SuperAdminPage');
+                // {screen: "Participants",
+                // params: {jwtToken: jwt}})
+            } else if (res.user.roles.includes('LOCATION_ADMINISTRATOR')){
+                this.props.navigation.navigate('LocationAdminPage');
+            } else {
+                this.props.navigation.navigate('AllPatientsPage');
+            }
 
-        } else if (this.state.password == "Location Admin") {
-            this.props.navigation.navigate('LocationAdminPage');
-
-        } else {
-            this.alertInvalidLoginCredentials();
+            // alert(res.user.roles.length)
         }
+        else if (res && res.status === 403){
+            this.alertInvalidLoginCredentials();
+        } else {
+            alert("Could not log in. Please try again later.");
+        }
+        } catch (e){
+            alert(e);
+            console.log(e);
+            // alert("Could not log in. Please try again later.");
+        }
+
+        // alert(res.status + this.state.email + this.state.password);
+
+        // if (this.state.email == "Survivor" && this.state.password == "Trainer") {
+        //     this.props.navigation.navigate('AllPatientsPage')
+        // } else if (this.state.password == "Super Admin") {
+        //     this.props.navigation.navigate('SuperAdminPage');
+
+        // } else if (this.state.password == "Location Admin") {
+        //     this.props.navigation.navigate('LocationAdminPage');
+
+        // } else {
+        //     this.alertInvalidLoginCredentials();
+        // }
     }
 
 
@@ -68,6 +101,7 @@ export default class LoginPage extends React.Component {
                             style={styles.inputText}
                             placeholder=""
                             placeholderTextColor="#003f5c"
+                            keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
                     <View style={styles.inputView}>

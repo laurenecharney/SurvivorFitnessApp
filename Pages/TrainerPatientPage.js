@@ -17,6 +17,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import {AlphabetList} from "react-native-section-alphabet-list";
+import {getParticipants} from '../APIServices/APIUtilities';
 
 
 export default class TrainerPatientsPage extends Component {
@@ -29,21 +30,49 @@ export default class TrainerPatientsPage extends Component {
       edit:false,
       isModalVisible: false,
       calls: [
-        {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
+        // {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
+        // {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
       ]
     };
+    console.log("props.route.trainerpatient")
+    console.log(this.props.route)
   }
+
+  async componentDidMount(){
+    console.log("ADMIN CLIENT PAGE");
+    try {
+      const trainerUserId = this.props.route.params ? this.props.route.params.trainerUserId : null
+      const res = await getParticipants('trainerUserId', trainerUserId);
+       console.log(this.props.route);
+       this.setState({calls: res
+           .map(
+           item => {
+            let newI = item;
+            newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+            newI.id = parseInt(item.id);
+      
+            console.log(newI)
+            return newI; 
+           
+           })})
+      
+   } catch (e){
+       console.log(e);
+       alert("Could not fetch participants data");
+   }
+
+}
+
   openModal = () =>{
     this.setState({
     isModalVisible:true
@@ -67,6 +96,7 @@ export default class TrainerPatientsPage extends Component {
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
         </View>
+        <View style={styles.listContainer}>
         <AlphabetList
             data={this.state.calls}
             indexLetterColor={'#AED803'}
@@ -103,6 +133,7 @@ export default class TrainerPatientsPage extends Component {
                 </ScrollView>
             )}
         />
+        </View>
         <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
               <View style={{ flex: 1,
                 flexDirection: 'column',
@@ -213,4 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 15,
   },
+  listContainer:{
+    paddingBottom: '33%'
+  }
 });
