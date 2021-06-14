@@ -43,7 +43,7 @@ export default function SuperAdminNav() {
           }}/>
       <Tab.Screen name="Dieticians" component={AdminDieticianPage}
                 options={{
-                  tabBarLabel: 'Dietitian',
+                  tabBarLabel: 'Dietitians',
                   tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcon name="food-apple" color={color} size={26} />
                   ),

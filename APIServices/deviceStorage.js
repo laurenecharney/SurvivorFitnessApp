@@ -1,30 +1,52 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
-  
-     export async function saveItem(key, value) {
-         console.log("SAVE ITEM")
-      try {
-        await AsyncStorage.setItem(key, value);
-
-      } catch (error) {
-        console.log("ERROR")
-        console.log('AsyncStorage Error: ' + error.message);
-      }
-    }
-     export async function getItem () {
-        try {
-          const res = await AsyncStorage.getItem('id_token');
-            return res;
-        } catch (error) {
-          console.log('AsyncStorage Error: ' + error.message);
-        }
-    }
-     export async function deleteJWT (){
-        try{
-          await AsyncStorage.removeItem('id_token');
-        } catch (error) {
-          console.log('AsyncStorage Error: ' + error.message);
-        }
+export async function saveItem(key, value) {
+  console.log("SAVE ITEM");
+  try {
     
-    }
+    await SecureStore.setItemAsync(key, value);
+  } catch (error) {
+    console.log("ERROR");
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+export async function saveUserInfo(user){
+  try {
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+  } catch (error){
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+
+
+export async function getUser(){
+  try {
+    const res = await AsyncStorage.getItem("user");
+    console.log("get user")
+    console.log(res);
+    return res;
+  } catch (error){
+    console.log("error " + error);
+  }
+}
+export async function getItem() {
+  try {
+    // const res = await AsyncStorage.getItem('id_token');
+    const res = await SecureStore.getItemAsync("id_token");
+
+    return res;
+  } catch (error) {
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+export async function deleteJWT() {
+  try {
+    // await AsyncStorage.removeItem('id_token');
+    await SecureStorage.deleteItemAsync("id_token");
+  } catch (error) {
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+
 

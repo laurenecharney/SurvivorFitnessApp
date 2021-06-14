@@ -2,11 +2,22 @@ import React from 'react';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import SettingsTab from "../Components/SettingsTab.js";
-import {deleteJWT} from '../APIServices/deviceStorage';
+import {deleteJWT, getUser} from '../APIServices/deviceStorage';
 
 export default class SettingsPage extends React.Component {
 
+    constructor(props){
+      super(props);
+      this.state={
+        user:{}
+      }
+    }
+    async componentDidMount(){
+      const res = await getUser();
+      this.setState({user: JSON.parse(res)})
+    }
     render(){
+      const {user} = this.state;
       return (
         <View style={styles.container}>
             <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
@@ -18,11 +29,22 @@ export default class SettingsPage extends React.Component {
                   <Text style={styles.text}>Profile</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            {user.roles && user.roles.includes("TRAINER") && 
+            <TouchableOpacity
+            onPress={()=>this.props.navigation.replace('AllPatientsPage')}
+            >
               <View style={styles.row}>
                   <Text style={styles.text}>Switch to Trainer Account</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
+            {user.roles && user.roles.includes("DIETITIAN") && 
+            <TouchableOpacity
+            onPress={()=>this.props.navigation.replace('AllPatientsPage')}
+            >
+              <View style={styles.row}>
+                  <Text style={styles.text}>Switch to Dietitian Account</Text>
+              </View>
+            </TouchableOpacity>}
             <TouchableOpacity>
               <View style={styles.row}>
                   <Text style={styles.text}>Download Data</Text>

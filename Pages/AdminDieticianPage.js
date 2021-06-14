@@ -53,8 +53,11 @@ export default class AdminDieticianPage extends Component {
 
     async refreshDietitians(){
         try {
-            const arr = await getDietitians();
+            const locationId = this.props.route.params && this.props.route.params.locationId ? 
+            this.props.route.params.locationId : null;
+            const arr = await getDietitians(locationId);
             console.log("REFRESH DIETITIANS")
+            console.log(this.props.route)
             console.log(arr);
             this.setState({
                calls: arr.map(

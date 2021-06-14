@@ -115,7 +115,7 @@ export default class AllPatientsPage extends Component {
       <View style={{ flex: 1, backgroundColor:'#fff' }} >
         <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
           <Text style={styles.headline}>Participants</Text>
-         {false && <TouchableOpacity style={{paddingLeft: 87}} onPress={() => this.props.navigation.navigate('TrainerSettingsPage')}>
+         {true && <TouchableOpacity style={{paddingLeft: 87}} onPress={() => this.props.navigation.navigate('TrainerSettingsPage')}>
             <Icon2 style={styles.settings} size={30} name={'settings'}/>
             {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
           </TouchableOpacity>}

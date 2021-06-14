@@ -41,6 +41,7 @@ export default class AdminTrainerPage extends Component {
         try {
             const locationId = this.props.route.params && this.props.route.params.locationId ? 
             this.props.route.params.locationId : null;
+            console.log(this.props.route);
             const arr = await getTrainers(locationId);
             console.log("REFRESH TRAINERS")
             console.log(arr)

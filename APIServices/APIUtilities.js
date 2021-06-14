@@ -96,9 +96,11 @@ export async function getLocationByID(id) {
 }
 
 //gets dietitians
-export async function getDietitians() {
+export async function getDietitians(_locationId) {
   const jwt = await getItem();
-  const res = await fetch(ENDPOINT + "/api/v1/dietitians", {
+  const query = _locationId ? "?locationId=" + _locationId : "";
+  const url = ENDPOINT + "/api/v1/dietitians" + query;
+  const res = await fetch(url, {
     method: "GET",
     headers: {
       Accept: "application/json",

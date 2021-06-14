@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
-import {saveItem} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo} from '../APIServices/deviceStorage';
 export default class LoginPage extends React.Component {
     state = {
         email: "",
@@ -27,14 +27,17 @@ export default class LoginPage extends React.Component {
         try {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
+            console.log("USER")
             console.log(res);
             saveItem("id_token", res.jwt);
+            saveUserInfo(res.user)
+            // saveUserInfo(res.user)
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.navigate('SuperAdminPage');
-                // {screen: "Participants",
-                // params: {jwtToken: jwt}})
             } else if (res.user.roles.includes('LOCATION_ADMINISTRATOR')){
+                // const locationId = res.user.locations ? res.user.locations.id : null;
                 this.props.navigation.navigate('LocationAdminPage');
+                // , {locationId: locationId});
             } else {
                 this.props.navigation.navigate('AllPatientsPage');
             }
