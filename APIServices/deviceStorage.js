@@ -7,7 +7,6 @@ export async function saveItem(key, value) {
     
     await SecureStore.setItemAsync(key, value);
   } catch (error) {
-    console.log("ERROR");
     console.log("AsyncStorage Error: " + error.message);
   }
 }
@@ -18,7 +17,37 @@ export async function saveUserInfo(user){
     console.log("AsyncStorage Error: " + error.message);
   }
 }
+export async function deleteUserInfo(){
+  try {
+      await AsyncStorage.removeItem("user");
+  } catch (error){
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
 
+export async function getCurrentRole(){
+  try {
+    await AsyncStorage.getItem("role");
+  } catch (error){
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+
+export async function saveCurrentRole(newRole){
+  try {
+    await AsyncStorage.setItem("role", newRole);
+  } catch (error){
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
+
+export async function deleteCurrentRole(){
+  try {
+    await AsyncStorage.removeItem("role");
+  } catch (error){
+    console.log("AsyncStorage Error: " + error.message);
+  }
+}
 
 export async function getUser(){
   try {

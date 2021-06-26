@@ -5,13 +5,11 @@ import { saveItem, getItem } from "./deviceStorage";
 //put
 const ENDPOINT = "http://192.168.0.15:8080";
 
-//gets all participants
-
+//gets participants with optional query params passed in
 export async function getParticipants(paramName, paramValue) {
   const jwt = await getItem();
   const query =
     paramName && paramValue ? "?" + paramName + "=" + paramValue : "";
-  console.log(query);
 
   const res = await fetch(ENDPOINT + "/api/v1/participants" + query, {
     method: "GET",

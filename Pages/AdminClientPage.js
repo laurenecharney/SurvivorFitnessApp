@@ -48,7 +48,7 @@ export default class AdminClientPage extends Component {
      async componentDidMount(){
          console.log("ADMIN CLIENT PAGE");
          try {
-             const res = await getParticipants();
+             const res = await getParticipants(null,null);
             console.log(res);
             this.setState({calls: res
                 .map(

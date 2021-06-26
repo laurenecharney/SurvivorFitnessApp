@@ -19,7 +19,14 @@ import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import { getDietitians } from '../APIServices/APIUtilities';
 import ModalRow from '../Components/ModalComponents/ModalRow'
-
+import {
+    deleteJWT,
+    getUser,
+    saveCurrentRole,
+    deleteCurrentRole,
+    deleteUserInfo,
+    getCurrentRole
+  } from "../APIServices/deviceStorage";
 
 export default class AdminDieticianPage extends Component {
     state = {
@@ -49,6 +56,7 @@ export default class AdminDieticianPage extends Component {
 
     async componentDidMount(){
         await this.refreshDietitians();
+        console.log(await getCurrentRole());
     }
 
     async refreshDietitians(){
@@ -113,11 +121,7 @@ export default class AdminDieticianPage extends Component {
                                 <View>
                                     <View style={styles.nameContainer}>
                                         <TouchableOpacity onPress={() => {
-                                            // const paramKey = this.props.route.params ? Object.keys(this.props.route.params)[0] : null
-                                            // const paramValue = paramKey ? this.props.route.params[paramKey] : paramValue;
-                                            // const paramKey = 
-                                            
-                                            this.props.navigation.navigate('AllPatientsPage', {dietitianUserId: item.id}  
+                                            this.props.navigation.navigate('TrainerPatientsPage', {dietitianUserId: item.id}  
                                         )}}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>

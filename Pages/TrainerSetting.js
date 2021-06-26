@@ -1,11 +1,15 @@
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import SettingsTab from "../Components/SettingsTab.js";
-import Icon2 from "react-native-vector-icons/Ionicons";
-import { getUser } from "../APIServices/deviceStorage";
+import {
+  getUser,
+  saveUserInfo,
+  deleteJWT,
+  deleteCurrentRole,
+  deleteUserInfo,
+  saveCurrentRole
+} from "../APIServices/deviceStorage";
 function getAdminRole(roles) {
-  console.log(roles);
   if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
     return "LOCATION_ADMINISTRATOR";
   } else if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
@@ -59,8 +63,9 @@ export default class TrainerSettingsPage extends React.Component {
           </TouchableOpacity>
           {this.state.adminRole === "LOCATION_ADMINISTRATOR" && (
             <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.pop(),
+              onPress={async () => {
+                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
+                  this.props.navigation.pop();
                   this.props.navigation.replace("LocationAdminPage");
               }}
             >
@@ -79,8 +84,9 @@ export default class TrainerSettingsPage extends React.Component {
           )}
           {this.state.adminRole === "SUPER_ADMIN" && (
             <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.pop(),
+              onPress={async () => {
+                  await saveCurrentRole("SUPER_ADMIN");
+                  this.props.navigation.pop();
                   this.props.navigation.replace("SuperAdminPage");
               }}
             >
@@ -98,7 +104,15 @@ export default class TrainerSettingsPage extends React.Component {
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.loginBtn}
-              onPress={() => this.props.navigation.clear()}
+              onPress={() => {
+                deleteJWT();
+                deleteCurrentRole();
+                deleteUserInfo();
+                this.props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: "LoginPage" }]
+                });
+              }}
             >
               <Text style={styles.loginText}>Log Out</Text>
             </TouchableOpacity>

@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
-import {saveItem, saveUserInfo} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
 export default class LoginPage extends React.Component {
     state = {
         email: "",
@@ -27,19 +27,20 @@ export default class LoginPage extends React.Component {
         try {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
-            console.log("USER")
-            console.log(res);
-            saveItem("id_token", res.jwt);
-            saveUserInfo(res.user)
-            // saveUserInfo(res.user)
+            await Promise.all[saveItem("id_token", res.jwt),
+            saveUserInfo(res.user)]
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.navigate('SuperAdminPage');
+                await saveCurrentRole('SUPER_ADMIN');
             } else if (res.user.roles.includes('LOCATION_ADMINISTRATOR')){
                 // const locationId = res.user.locations ? res.user.locations.id : null;
                 this.props.navigation.navigate('LocationAdminPage');
-                // , {locationId: locationId});
+                await saveCurrentRole('LOCATION_ADMINISTRATOR');
             } else {
-                this.props.navigation.navigate('AllPatientsPage');
+                const role = res.user.roles.includes('TRAINER') ? 'TRAINER' : 'DIETITIAN';
+                await saveCurrentRole(role);
+                this.props.navigation.navigate('AllPatientsPage', role === 'TRAINER' ? 
+                {trainerUserId: res.user.id}:{dietitianUserId: res.user.id});
             }
 
             // alert(res.user.roles.length)
@@ -55,19 +56,6 @@ export default class LoginPage extends React.Component {
             // alert("Could not log in. Please try again later.");
         }
 
-        // alert(res.status + this.state.email + this.state.password);
-
-        // if (this.state.email == "Survivor" && this.state.password == "Trainer") {
-        //     this.props.navigation.navigate('AllPatientsPage')
-        // } else if (this.state.password == "Super Admin") {
-        //     this.props.navigation.navigate('SuperAdminPage');
-
-        // } else if (this.state.password == "Location Admin") {
-        //     this.props.navigation.navigate('LocationAdminPage');
-
-        // } else {
-        //     this.alertInvalidLoginCredentials();
-        // }
     }
 
 

@@ -35,8 +35,9 @@ export function LocationAdminPage() {
       {user.roles && user.roles.includes("TRAINER") && (
         <Tab.Screen
           name="Trainers"
-          component={AdminTrainerPage}
+          component={LocationAdminTrainerPage}
           initialParams={{
+            userType: "TRAINER",
             locationId: user.locations ? user.locations[0].id : null
           }}
           options={{
@@ -46,12 +47,13 @@ export function LocationAdminPage() {
             )
           }}
         />
-      )}
+      )} 
       {user.roles && user.roles.includes("DIETITIAN") && (
         <Tab.Screen
           name="Dietitians"
-          component={AdminDieticianPage}
+          component={LocationAdminTrainerPage}
           initialParams={{
+            userType: "DIETITIAN",
             locationId: user.locations ? user.locations[0].id : null
           }}
           options={{
