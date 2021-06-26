@@ -23,10 +23,13 @@ To run the backend on your computer, you need to do several things:
 https://github.com/i1uxaermakov/survivorfitness-backend-api/blob/master/docker-compose.yml
 3. Navigate to the folder that has the file you downloaded in the terminal (if you are on mac) or command line (if you are on windows), and run the following command in your terminal:
 docker-compose up --detach   
-
-Now, the application should be accessible on localhost:8080. Go to localhost:8080/swagger-ui to see docs.
+    Now, the application should be accessible on localhost:8080. Go to localhost:8080/swagger-ui to see docs.
 
 4. When finished, run docker-compose down to shut the application down.
+
+## Using/testing the app with backend 
+1. Update this line with your local IP address: https://github.com/laurenecharney/SurvivorFitnessApp/blob/605e08a6b4950dbad2c0569f6f81d9da8a06bcaf/APIServices/APIUtilities.js#L6 (on Mac, WiFi > Network Preferences should show IP address)
+2. You can use swagger to look at what requests/responses will be formatted as, and use Postman to make sample calls (which requires authorization)
 
 List of demo users: https://github.com/i1uxaermakov/survivorfitness-backend-api/blob/master/src/main/java/com/changeplusplus/survivorfitness/backendapi/application/DemoData.java
 
