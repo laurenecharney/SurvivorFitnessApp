@@ -16,7 +16,7 @@ To create an expo app from scratch, see [this guide](https://docs.expo.io/get-st
 1. Begin first by going through App.js and the files in the Pages/ folder. This should give you a general idea of the project structure.
 2. Each of these pages represents a screen, and utilizes "child components". After you understand how the page screens work, take a look at some of the components, which hold blocks of reusable code for things like buttons, sliders, etc. 
 
-##Running backend
+## Running backend
 To run the backend on your computer, you need to do several things:
 1. Install Docker: https://docs.docker.com/get-docker/
 2. Download the following file:
@@ -27,3 +27,17 @@ docker-compose up --detach   
 Now, the application should be accessible on localhost:8080. Go to localhost:8080/swagger-ui to see docs.
 
 4. When finished, run docker-compose down to shut the application down.
+
+List of demo users: https://github.com/i1uxaermakov/survivorfitness-backend-api/blob/master/src/main/java/com/changeplusplus/survivorfitness/backendapi/application/DemoData.java
+
+Super Admin: 
+theo.justin@gmail.olala / passwordTheo
+
+Location Admin for Trainer Gym:
+
+Location Admin for Dietitian Office:
+
+
+Default Trainer:
+
+Default Dietitian:
