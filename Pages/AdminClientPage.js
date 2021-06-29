@@ -46,10 +46,8 @@ export default class AdminClientPage extends Component {
         };
     }
      async componentDidMount(){
-         console.log("ADMIN CLIENT PAGE");
          try {
              const res = await getParticipants(null,null);
-            console.log(res);
             this.setState({calls: res
                 .map(
                 item => {
@@ -61,9 +59,7 @@ export default class AdminClientPage extends Component {
                  newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
                  newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
                  newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-                 console.log(newI)
                  return newI; 
-                 // item.id = parseInt(item.id);
                 
                 })})
            
@@ -112,7 +108,6 @@ export default class AdminClientPage extends Component {
     }
 
     render() {
-        console.log(this.state.calls);
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>

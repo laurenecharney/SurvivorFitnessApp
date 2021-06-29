@@ -1,4 +1,4 @@
-import { saveItem, getItem } from "./deviceStorage";
+import { getItem } from "./deviceStorage";
 
 //this should be an env. variable. Fix this later
 
@@ -19,10 +19,9 @@ export async function getParticipants(paramName, paramValue) {
       "Content-Type": "application/json" // I added this line
     }
   })
-    .then(res => res.json())
-    .catch(err => console.log(err));
-
-  console.log(res);
+    .then(res => res.json());
+    console.log("GET PARTICIPANTS QUERY")
+    console.log(paramName + " " + paramValue);
   return res && res.participants ? res.participants : [];
 } // ,
 
@@ -43,8 +42,6 @@ export async function getParticipantByID(id) {
 
 export async function getTrainers(_locationId) {
   const jwt = await getItem();
-  console.log("GET TRAINERS");
-  console.log(_locationId);
   const query = _locationId ? "?locationId=" + _locationId : "";
   const url = ENDPOINT + "/api/v1/trainers" + query;
   const res = await fetch(url, {
@@ -55,13 +52,7 @@ export async function getTrainers(_locationId) {
       "Content-Type": "application/json" // I added this line
     }
   })
-    .then(response => response.json())
-    .catch(err => {
-      console.log("ERR");
-      console.log(err);
-    });
-  console.log("API RESULT")
-  console.log(res)
+    .then(response => response.json());
   return res && res.specialists ? res.specialists : [];
 }
 
@@ -106,10 +97,7 @@ export async function getDietitians(_locationId) {
       "Content-Type": "application/json" // I added this line
     }
   })
-    .then(response => response.json())
-    .catch(err => {
-      console.log(err);
-    });
+    .then(response => response.json());
   return res.specialists || {};
 }
 
@@ -127,10 +115,6 @@ export async function authenticate(_username, _password) {
       "Content-Type": "application/json" // I added this line
     }
   })
-    .then(response => response.json())
-    .catch(err => {
-      console.log("ERR " + err);
-      throw err;
-    });
+    .then(response => response.json());
   return res;
 }

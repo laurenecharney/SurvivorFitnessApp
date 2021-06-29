@@ -44,7 +44,6 @@ export default class AdminTrainerPage extends Component {
             console.log(this.props.route);
             const arr = await getTrainers(locationId);
             console.log("REFRESH TRAINERS")
-            console.log(arr)
             this.setState({
                calls: arr.map(
                 item => {

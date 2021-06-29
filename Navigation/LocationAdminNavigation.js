@@ -16,9 +16,8 @@ export function LocationAdminPage() {
   useEffect(() => {
     async function fetchUser() {
       const res = await getUser();
-      console.log("RES");
-      console.log(JSON.parse(res).locations[0].id);
       setUser(JSON.parse(res));
+      console.log(JSON.parse(res).locations[0].id)
     }
 
     fetchUser();
@@ -71,8 +70,13 @@ export function LocationAdminPage() {
       <Tab.Screen
         name="Participants"
         component={LocationAdminClientPage}
+        // initialParams={{
+        //   userType: user.roles && user.roles.includes("DIETITIAN") ? "DIETITIAN" : "TRAINER",
+        //   locationId: user.locations ? user.locations[0].id : "piot12345" + JSON.stringify(user)
+        // }}
         options={{
           tabBarLabel: "Participants",
+          
           tabBarIcon: ({ color }) => (
             <Icon name="person" color={color} size={26} />
           )

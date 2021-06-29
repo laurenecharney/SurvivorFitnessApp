@@ -5,17 +5,11 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
-  Dimensions,
-  FlatList,
-  Button
+  TextInput
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon2 from "react-native-vector-icons/Ionicons";
-import TextBoxSingleLine from "../Components/TextBoxSingleLine.js";
-import TextBoxComponent from "../Components/TextBoxComponent";
-
+import { getTrainers, getDietitians } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -38,30 +32,49 @@ export default class LocationAdminTrainerPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isGymModalVisible: false,
+      selectedUser: [],
       calls: [
-        { id: 1, value: "Abby Cohen", gym: "Effects Fitness" },
-        { id: 2, value: "Alicia Yang", gym: "Orange Theory" },
-        { id: 3, value: "Charles Wang", gym: "Orange Theory" },
-        { id: 4, value: "Grace Jeong", gym: "Effects Fitness" },
-        { id: 5, value: "Ilya Ermakov", gym: "Effects Fitness" },
-        { id: 6, value: "Lauren Charney", gym: "Effects Fitness" },
-        { id: 7, value: "Gabby Cohen", gym: "Effects Fitness" },
-        { id: 8, value: "Felicia Yang", gym: "Orange Theory" },
-        { id: 9, value: "Bucky Wang", gym: "Orange Theory" },
-        { id: 10, value: "Gracie Jeong", gym: "Effects Fitness" },
-        { id: 11, value: "Bilya Ermakov", gym: "Effects Fitness" },
-        { id: 12, value: "Corinne Charney", gym: "Effects Fitness" }
       ]
     };
   }
 
   async componentDidMount() {
     //TODO
+    await this.refreshList();
+    console.log("route params")
+    console.log(this.props.route.params)
   }
 
-  openModal = () => {
+  async refreshList() {
+    try {
+      const locationId =
+        this.props.route.params && this.props.route.params.locationId
+          ? this.props.route.params.locationId
+          : null;
+      const arr =
+        this.props.route.params &&
+        this.props.route.params.userType === "DIETITIAN"
+          ? await getDietitians(locationId)
+          : await getTrainers(locationId);
+      this.setState({
+        calls: arr.map(item => {
+          let newI = item;
+          newI.value = item.firstName + " " + item.lastName;
+          newI.id = parseInt(item.id);
+          newI.gym = item.locations[0] ? item.locations[0].name : "";
+          return newI;
+        })
+      });
+    } catch (e) {
+      console.log(e);
+      alert("Could not fetch data.");
+    }
+  }
+
+  openModal = item => {
     this.setState({
-      isModalVisible: true
+      isModalVisible: true,
+      selectedUser: item
     });
   };
 
@@ -89,22 +102,6 @@ export default class LocationAdminTrainerPage extends Component {
   closeAddModal = () => {
     this.setState({
       isAddModalVisible: false
-    });
-  };
-  openGymModal = () => {
-    this.setState({
-      isGymModalVisible: true
-    });
-  };
-
-  toggleGymModal = () => {
-    this.setState({
-      isGymModalVisible: !this.state.isGymModalVisible
-    });
-  };
-  closeGymModal = () => {
-    this.setState({
-      isGymModalVisible: false
     });
   };
 
@@ -158,11 +155,26 @@ export default class LocationAdminTrainerPage extends Component {
                 <View>
                   <View style={styles.nameContainer}>
                     <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate("AllPatientsPage", {
-                          hideSettingsIcon: true
-                        })
-                      }
+                      onPress={() => {
+                        console.log("here + piot");
+                        const routeParams =
+                          this.props.route.params &&
+                          this.props.route.params.userType === "DIETITIAN"
+                            ? {
+                                hideSettingsIcon: true,
+                                participantsParam: {dietitianUserId: item.id}
+                              }
+                            : {
+                                hideSettingsIcon: true,
+                                participantsParam: {trainerUserId: item.id}
+                              };
+                        console.log("ROUTE PARAMS");
+                        console.log(routeParams);
+                        this.props.navigation.navigate(
+                          "AllPatientsPage",
+                          routeParams
+                        );
+                      }}
                     >
                       <View
                         style={{
@@ -175,7 +187,7 @@ export default class LocationAdminTrainerPage extends Component {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => this.openModal()}
+                      onPress={() => this.openModal(item)}
                       style={{
                         borderWidth: 1,
                         borderColor: "#AED803",

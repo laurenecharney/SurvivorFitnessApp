@@ -51,7 +51,6 @@ export default class AdminLocationsPage extends Component {
     async refreshLocations(){
         try {
             const arr = await getLocations();
-            console.log(arr);
             this.setState({
                calls: arr.map(
                 item => {
@@ -73,8 +72,6 @@ export default class AdminLocationsPage extends Component {
     }
 
      openModal = async (item) =>{
-         console.log("open modal");
-         console.log(item);
         this.setState({
             isModalVisible:true,
             selectedLocation: item,
@@ -159,40 +156,6 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
-    // renderItem = ({item}) => {
-    //     return (
-    //         <ScrollView>
-    //             <View style={styles.row}>
-    //                 <View>
-    //                     <View style={styles.nameContainer}>
-    //                         <TouchableOpacity onPress={() => 
-    //                         console.log("here")}>
-    //                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-    //                             <Icon name={item.icon} style={styles.icon} size={25}/>
-    //                             <Text style={styles.nameTxt}>{item.name}</Text>
-    //                         </View>
-
-    //                             </TouchableOpacity>
-    //                         <TouchableOpacity onPress={()=>this.openModal(item)}
-    //                                           style={{
-    //                                               borderWidth:1,
-    //                                               borderColor:"#AED803",
-    //                                               alignItems:'center',
-    //                                               justifyContent:'center',
-    //                                               width:25,
-    //                                               height:25,
-    //                                               backgroundColor:'#fff',
-    //                                               borderRadius:50,
-    //                                           }}>
-
-    //                             <Text style={{color:"#AED803"}}>i</Text>
-    //                         </TouchableOpacity>
-    //                     </View>
-    //                 </View>
-    //             </View>
-    //         </ScrollView>
-    //     );
-    // }
 
     render() {
         return(

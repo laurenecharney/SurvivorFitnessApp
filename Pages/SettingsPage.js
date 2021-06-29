@@ -1,7 +1,5 @@
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import SettingsTab from "../Components/SettingsTab.js";
 import {
   deleteJWT,
   getUser,
@@ -20,14 +18,9 @@ export default class SettingsPage extends React.Component {
   async componentDidMount() {
     const res = await getUser();
     this.setState({ user: JSON.parse(res) });
-    console.log("HERE");
-    console.log(res.id);
   }
   render() {
     const { user } = this.state;
-    console.log("HEREHEREHERE")
-    console.log(user)
-    console.log(user.id)
     return (
       <View style={styles.container}>
         <View
@@ -53,7 +46,7 @@ export default class SettingsPage extends React.Component {
               onPress={async () => {
                 console.log("HERE");
                 await saveCurrentRole("TRAINER");
-                this.props.navigation.replace("AllPatientsPage", {trainerUserId:user.id});
+                this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId:user.id}});
               }}
             >
               <View style={styles.row}>
@@ -66,7 +59,7 @@ export default class SettingsPage extends React.Component {
               onPress={async () => {
                 console.log("HERE1");
                 await saveCurrentRole("DIETITIAN");
-                this.props.navigation.replace("AllPatientsPage", {dietitianUserId:user.id});
+                this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:user.id}});
               }}
             >
               <View style={styles.row}>

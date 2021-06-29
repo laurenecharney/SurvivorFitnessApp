@@ -47,33 +47,18 @@ export default class AllPatientsPage extends Component {
     this.state = {
       isModalVisible: false,
       calls: [
-        // {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-        // {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
       ]
     };
   }
   async componentDidMount() {
-    console.log("ALL PATIENTS PAGE");
     try {
-      const paramKey = this.props.route.params
-        ? Object.keys(this.props.route.params)[0]
+      const paramKey = this.props.route.params && this.props.route.params.participantsParam
+        ? Object.keys(this.props.route.params.participantsParam)[0]
         : null;
       const paramValue = paramKey
-        ? this.props.route.params[paramKey]
-        : paramValue;
-      console.log(paramKey + " " + paramValue);
+        ? this.props.route.params.participantsParam[paramKey]
+        : null;
       const res = await getParticipants(paramKey, paramValue);
-      console.log(res);
       this.setState({
         calls: res.map(item => {
           let newI = item;
@@ -83,13 +68,7 @@ export default class AllPatientsPage extends Component {
               ? item.firstName + " " + item.lastName
               : "";
           newI.id = parseInt(item.id);
-          // newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-          // newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-          // newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-          // newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : '';
-          console.log(newI);
           return newI;
-          // item.id = parseInt(item.id);
         })
       });
     } catch (e) {

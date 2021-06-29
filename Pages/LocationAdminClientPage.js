@@ -19,7 +19,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/MaterialIcons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AlphabetList } from "react-native-section-alphabet-list";
-
+import { getParticipants } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -37,122 +37,33 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isListOpen: false,
-      calls: [
-        {
-          id: 1,
-          value: "Abby Cohen",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 2,
-          value: "Alicia Yang",
-          gym: "Orange Theory",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 3,
-          value: "Charles Wang",
-          gym: "Orange Theory",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 4,
-          value: "Grace Jeong",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 5,
-          value: "Ilya Ermakov",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 6,
-          value: "Lauren Charney",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 7,
-          value: "Gabby Cohen",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 8,
-          value: "Felicia Yang",
-          gym: "Orange Theory",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 9,
-          value: "Bucky Wang",
-          gym: "Orange Theory",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 10,
-          value: "Gracie Jeong",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 11,
-          value: "Bilya Ermakov",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        },
-        {
-          id: 12,
-          value: "Corinne Charney",
-          gym: "Effects Fitness",
-          dietician: "Balance Nutrition",
-          trainer: "Trainer Name",
-          nutritionist: "dietician"
-        }
-      ],
-      trainers: [
-        { id: 1, title: "Abby Cohen", selected: false, key: "trainer" },
-        { id: 2, value: "Molly Sullivan", selected: false, key: "trainer" },
-        { id: 3, value: "Jenna Lawrence", selected: false, key: "trainer" },
-        { id: 4, value: "Grace Brady", selected: false, key: "trainer" },
-        { id: 5, value: "Abby Minton", selected: false, key: "trainer" }
-      ]
+      calls: []
     };
   }
 
   async componentDidMount() {
     //TODO
+    console.log(this.props.route)
+    console.log("ROUTE 123")
+    await this.refreshParticipants();
+  }
+
+  isDietitian() {
+    console.log(this.props.route.params)
+    console.log("HERE + piot")
+    return (
+      this.props.route.params &&
+      this.props.route.params.userType === "DIETITIAN"
+    );
   }
 
   async refreshParticipants() {
     try {
-      const res = await getParticipants(null, null);
-      console.log(res);
+      const locationId = this.props.route.params
+        ? this.props.route.params.locationId
+        : null;
+      const res =  
+      this.isDietitian() ? await getParticipants("dietitianOfficeId", locationId) : await getParticipants("gymId", locationId);
       this.setState({
         calls: res.map(item => {
           let newI = item;
@@ -162,19 +73,13 @@ export default class LocationAdminClientPage extends Component {
               ? item.firstName + " " + item.lastName
               : "";
           newI.id = parseInt(item.id);
-          newI.gym = item.trainerLocation ? item.trainerLocation.name : "";
           newI.trainer = item.trainer
             ? item.trainer.firstName + " " + item.trainer.lastName
-            : "";
-          newI.dietician = item.dietitianLocation
-            ? item.dietitianLocation.name
             : "";
           newI.nutritionist = item.dietitian
             ? item.dietitian.firstName + " " + item.dietitian.lastName
             : "";
-          console.log(newI);
           return newI;
-          // item.id = parseInt(item.id);
         })
       });
     } catch (e) {
@@ -206,11 +111,6 @@ export default class LocationAdminClientPage extends Component {
     });
   };
 
-  toggleAddModal = () => {
-    this.setState({
-      isAddModalVisible: !this.state.isModalVisible
-    });
-  };
   closeAddModal = () => {
     this.setState({
       isAddModalVisible: false
@@ -260,8 +160,8 @@ export default class LocationAdminClientPage extends Component {
                             justifyContent: "space-between"
                           }}
                         >
-                          <Icon name={"dumbbell"} color={"#AED803"} />
-                          <Text style={styles.gymTxt}> {item.trainer} </Text>
+                          <Icon name={this.isDietitian() ? "food-apple" : "dumbbell"} color={"#AED803"} />
+                          <Text style={styles.gymTxt}> {this.isDietitian() ? item.nutritionist : item.trainer} </Text>
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
 import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
+import {navigateToLocationAdminPage} from '../Utilities/utilities';
 export default class LoginPage extends React.Component {
     state = {
         email: "",
@@ -28,19 +29,25 @@ export default class LoginPage extends React.Component {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
             await Promise.all[saveItem("id_token", res.jwt),
-            saveUserInfo(res.user)]
+            saveUserInfo(res.user)];
             if (res.user.roles.includes('SUPER_ADMIN')){
-                this.props.navigation.navigate('SuperAdminPage');
+                this.props.navigation.replace('SuperAdminPage');
                 await saveCurrentRole('SUPER_ADMIN');
             } else if (res.user.roles.includes('LOCATION_ADMINISTRATOR')){
-                // const locationId = res.user.locations ? res.user.locations.id : null;
-                this.props.navigation.navigate('LocationAdminPage');
-                await saveCurrentRole('LOCATION_ADMINISTRATOR');
+                this.props.navigation.replace("LocationAdminPage", {
+                    screen: "Participants",
+                    params: {
+                      userType: res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN",
+                      locationId: res.user.locations ? res.user.locations[0].id : null
+                    }
+                  });
+                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
             } else {
                 const role = res.user.roles.includes('TRAINER') ? 'TRAINER' : 'DIETITIAN';
                 await saveCurrentRole(role);
-                this.props.navigation.navigate('AllPatientsPage', role === 'TRAINER' ? 
-                {trainerUserId: res.user.id}:{dietitianUserId: res.user.id});
+                this.props.navigation.replace('AllPatientsPage', role === 'TRAINER' ? 
+                {participantsParam: {trainerUserId: res.user.id}}:
+                {participantsParam: {dietitianUserId: res.user.id}});
             }
 
             // alert(res.user.roles.length)

@@ -36,6 +36,7 @@ export default class TrainerSettingsPage extends React.Component {
     });
   }
   render() {
+    const {user} = this.state;
     return (
       <View style={styles.container}>
         <View
@@ -64,9 +65,17 @@ export default class TrainerSettingsPage extends React.Component {
           {this.state.adminRole === "LOCATION_ADMINISTRATOR" && (
             <TouchableOpacity
               onPress={async () => {
+                  
                   await saveCurrentRole("LOCATION_ADMINISTRATOR");
                   this.props.navigation.pop();
-                  this.props.navigation.replace("LocationAdminPage");
+                  this.props.navigation.replace("LocationAdminPage", {
+                    screen: "Participants",
+                    params: {
+                      userType: user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN",
+                      locationId: user.locations ? user.locations[0].id : null
+                    }
+                  });
+                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
               }}
             >
               <View style={styles.row}>
