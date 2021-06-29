@@ -47,3 +47,10 @@ Location Admin for Dietitian Office: sri.karolyn@gmail.olala / passwordSri
 Default Trainer: Marciana.Magne@gmail.olala / passwordMarciana
 
 Default Dietitian: Kapil.Mirjami@gmail.olala / passwordKapil
+
+
+## Branch stuff
+(from master) git checkout -b new_change
+git add . && git commit ... && git push origin new_change
+
+git checkout api_auth // switches to remote branch
