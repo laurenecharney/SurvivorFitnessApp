@@ -43,14 +43,11 @@ export default class LocationAdminClientPage extends Component {
 
   async componentDidMount() {
     //TODO
-    console.log(this.props.route)
-    console.log("ROUTE 123")
     await this.refreshParticipants();
   }
 
   isDietitian() {
     console.log(this.props.route.params)
-    console.log("HERE + piot")
     return (
       this.props.route.params &&
       this.props.route.params.userType === "DIETITIAN"

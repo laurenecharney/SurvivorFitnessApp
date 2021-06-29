@@ -41,8 +41,6 @@ export default class LocationAdminTrainerPage extends Component {
   async componentDidMount() {
     //TODO
     await this.refreshList();
-    console.log("route params")
-    console.log(this.props.route.params)
   }
 
   async refreshList() {
@@ -156,7 +154,6 @@ export default class LocationAdminTrainerPage extends Component {
                   <View style={styles.nameContainer}>
                     <TouchableOpacity
                       onPress={() => {
-                        console.log("here + piot");
                         const routeParams =
                           this.props.route.params &&
                           this.props.route.params.userType === "DIETITIAN"
