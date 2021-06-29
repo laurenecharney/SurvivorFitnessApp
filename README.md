@@ -33,14 +33,17 @@ docker-compose up --detach   
 
 List of demo users: https://github.com/i1uxaermakov/survivorfitness-backend-api/blob/master/src/main/java/com/changeplusplus/survivorfitness/backendapi/application/DemoData.java
 
+The first dietitian/location admin declared of any location =  location admin
+
+
 Super Admin: 
 theo.justin@gmail.olala / passwordTheo
 
-Location Admin for Trainer Gym:
+Location Admin for Trainer Gym: nikitha.shantel@gmail.olala / passwordNikitha
 
-Location Admin for Dietitian Office:
+Location Admin for Dietitian Office: sri.karolyn@gmail.olala / passwordSri
 
 
-Default Trainer:
+Default Trainer: Marciana.Magne@gmail.olala / passwordMarciana
 
-Default Dietitian:
+Default Dietitian: Kapil.Mirjami@gmail.olala / passwordKapil
