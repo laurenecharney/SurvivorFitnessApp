@@ -79,6 +79,7 @@ changeText = (newValue)=>{
                             edit={false}
                             value={""}
                             placeholder = ""
+                            onPress={()=>alert("yo don't")}
                             changeText = {newValue => this.changeText(newValue)}
                         />
                         

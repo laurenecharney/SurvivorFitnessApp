@@ -7,7 +7,6 @@ export default class TextInputAccordion extends Component{
     }
     render()
     {
-        console.log(this.props)
         return(
             <React.Fragment>
             {/* {
