@@ -68,7 +68,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             
             >
                 <View style={styles.header}>
-                    <NameNavBar name = "Alicia Yang"/>
+                    <NameNavBar name = {this.props.route.params &&  
+                    this.props.route.params.name ? 
+                    this.props.route.params.name : "Alicia Yang" }
+                    goBack={()=>this.props.navigation.goBack()}/>
                 </View>
                 <View>
                     <TrainerDieticianNavBar

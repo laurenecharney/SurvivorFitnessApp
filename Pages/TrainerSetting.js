@@ -36,7 +36,7 @@ export default class TrainerSettingsPage extends React.Component {
     });
   }
   render() {
-    const {user} = this.state;
+    const { user } = this.state;
     return (
       <View style={styles.container}>
         <View
@@ -46,6 +46,12 @@ export default class TrainerSettingsPage extends React.Component {
             alignItems: "center"
           }}
         >
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <Icon name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
+          </TouchableOpacity>
           <Text style={styles.workHeadline}>Settings</Text>
         </View>
         <View style={{ flexDirection: "column", width: "100%" }}>
@@ -65,17 +71,18 @@ export default class TrainerSettingsPage extends React.Component {
           {this.state.adminRole === "LOCATION_ADMINISTRATOR" && (
             <TouchableOpacity
               onPress={async () => {
-                  
-                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
-                  this.props.navigation.pop();
-                  this.props.navigation.replace("LocationAdminPage", {
-                    screen: "Participants",
-                    params: {
-                      userType: user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN",
-                      locationId: user.locations ? user.locations[0].id : null
-                    }
-                  });
-                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
+                await saveCurrentRole("LOCATION_ADMINISTRATOR");
+                this.props.navigation.pop();
+                this.props.navigation.replace("LocationAdminPage", {
+                  screen: "Participants",
+                  params: {
+                    userType: user.roles.includes("TRAINER")
+                      ? "TRAINER"
+                      : "DIETITIAN",
+                    locationId: user.locations ? user.locations[0].id : null
+                  }
+                });
+                await saveCurrentRole("LOCATION_ADMINISTRATOR");
               }}
             >
               <View style={styles.row}>
@@ -94,9 +101,9 @@ export default class TrainerSettingsPage extends React.Component {
           {this.state.adminRole === "SUPER_ADMIN" && (
             <TouchableOpacity
               onPress={async () => {
-                  await saveCurrentRole("SUPER_ADMIN");
-                  this.props.navigation.pop();
-                  this.props.navigation.replace("SuperAdminPage");
+                await saveCurrentRole("SUPER_ADMIN");
+                this.props.navigation.pop();
+                this.props.navigation.replace("SuperAdminPage");
               }}
             >
               <View style={styles.row}>

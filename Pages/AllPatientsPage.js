@@ -16,6 +16,7 @@ import {
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
+import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
@@ -46,15 +47,15 @@ export default class AllPatientsPage extends Component {
     super(props);
     this.state = {
       isModalVisible: false,
-      calls: [
-      ]
+      calls: []
     };
   }
   async componentDidMount() {
     try {
-      const paramKey = this.props.route.params && this.props.route.params.participantsParam
-        ? Object.keys(this.props.route.params.participantsParam)[0]
-        : null;
+      const paramKey =
+        this.props.route.params && this.props.route.params.participantsParam
+          ? Object.keys(this.props.route.params.participantsParam)[0]
+          : null;
       const paramValue = paramKey
         ? this.props.route.params.participantsParam[paramKey]
         : null;
@@ -77,8 +78,8 @@ export default class AllPatientsPage extends Component {
     }
   }
 
-  getHideSettingsIcon(){
-    return this.props.route.params && this.props.route.params.hideSettingsIcon
+  getHideSettingsIcon() {
+    return this.props.route.params && this.props.route.params.hideSettingsIcon;
   }
 
   openModal = () => {
@@ -109,6 +110,14 @@ export default class AllPatientsPage extends Component {
             paddingRight: 25
           }}
         >
+          {this.getHideSettingsIcon() && 
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
+          </TouchableOpacity>
+  }
           <Text style={styles.headline}>Participants</Text>
           {!this.getHideSettingsIcon() && (
             <TouchableOpacity
