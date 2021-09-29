@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, 
   Platform,
   LayoutAnimation,
   TextInput,
@@ -12,6 +12,8 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
+import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
+import { getUser } from "../APIServices/deviceStorage";
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -19,16 +21,41 @@ const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+const Category = (props) => {
+
+    return(
+        <View style={styles.categoryContainer}>
+            <TouchableOpacity 
+            style={styles.categoryRow} 
+            onPress={()=>props.toggle()}>
+                            <Text style={[styles.title, styles.font]}>{props.categoryType}</Text>
+                            {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
+                            <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+const Measurement = (props) => {
+    return(
+        <View style={styles.child}>
+            <Text style = {{color: "#D5D5D5"}}>{props.measurementName}{" " + props.measurementValue}</Text>
+        </View>
+        
+    )
+}
+
 export default class TrainerCheckpointPage  extends Component{
     constructor(props){
         super(props);
 
         this.state = {
+            user: {},
             expanded_general: false,
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: "Weight (lbs)",
+            weight: 150,//"Weight (lbs)",
             BMI: "BMI",
             body_fat_pct: "Body Fat Percentage",
             total_body_fat: "Total Body Fat (lbs)",
@@ -87,23 +114,74 @@ export default class TrainerCheckpointPage  extends Component{
     }
 
 
+    async fetchUser() {
+      console.log("I AM HERE 2")
+      const res = await getUser();
+      console.log("I am here 3")
+      this.setState({user: JSON.parse(res)})
+      console.log("USER:\n", this.state.user)
+      console.log(JSON.parse(res).locations[0].id) 
+      console.log("I am here 4")
+      const res2 = await getAllSessionNotesByParticipantID(2);
+      console.log("i am here 4")
+      console.log("NOTES:\n", res2)
+    }
+
+    
+
+
+    async componentDidMount() {
+        //TODO
+        // await this.refreshList();
+        await this.fetchUser();
+      }
+    
+    //   async refreshList() {
+    //     try {
+    //       const locationId =
+    //         this.props.route.params && this.props.route.params.locationId
+    //           ? this.props.route.params.locationId
+    //           : null;
+    //       const arr =
+    //         this.props.route.params &&
+    //         this.props.route.params.userType === "DIETITIAN"
+    //           ? await getDietitians(locationId)
+    //           : await getTrainers(locationId);
+    //       this.setState({
+    //         calls: arr.map(item => {
+    //           let newI = item;
+    //           newI.value = item.firstName + " " + item.lastName;
+    //           newI.id = parseInt(item.id);
+    //           newI.gym = item.locations[0] ? item.locations[0].name : "";
+    //           return newI;
+    //         })
+    //       });
+    //     } catch (e) {
+    //       console.log(e);
+    //       alert("Could not fetch data.");
+    //     }
+    //   }
+
+
     render(){
         // const {edit,} = this.state;
         return(
             <View style = {styles.container}>
-            <View style={styles.fixedHeader}>
+                {/* <View style={styles.fixedHeader}>
 
             
-            </View>
+                </View > */}
                 <ScrollView contentContainerStyle = {
 
                     {
                         position: 'fixed',
                         paddingBottom: 75,
-                        overflow: 'hidden',
+                        // overflow: 'hidden',
+                        // backgroundColor: 'green',
+                        alignItems: 'center'
                     }
                 } 
-                    style={{maxHeight: '100%'}}
+                    style={{maxHeight: '100%', width: '85%'}}
                 >
                     <AppButton
                             title = {this.state.edit ? "Save" : "Log Session"}
@@ -111,483 +189,52 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
-                         
-                    
-                    <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGeneral()}>
-                        <Text style={[styles.title, styles.font]}>General Data</Text>
-                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-                    </TouchableOpacity>
-                        <View style={styles.parentHr}/>
-                            {
-                                this.state.expanded_general &&                
-                                <View style={styles.child}>
-                                    {this.state.edit ? 
-                                    <TextInput style = {styles.input}
-                                    returnKeyType="done"
-                                    onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.weight ? this.state.weight : "Weight (lbs)"}
-                                    defaultValue = {this.state.weight == "Weight (lbs)" ? null : this.state.weight}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newWeight => this.setState({weight: newWeight})}
-                                    />:
-                                    <Text style = {{color: this.state.weight =="Weight (lbs)" ? "#D5D5D5" : "black"}}>Weight: 
-                                    {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
-                                    }
-                                    {/* {
-                                        <TextInputAccordion
-                                            edit={this.state.edit}
-                                            attribute={this.state.weight}
-                                            defaultValue = {"Weight (lbs)"}
-                                            label={"Weight (lbs): "}
-                                            setVal={(newVal) => {this.setState({ weight: newVal})}}/>
-
-                                    } */}
-                                </View>
-                            }
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                ref={(input) => { this.secondTextInput = input; }}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.BMI ? this.state.BMI : "BMI"}
-                                defaultValue = {this.state.BMI == "BMI" ? null : this.state.BMI}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newBMI => this.setState({BMI: newBMI})}
-                                // keyboardType = {'numeric'}
-                                />
-                            </View>}
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.body_fat_pct ? this.state.body_fat_pct : "Body Fat Percentage"}
-                                defaultValue = {this.state.body_fat_pct == "Body Fat Percentage" ? null : this.state.body_fat_pct}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {new_body_fat_pct => this.setState({body_fat_pct: new_body_fat_pct})}
-                                keyboardType = {'numeric'}
-                                />
-                            </View>}
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.lean_mass ? this.state.lean_mass : "Lean Mass"}
-                                defaultValue = {this.state.lean_mass == "Lean Mass" ? null : this.state.lean_mass}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {new_value => this.setState({lean_mass: new_value})}
-                                keyboardType = {'numeric'}
-                                />
-                            </View>}
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.blood_pressure ? this.state.blood_pressure : "Blood Pressure (mm Hg)"}
-                                defaultValue = {this.state.blood_pressure == "Blood Pressure (mm Hg)" ? null : this.state.blood_pressure}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {new_value => this.setState({blood_pressure: new_value})}
-                                keyboardType = {'numeric'}
-                                />
-                            </View>}
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.range_of_motion ? this.state.range_of_motion : "Range of Motion"}
-                                defaultValue = {this.state.range_of_motion == "Range of Motion" ? null : this.state.range_of_motion}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {new_value => this.setState({range_of_motion: new_value})}
-                                />
-                            </View>}
-                            {
-                            this.state.expanded_general &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.resting_hr ? this.state.resting_hr : "Resting HR (bpm)"}
-                                defaultValue = {this.state.resting_hr == "Resting HR (bpm)" ? null : this.state.resting_hr}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {new_value => this.setState({resting_hr: new_value})}
-                                />
-                            </View>}
                 
-                    <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandSkinFold()}>
-                        <Text style={[styles.title, styles.font]}>Skin Fold Tests</Text>
-                        <Icon name={this.state.expanded_general ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-                    </TouchableOpacity>
-                        <View style={styles.parentHr}/>
+                    <Category
+                        categoryType="General Data"
+                        toggle={this.toggleExpandGeneral}
+                        expanded={this.state.expanded_general}
+                    ></Category>
+                    {
+                        this.state.expanded_general &&
+                        <View style={styles.measurementContainer}>
+                            <Measurement
+                                measurementName="Weight"
+                                measurementValue={this.state.weight}>
+                            </Measurement> 
+                            <Measurement
+                                measurementName="BMI"
+                                measurementValue="">
+                            </Measurement>  
+                            <Measurement
+                                measurementName="Body Fat Percentage"
+                                measurementValue="">
+                            </Measurement>  
+
+                        </View>               
+                        // <View style={styles.child}>
+                        //     <Text style = {{color: "#D5D5D5"}}>Weight: {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
+                        //     </View>
     
-                            {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Abdominal_skin_fold ? this.state.Abdominal_skin_fold : "Abdominal"}
-                                    defaultValue = {this.state.Abdominal_skin_fold == "Abdominal" ? null : this.state.Abdominal_skin_fold}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Abdominal_skin_fold: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.ChestSkinFold ? this.state.ChestSkinFold : "Chest"}
-                                    defaultValue = {this.state.ChestSkinFold == "Chest" ? null : this.state.ChestSkinFold}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({ChestSkinFold: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Midaxillary ? this.state.Midaxillary : "Midaxillary"}
-                                    defaultValue = {this.state.Midaxillary == "Midaxillary" ? null : this.state.Midaxillary}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Midaxillary: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Subscapular ? this.state.Subscapular : "Subscapular"}
-                                    defaultValue = {this.state.Subscapular == "Subscapular" ? null : this.state.Subscapular}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Subscapular: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Supraillac ? this.state.Supraillac : "Supraillac"}
-                                    defaultValue = {this.state.Supraillac == "Supraillac" ? null : this.state.Supraillac}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Supraillac: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Thigh ? this.state.Thigh : "Thigh"}
-                                    defaultValue = {this.state.Thigh == "Thigh" ? null : this.state.Thigh}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Thigh: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                                {
-                                this.state.expanded_skin_fold &&
-                                <View style={styles.child}>
-                                    <TextInput style = {styles.input}
-                                    // returnKeyType="done"
-                                    // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    placeholder = {this.state.Tricep ? this.state.Tricep : "Tricep"}
-                                    defaultValue = {this.state.Tricep == "Tricep" ? null : this.state.Tricep}
-                                    placeholderTextColor = "#D5D5D5"
-                                    color="black"
-                                    autoCapitalize = "sentences"
-                                    onChangeText = {newValue => this.setState({Tricep: newValue})}
-                                    keyboardType = {'numeric'}
-                                    />
-                                </View>}
-                     <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandGirth()}>
-                        <Text style={[styles.title, styles.font]}>Girth Measurements (in)</Text>
-                        <Icon name={this.state.expanded_girth ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-                    </TouchableOpacity>
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Abdominal_girth ? this.state.Abdominal_girth : "Abdominal"}
-                                defaultValue = {this.state.Abdominal_girth == "Abdominal" ? null : this.state.Abdominal_girth}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Abdominal_girth: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Biceps ? this.state.Biceps : "Biceps"}
-                                defaultValue = {this.state.Biceps == "Biceps" ? null : this.state.Biceps}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Biceps: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Calf ? this.state.Calf : "Calf"}
-                                defaultValue = {this.state.Calf == "Calf" ? null : this.state.Calf}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Calf: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.ChestGirth ? this.state.ChestGirth : "Chest"}
-                                defaultValue = {this.state.ChestGirth == "Chest" ? null : this.state.ChestGirth}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({ChestGirth: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Hip ? this.state.Hip : "Hip"}
-                                defaultValue = {this.state.Hip == "Hip" ? null : this.state.Hip}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Hip: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Shoulders ? this.state.Shoulders : "Shoulders"}
-                                defaultValue = {this.state.Shoulders == "Shoulders" ? null : this.state.Shoulders}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Shoulders: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.ThighGirth ? this.state.ThighGirth : "Thigh"}
-                                defaultValue = {this.state.ThighGirth == "Thigh" ? null : this.state.ThighGirth}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({ThighGirth: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Waist ? this.state.Waist : "Waist"}
-                                defaultValue = {this.state.Waist == "Waist" ? null : this.state.Waist}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Waist: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                        {
-                            this.state.expanded_girth &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Total_Inches_Lost ? this.state.Total_Inches_Lost : "Total Inches Lost"}
-                                defaultValue = {this.state.Total_Inches_Lost == "Total Inches Lost" ? null : this.state.Total_Inches_Lost}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Total_Inches_Lost: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                        </View>}
-                    <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpandTreadmill()}>
-                        <Text style={[styles.title, styles.font]}>6 Minute Treadmill Test</Text>
-                        <Icon name={this.state.expanded_treadmill ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-                    </TouchableOpacity>
-                    {
-                            this.state.expanded_treadmill &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Distance ? this.state.Distance : "Distance"}
-                                defaultValue = {this.state.Distance == "Distance" ? null : this.state.Distance}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Distance: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                    </View>
-                }
-                    {
-                            this.state.expanded_treadmill &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.Speed ? this.state.Speed : "Speed"}
-                                defaultValue = {this.state.Speed == "Speed" ? null : this.state.Speed}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({Speed: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                    </View>}
-                    {
-                            this.state.expanded_treadmill &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.HR ? this.state.HR : "HR"}
-                                defaultValue = {this.state.HR == "HR" ? null : this.state.HR}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({HR: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                    </View>}
-                    {
-                            this.state.expanded_treadmill &&
-                            <View style={styles.child}>
-                                <TextInput style = {styles.input}
-                                // returnKeyType="done"
-                                // onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                blurOnSubmit={false}
-                                underlineColorAndroid = "transparent"
-                                placeholder = {this.state.BR ? this.state.BR : "BR"}
-                                defaultValue = {this.state.BR == "BR" ? null : this.state.BR}
-                                placeholderTextColor = "#D5D5D5"
-                                color="black"
-                                autoCapitalize = "sentences"
-                                onChangeText = {newValue => this.setState({BR: newValue})}
-                                keyboardType = {'numeric'}
-                                />
-                    </View>}
-            <View style={styles.wrapper}>     
+                    }
+
+                    <Category
+                        categoryType="Skin Fold Tests"
+                        toggle={this.toggleExpandSkinFold}
+                        expanded={this.state.expanded_skin_fold}
+                    ></Category>
+                    <Category
+                        categoryType="Girth Measurements (in)"
+                        toggle={this.toggleExpandGirth}
+                        expanded={this.state.expanded_girth}
+                    ></Category>
+                    <Category
+                        categoryType="6 Minute Treadmill Test"
+                        toggle={this.toggleExpandTreadmill}
+                        expanded={this.state.expanded_treadmill}
+                    ></Category>
+                    
+            {/* <View style={styles.wrapper}>      */}
                 <View style={styles.notes}>
                     <Text style = {styles.title}> Notes: </Text>
                     <MultilineInputSaveComponent
@@ -598,12 +245,12 @@ export default class TrainerCheckpointPage  extends Component{
                         //heading = "Trainer Notes"
                     />
 
-                <Text style={{fontSize: 10, padding: 10,margin:10}}>
-                    *If needed, please contact ____ with any concerns or questions.
-                    </Text>
+                    {/* <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                        *If needed, please contact ____ with any concerns or questions.
+                    </Text> */}
 
-                <Text style = {styles.title}> Admin Notes: </Text>
-                <MultilineInputSaveComponent
+                    <Text style = {styles.title}> Admin Notes: </Text>
+                    <MultilineInputSaveComponent
                         edit={false}
                         value={"Lorem Impsum dolor"}
                         placeholder = ""
@@ -613,7 +260,7 @@ export default class TrainerCheckpointPage  extends Component{
                 </View>
         
                     
-            </View>   
+            {/* </View>    */}
         </ScrollView>
       
         </View>);
@@ -623,7 +270,12 @@ export default class TrainerCheckpointPage  extends Component{
 
 
 const styles = StyleSheet.create({
-
+    container: {
+        backgroundColor: '#fff',
+        alignItems: 'flex-start',
+        // backgroundColor: 'red',
+        width: '100%',
+    },
     headline: {
         fontWeight: 'bold',
         fontSize: 25,
@@ -656,6 +308,38 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         color: '#838383',
     },
+    categoryContainer: {
+        // backgroundColor: 'blue',
+        // padding: 10,
+        flexDirection: 'row',
+        // justifyContent:'space-between',
+        // height:56,
+        width: '80%',
+        alignItems:'center',
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderColor: "#C9C9C9",
+
+    },
+    measurementContainer: {
+        width: "70%"
+    },
+    categoryRow: {
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        height:56,
+        width: '100%',
+        alignItems:'center',
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        borderColor: "#C9C9C9",
+        paddingRight: '10%',
+    },
+    arrowIcon: {
+        justifyContent: 'space-between',
+        // alignItems: 
+        paddingRight: '10%'
+    },
     
     row:{
         flexDirection: 'row',
@@ -676,17 +360,19 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     child:{
-        backgroundColor: 'white',
+        // backgroundColor: 'blue',
         padding:16,
         borderBottomWidth: 1,
         borderColor: "#D5D5D5",
-        width:'60%',
+        // width:'60%',
         marginLeft:30,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        // width: '100%'
 
     },
     notes: {
-        width: '90%',
+        width: '93%',
+        // backgroundColor: 'blue',
         margin: 10,
         height: '35%',
         marginBottom: 20,
@@ -717,13 +403,14 @@ const styles = StyleSheet.create({
 
     appButtonContainer: {
         elevation: 8,
-        backgroundColor:'#AED804',
+        backgroundColor: '#AED804',
         borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 12,
-        width: 200,
-        alignSelf: "center",
-        margin: 20
+        paddingVertical: 25,
+        paddingHorizontal: '10%',
+        width: '80%',
+        // marginLeft: '5%'
+        marginTop: 40
+        
     },
     appButtonText: {
         fontSize: 15,
@@ -738,7 +425,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 12,
-        width: '90%',
+        // width: '90%',
         height: '7%',
         alignSelf: "center",
         margin: 20,

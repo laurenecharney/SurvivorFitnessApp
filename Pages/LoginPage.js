@@ -58,8 +58,6 @@ export default class LoginPage extends React.Component {
         if (keyword === 'Developer') {
             this.setState({developer: true, hidePass: false})
         } else {
-            console.log(keyword)
-            console.log(credentials[keyword])
             this.setState({email: credentials[keyword].email, password: credentials[keyword].pass})
         }
     }
