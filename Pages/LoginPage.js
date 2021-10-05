@@ -6,15 +6,45 @@ import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
 import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
 import {navigateToLocationAdminPage} from '../Utilities/utilities';
+
+const credentials = {
+    "Super Admin": {
+        "userType": "Super Admin",
+        "email": "theo.justin@gmail.olala",
+        "pass": "passwordTheo"
+    },
+    "Location Adm. Trainer": {
+        "userType": "Location Adm. Trainer",
+        "email": "nikitha.shantel@gmail.olala",
+        "pass": "passwordNikitha"
+    },
+    "Location Adm. Dietician": {
+        "userType": "Location Adm. Dietician",
+        "email": "sri.karolyn@gmail.olala",
+        "pass": "passwordSri"
+    },
+    "Trainer": {
+        "userType": "Trainer",
+        "email": "Marciana.Magne@gmail.olala",
+        "pass": "passwordMarciana"
+    },
+    "Dietician": {
+        "userType": "Dietician",
+        "email": "Kapil.Mirjami@gmail.olala",
+        "pass": "passwordKapil"
+    },
+}
+
 export default class LoginPage extends React.Component {
     state = {
         email: "",
         password: "",
-        hidePass: true
+        hidePass: true,
+        developer: false,
     }
 
     clearProfile = () => {
-        this.setState({email: '', password: '', hidePass: true})
+        this.setState({email: '', password: '', hidePass: true,})
     }
     handleEmailChange = email => {
         this.setState({email})
@@ -22,6 +52,14 @@ export default class LoginPage extends React.Component {
 
     handlePasswordChange = password => {
         this.setState({password})
+    }
+
+    handleDeveloperPress = async (keyword) => {
+        if (keyword === 'Developer') {
+            this.setState({developer: true, hidePass: false})
+        } else {
+            this.setState({email: credentials[keyword].email, password: credentials[keyword].pass})
+        }
     }
 
     handleLoginPress = async () => {
@@ -121,14 +159,46 @@ export default class LoginPage extends React.Component {
                             onPress={() => this.setState({hidePass: !hidePass})}
                         />
                     </View>
+
+                    
                     <TouchableOpacity>
                         <Text style={styles.forgot}>Forgot Password?</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress('Developer')}>
+                            <Text style={styles.forgot}>Developer?</Text>
+                        </TouchableOpacity>
+                        {
+                            this.state.developer ? 
+                            <View>
+                                <View style={{flexDirection: 'row'}}>
+                                    <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress('Super Admin')}>
+                                        <Text style={styles.developer}>Super adm.?</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Location Adm. Trainer")}>
+                                        <Text style={styles.developer}>Location Trainer?</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Location Adm. Dietician")}>
+                                        <Text style={styles.developer}>Location dietician?</Text>
+                                    </TouchableOpacity>
+                        
+
+                                </View>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Trainer")}>
+                                            <Text style={styles.developer}>dietician?</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Dietician")}>
+                                            <Text style={styles.developer}>trainer?</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                            </View>
+                            : null
+
+                        }
+                    
+                    
                     <TouchableOpacity style={styles.loginBtn} onPress={() => this.handleLoginPress()}>
                         <Text style={styles.loginText}>Log In</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={styles.loginText}>Signup</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -183,7 +253,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: "right",
         paddingLeft: 200
-
+    },
+    developer: {
+        color: "#AED803",
+        fontSize: 15,
+        paddingLeft: 10,
     },
     loginBtn: {
         width: "45%",
