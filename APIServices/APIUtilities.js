@@ -3,7 +3,11 @@ import { getItem } from "./deviceStorage";
 //this should be an env. variable. Fix this later
 
 //put
-const ENDPOINT = "http://192.168.0.15:8080";
+// const ENDPOINT = "http://10.0.0.222:8080"; //convent
+const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
+// const ENDPOINT = "http://10.66.190.160:8080"; //vuNet - rand
+// const ENDPOINT = "http://192.168.10.85:8080"; //Fido
+
 
 //gets participants with optional query params passed in
 export async function getParticipants(paramName, paramValue) {
@@ -39,6 +43,21 @@ export async function getParticipantByID(id) {
     .then(response => response.json());
   return res.participants;
 }
+
+export async function getAllSessionNotesByParticipantID(id) {
+  const jwt = await getItem();
+  console.log("endpoint: ", ENDPOINT + "/api/v1/participants/" + id + "/trainer-notes")
+  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id + "/trainer-notes", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" 
+    }
+  })
+    .then(response => response.json());
+  console.log(res);
+} 
 
 export async function getTrainers(_locationId) {
   const jwt = await getItem();
