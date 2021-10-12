@@ -189,6 +189,7 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
+                { this.state.edit ?
                 
                 <View style={styles.categoriesContainer}>
                     <Category
@@ -258,8 +259,12 @@ export default class TrainerCheckpointPage  extends Component{
                         expanded={this.state.expanded_treadmill}
                     ></Category>
                 </View>
-                    
-            {/* <View style={styles.wrapper}>      */}
+                    : null
+                }
+
+                { this.state.edit
+                ?
+            
                 <View style={styles.notes}>
                     <Text style = {styles.title}> Notes: </Text>
                     <MultilineInputSaveComponent
@@ -269,10 +274,9 @@ export default class TrainerCheckpointPage  extends Component{
                         changeText = {newValue => this.changeText(newValue)}
                     />
                 </View>
-                
-                    {/* <Text style={{fontSize: 10, padding: 10,margin:10}}>
-                        *If needed, please contact ____ with any concerns or questions.
-                    </Text> */}
+    : null}
+{ this.state.edit
+                ?
                 <View style={styles.notes}>
                     <Text style = {styles.title}> Admin Notes: </Text>
                     <MultilineInputSaveComponent
@@ -284,8 +288,8 @@ export default class TrainerCheckpointPage  extends Component{
                     />
                 </View>
         
-                    
-            {/* </View>    */}
+              :  null }
+           
         </ScrollView>
       
         </View>);
