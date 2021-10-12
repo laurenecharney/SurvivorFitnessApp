@@ -189,6 +189,12 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
+
+                {/* {!this.state.dietician && (
+                        this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1) ? 
+                        <Text> checkpoint </Text>: <Text> session </Text>} */}
+
+                          
                 { this.state.edit ?
                 
                 <View style={styles.categoriesContainer}>
@@ -262,33 +268,8 @@ export default class TrainerCheckpointPage  extends Component{
                     : null
                 }
 
-                { this.state.edit
-                ?
-            
-                <View style={styles.notes}>
-                    <Text style = {styles.title}> Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={this.state.edit}
-                        value={this.state.trainerNotes}
-                        placeholder = "Record Routine, exercise reps ... "
-                        changeText = {newValue => this.changeText(newValue)}
-                    />
-                </View>
-    : null}
-{ this.state.edit
-                ?
-                <View style={styles.notes}>
-                    <Text style = {styles.title}> Admin Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={false}
-                        value={"Lorem Impsum dolor"}
-                        placeholder = ""
-                        changeText = {newValue => this.changeText(newValue)}
-                        //heading = "Admin Notes"
-                    />
-                </View>
-        
-              :  null }
+
+
            
         </ScrollView>
       

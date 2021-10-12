@@ -1,3 +1,4 @@
+// Call this LogSessionPage
 
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.js';
@@ -8,6 +9,11 @@ import { StyleSheet, View} from 'react-native';
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
+
+// LogSessionPage
+    // sideBarComponent
+    // TrainerDieticianHeader
+    // LogSessionComponent
 
 export default class TrainerDieticianSessionWithSidebarPage extends Component{
     constructor(props){
@@ -99,13 +105,14 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     addSession = {()=>this.addSessionTrainer()}
                     />}
                     </View>
-                    {!this.state.dietician && (
+                    <TrainerCheckpointPage session = {this.state.sessionTrainer}/>
+                    {/* {!this.state.dietician && (
                         this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1 ?
                         <TrainerCheckpointPage session = {this.state.sessionTrainer}/> 
                         : <TrainerSession session = {this.state.sessionTrainer}/>
 
                     )
-                    }
+                    } */}
 
                     {this.state.dietician && 
                     <DieticianSession session={this.state.sessionDietician}/>

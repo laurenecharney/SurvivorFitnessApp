@@ -1,3 +1,5 @@
+// DELETE PAGE
+
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TrainerSession from '../Pages/TrainerSession';
 import DieticianSession from '../Pages/DieticianSession';
