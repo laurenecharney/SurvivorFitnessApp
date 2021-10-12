@@ -9,8 +9,8 @@ class ModalRow extends Component{
     render(){
         return (
         <>   
-        {this.props.displayValue && <Text style={{padding:5, fontSize: '15', color: '#AED803'}} > {this.props.displayKey}
-            <Text style={{color: 'black'}}> {this.props.displayValue}</Text> 
+        {this.props.displayValue && <Text style={{paddingBottom:20, fontSize: '15', color: '#AED803'}} > {this.props.displayKey}
+            <Text style={{color: '#797979'}}> {this.props.displayValue}</Text> 
         </Text>}
         </>
         );

@@ -157,9 +157,9 @@ export default class AdminDieticianPage extends Component {
                         <View style={{
                             backgroundColor: "#fff",
                             width: '90%',
-                            height: '25%',
+                            height: '30%',
                             borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeModal()}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
@@ -167,6 +167,7 @@ export default class AdminDieticianPage extends Component {
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
                                         <Text style={{fontSize: '19', color: '#AED803'}} >Dietitian Information</Text>
                                     </View>
+                                    <View style={{padding:6}}></View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                     {[
                                             {displayKey: 'Name:', displayValue: this.state.selectedDietician.value},

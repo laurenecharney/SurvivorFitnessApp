@@ -3,7 +3,7 @@ import { getItem } from "./deviceStorage";
 //this should be an env. variable. Fix this later
 
 //put
-const ENDPOINT = "http://192.168.0.15:8080";
+const ENDPOINT = "http://10.76.245.9:8080";
 
 //gets participants with optional query params passed in
 export async function getParticipants(paramName, paramValue) {
