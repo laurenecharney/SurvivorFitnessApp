@@ -105,7 +105,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     addSession = {()=>this.addSessionTrainer()}
                     />}
                     </View>
-                    <TrainerCheckpointPage session = {this.state.sessionTrainer}/>
+                    <TrainerCheckpointPage session = {this.state.sessionTrainer}
+                    checkpoint={this.state.sessionTrainer == 1 || this.state.sessionTrainer == 12 || this.state.sessionTrainer == 24} />
                     {/* {!this.state.dietician && (
                         this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1 ?
                         <TrainerCheckpointPage session = {this.state.sessionTrainer}/> 

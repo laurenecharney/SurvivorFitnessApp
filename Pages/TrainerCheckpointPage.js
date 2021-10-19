@@ -84,9 +84,11 @@ export default class TrainerCheckpointPage  extends Component{
             HR: "HR",
             BR: "BR",
             trainerNotes: "",
-            edit: false
+            edit: false,
+
 
         }
+        
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
@@ -115,16 +117,16 @@ export default class TrainerCheckpointPage  extends Component{
 
 
     async fetchUser() {
-      console.log("I AM HERE 2")
+    //   console.log("I AM HERE 2")
       const res = await getUser();
-      console.log("I am here 3")
+    //   console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
-      console.log("USER:\n", this.state.user)
-      console.log(JSON.parse(res).locations[0].id) 
-      console.log("I am here 4")
+    //   console.log("USER:\n", this.state.user)
+    //   console.log(JSON.parse(res).locations[0].id) 
+    //   console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
-      console.log("i am here 4")
-      console.log("NOTES:\n", res2)
+    //   console.log("i am here 4")
+    //   console.log("NOTES:\n", res2)
     }
 
     
@@ -169,7 +171,6 @@ export default class TrainerCheckpointPage  extends Component{
             <View style = {styles.container}>
                 {/* <View style={styles.fixedHeader}>
 
-            
                 </View > */}
                 <ScrollView contentContainerStyle = {
 
@@ -189,13 +190,8 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
-
-                {/* {!this.state.dietician && (
-                        this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1) ? 
-                        <Text> checkpoint </Text>: <Text> session </Text>} */}
-
                           
-                { this.state.edit ?
+                { this.props.checkpoint ?
                 
                 <View style={styles.categoriesContainer}>
                     <Category
