@@ -294,63 +294,42 @@ export default class AdminClientPage extends Component {
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{paddingBottom: 20}}>
                                         <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.name || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newName => this.setState({name: newName})}
-                                            />
-                                        }
-
-                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803',paddingBottom: 10}} >Address: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.location || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newLocation => this.setState({location: newLocation})}
-                                            />
-                                        }
-
-                                        </View>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Admin: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.admin || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newAdmin => this.setState({admin: newAdmin})}
-                                            />
-                                        }
-
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
                                         </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
                                         </View>
                                         <TouchableOpacity>
                                             <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
@@ -623,7 +602,7 @@ const styles = StyleSheet.create({
         padding:10,
         borderWidth: 1,
         borderColor: "#E7E7E7",
-        width:'75%',
+        width:'100%',
         borderRadius: 5,
         alignSelf:"center"
 

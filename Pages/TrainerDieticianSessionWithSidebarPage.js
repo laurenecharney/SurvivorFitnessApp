@@ -84,7 +84,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     flex: 2,
                     flexDirection: 'row',
                 }}>
-                    <View style={{ width: '13.5%', paddingTop: 10 }}>
+                    <View style={{ width: '15%' }}>
                     {this.state.dietician && 
                     <SidebarDietician
                         updateSession = {newSession => this.updateSessionDietician(newSession)}
