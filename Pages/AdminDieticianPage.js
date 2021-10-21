@@ -55,6 +55,7 @@ export default class AdminDieticianPage extends Component {
     }
 
     async componentDidMount(){
+        console.log("HELLO HELLO")
         await this.refreshDietitians();
         console.log(await getCurrentRole());
     }
@@ -99,8 +100,10 @@ export default class AdminDieticianPage extends Component {
     render() {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
+                
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Dietitians</Text>
+                    <Text>Hello</Text>
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList

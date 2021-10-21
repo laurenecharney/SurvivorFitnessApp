@@ -1,4 +1,4 @@
-
+// DELETE PAGE 
 import React, { Component } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Sidebar from '../Components/Sidebar.js';

@@ -28,7 +28,7 @@ const Category = (props) => {
             <TouchableOpacity 
             style={styles.categoryRow} 
             onPress={()=>props.toggle()}>
-                            <Text style={[styles.title, styles.font]}>{props.categoryType}</Text>
+                            <Text style={styles.title}>{props.categoryType}</Text>
                             {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
                             <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
             </TouchableOpacity>
@@ -38,8 +38,8 @@ const Category = (props) => {
 
 const Measurement = (props) => {
     return(
-        <View style={styles.child}>
-            <Text style = {{color: "#D5D5D5"}}>{props.measurementName}{" " + props.measurementValue}</Text>
+        <View style={styles.measurement}>
+            <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
         </View>
         
     )
@@ -55,18 +55,18 @@ export default class TrainerCheckpointPage  extends Component{
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: 150,//"Weight (lbs)",
-            BMI: "BMI",
-            body_fat_pct: "Body Fat Percentage",
-            total_body_fat: "Total Body Fat (lbs)",
-            lean_mass: "Lean Mass", 
-            blood_pressure: "Blood Pressure (mm Hg)",
+            weight: "150 lbs",//"Weight (lbs)",
+            BMI: "23.1",
+            body_fat_pct: "15.3%",
+            total_body_fat: "23 lbs",
+            lean_mass: "133 lbs", 
+            blood_pressure: "120/80 mm Hg",
             range_of_motion:  "Range of Motion",
             resting_hr: "Resting HR (bpm)",
-            Abdominal_skin_fold: "Abdominal",
-            ChestSkinFold: "Chest",
-            Midaxillary: "Midaxillary",
-            Subscapular: "Subscapular",
+            Abdominal_skin_fold: "15",
+            ChestSkinFold: "10",
+            Midaxillary: "12",
+            Subscapular: "8",
             Supraillac: "Supraillac",
             Thigh: "Thigh",
             Tricep: "Tricep",
@@ -84,9 +84,11 @@ export default class TrainerCheckpointPage  extends Component{
             HR: "HR",
             BR: "BR",
             trainerNotes: "",
-            edit: false
+            edit: false,
+
 
         }
+        
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
@@ -115,16 +117,16 @@ export default class TrainerCheckpointPage  extends Component{
 
 
     async fetchUser() {
-      console.log("I AM HERE 2")
+    //   console.log("I AM HERE 2")
       const res = await getUser();
-      console.log("I am here 3")
+    //   console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
-      console.log("USER:\n", this.state.user)
-      console.log(JSON.parse(res).locations[0].id) 
-      console.log("I am here 4")
+    //   console.log("USER:\n", this.state.user)
+    //   console.log(JSON.parse(res).locations[0].id) 
+    //   console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
-      console.log("i am here 4")
-      console.log("NOTES:\n", res2)
+    //   console.log("i am here 4")
+    //   console.log("NOTES:\n", res2)
     }
 
     
@@ -169,7 +171,6 @@ export default class TrainerCheckpointPage  extends Component{
             <View style = {styles.container}>
                 {/* <View style={styles.fixedHeader}>
 
-            
                 </View > */}
                 <ScrollView contentContainerStyle = {
 
@@ -189,7 +190,10 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
+                          
+                { this.props.checkpoint ?
                 
+                <View style={styles.categoriesContainer}>
                     <Category
                         categoryType="General Data"
                         toggle={this.toggleExpandGeneral}
@@ -204,17 +208,18 @@ export default class TrainerCheckpointPage  extends Component{
                             </Measurement> 
                             <Measurement
                                 measurementName="BMI"
-                                measurementValue="">
+                                measurementValue={this.state.BMI}>
                             </Measurement>  
                             <Measurement
                                 measurementName="Body Fat Percentage"
-                                measurementValue="">
+                                measurementValue={this.state.body_fat_pct}>
                             </Measurement>  
+                            <Measurement
+                                measurementName="Lean Mass"
+                                measurementValue={this.state.lean_mass}>
+                            </Measurement> 
 
                         </View>               
-                        // <View style={styles.child}>
-                        //     <Text style = {{color: "#D5D5D5"}}>Weight: {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
-                        //     </View>
     
                     }
 
@@ -223,6 +228,28 @@ export default class TrainerCheckpointPage  extends Component{
                         toggle={this.toggleExpandSkinFold}
                         expanded={this.state.expanded_skin_fold}
                     ></Category>
+                    {
+                        this.state.expanded_skin_fold &&
+                        <View style={styles.measurementContainer}>
+                            <Measurement
+                                measurementName="Abdominal"
+                                measurementValue={this.state.Abdominal_skin_fold}>
+                            </Measurement> 
+                            <Measurement
+                                measurementName="Chest"
+                                measurementValue={this.state.ChestSkinFold}>
+                            </Measurement>  
+                            <Measurement
+                                measurementName="Midaxillar"
+                                measurementValue={this.state.Midaxillary}>
+                            </Measurement>  
+                            <Measurement
+                                measurementName="Subscapular"
+                                measurementValue={this.state.Subscapular}>
+                            </Measurement> 
+                        </View>               
+    
+                    }
                     <Category
                         categoryType="Girth Measurements (in)"
                         toggle={this.toggleExpandGirth}
@@ -233,34 +260,13 @@ export default class TrainerCheckpointPage  extends Component{
                         toggle={this.toggleExpandTreadmill}
                         expanded={this.state.expanded_treadmill}
                     ></Category>
-                    
-            {/* <View style={styles.wrapper}>      */}
-                <View style={styles.notes}>
-                    <Text style = {styles.title}> Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={this.state.edit}
-                        value={this.state.trainerNotes}
-                        placeholder = "Record Routine, exercise reps ... "
-                        changeText = {newValue => this.changeText(newValue)}
-                        //heading = "Trainer Notes"
-                    />
-
-                    {/* <Text style={{fontSize: 10, padding: 10,margin:10}}>
-                        *If needed, please contact ____ with any concerns or questions.
-                    </Text> */}
-
-                    <Text style = {styles.title}> Admin Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={false}
-                        value={"Lorem Impsum dolor"}
-                        placeholder = ""
-                        changeText = {newValue => this.changeText(newValue)}
-                        //heading = "Admin Notes"
-                    />
                 </View>
-        
-                    
-            {/* </View>    */}
+                    : null
+                }
+
+
+
+           
         </ScrollView>
       
         </View>);
@@ -308,8 +314,10 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         color: '#838383',
     },
+    categoriesContainer: {
+        paddingVertical: 30
+    },
     categoryContainer: {
-        // backgroundColor: 'blue',
         // padding: 10,
         flexDirection: 'row',
         // justifyContent:'space-between',
@@ -321,9 +329,8 @@ const styles = StyleSheet.create({
         borderColor: "#C9C9C9",
 
     },
-    measurementContainer: {
-        width: "70%"
-    },
+    
+    
     categoryRow: {
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -359,16 +366,22 @@ const styles = StyleSheet.create({
         color: 'white',
         width:'100%'
     },
-    child:{
-        // backgroundColor: 'blue',
-        padding:16,
+    measurementContainer: {
+        width: "80%"
+    },
+    measurement:{
+        padding:10,
         borderBottomWidth: 1,
         borderColor: "#D5D5D5",
-        // width:'60%',
         marginLeft:30,
         flexDirection: 'row',
-        // width: '100%'
 
+    },
+    measurementText: {
+        // color: "black"
+        fontSize: 15,
+        fontWeight:'400',
+        color: '#838383',
     },
     notes: {
         width: '93%',
