@@ -9,5 +9,9 @@ npm-debug.*
 *.orig.*
 web-build/
 
+docker-compose.yml
+APIUtilities.js
+.gitignore
+
 # macOS
 .DS_Store
