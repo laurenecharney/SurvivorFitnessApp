@@ -14,6 +14,7 @@ import MultilineInputSaveComponent from '../Components/MultilineInputSaveCompone
 import DateTextBox from '../Components/DateTextBox'
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
+import { Measurements } from "../Components/Measurements";
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -190,8 +191,12 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
-                          
-                { this.props.checkpoint ?
+
+                <Measurements></Measurements>
+
+                {/* { this.props.checkpoint ?
+
+                
                 
                 <View style={styles.categoriesContainer}>
                     <Category
@@ -223,7 +228,7 @@ export default class TrainerCheckpointPage  extends Component{
     
                     }
 
-                    <Category
+                     <Category
                         categoryType="Skin Fold Tests"
                         toggle={this.toggleExpandSkinFold}
                         expanded={this.state.expanded_skin_fold}
@@ -262,7 +267,7 @@ export default class TrainerCheckpointPage  extends Component{
                     ></Category>
                 </View>
                     : null
-                }
+                } */}
 
 
 
