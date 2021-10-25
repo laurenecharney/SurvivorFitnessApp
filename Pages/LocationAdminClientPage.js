@@ -244,17 +244,17 @@ export default class LocationAdminClientPage extends Component {
                       Name:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Age:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Email:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Phone Number:{" "}
                     </Text>
@@ -270,22 +270,22 @@ export default class LocationAdminClientPage extends Component {
                     }}
                   >
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Type of Cancer:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Treatment Facility:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Surgeries:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Forms of Treatment:{" "}
                     </Text>
@@ -301,7 +301,7 @@ export default class LocationAdminClientPage extends Component {
                     }}
                   >
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Trainer
                     </Text>
@@ -317,17 +317,17 @@ export default class LocationAdminClientPage extends Component {
                       onChangeItem={item => console.log(item.label, item.value)}
                     />
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Dietician:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Start Date:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Goal(s):{" "}
                     </Text>
@@ -343,17 +343,17 @@ export default class LocationAdminClientPage extends Component {
                     }}
                   >
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Physician Notes:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Start Date:{" "}
                     </Text>
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Goal(s):{" "}
                     </Text>
