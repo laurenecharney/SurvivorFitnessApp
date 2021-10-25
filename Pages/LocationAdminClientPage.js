@@ -224,7 +224,7 @@ export default class LocationAdminClientPage extends Component {
                       width: "75%"
                     }}
                   >
-                    <Text style={{ fontSize: "19", color: "#AED803" }}>
+                    <Text style={{ fontSize: 19, color: "#AED803" }}>
                       Participant Information
                     </Text>
                   </View>
@@ -239,7 +239,7 @@ export default class LocationAdminClientPage extends Component {
                     }}
                   >
                     <Text
-                      style={{ padding: 5, fontSize: "15", color: "#797979" }}
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
                     >
                       Name:{" "}
                     </Text>
