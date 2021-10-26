@@ -38,9 +38,10 @@ class Sidebar extends Component {
                 {
                     this.props.sessionsArray.map((item, index) => (
                         <TouchableOpacity
-                            style = {styles.row}>
+                            style = {styles.row}
+                            key = {index}>
                             <TouchableOpacity
-                                key = {item.id}
+                                
                                 style = {styles.numberContainer}
                                 onPress = {() => this.alertItemName(item)}>
                                 <Text style = {styles.text}>
@@ -51,11 +52,12 @@ class Sidebar extends Component {
                     ))
                 }
                 {
-                    this.props.addSessionArray.map((item) => (
+                    this.props.addSessionArray.map((item, index) => (
                         <TouchableOpacity
-                            style = {styles.row}>
+                            style = {styles.row}
+                            key = {index}>
                             <TouchableOpacity
-                                key = {item.id}
+                                
                                 style = {styles.container}
                                 onPress = {() => this.alertAddSession(item)}>
                                 <Text style = {styles.text}>
