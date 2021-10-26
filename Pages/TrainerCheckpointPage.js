@@ -46,7 +46,7 @@ const Measurement = (props) => {
     )
 }
 
-export default class TrainerCheckpointPage  extends Component{
+export default class TrainerCheckpointPage extends Component{
     constructor(props){
         super(props);
 
@@ -191,86 +191,10 @@ export default class TrainerCheckpointPage  extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
-
+                {(this.props.trainerSessionSelected && this.props.isCheckpoint) &&
+                
                 <Measurements></Measurements>
-
-                {/* { this.props.checkpoint ?
-
-                
-                
-                <View style={styles.categoriesContainer}>
-                    <Category
-                        categoryType="General Data"
-                        toggle={this.toggleExpandGeneral}
-                        expanded={this.state.expanded_general}
-                    ></Category>
-                    {
-                        this.state.expanded_general &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Weight"
-                                measurementValue={this.state.weight}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="BMI"
-                                measurementValue={this.state.BMI}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Body Fat Percentage"
-                                measurementValue={this.state.body_fat_pct}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Lean Mass"
-                                measurementValue={this.state.lean_mass}>
-                            </Measurement> 
-
-                        </View>               
-    
-                    }
-
-                     <Category
-                        categoryType="Skin Fold Tests"
-                        toggle={this.toggleExpandSkinFold}
-                        expanded={this.state.expanded_skin_fold}
-                    ></Category>
-                    {
-                        this.state.expanded_skin_fold &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Abdominal"
-                                measurementValue={this.state.Abdominal_skin_fold}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="Chest"
-                                measurementValue={this.state.ChestSkinFold}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Midaxillar"
-                                measurementValue={this.state.Midaxillary}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Subscapular"
-                                measurementValue={this.state.Subscapular}>
-                            </Measurement> 
-                        </View>               
-    
-                    }
-                    <Category
-                        categoryType="Girth Measurements (in)"
-                        toggle={this.toggleExpandGirth}
-                        expanded={this.state.expanded_girth}
-                    ></Category>
-                    <Category
-                        categoryType="6 Minute Treadmill Test"
-                        toggle={this.toggleExpandTreadmill}
-                        expanded={this.state.expanded_treadmill}
-                    ></Category>
-                </View>
-                    : null
-                } */}
-
-
-
+    }
            
         </ScrollView>
       

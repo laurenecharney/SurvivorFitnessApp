@@ -68,6 +68,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.setState({ trainerSessionsArray: joined })
      }
 
+     isCheckpoint(sessionNum){
+        return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
+     }
+
     render(){
         return(
             <View style={styles.container}
@@ -106,18 +110,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     />}
                     </View>
                     <TrainerCheckpointPage session = {this.state.sessionTrainer}
-                    checkpoint={this.state.sessionTrainer == 1 || this.state.sessionTrainer == 12 || this.state.sessionTrainer == 24} />
-                    {/* {!this.state.dietician && (
-                        this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1 ?
-                        <TrainerCheckpointPage session = {this.state.sessionTrainer}/> 
-                        : <TrainerSession session = {this.state.sessionTrainer}/>
-
-                    )
-                    } */}
-
-                    {this.state.dietician && 
-                    <DieticianSession session={this.state.sessionDietician}/>
-                    }
+                    isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
+                    trainerSessionSelected={!this.state.dietician}/>
                 </View>
             </View>
         )
