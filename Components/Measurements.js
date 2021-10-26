@@ -1,4 +1,4 @@
-import React, { Component, useState} from 'react';
+import React, { Component, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -50,26 +50,24 @@ export const Measurements = ({ onPress, title }) => {
         this.setState({expanded_treadmill : expanded_treadmill})
     }
 
-    const Measurement = ({item, }) => {
-        console.log(item)
-        console.log(item.name)
-        console.log("Measurement Name: ",data[item.name])
+    const Measurement = ({measurement, id, initialValue, updateValue}) => {
+        const [value, onChangeValue] = useState(initialValue);
+
         return(
             <View style={styles.measurement}>
-                <Text style = {styles.measurementText}>{item.measurement}{": " + data[item.id]}</Text>
+                <Text style = {styles.measurementText}>{measurement}{": "}</Text>
+                <TextInput 
+                    style={[styles.measurementText, {backgroundColor: '#DBF3FA', paddingHorizontal: 10}]}
+                    value={value}
+                    onChangeText={onChangeValue}
+                    onEndEditing={() => updateValue(id, value)}
+                ></TextInput>
             </View>
             
         )
     }
 
-    const Category = ({categoryType, toggle}) => {
-        const [expanded, setExpanded] = useState(false);
-    
-        const toggleExpansion = () => {
-            setExpanded(!expanded)
-            console.log("EXPAND MEASUREMENTS")
-        }
-    
+    const Category = ({categoryType, toggle, expanded}) => {
         return(
             <View style={styles.categoryContainer}>
                 <TouchableOpacity 
@@ -81,6 +79,12 @@ export const Measurements = ({ onPress, title }) => {
                 </TouchableOpacity>
             </View>
         )
+    }
+
+    const updateValue = (measurementId, newValue) => {
+        const temp = data
+        temp[measurementId] = newValue
+        setData[temp]
     }
 
     return (
@@ -95,42 +99,38 @@ export const Measurements = ({ onPress, title }) => {
 
                     </Category>
                     {
-                        expanded_general &&
+                        !expanded_general &&
 
                         <View style={styles.measurementContainer}>
-                            <FlatList
-                                data={labels.generalData}
-                                renderItem={Measurement}
-                                keyExtractor={item => item.id}
-                            />
-
+                            <Measurement
+                                measurement="Weight"
+                                id="weight"
+                                initialValue = {data.weight}
+                                updateValue={updateValue}
+                                measurementValue={data.weight}>
+                            </Measurement> 
+                            <Measurement
+                                measurement="BMI"
+                                id="BMI"
+                                measurementValue={data.BMI}>
+                            </Measurement>  
+                            <Measurement
+                                measurement="Body Fat Percentage"
+                                id="body_fat_pct"
+                                measurementValue={data.body_fat_pct}>
+                            </Measurement>  
+                            <Measurement
+                                measurement="Lean Mass"
+                                id="lean_mass"
+                                measurementValue={data.lean_mass}>
+                            </Measurement> 
                         </View>
                         
 
                     }
                     {
                         // expanded_general &&
-                        // <View style={styles.measurementContainer}>
-                        //     <Measurement
-                        //         name="Weight"
-                        //         strID="weight"
-                        //         measurementValue={data.weight}>
-                        //     </Measurement> 
-                        //     <Measurement
-                        //         name="BMI"
-                        //         strID="BMI"
-                        //         measurementValue={data.BMI}>
-                        //     </Measurement>  
-                        //     <Measurement
-                        //         name="Body Fat Percentage"
-                        //         strID="body_fat_pct"
-                        //         measurementValue={data.body_fat_pct}>
-                        //     </Measurement>  
-                        //     <Measurement
-                        //         name="Lean Mass"
-                        //         strID="lean_mass"
-                        //         measurementValue={data.lean_mass}>
-                        //     </Measurement> 
+                       
 
                         // </View>               
     
@@ -214,10 +214,11 @@ const styles = StyleSheet.create({
         color: '#838383',
     },
     measurementContainer: {
-        width: "80%"
+        // width: "80%"
     },
     measurement:{
-        padding:10,
+        // backgroundColor: "blue",
+        paddingVertical:20,
         borderBottomWidth: 1,
         borderColor: "#D5D5D5",
         marginLeft:30,
