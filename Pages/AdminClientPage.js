@@ -299,43 +299,43 @@ export default class AdminClientPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
                                         </View>
                                         <TouchableOpacity>
                                             <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
