@@ -12,6 +12,8 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
+import Modal from 'react-native-modal'
+import DatePicker from 'react-native-date-picker'
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 
@@ -41,11 +43,10 @@ const Measurement = (props) => {
         <View style={styles.child}>
             <Text style = {{color: "#D5D5D5"}}>{props.measurementName}{" " + props.measurementValue}</Text>
         </View>
-        
     )
 }
 
-export default class TrainerCheckpointPage  extends Component{
+export default class TrainerCheckpointPage extends Component {
     constructor(props){
         super(props);
 
@@ -76,7 +77,7 @@ export default class TrainerCheckpointPage  extends Component{
             ChestGirth: "Chest",
             Hip: "Hip",
             Shoulders: "Shoulders",
-           ThighGirth: "Thigh",
+            ThighGirth: "Thigh",
             Waist: "Waist",
             Total_Inches_Lost: "Total Inches Lost",
             Distance: "Distance",
@@ -84,13 +85,22 @@ export default class TrainerCheckpointPage  extends Component{
             HR: "HR",
             BR: "BR",
             trainerNotes: "",
+            isDateConfirmModalVisible: false,
+            isDatePickerModalVisible: false,
+            sessionDate: new Date(),
             edit: false
-
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+
+    closeDateConfirmModal = () => {
+        this.setState({
+            isDateConfirmModalVisible: false,
+        })
+    }
+
     changeText = (newValue)=>{
         this.setState({trainerNotes: newValue});
     }
@@ -120,14 +130,12 @@ export default class TrainerCheckpointPage  extends Component{
       console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
       console.log("USER:\n", this.state.user)
-      console.log(JSON.parse(res).locations[0].id) 
+      console.log(JSON.parse(res).locations[0].id)
       console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
       console.log("i am here 4")
       console.log("NOTES:\n", res2)
     }
-
-    
 
 
     async componentDidMount() {
@@ -135,7 +143,7 @@ export default class TrainerCheckpointPage  extends Component{
         // await this.refreshList();
         await this.fetchUser();
       }
-    
+
     //   async refreshList() {
     //     try {
     //       const locationId =
@@ -169,7 +177,6 @@ export default class TrainerCheckpointPage  extends Component{
             <View style = {styles.container}>
                 {/* <View style={styles.fixedHeader}>
 
-            
                 </View > */}
                 <ScrollView contentContainerStyle = {
 
@@ -180,16 +187,95 @@ export default class TrainerCheckpointPage  extends Component{
                         // backgroundColor: 'green',
                         alignItems: 'center'
                     }
-                } 
+                }
                     style={{maxHeight: '100%', width: '85%'}}
                 >
                     <AppButton
-                            title = {this.state.edit ? "Save" : "Log Session"}
-                            onPress={()=>this.setState({edit: !this.state.edit})}
-                        />   
-                    
-                        <DateTextBox edit = {this.state.edit}/>
-                
+                        title = {this.state.edit ? "Save" : "Log Session (yeehaw)"}
+                        onPress={()=>this.setState({edit: !this.state.edit})}
+                    />
+                    <View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({
+                                    isDateConfirmModalVisible: true,
+                                })
+                            }}
+                        >
+                            <Text style= {styles.notes}> {this.state.sessionDate.toString()} </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Modal
+                        propagateSwipe={true}
+                        animationIn="slideInUp"
+                        animationOut="slideOutDown"
+                        onBackdropPress={() => this.closeDateConfirmModal()}
+                        onSwipeComplete={() => this.closeDateConfirmModal()}
+                        isVisible={this.state.isDateConfirmModalVisible}
+                    >
+                        <View
+                            style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center"
+                            }}
+                        >
+                            <View
+                            style={{
+                                backgroundColor: "#fff",
+                                width: "90%",
+                                height: "50%",
+                                borderRadius: "19"
+                            }}
+                            >
+                                <TouchableOpacity
+                                    style={{ paddingLeft: 260, paddingTop: 10 }}
+                                    onPress={() => this.closeDateConfirmModal()}
+                                >
+                                    <Icon name={"close"} color={"#E4E4E4"} size={32} />
+                                </TouchableOpacity>
+                                <View style={{ flex: 1 }}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                        <View style={{ paddingBottom: 10, width: "100%" }}>
+                                            <Text style={styles.modalText}>
+                                            {"Confirm Date"}
+                                            </Text>
+                                        </View>
+                                        <View>
+                                            <TouchableOpacity
+                                                style={styles.input}
+                                                onPress={() => this.setState({ isDatePickerModalVisible: true })}
+                                            >
+                                                <Text>{this.state.sessionDate.toString()}</Text>
+                                            </TouchableOpacity>
+                                            <DatePicker
+                                                modal
+                                                open={this.state.isDatePickerModalVisible}
+                                                date={this.state.sessionDate}
+                                                onConfirm={(enteredDate) => {
+                                                    this.setState({
+                                                        isDatePickerModalVisible: false,
+                                                        sessionDate: enteredDate,
+                                                    })
+                                                }}
+                                                onCancel={() => {
+                                                    this.setState({
+                                                        isDatePickerModalVisible: false,
+                                                    })
+                                                }}
+                                            />
+                                        </View>
+                                        <View style={{ flexDirection: "horizontal", marginTop: 20 }}>
+                                            <AppButton title={"Log"} />
+                                            <AppButton title={"Cancel"} />
+                                        </View>
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+
                     <Category
                         categoryType="General Data"
                         toggle={this.toggleExpandGeneral}
