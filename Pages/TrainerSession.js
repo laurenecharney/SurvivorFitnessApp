@@ -60,68 +60,11 @@ changeText = (newValue)=>{
             style={{maxHeight: '100%'}}
             >
                 <AppButton
-                            title = {this.state.edit ? "Save%%%" : "Log Session%%%"}
+                            title = {this.state.edit ? "Save" : "Log Session"}
                             onPress={()=> this.setState({edit: !this.state.edit, isModalVisible: true})}
                         />
 
-                <Modal
-                propagateSwipe={true}
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                onBackdropPress={() => this.closeAddModal()}
-                onSwipeComplete={() => this.closeAddModal()}
-                isVisible={this.state.isAddModalVisible}
-                >
-                    <View
-                        style={{
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center"
-                        }}
-                    >
-                        <View
-                        style={{
-                            backgroundColor: "#fff",
-                            width: "90%",
-                            height: "50%",
-                            borderRadius: "19"
-                        }}
-                        >
-                        <TouchableOpacity
-                            style={{ paddingLeft: 260, paddingTop: 10 }}
-                            onPress={() => this.closeAddModal()}
-                        >
-                            <Icon name={"close"} color={"#E4E4E4"} size={32} />
-                        </TouchableOpacity>
-                        <View style={{ flex: 1 }}>
-                            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                            <View style={{ paddingBottom: 10, width: "100%" }}>
-                                <Text style={styles.modalText}>
-                                {"Confirm Date"}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={styles.childText}>Add DatePicker Here</Text>
-                                {/* <View style={styles.child}>
-                                <TextInput
-                                    style={styles.input}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid="transparent"
-                                    color="black"
-                                    autoCapitalize="sentences"
-                                />
-                                </View> */}
-                            </View>
-                            <View style={{ marginTop: 20 }}>
-                                <AppButton title={"Log"} />
-                                <AppButton title={"Cancel"} />
-                            </View>
-                            </ScrollView>
-                        </View>
-                        </View>
-                    </View>
-                </Modal>
+                {/*Modal wuz here*/}
 
                 <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
