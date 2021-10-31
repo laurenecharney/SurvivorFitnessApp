@@ -55,7 +55,7 @@ export default class AdminClientPage extends Component {
                  let newI = item;
 
                  newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-                 newI.id = parseInt(item.id);
+                 newI.key = parseInt(item.id);
                  newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
                  newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
                  newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
@@ -65,8 +65,7 @@ export default class AdminClientPage extends Component {
                 })})
            
         } catch (e){
-            console.log(e);
-            alert("Could not fetch participants data");
+            console.log("Error fetching participants:\n", e);
         }
 
     }
@@ -131,6 +130,7 @@ export default class AdminClientPage extends Component {
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Participants</Text>
+
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
                             <Text style={styles.addButtonText}>+</Text>
@@ -141,8 +141,10 @@ export default class AdminClientPage extends Component {
                 <AlphabetList
                     data={this.state.calls}
                     indexLetterColor={'#AED803'}
-                    renderCustomSectionHeader={(section) => (
-                        <View style={{visibility: 'hidden'}}/>
+                    renderCustomSectionHeader={(section, i) => (
+                        <View 
+                            
+                        style={{visibility: 'hidden'}}/>
                         // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
                         // <View style={styles.sectionHeaderContainer}>
                         //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>

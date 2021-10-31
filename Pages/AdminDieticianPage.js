@@ -55,7 +55,6 @@ export default class AdminDieticianPage extends Component {
     }
 
     async componentDidMount(){
-        console.log("HELLO HELLO")
         await this.refreshDietitians();
         console.log(await getCurrentRole());
     }
@@ -65,13 +64,12 @@ export default class AdminDieticianPage extends Component {
             const locationId = this.props.route.params && this.props.route.params.locationId ? 
             this.props.route.params.locationId : null;
             const arr = await getDietitians(locationId);
-            console.log("REFRESH DIETITIANS")
             this.setState({
                calls: arr.map(
                 item => {
                     let newI = item;
                     newI.value = item.firstName + " " + item.lastName
-                    newI.id = parseInt(item.id)
+                    newI.key = parseInt(item.id)
                     newI.gym = item.locations[0] ? item.locations[0].name : '';
                     return newI;
                 }
@@ -177,8 +175,9 @@ export default class AdminDieticianPage extends Component {
                                             {displayKey: 'Affiliate Location:', displayValue: this.state.selectedDietician.gym},
                                             {displayKey: 'Phone Number:', displayValue: this.state.selectedDietician.phoneNumber},
                                             {displayKey: 'Email', displayValue: this.state.selectedDietician.email}
-                                        ].map(row => 
+                                        ].map((row, i) => 
                                             <ModalRow 
+                                            key={i}
                                             displayKey={row.displayKey}
                                             displayValue={row.displayValue}/>
                                         

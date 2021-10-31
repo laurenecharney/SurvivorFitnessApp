@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
 import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
-import {navigateToLocationAdminPage} from '../Utilities/utilities';
+
 
 const credentials = {
     "Super Admin": {
@@ -63,15 +63,12 @@ export default class LoginPage extends React.Component {
     }
 
     handleLoginPress = async () => {
-        console.log("LOGIN")
         try {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
             await Promise.all[saveItem("id_token", res.jwt),
             saveUserInfo(res.user)];
-            console.log("LOGIN RESULT\n", res)
             if (res.user.roles.includes('SUPER_ADMIN')){
-                console.log("role: SUPER ADMIN")
                 this.props.navigation.replace('SuperAdminPage');
                 await saveCurrentRole('SUPER_ADMIN');
             } else if (res.user.roles.includes('DIETITIAN')){
@@ -88,7 +85,6 @@ export default class LoginPage extends React.Component {
 
             } else {
                 const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
-                console.log("role: ADMIN,", role)
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: "Participants",
                     params: {
@@ -107,9 +103,7 @@ export default class LoginPage extends React.Component {
             alert("Could not log in. Please try again later.");
         }
         } catch (e){
-            alert(e);
-            console.log(e);
-            // alert("Could not log in. Please try again later.");
+            console.log("Error logging in:\n", e);
         }
 
     }

@@ -95,19 +95,21 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     flexDirection: 'row',
                 }}>
                     <View style={{ width: '15%' }}>
-                    {this.state.dietician && 
-                    <SidebarDietician
-                        updateSession = {newSession => this.updateSessionDietician(newSession)}
-                        sessionsArray = {this.state.dieticianSessionsArray}
+                    {this.state.dietician ? 
+                        <Sidebar
+                            updateSession = {newSession => this.updateSessionDietician(newSession)}
+                            sessionsArray = {this.state.dieticianSessionsArray}
+                            addSessionArray = {this.state.addSessionArray}
+                            addSession = {()=>this.addSessionDietician()}
+                        />
+                        :
+                        <Sidebar
+                        updateSession={newSession=>this.updateSessionTrainer(newSession)}
+                        sessionsArray = {this.state.trainerSessionsArray}
                         addSessionArray = {this.state.addSessionArray}
-                        addSession = {()=>this.addSessionDietician()}
-                    />}
-                    {!this.state.dietician && <Sidebar
-                    updateSession={newSession=>this.updateSessionTrainer(newSession)}
-                    sessionsArray = {this.state.trainerSessionsArray}
-                    addSessionArray = {this.state.addSessionArray}
-                    addSession = {()=>this.addSessionTrainer()}
-                    />}
+                        addSession = {()=>this.addSessionTrainer()}
+                        />
+                    }
                     </View>
                     <TrainerCheckpointPage session = {this.state.sessionTrainer}
                     isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
