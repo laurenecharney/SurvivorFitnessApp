@@ -119,10 +119,10 @@ export default class TrainerCheckpointPage extends Component{
                         />   
                     
                         <DateTextBox edit = {this.state.edit}/>
-                {(this.props.trainerSessionSelected && this.props.isCheckpoint) &&
-                
-                <Measurements></Measurements>
-    }
+                {
+                    (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
+                    <Measurements></Measurements>
+                }
            
         </ScrollView>
       
