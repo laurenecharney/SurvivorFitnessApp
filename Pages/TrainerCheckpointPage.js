@@ -131,7 +131,7 @@ export default class TrainerCheckpointPage extends Component {
             isDateConfirmModalVisible: false,
         })
     }
-    closeDateConfirmModal = () => {
+    closeDatePickerModal = () => {
         this.setState({
             isDatePickerModalVisible: false,
         })
