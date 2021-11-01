@@ -22,30 +22,6 @@ const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const Category = (props) => {
-
-    return(
-        <View style={styles.categoryContainer}>
-            <TouchableOpacity 
-            style={styles.categoryRow} 
-            onPress={()=>props.toggle()}>
-                            <Text style={styles.title}>{props.categoryType}</Text>
-                            {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
-                            <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-            </TouchableOpacity>
-        </View>
-    )
-}
-
-const Measurement = (props) => {
-    return(
-        <View style={styles.measurement}>
-            <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
-        </View>
-        
-    )
-}
-
 export default class TrainerCheckpointPage extends Component{
     constructor(props){
         super(props);
@@ -56,34 +32,6 @@ export default class TrainerCheckpointPage extends Component{
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: "150 lbs",//"Weight (lbs)",
-            BMI: "23.1",
-            body_fat_pct: "15.3%",
-            total_body_fat: "23 lbs",
-            lean_mass: "133 lbs", 
-            blood_pressure: "120/80 mm Hg",
-            range_of_motion:  "Range of Motion",
-            resting_hr: "Resting HR (bpm)",
-            Abdominal_skin_fold: "15",
-            ChestSkinFold: "10",
-            Midaxillary: "12",
-            Subscapular: "8",
-            Supraillac: "Supraillac",
-            Thigh: "Thigh",
-            Tricep: "Tricep",
-            Abdominal_girth: "Abdominal",
-            Biceps: "Biceps",
-            Calf: "Calf",
-            ChestGirth: "Chest",
-            Hip: "Hip",
-            Shoulders: "Shoulders",
-           ThighGirth: "Thigh",
-            Waist: "Waist",
-            Total_Inches_Lost: "Total Inches Lost",
-            Distance: "Distance",
-            Speed: "Speed",
-            HR: "HR",
-            BR: "BR",
             trainerNotes: "",
             edit: false,
 
@@ -99,23 +47,6 @@ export default class TrainerCheckpointPage extends Component{
     }
 
 
-    toggleExpandGeneral=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_general : !this.state.expanded_general})
-      }
-    toggleExpandSkinFold=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_skin_fold : !this.state.expanded_skin_fold})
-    }
-    toggleExpandGirth=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_girth : !this.state.expanded_girth})
-    }
-    toggleExpandTreadmill=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_treadmill : !this.state.expanded_treadmill})
-    }
-
 
     async fetchUser() {
     //   console.log("I AM HERE 2")
@@ -129,9 +60,6 @@ export default class TrainerCheckpointPage extends Component{
     //   console.log("i am here 4")
     //   console.log("NOTES:\n", res2)
     }
-
-    
-
 
     async componentDidMount() {
         //TODO
