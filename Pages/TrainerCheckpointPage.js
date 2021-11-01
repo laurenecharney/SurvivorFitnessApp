@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
 import Modal from 'react-native-modal'
-import DatePicker from 'react-native-date-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 
@@ -22,7 +22,38 @@ const AppButton = ({ onPress, title }) => (
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
-
+const SmallAppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+const SessionModal = () => {
+    <Modal
+    propagateSwipe={true}
+    animationIn="slideInUp"
+    animationOut="slideOutDown"
+    >
+        <View
+            style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+            }}
+        >
+            <View
+            style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: "50%",
+                borderRadius: "19",
+                alignItems: "center", justifyContent: 'space-around'
+            }}
+            >
+            </View>
+        </View>
+    </Modal>
+}
 const Category = (props) => {
 
     return(
@@ -100,6 +131,11 @@ export default class TrainerCheckpointPage extends Component {
             isDateConfirmModalVisible: false,
         })
     }
+    closeDateConfirmModal = () => {
+        this.setState({
+            isDatePickerModalVisible: false,
+        })
+    }
 
     changeText = (newValue)=>{
         this.setState({trainerNotes: newValue});
@@ -125,16 +161,9 @@ export default class TrainerCheckpointPage extends Component {
 
 
     async fetchUser() {
-      console.log("I AM HERE 2")
       const res = await getUser();
-      console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
-      console.log("USER:\n", this.state.user)
-      console.log(JSON.parse(res).locations[0].id)
-      console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
-      console.log("i am here 4")
-      console.log("NOTES:\n", res2)
     }
 
 
@@ -191,26 +220,15 @@ export default class TrainerCheckpointPage extends Component {
                     style={{maxHeight: '100%', width: '85%'}}
                 >
                     <AppButton
-                        title = {this.state.edit ? "Save" : "Log Session (yeehaw)"}
-                        onPress={()=>this.setState({edit: !this.state.edit})}
+                        title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                        onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
                     />
-                    <View>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.setState({
-                                    isDateConfirmModalVisible: true,
-                                })
-                            }}
-                        >
-                            <Text style= {styles.notes}> {this.state.sessionDate.toString()} </Text>
-                        </TouchableOpacity>
-                    </View>
                     <Modal
                         propagateSwipe={true}
                         animationIn="slideInUp"
                         animationOut="slideOutDown"
-                        onBackdropPress={() => this.closeDateConfirmModal()}
-                        onSwipeComplete={() => this.closeDateConfirmModal()}
+                        onBackdropPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                        onSwipeComplete={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
                         isVisible={this.state.isDateConfirmModalVisible}
                     >
                         <View
@@ -225,51 +243,100 @@ export default class TrainerCheckpointPage extends Component {
                             style={{
                                 backgroundColor: "#fff",
                                 width: "90%",
-                                height: "50%",
-                                borderRadius: "19"
+                                height: "40%",
+                                borderRadius: "19",
+                                alignItems: "center", justifyContent: 'space-around'
                             }}
                             >
                                 <TouchableOpacity
                                     style={{ paddingLeft: 260, paddingTop: 10 }}
-                                    onPress={() => this.closeDateConfirmModal()}
+                                    onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
                                 >
                                     <Icon name={"close"} color={"#E4E4E4"} size={32} />
                                 </TouchableOpacity>
-                                <View style={{ flex: 1 }}>
-                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                        <View style={{ paddingBottom: 10, width: "100%" }}>
-                                            <Text style={styles.modalText}>
-                                            {"Confirm Date"}
+                                <View style={{flex: 1, width: '100%'}}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+                                        <Text style={styles.heading}>
+                                        {"Select Date"}
+                                        </Text>
+                                        {/* <DateTimePicker
+                                                    style={{height: 70, width: 120}}
+                                                    value={this.state.sessionDate}
+                                                    mode="date"
+                                                    display="calendar"
+                                                    onChange={(event, enteredDate) => {
+                                                        this.setState({
+                                                            //isDatePickerModalVisible: false,
+                                                            sessionDate: enteredDate,
+                                                        })
+                                                    }}
+                                                    /> */}
+                                        <TouchableOpacity
+                                            style={{marginTop: 20, width: '80%', borderWidth: 1, borderRadius: 10, borderColor: 'gray'}}
+                                            onPress={() => this.setState({ isDatePickerModalVisible: true })}
+                                        >
+                                            <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                                            <Text style = {{margin: 10}}>
+                                                {this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
                                             </Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity
-                                                style={styles.input}
-                                                onPress={() => this.setState({ isDatePickerModalVisible: true })}
+                                            <Text style = {{margin: 10, color: '#AED804', fontWeight: 'bold', fontSize: 11}}>
+                                                {'Change'}
+                                            </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <Modal
+                                            propagateSwipe={true}
+                                            animationIn="slideInUp"
+                                            animationOut="slideOutDown"
+                                            onBackdropPress={() => this.closeDatePickerModal()}
+                                            onSwipeComplete={() => this.closeDatePickerModal()}
+                                            isVisible={this.state.isDatePickerModalVisible}
+                                        >
+                                            <View
+                                                style={{
+                                                flex: 1,
+                                                flexDirection: "column",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                                }}
                                             >
-                                                <Text>{this.state.sessionDate.toString()}</Text>
-                                            </TouchableOpacity>
-                                            <DatePicker
-                                                modal
-                                                open={this.state.isDatePickerModalVisible}
-                                                date={this.state.sessionDate}
-                                                onConfirm={(enteredDate) => {
-                                                    this.setState({
-                                                        isDatePickerModalVisible: false,
-                                                        sessionDate: enteredDate,
-                                                    })
+                                                <View
+                                                style={{
+                                                    backgroundColor: "#fff",
+                                                    width: "90%",
+                                                    height: "50%",
+                                                    borderRadius: "19",
+                                                    alignItems: "center"
                                                 }}
-                                                onCancel={() => {
-                                                    this.setState({
-                                                        isDatePickerModalVisible: false,
-                                                    })
-                                                }}
-                                            />
+                                                >
+                                                    <DateTimePicker
+                                                    style={{width: 300}}
+                                                    value={this.state.sessionDate}
+                                                    mode="date"
+                                                    display="spinner"
+                                                    onChange={(event, enteredDate) => {
+                                                        this.setState({
+                                                            //isDatePickerModalVisible: false,
+                                                            sessionDate: enteredDate,
+                                                        })
+                                                    }}
+                                                    />
+                                                    <SmallAppButton
+                                                    style = {{paddingVertical: 15}}
+                                                    title={"Confirm"}
+                                                    onPress={()=>this.setState({edit: true, isDatePickerModalVisible: false})}
+                                                    />
+                                                </View>
+                                            </View>
+                                        </Modal>
+                                        <View style={{marginTop: 20}}>
+                                            <SmallAppButton
+                                            style = {{paddingVertical: 15, marginTop: 30}}
+                                            title={"Log"}
+                                            onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                                />
                                         </View>
-                                        <View style={{ flexDirection: "horizontal", marginTop: 20 }}>
-                                            <AppButton title={"Log"} />
-                                            <AppButton title={"Cancel"} />
-                                        </View>
+
                                     </ScrollView>
                                 </View>
                             </View>
@@ -498,12 +565,23 @@ const styles = StyleSheet.create({
         marginTop: 40
         
     },
+    appButtonContainerSmall: {
+        elevation: 8,
+        backgroundColor: '#AED804',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: '20%',
+        //width: '80%',
+        // marginLeft: '5%'
+        marginTop: 10
+        
+    },
     appButtonText: {
         fontSize: 15,
         color: "#fff",
         fontWeight: "bold",
         alignSelf: "center",
-        textTransform: "uppercase"
+        //textTransform: "uppercase"
     },
     sessionNumberContainer: {
         elevation: 8,
