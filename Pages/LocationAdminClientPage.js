@@ -37,7 +37,7 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isListOpen: false,
-      calls: []
+      participants: []
     };
   }
 
@@ -47,7 +47,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   isDietitian() {
-    console.log(this.props.route.params)
     return (
       this.props.route.params &&
       this.props.route.params.userType === "DIETITIAN"
@@ -55,6 +54,7 @@ export default class LocationAdminClientPage extends Component {
   }
 
   async refreshParticipants() {
+    console.log("refresh participants - locationAdminClientPage")
     try {
       const locationId = this.props.route.params
         ? this.props.route.params.locationId
@@ -62,14 +62,14 @@ export default class LocationAdminClientPage extends Component {
       const res =  
       this.isDietitian() ? await getParticipants("dietitianOfficeId", locationId) : await getParticipants("gymId", locationId);
       this.setState({
-        calls: res.map(item => {
+        participants: res.map(item => {
           let newI = item;
 
           newI.value =
             item.firstName && item.lastName
               ? item.firstName + " " + item.lastName
               : "";
-          newI.id = parseInt(item.id);
+          newI.key = parseInt(item.id);
           newI.trainer = item.trainer
             ? item.trainer.firstName + " " + item.trainer.lastName
             : "";
@@ -80,7 +80,7 @@ export default class LocationAdminClientPage extends Component {
         })
       });
     } catch (e) {
-      console.log(e);
+      console.log("Error fetching participants", e);
       alert("Could not fetch participants data");
     }
   }
@@ -129,7 +129,7 @@ export default class LocationAdminClientPage extends Component {
         </View>
         <View style={styles.listContainer}>
           <AlphabetList
-            data={this.state.calls}
+            data={this.state.participants}
             indexLetterColor={"#AED803"}
             renderCustomSectionHeader={section => (
               <View style={{ visibility: "hidden" }} />
@@ -138,9 +138,9 @@ export default class LocationAdminClientPage extends Component {
               //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
               // </View>
             )}
-            renderCustomItem={item => (
-              <ScrollView>
-                <View style={styles.row}>
+            renderCustomItem={(item, i) => (
+              // <ScrollView key={i}>
+                <View style={styles.row} key={i}>
                   <View>
                     <View style={styles.nameContainer}>
                       <TouchableOpacity
@@ -179,7 +179,7 @@ export default class LocationAdminClientPage extends Component {
                     </View>
                   </View>
                 </View>
-              </ScrollView>
+              // </ScrollView>
             )}
           />
         </View>

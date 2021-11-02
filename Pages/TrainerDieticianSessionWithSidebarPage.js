@@ -68,6 +68,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.setState({ trainerSessionsArray: joined })
      }
 
+     isCheckpoint(sessionNum){
+        return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
+     }
+
     render(){
         return(
             <View style={styles.container}
@@ -91,33 +95,25 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     flexDirection: 'row',
                 }}>
                     <View style={{ width: '15%' }}>
-                    {this.state.dietician && 
-                    <SidebarDietician
-                        updateSession = {newSession => this.updateSessionDietician(newSession)}
-                        sessionsArray = {this.state.dieticianSessionsArray}
+                    {this.state.dietician ? 
+                        <Sidebar
+                            updateSession = {newSession => this.updateSessionDietician(newSession)}
+                            sessionsArray = {this.state.dieticianSessionsArray}
+                            addSessionArray = {this.state.addSessionArray}
+                            addSession = {()=>this.addSessionDietician()}
+                        />
+                        :
+                        <Sidebar
+                        updateSession={newSession=>this.updateSessionTrainer(newSession)}
+                        sessionsArray = {this.state.trainerSessionsArray}
                         addSessionArray = {this.state.addSessionArray}
-                        addSession = {()=>this.addSessionDietician()}
-                    />}
-                    {!this.state.dietician && <Sidebar
-                    updateSession={newSession=>this.updateSessionTrainer(newSession)}
-                    sessionsArray = {this.state.trainerSessionsArray}
-                    addSessionArray = {this.state.addSessionArray}
-                    addSession = {()=>this.addSessionTrainer()}
-                    />}
+                        addSession = {()=>this.addSessionTrainer()}
+                        />
+                    }
                     </View>
                     <TrainerCheckpointPage session = {this.state.sessionTrainer}
-                    checkpoint={this.state.sessionTrainer == 1 || this.state.sessionTrainer == 12 || this.state.sessionTrainer == 24} />
-                    {/* {!this.state.dietician && (
-                        this.state.sessionTrainer % 12 == 0 || this.state.sessionTrainer == 1 ?
-                        <TrainerCheckpointPage session = {this.state.sessionTrainer}/> 
-                        : <TrainerSession session = {this.state.sessionTrainer}/>
-
-                    )
-                    } */}
-
-                    {this.state.dietician && 
-                    <DieticianSession session={this.state.sessionDietician}/>
-                    }
+                    isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
+                    trainerSessionSelected={!this.state.dietician}/>
                 </View>
             </View>
         )

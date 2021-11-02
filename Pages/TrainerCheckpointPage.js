@@ -16,17 +16,20 @@ import Modal from 'react-native-modal'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
+import { Measurements } from "../Components/Measurements";
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
+
 const SmallAppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
+
 const SessionModal = () => {
     <Modal
     propagateSwipe={true}
@@ -54,67 +57,15 @@ const SessionModal = () => {
         </View>
     </Modal>
 }
-const Category = (props) => {
-
-    return(
-        <View style={styles.categoryContainer}>
-            <TouchableOpacity 
-            style={styles.categoryRow} 
-            onPress={()=>props.toggle()}>
-                            <Text style={styles.title}>{props.categoryType}</Text>
-                            {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
-                            <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-            </TouchableOpacity>
-        </View>
-    )
-}
-
-const Measurement = (props) => {
-    return(
-        <View style={styles.measurement}>
-            <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
-        </View>
-    )
-}
-
 export default class TrainerCheckpointPage extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             user: {},
             expanded_general: false,
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: "150 lbs",//"Weight (lbs)",
-            BMI: "23.1",
-            body_fat_pct: "15.3%",
-            total_body_fat: "23 lbs",
-            lean_mass: "133 lbs", 
-            blood_pressure: "120/80 mm Hg",
-            range_of_motion:  "Range of Motion",
-            resting_hr: "Resting HR (bpm)",
-            Abdominal_skin_fold: "15",
-            ChestSkinFold: "10",
-            Midaxillary: "12",
-            Subscapular: "8",
-            Supraillac: "Supraillac",
-            Thigh: "Thigh",
-            Tricep: "Tricep",
-            Abdominal_girth: "Abdominal",
-            Biceps: "Biceps",
-            Calf: "Calf",
-            ChestGirth: "Chest",
-            Hip: "Hip",
-            Shoulders: "Shoulders",
-            ThighGirth: "Thigh",
-            Waist: "Waist",
-            Total_Inches_Lost: "Total Inches Lost",
-            Distance: "Distance",
-            Speed: "Speed",
-            HR: "HR",
-            BR: "BR",
             trainerNotes: "",
             isDateConfirmModalVisible: false,
             isDatePickerModalVisible: false,
@@ -148,23 +99,6 @@ export default class TrainerCheckpointPage extends Component {
 
     getAppButtonColor = () => {
         return edit? "white" : '#AED804';
-    }
-
-    toggleExpandGeneral=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_general : !this.state.expanded_general})
-      }
-    toggleExpandSkinFold=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_skin_fold : !this.state.expanded_skin_fold})
-    }
-    toggleExpandGirth=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_girth : !this.state.expanded_girth})
-    }
-    toggleExpandTreadmill=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_treadmill : !this.state.expanded_treadmill})
     }
 
 
@@ -215,22 +149,20 @@ export default class TrainerCheckpointPage extends Component {
                 {/* <View style={styles.fixedHeader}>
 
                 </View > */}
-                <ScrollView contentContainerStyle = {
-
-                    {
-                        position: 'fixed',
-                        paddingBottom: 75,
-                        // overflow: 'hidden',
-                        // backgroundColor: 'green',
-                        alignItems: 'center'
-                    }
-                }
-                    style={{maxHeight: '100%', width: '85%'}}
+                <ScrollView 
+                    contentContainerStyle = {styles.scrollContentContainer}
+                    style={styles.scrollViewStyle}
                 >
                     <AppButton
                         title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
                         onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
                     />
+
+                <DateTextBox edit = {this.state.edit}/>
+                {
+                    (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
+                    <Measurements></Measurements>
+                }
                     <Modal
                         propagateSwipe={true}
                         animationIn="slideInUp"
@@ -290,34 +222,7 @@ export default class TrainerCheckpointPage extends Component {
                             </View>
                         </View>
                     </Modal>
-
-                    
-              
-                    
-
-                <View style={styles.notes}>
-                    <Text style = {styles.title}> Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={this.state.edit}
-                        value={this.state.trainerNotes}
-                        placeholder = "Record Routine, exercise reps ... "
-                        changeText = {newValue => this.changeText(newValue)}
-                        //heading = "Trainer Notes"
-                    />
-
-                    {/* <Text style={{fontSize: 10, padding: 10,margin:10}}>
-                        *If needed, please contact ____ with any concerns or questions.
-                    </Text> */}
-
-                    <Text style = {styles.title}> Admin Notes: </Text>
-                    <MultilineInputSaveComponent
-                        edit={false}
-                        value={"Lorem Impsum dolor"}
-                        placeholder = ""
-                        changeText = {newValue => this.changeText(newValue)}
-                        //heading = "Admin Notes"
-                    />
-                </View>
+           
         </ScrollView>
       
         </View>);
@@ -513,4 +418,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
     },
+    scrollContentContainer: {
+        paddingBottom: 75,
+        // overflow: 'hidden',
+        // backgroundColor: 'green',
+        alignItems: 'center'
+    },
+    scrollViewStyle: {
+        maxHeight: '100%',
+        width: '85%'
+    }
 });

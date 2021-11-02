@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
 import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
-import {navigateToLocationAdminPage} from '../Utilities/utilities';
+
 
 const credentials = {
     "Super Admin": {
@@ -71,7 +71,20 @@ export default class LoginPage extends React.Component {
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.replace('SuperAdminPage');
                 await saveCurrentRole('SUPER_ADMIN');
-            } else if (res.user.roles.includes('LOCATION_ADMINISTRATOR')){
+            } else if (res.user.roles.includes('DIETITIAN')){
+                await saveCurrentRole("DIETITIAN");
+                this.props.navigation.replace('AllPatientsPage', {
+                    participantsParam: {dietitianUserId: res.user.id}
+                });
+
+            } else if (res.user.roles.includes('TRAINER')) {
+                await saveCurrentRole("TRAINER");
+                this.props.navigation.replace('AllPatientsPage', {
+                    participantsParam: {trainerUserId: res.user.id}
+                });
+
+            } else {
+                const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: "Participants",
                     params: {
@@ -80,13 +93,7 @@ export default class LoginPage extends React.Component {
                     }
                   });
                   await saveCurrentRole("LOCATION_ADMINISTRATOR");
-            } else {
-                const role = res.user.roles.includes('TRAINER') ? 'TRAINER' : 'DIETITIAN';
-                await saveCurrentRole(role);
-                this.props.navigation.replace('AllPatientsPage', role === 'TRAINER' ? 
-                {participantsParam: {trainerUserId: res.user.id}}:
-                {participantsParam: {dietitianUserId: res.user.id}});
-            }
+            } 
 
             // alert(res.user.roles.length)
         }
@@ -96,9 +103,7 @@ export default class LoginPage extends React.Component {
             alert("Could not log in. Please try again later.");
         }
         } catch (e){
-            alert(e);
-            console.log(e);
-            // alert("Could not log in. Please try again later.");
+            console.log("Error logging in:\n", e);
         }
 
     }
@@ -184,10 +189,10 @@ export default class LoginPage extends React.Component {
 
                                 </View>
                                     <View style={{flexDirection: 'row'}}>
-                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Trainer")}>
+                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Dietician")}>
                                             <Text style={styles.developer}>dietician?</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Dietician")}>
+                                        <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress("Trainer")}>
                                             <Text style={styles.developer}>trainer?</Text>
                                         </TouchableOpacity>
                                     </View>
