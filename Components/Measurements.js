@@ -36,17 +36,18 @@ export const Measurements = ({ onPress, title }) => {
         setExpanded_treadmill(!expanded_treadmill)
     }
 
-    const Measurement = ({measurement, id, initialValue, updateValue}) => {
+    const Measurement = ({measurement, id, initialValue, updateValue, postfix}) => {
         const [value, onChangeValue] = useState(initialValue);
 
         return(
-            <View style={styles.measurement}>
-                <Text style = {styles.measurementText}>{measurement}{": "}</Text>
+            <View style={[styles.measurement, {}]}>
+                <Text style = {styles.measurementText}>{measurement}{": "}{postfix}</Text>
                 <TextInput 
                     style={styles.measurementText}
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(id, value)}
+                    // placeholder={"enter a value"}
                 ></TextInput>
             </View>
         )
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight:'400',
         color: '#838383',
+        minWidth: 30
     }
 });
 

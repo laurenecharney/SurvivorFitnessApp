@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
-import {getParticipants} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
 
 
 export const AppButton = ({ onPress, title }) => (
@@ -30,50 +30,58 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             isEditModalVisible: false,
+            name:"",
+            age:"",
+            email:"",
+            phoneNumber:"",
+            cancer:"",
+            treatmentFacility:"",
+            surgeries:"",
+            formsOfTreatments:"",
+            doctNotes:"",
+            trainer:"",
+            dietician:"",
+            startDate:"",
+            goals:"",
             calls: [
-                // {id:1,  value: "Abby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:2,  value: "Alicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:3,  value: "Charles Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:4,  value: "Grace Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:5,  value: "Ilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:6,  value: "Lauren Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:7,  value: "Gabby Cohen", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:8,  value: "Felicia Yang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:9,  value: "Bucky Wang", gym: "Orange Theory", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:10,  value: "Gracie Jeong", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:11,  value: "Bilya Ermakov", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"},
-                // {id:12,  value: "Corinne Charney", gym: "Effects Fitness", dietician: "Balance Nutrition", trainer: "trainer", nutritionist: "dietician"}
-            ]
-        };
-    }
-     async componentDidMount(){
-         try {
-             const res = await getParticipants(null,null);
-            this.setState({calls: res
-                .map(
-                item => {
-                 let newI = item;
-
-                 newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-                 newI.key = parseInt(item.id);
-                 newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-                 newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-                 newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-                 newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-                 return newI; 
-                
-                })})
-           
-        } catch (e){
-            console.log("Error fetching participants:\n", e);
+            ],
+            selectedParticipant: {}
         }
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
+    }
 
-    }
-    openModal = () =>{
-        this.setState({
-            isModalVisible:true
-        })
-    }
+
+    async componentDidMount(){
+        try {
+            const res = await getParticipants(null,null);
+           this.setState({calls: res
+               .map(
+               item => {
+                let newI = item;
+
+                newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+                newI.key = parseInt(item.id);
+                newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
+                newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+                newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
+                newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
+                return newI; 
+               
+               })})
+          
+       } catch (e){
+           console.log(e);
+           alert("Could not fetch participants data");
+       }
+
+   }
+   openModal = () =>{
+       this.setState({
+           isModalVisible:true
+       })
+   }
 
     toggleModal = () =>{
         this.setState({
@@ -159,11 +167,11 @@ export default class AdminClientPage extends Component {
                                             <Text style={styles.nameTxt}>{item.value} </Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon name={"dumbbell"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym} {'>'} {item.trainer} </Text>
+                                                <Text style={styles.gymTxt}>{item.gym} &gt; {item.trainer} </Text>
                                             </View>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon name={"food-apple"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.dietician} {'>'} {item.nutritionist}</Text>
+                                                <Text style={styles.gymTxt}>{item.dietician} &gt; {item.nutritionist}</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>this.openModal()}
@@ -213,7 +221,7 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.name}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
@@ -295,43 +303,43 @@ export default class AdminClientPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
+                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
                                         </View>
                                         <TouchableOpacity>
                                             <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>

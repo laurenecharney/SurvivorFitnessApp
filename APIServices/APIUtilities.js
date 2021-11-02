@@ -3,7 +3,8 @@ import { getItem } from "./deviceStorage";
 //this should be an env. variable. Fix this later
 
 //put
-const ENDPOINT = "http://10.0.0.222:8080"; //convent
+// const ENDPOINT = "http://10.0.0.222:8080"; //convent
+const ENDPOINT = "http://10.66.18.235:8080"; //rec
 // const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
 // const ENDPOINT = "http://10.66.190.160:8080"; //vuNet - rand
 // const ENDPOINT = "http://192.168.10.85:8080"; //Fido
@@ -29,7 +30,7 @@ export async function getParticipants(paramName, paramValue) {
   })
     .then(res => res.json());
   return res && res.participants ? res.participants : [];
-} //
+} // ,
 
 //gets participant by id
 export async function getParticipantByID(id) {

@@ -16,8 +16,8 @@ export default class TrainerSession extends Component {
 
     this.state = {
         trainerNotes: "",
-        edit: false
-
+        edit: false,
+        isModalVisible: false
     }
     if (Platform.OS === 'android') {
         UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -27,6 +27,10 @@ export default class TrainerSession extends Component {
 alertLogSession = () => {
     Alert.alert('Log Session?', '',
     [
+        {
+            text: 'DatePicker',
+            onPress: () => {}
+        },
         {
             text: 'Cancel',
             onPress: () => console.log('Cancel Pressed')
@@ -53,13 +57,15 @@ changeText = (newValue)=>{
                     overflow: 'hidden',
                 }
             }
-                        style={{maxHeight: '100%'}}
-
+            style={{maxHeight: '100%'}}
             >
                 <AppButton
                             title = {this.state.edit ? "Save" : "Log Session"}
-                            onPress={()=>this.setState({edit: !this.state.edit})}
+                            onPress={()=> this.setState({edit: !this.state.edit, isModalVisible: true})}
                         />
+
+                {/*Modal wuz here*/}
+
                 <DateTextBox edit = {this.state.edit}/>
                     <View style={styles.notes}>
                         <Text style = {styles.title}> Trainer Notes: </Text>
@@ -82,12 +88,11 @@ changeText = (newValue)=>{
                             onPress={()=>alert("yo don't")}
                             changeText = {newValue => this.changeText(newValue)}
                         />
-                        
                     </View>
             </ScrollView>
         </View>
     );
-  } 
+  }
 }
 
 const styles = StyleSheet.create({
