@@ -32,6 +32,7 @@ export default class LocationAdminTrainerPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isGymModalVisible: false,
+      isEditModalVisible: false,
       selectedUser: [],
       calls: [
       ]
@@ -86,6 +87,25 @@ export default class LocationAdminTrainerPage extends Component {
       isModalVisible: false
     });
   };
+
+  openEditModal = () =>{
+    this.setState({
+        isEditModalVisible:true,
+        edit: true
+    })
+}
+
+toggleEditModal = () =>{
+    this.setState({
+        isEditModalVisible:!this.state.isEditModalVisible
+    })
+}
+closeEditModal = () =>{
+    this.setState({
+        isEditModalVisible:false,
+        edit: false
+    })
+}
   openAddModal = () => {
     this.setState({
       isAddModalVisible: true
@@ -204,223 +224,95 @@ export default class LocationAdminTrainerPage extends Component {
             )}
           />
         </View>
-        <Modal
-          propagateSwipe={true}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          onBackdropPress={() => this.closeModal()}
-          onSwipeComplete={() => this.closeModal()}
-          isVisible={this.state.isModalVisible}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: "40%",
-                borderRadius: "19"
-              }}
-            >
-              <TouchableOpacity
-                style={{ paddingLeft: 260, paddingTop: 10 }}
-                onPress={() => this.closeModal()}
-              >
-                <Icon name={"close"} color={"#E4E4E4"} size={32} />
-              </TouchableOpacity>
-              <View style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  <View
-                    style={{
-                      marginLeft: 20,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingBottom: 30,
-                      width: "75%"
-                    }}
-                  >
-                    <Text style={{ fontSize: 19, color: "#AED803" }}>
-                      {this.getUserType(false) + " Information"}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 20,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <View
-                      style={{
-                        marginLeft: 20,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        width: "75%"
-                      }}
-                    >
-                      <View style={{ flexDirection: "row", padding: 5 }}>
-                        <Text
-                          style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                        >
-                          Name:{" "}
-                        </Text>
-                        <View style={styles.child}>
-                          {this.state.edit ? (
-                            <TextInput
-                              style={styles.input}
-                              returnKeyType="done"
-                              onSubmitEditing={() => {
-                                this.secondTextInput.focus();
-                              }}
-                              blurOnSubmit={false}
-                              underlineColorAndroid="transparent"
-                              placeholder={
-                                this.state.name ? this.state.name : "Enter Name"
-                              }
-                              defaultValue={
-                                this.state.name == "Enter Name"
-                                  ? null
-                                  : this.state.name
-                              }
-                              placeholderTextColor="#D5D5D5"
-                              color="black"
-                              autoCapitalize="sentences"
-                              onChangeText={newName =>
-                                this.setState({ name: newName })
-                              }
-                            />
-                          ) : (
-                            <Text
-                              style={{
-                                color:
-                                  this.state.name == "Weight (lbs)"
-                                    ? "#D5D5D5"
-                                    : "black"
-                              }}
-                            >
-                              {this.state.name == "Weight (lbs)"
-                                ? ""
-                                : this.state.name}
-                            </Text>
-                          )}
+        <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
+                    <View style={{ flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        <View style={{
+                            backgroundColor: "#fff",
+                            width: '90%',
+                            height: '40%',
+                            borderRadius:'19'}}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1}}>
+                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                                    <Text style={{ fontSize: 19, color: "#AED803" }}>{this.getUserType(false) + " Information"}</Text>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View  style={{justifyContent: 'space-between'}}>
+                                            <TouchableOpacity onPress={()=>this.openEditModal()}>
+                                                <Text style = {styles.editStyle}>edit</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                    </View>
+
+                                </ScrollView>
+                            </View>
+
                         </View>
-                      </View>
-                      <View style={{ flexDirection: "row", padding: 5 }}>
-                        <Text
-                          style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                        >
-                          Email:{" "}
-                        </Text>
-                        <View style={styles.child}>
-                          {this.state.edit ? (
-                            <TextInput
-                              style={styles.input}
-                              returnKeyType="done"
-                              onSubmitEditing={() => {
-                                this.secondTextInput.focus();
-                              }}
-                              blurOnSubmit={false}
-                              underlineColorAndroid="transparent"
-                              placeholder={
-                                this.state.email
-                                  ? this.state.email
-                                  : "Enter Email"
-                              }
-                              defaultValue={
-                                this.state.email == "Enter Email"
-                                  ? null
-                                  : this.state.email
-                              }
-                              placeholderTextColor="#D5D5D5"
-                              color="black"
-                              autoCapitalize="sentences"
-                              onChangeText={newEmail =>
-                                this.setState({ email: newEmail })
-                              }
-                            />
-                          ) : (
-                            <Text
-                              style={{
-                                color:
-                                  this.state.email == "Weight (lbs)"
-                                    ? "#D5D5D5"
-                                    : "black"
-                              }}
-                            >
-                              {this.state.email == "Weight (lbs)"
-                                ? ""
-                                : this.state.email}
-                            </Text>
-                          )}
-                        </View>
-                      </View>
-                      <View style={{ flexDirection: "row", padding: 5 }}>
-                        <Text
-                          style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                        >
-                          Phone Number:{" "}
-                        </Text>
-                        <View style={styles.child}>
-                          {this.state.edit ? (
-                            <TextInput
-                              style={styles.input}
-                              returnKeyType="done"
-                              onSubmitEditing={() => {
-                                this.secondTextInput.focus();
-                              }}
-                              blurOnSubmit={false}
-                              underlineColorAndroid="transparent"
-                              placeholder={
-                                this.state.phone
-                                  ? this.state.phone
-                                  : "Enter Phone Number"
-                              }
-                              defaultValue={
-                                this.state.phone == "Enter Phone Number"
-                                  ? null
-                                  : this.state.phone
-                              }
-                              placeholderTextColor="#D5D5D5"
-                              color="black"
-                              autoCapitalize="sentences"
-                              onChangeText={newPhone =>
-                                this.setState({ phone: newPhone })
-                              }
-                            />
-                          ) : (
-                            <Text
-                              style={{
-                                color:
-                                  this.state.phone == "Weight (lbs)"
-                                    ? "#D5D5D5"
-                                    : "black"
-                              }}
-                            >
-                              {this.state.phone == "Weight (lbs)"
-                                ? ""
-                                : this.state.phone}
-                            </Text>
-                          )}
-                        </View>
-                      </View>
                     </View>
-                    <AppButton
-                      title={this.state.edit ? "SAVE" : "EDIT"}
-                      onPress={() => this.setState({ edit: !this.state.edit })}
-                    />
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-          </View>
-        </Modal>
+                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeEditModal()} onSwipeComplete={()=>this.closeEditModal()} isVisible={this.state.isEditModalVisible}>
+                    <View style={{ flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        <View style={{
+                            backgroundColor: "#fff",
+                            width: '90%',
+                            height: '45%',
+                            borderRadius:'19'}}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeEditModal()}>
+                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1}}>
+
+                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:20, width:'75%'}}>
+                                    <Text style={{ fontSize: 19, color: "#AED803" }}> Edit {this.getUserType(false) + " Information"}</Text>
+                                    </View>
+                                    <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        </View>
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
+                                        </View>
+                                        <TouchableOpacity>
+                                            <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
+                                        </TouchableOpacity>
+                                        <AppButton
+                                            title={this.state.edit ? "SAVE" : "EDIT"}
+                                            onPress={() => {()=>this.closeEditModal()}}
+                                            />
+
+                                        </View>
+                                </ScrollView>
+                            </View>
+
+                        </View>
+                    </View>  
+                    </Modal>
+                </Modal>
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"
@@ -603,6 +495,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center"
   },
+  editStyle: {
+    fontSize: 14,
+    color: "#AED803",
+    alignSelf: "center",
+    alignSelf: 'flex-end'
+},
 
   appButtonContainer: {
     backgroundColor: "#AED804",

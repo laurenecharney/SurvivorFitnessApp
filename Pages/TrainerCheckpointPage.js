@@ -61,7 +61,7 @@ const Category = (props) => {
             <TouchableOpacity 
             style={styles.categoryRow} 
             onPress={()=>props.toggle()}>
-                            <Text style={[styles.title, styles.font]}>{props.categoryType}</Text>
+                            <Text style={styles.title}>{props.categoryType}</Text>
                             {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
                             <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
             </TouchableOpacity>
@@ -71,8 +71,8 @@ const Category = (props) => {
 
 const Measurement = (props) => {
     return(
-        <View style={styles.child}>
-            <Text style = {{color: "#D5D5D5"}}>{props.measurementName}{" " + props.measurementValue}</Text>
+        <View style={styles.measurement}>
+            <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
         </View>
     )
 }
@@ -87,18 +87,18 @@ export default class TrainerCheckpointPage extends Component {
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: 150,//"Weight (lbs)",
-            BMI: "BMI",
-            body_fat_pct: "Body Fat Percentage",
-            total_body_fat: "Total Body Fat (lbs)",
-            lean_mass: "Lean Mass", 
-            blood_pressure: "Blood Pressure (mm Hg)",
+            weight: "150 lbs",//"Weight (lbs)",
+            BMI: "23.1",
+            body_fat_pct: "15.3%",
+            total_body_fat: "23 lbs",
+            lean_mass: "133 lbs", 
+            blood_pressure: "120/80 mm Hg",
             range_of_motion:  "Range of Motion",
             resting_hr: "Resting HR (bpm)",
-            Abdominal_skin_fold: "Abdominal",
-            ChestSkinFold: "Chest",
-            Midaxillary: "Midaxillary",
-            Subscapular: "Subscapular",
+            Abdominal_skin_fold: "15",
+            ChestSkinFold: "10",
+            Midaxillary: "12",
+            Subscapular: "8",
             Supraillac: "Supraillac",
             Thigh: "Thigh",
             Tricep: "Tricep",
@@ -121,6 +121,7 @@ export default class TrainerCheckpointPage extends Component {
             sessionDate: new Date(),
             edit: false
         }
+        
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
@@ -277,64 +278,6 @@ export default class TrainerCheckpointPage extends Component {
                                                     })
                                                 }}
                                             />
-                                        {/* <TouchableOpacity
-                                            style={{marginTop: 20, width: '80%', borderWidth: 1, borderRadius: 10, borderColor: 'gray'}}
-                                            onPress={() => this.setState({ isDatePickerModalVisible: true })}
-                                        >
-                                            <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                                            <Text style = {{margin: 10}}>
-                                                {this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
-                                            </Text>
-                                            <Text style = {{margin: 10, color: '#AED804', fontWeight: 'bold', fontSize: 11}}>
-                                                {'Change'}
-                                            </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <Modal
-                                            propagateSwipe={true}
-                                            animationIn="slideInUp"
-                                            animationOut="slideOutDown"
-                                            onBackdropPress={() => this.closeDatePickerModal()}
-                                            onSwipeComplete={() => this.closeDatePickerModal()}
-                                            isVisible={this.state.isDatePickerModalVisible}
-                                        >
-                                            <View
-                                                style={{
-                                                flex: 1,
-                                                flexDirection: "column",
-                                                justifyContent: "center",
-                                                alignItems: "center"
-                                                }}
-                                            >
-                                                <View
-                                                style={{
-                                                    backgroundColor: "#fff",
-                                                    width: "90%",
-                                                    height: "50%",
-                                                    borderRadius: "19",
-                                                    alignItems: "center"
-                                                }}
-                                                >
-                                                    <DateTimePicker
-                                                    style={{width: 300}}
-                                                    value={this.state.sessionDate}
-                                                    mode="date"
-                                                    display="spinner"
-                                                    onChange={(event, enteredDate) => {
-                                                        this.setState({
-                                                            //isDatePickerModalVisible: false,
-                                                            sessionDate: enteredDate,
-                                                        })
-                                                    }}
-                                                    />
-                                                    <SmallAppButton
-                                                    style = {{paddingVertical: 15}}
-                                                    title={"Confirm"}
-                                                    onPress={()=>this.setState({edit: true, isDatePickerModalVisible: false})}
-                                                    />
-                                                </View>
-                                            </View>
-                                        </Modal> */}
                                         <View>
                                             <SmallAppButton
                                             title={"Log"}
@@ -348,50 +291,10 @@ export default class TrainerCheckpointPage extends Component {
                         </View>
                     </Modal>
 
-                    {/* <Category
-                        categoryType="General Data"
-                        toggle={this.toggleExpandGeneral}
-                        expanded={this.state.expanded_general}
-                    ></Category>
-                    {
-                        this.state.expanded_general &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Weight"
-                                measurementValue={this.state.weight}>
-                            </Measurement>
-                            <Measurement
-                                measurementName="BMI"
-                                measurementValue="">
-                            </Measurement>
-                            <Measurement
-                                measurementName="Body Fat Percentage"
-                                measurementValue="">
-                            </Measurement>
-
-                        </View>
-                        // <View style={styles.child}>
-                        //     <Text style = {{color: "#D5D5D5"}}>Weight: {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
-                        //     </View>
-                    }
-
-                    <Category
-                        categoryType="Skin Fold Tests"
-                        toggle={this.toggleExpandSkinFold}
-                        expanded={this.state.expanded_skin_fold}
-                    ></Category>
-                    <Category
-                        categoryType="Girth Measurements (in)"
-                        toggle={this.toggleExpandGirth}
-                        expanded={this.state.expanded_girth}
-                    ></Category>
-                    <Category
-                        categoryType="6 Minute Treadmill Test"
-                        toggle={this.toggleExpandTreadmill}
-                        expanded={this.state.expanded_treadmill}
-                    ></Category> */}
                     
-            {/* <View style={styles.wrapper}>      */}
+              
+                    
+
                 <View style={styles.notes}>
                     <Text style = {styles.title}> Notes: </Text>
                     <MultilineInputSaveComponent
@@ -415,9 +318,6 @@ export default class TrainerCheckpointPage extends Component {
                         //heading = "Admin Notes"
                     />
                 </View>
-        
-                    
-            {/* </View>    */}
         </ScrollView>
       
         </View>);
@@ -465,8 +365,10 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         color: '#838383',
     },
+    categoriesContainer: {
+        paddingVertical: 30
+    },
     categoryContainer: {
-        // backgroundColor: 'blue',
         // padding: 10,
         flexDirection: 'row',
         // justifyContent:'space-between',
@@ -478,9 +380,8 @@ const styles = StyleSheet.create({
         borderColor: "#C9C9C9",
 
     },
-    measurementContainer: {
-        width: "70%"
-    },
+    
+    
     categoryRow: {
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -516,16 +417,22 @@ const styles = StyleSheet.create({
         color: 'white',
         width:'100%'
     },
-    child:{
-        // backgroundColor: 'blue',
-        padding:16,
+    measurementContainer: {
+        width: "80%"
+    },
+    measurement:{
+        padding:10,
         borderBottomWidth: 1,
         borderColor: "#D5D5D5",
-        // width:'60%',
         marginLeft:30,
         flexDirection: 'row',
-        // width: '100%'
 
+    },
+    measurementText: {
+        // color: "black"
+        fontSize: 15,
+        fontWeight:'400',
+        color: '#838383',
     },
     notes: {
         width: '93%',

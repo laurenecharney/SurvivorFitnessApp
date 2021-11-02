@@ -8,6 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+APIServices/APIUtilities.js
 
 docker-compose.yml
 APIUtilities.js
