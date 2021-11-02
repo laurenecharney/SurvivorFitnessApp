@@ -12,6 +12,8 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
+import Modal from 'react-native-modal'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 
@@ -20,7 +22,38 @@ const AppButton = ({ onPress, title }) => (
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
-
+const SmallAppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+const SessionModal = () => {
+    <Modal
+    propagateSwipe={true}
+    animationIn="slideInUp"
+    animationOut="slideOutDown"
+    >
+        <View
+            style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+            }}
+        >
+            <View
+            style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: "50%",
+                borderRadius: "19",
+                alignItems: "center", justifyContent: 'space-around'
+            }}
+            >
+            </View>
+        </View>
+    </Modal>
+}
 const Category = (props) => {
 
     return(
@@ -40,11 +73,11 @@ const Measurement = (props) => {
     return(
         <View style={styles.measurement}>
             <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
-        </View> 
+        </View>
     )
 }
 
-export default class TrainerCheckpointPage  extends Component{
+export default class TrainerCheckpointPage extends Component {
     constructor(props){
         super(props);
 
@@ -75,7 +108,7 @@ export default class TrainerCheckpointPage  extends Component{
             ChestGirth: "Chest",
             Hip: "Hip",
             Shoulders: "Shoulders",
-           ThighGirth: "Thigh",
+            ThighGirth: "Thigh",
             Waist: "Waist",
             Total_Inches_Lost: "Total Inches Lost",
             Distance: "Distance",
@@ -83,19 +116,39 @@ export default class TrainerCheckpointPage  extends Component{
             HR: "HR",
             BR: "BR",
             trainerNotes: "",
-            edit: false,
-
-
+            isDateConfirmModalVisible: false,
+            isDatePickerModalVisible: false,
+            sessionDate: new Date(),
+            edit: false
         }
         
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+
+    closeDateConfirmModal = () => {
+        this.setState({
+            isDateConfirmModalVisible: false,
+        })
+    }
+    closeDatePickerModal = () => {
+        this.setState({
+            isDatePickerModalVisible: false,
+        })
+    }
+
     changeText = (newValue)=>{
         this.setState({trainerNotes: newValue});
     }
 
+    getTimePickerWidth = () => {
+        return 115 + 10 * (this.state.sessionDate.getDate() < 10? 0 : 1);
+    }
+
+    getAppButtonColor = () => {
+        return edit? "white" : '#AED804';
+    }
 
     toggleExpandGeneral=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -116,19 +169,10 @@ export default class TrainerCheckpointPage  extends Component{
 
 
     async fetchUser() {
-    //   console.log("I AM HERE 2")
       const res = await getUser();
-    //   console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
-    //   console.log("USER:\n", this.state.user)
-    //   console.log(JSON.parse(res).locations[0].id) 
-    //   console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
-    //   console.log("i am here 4")
-    //   console.log("NOTES:\n", res2)
     }
-
-    
 
 
     async componentDidMount() {
@@ -136,7 +180,7 @@ export default class TrainerCheckpointPage  extends Component{
         // await this.refreshList();
         await this.fetchUser();
       }
-    
+
     //   async refreshList() {
     //     try {
     //       const locationId =
@@ -180,92 +224,100 @@ export default class TrainerCheckpointPage  extends Component{
                         // backgroundColor: 'green',
                         alignItems: 'center'
                     }
-                } 
+                }
                     style={{maxHeight: '100%', width: '85%'}}
                 >
                     <AppButton
-                            title = {this.state.edit ? "Save" : "Log Session"}
-                            onPress={()=>this.setState({edit: !this.state.edit})}
-                        />   
+                        title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                        onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
+                    />
+                    <Modal
+                        propagateSwipe={true}
+                        animationIn="slideInUp"
+                        animationOut="slideOutDown"
+                        onBackdropPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                        onSwipeComplete={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                        isVisible={this.state.isDateConfirmModalVisible}
+                    >
+                        <View
+                            style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center"
+                            }}
+                        >
+                            <View
+                            style={{
+                                backgroundColor: "#fff",
+                                width: "90%",
+                                height: "30%",
+                                borderRadius: "19",
+                                alignItems: "center", justifyContent: 'space-around'
+                            }}
+                            >
+                                <TouchableOpacity
+                                    style={{ paddingLeft: 260, paddingTop: 10 }}
+                                    onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                >
+                                    <Icon name={"close"} color={"#E4E4E4"} size={32} />
+                                </TouchableOpacity>
+                                <View style={{flex: 1, width: '100%'}}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+                                        <Text style={styles.heading}>
+                                        {"Select Date"}
+                                        </Text>
+                                            <DateTimePicker
+                                                style={{height: 40, width: this.getTimePickerWidth(), marginTop: 10, alignItems: "center"}}
+                                                value={this.state.sessionDate}
+                                                mode="date"
+                                                display="calendar"
+                                                onChange={(event, enteredDate) => {
+                                                    this.setState({
+                                                        sessionDate: enteredDate,
+                                                    })
+                                                }}
+                                            />
+                                        <View>
+                                            <SmallAppButton
+                                            title={"Log"}
+                                            onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                                />
+                                        </View>
+
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+
                     
-                        <DateTextBox edit = {this.state.edit}/>
-                          
-                { this.props.checkpoint ?
-                
-                <View style={styles.categoriesContainer}>
-                    <Category
-                        categoryType="General Data"
-                        toggle={this.toggleExpandGeneral}
-                        expanded={this.state.expanded_general}
-                    ></Category>
-                    {
-                        this.state.expanded_general &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Weight"
-                                measurementValue={this.state.weight}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="BMI"
-                                measurementValue={this.state.BMI}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Body Fat Percentage"
-                                measurementValue={this.state.body_fat_pct}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Lean Mass"
-                                measurementValue={this.state.lean_mass}>
-                            </Measurement> 
+              
+                    
 
-                        </View>               
-    
-                    }
+                <View style={styles.notes}>
+                    <Text style = {styles.title}> Notes: </Text>
+                    <MultilineInputSaveComponent
+                        edit={this.state.edit}
+                        value={this.state.trainerNotes}
+                        placeholder = "Record Routine, exercise reps ... "
+                        changeText = {newValue => this.changeText(newValue)}
+                        //heading = "Trainer Notes"
+                    />
 
-                    <Category
-                        categoryType="Skin Fold Tests"
-                        toggle={this.toggleExpandSkinFold}
-                        expanded={this.state.expanded_skin_fold}
-                    ></Category>
-                    {
-                        this.state.expanded_skin_fold &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Abdominal"
-                                measurementValue={this.state.Abdominal_skin_fold}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="Chest"
-                                measurementValue={this.state.ChestSkinFold}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Midaxillar"
-                                measurementValue={this.state.Midaxillary}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Subscapular"
-                                measurementValue={this.state.Subscapular}>
-                            </Measurement> 
-                        </View>               
-    
-                    }
-                    <Category
-                        categoryType="Girth Measurements (in)"
-                        toggle={this.toggleExpandGirth}
-                        expanded={this.state.expanded_girth}
-                    ></Category>
-                    <Category
-                        categoryType="6 Minute Treadmill Test"
-                        toggle={this.toggleExpandTreadmill}
-                        expanded={this.state.expanded_treadmill}
-                    ></Category>
+                    {/* <Text style={{fontSize: 10, padding: 10,margin:10}}>
+                        *If needed, please contact ____ with any concerns or questions.
+                    </Text> */}
+
+                    <Text style = {styles.title}> Admin Notes: </Text>
+                    <MultilineInputSaveComponent
+                        edit={false}
+                        value={"Lorem Impsum dolor"}
+                        placeholder = ""
+                        changeText = {newValue => this.changeText(newValue)}
+                        //heading = "Admin Notes"
+                    />
                 </View>
-                    : null
-                }
-
-
-
-           
         </ScrollView>
       
         </View>);
@@ -425,12 +477,23 @@ const styles = StyleSheet.create({
         marginTop: 40
         
     },
+    appButtonContainerSmall: {
+        elevation: 8,
+        backgroundColor: '#AED804',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: '20%',
+        //width: '80%',
+        // marginLeft: '5%'
+        marginTop: 10
+        
+    },
     appButtonText: {
         fontSize: 15,
         color: "#fff",
         fontWeight: "600",
         alignSelf: "center",
-        
+
     },
     sessionNumberContainer: {
         elevation: 8,

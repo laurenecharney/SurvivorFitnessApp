@@ -163,11 +163,11 @@ export default class AdminClientPage extends Component {
                                             <Text style={styles.nameTxt}>{item.value} </Text>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon name={"dumbbell"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym} {'>'} {item.trainer} </Text>
+                                                <Text style={styles.gymTxt}>{item.gym} &gt; {item.trainer} </Text>
                                             </View>
                                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                                 <Icon name={"food-apple"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.dietician} {'>'} {item.nutritionist}</Text>
+                                                <Text style={styles.gymTxt}>{item.dietician} &gt; {item.nutritionist}</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>this.openModal()}
