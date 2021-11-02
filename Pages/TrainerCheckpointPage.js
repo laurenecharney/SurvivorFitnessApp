@@ -141,6 +141,13 @@ export default class TrainerCheckpointPage extends Component {
         this.setState({trainerNotes: newValue});
     }
 
+    getTimePickerWidth = () => {
+        return 115 + 10 * (this.state.sessionDate.getDate() < 10? 0 : 1);
+    }
+
+    getAppButtonColor = () => {
+        return edit? "white" : '#AED804';
+    }
 
     toggleExpandGeneral=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -243,7 +250,7 @@ export default class TrainerCheckpointPage extends Component {
                             style={{
                                 backgroundColor: "#fff",
                                 width: "90%",
-                                height: "40%",
+                                height: "30%",
                                 borderRadius: "19",
                                 alignItems: "center", justifyContent: 'space-around'
                             }}
@@ -259,19 +266,18 @@ export default class TrainerCheckpointPage extends Component {
                                         <Text style={styles.heading}>
                                         {"Select Date"}
                                         </Text>
-                                        {/* <DateTimePicker
-                                                    style={{height: 70, width: 120}}
-                                                    value={this.state.sessionDate}
-                                                    mode="date"
-                                                    display="calendar"
-                                                    onChange={(event, enteredDate) => {
-                                                        this.setState({
-                                                            //isDatePickerModalVisible: false,
-                                                            sessionDate: enteredDate,
-                                                        })
-                                                    }}
-                                                    /> */}
-                                        <TouchableOpacity
+                                            <DateTimePicker
+                                                style={{height: 40, width: this.getTimePickerWidth(), marginTop: 10, alignItems: "center"}}
+                                                value={this.state.sessionDate}
+                                                mode="date"
+                                                display="calendar"
+                                                onChange={(event, enteredDate) => {
+                                                    this.setState({
+                                                        sessionDate: enteredDate,
+                                                    })
+                                                }}
+                                            />
+                                        {/* <TouchableOpacity
                                             style={{marginTop: 20, width: '80%', borderWidth: 1, borderRadius: 10, borderColor: 'gray'}}
                                             onPress={() => this.setState({ isDatePickerModalVisible: true })}
                                         >
@@ -328,10 +334,9 @@ export default class TrainerCheckpointPage extends Component {
                                                     />
                                                 </View>
                                             </View>
-                                        </Modal>
-                                        <View style={{marginTop: 20}}>
+                                        </Modal> */}
+                                        <View>
                                             <SmallAppButton
-                                            style = {{paddingVertical: 15, marginTop: 30}}
                                             title={"Log"}
                                             onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
                                                 />
@@ -343,7 +348,7 @@ export default class TrainerCheckpointPage extends Component {
                         </View>
                     </Modal>
 
-                    <Category
+                    {/* <Category
                         categoryType="General Data"
                         toggle={this.toggleExpandGeneral}
                         expanded={this.state.expanded_general}
@@ -354,21 +359,20 @@ export default class TrainerCheckpointPage extends Component {
                             <Measurement
                                 measurementName="Weight"
                                 measurementValue={this.state.weight}>
-                            </Measurement> 
+                            </Measurement>
                             <Measurement
                                 measurementName="BMI"
                                 measurementValue="">
-                            </Measurement>  
+                            </Measurement>
                             <Measurement
                                 measurementName="Body Fat Percentage"
                                 measurementValue="">
-                            </Measurement>  
+                            </Measurement>
 
-                        </View>               
+                        </View>
                         // <View style={styles.child}>
                         //     <Text style = {{color: "#D5D5D5"}}>Weight: {this.state.weight =="Weight (lbs)" ? "": this.state.weight} lbs</Text>
                         //     </View>
-    
                     }
 
                     <Category
@@ -385,7 +389,7 @@ export default class TrainerCheckpointPage extends Component {
                         categoryType="6 Minute Treadmill Test"
                         toggle={this.toggleExpandTreadmill}
                         expanded={this.state.expanded_treadmill}
-                    ></Category>
+                    ></Category> */}
                     
             {/* <View style={styles.wrapper}>      */}
                 <View style={styles.notes}>
