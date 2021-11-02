@@ -366,7 +366,8 @@ const styles = StyleSheet.create({
         color: '#838383',
     },
     categoriesContainer: {
-        paddingVertical: 30
+        paddingVertical: 30,
+        
     },
     categoryContainer: {
         // padding: 10,
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems:'center',
         backgroundColor: 'white',
-        borderBottomWidth: 1,
-        borderColor: "#C9C9C9",
+        borderBottomWidth: 0.5,
+        borderColor: "#E6E7E6",
 
     },
     
@@ -490,9 +491,9 @@ const styles = StyleSheet.create({
     appButtonText: {
         fontSize: 15,
         color: "#fff",
-        fontWeight: "bold",
+        fontWeight: "600",
         alignSelf: "center",
-        //textTransform: "uppercase"
+
     },
     sessionNumberContainer: {
         elevation: 8,

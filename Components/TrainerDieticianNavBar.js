@@ -1,6 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import React, { Component } from "react";
+import { Image } from 'react-native'
+import barGraph from "../assets/sessionLogo.png";
 import {
   StyleSheet,
   Text,
@@ -24,11 +26,21 @@ class TrainerDieticianNavBar extends Component {
 
   render() {
     return (
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          style={{ borderWidth: 1, borderColor: "#E6E6E6", padding: 10 }}
-        ></TouchableOpacity>
-
+      <View style={{ flexDirection: "row",paddingTop:40 }}>
+      <TouchableOpacity
+          onPress={() => this.pressTrainer()}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            borderWidth: 0.5,
+            alignItems: "center",
+            borderColor: "#E6E6E6",
+            padding:0,
+            width:60
+          }}
+        >
+         <Image source={require('../assets/sessionLogo.png')} style={styles.logo}/>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.pressTrainer()}
           style={{
@@ -36,6 +48,7 @@ class TrainerDieticianNavBar extends Component {
             flexDirection: "row",
             justifyContent: "center",
             borderWidth: 1,
+            padding:10,
             alignItems: "center",
             borderColor: "#E6E6E6",
             borderTopColor: this.props.dietician ? "#e6e6e6" : "#AED804",
@@ -65,6 +78,7 @@ class TrainerDieticianNavBar extends Component {
             flexDirection: "row",
             justifyContent: "center",
             borderWidth: 1,
+            padding:15,
             alignItems: "center",
             borderColor: "#E6E6E6",
             borderTopColor: !this.props.dietician ? "#e6e6e6" : "#AED804",
@@ -94,14 +108,9 @@ class TrainerDieticianNavBar extends Component {
 export default TrainerDieticianNavBar;
 
 const styles = StyleSheet.create({
-  headline: {
-    fontWeight: "bold",
-    // fontSize: 25,
-    marginTop: 100,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    flex: 1,
-    position: "absolute",
-    width: "100%"
-  }
+  logo: {
+    height: '40%',
+    width: '50%',
+    alignSelf: "center",
+}
 });
