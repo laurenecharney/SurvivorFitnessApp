@@ -14,6 +14,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import { StackNavigator } from "react-navigation";
 
 //perhaps make a TitleNavBarComponent w diff formatting? maybe it and NameNavBar extend NavBarComponent
+//hello
 
 export default class NameNavBarComponent extends Component {
   constructor(props) {
