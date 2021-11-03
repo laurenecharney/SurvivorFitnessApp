@@ -28,7 +28,7 @@ export default class AdminTrainerPage extends Component {
         super(props);
         this.state = {
             isModalVisible: false,
-            calls: [
+            trainersData: [
             ],
             selectedTrainer: [],
         };
@@ -43,11 +43,11 @@ export default class AdminTrainerPage extends Component {
             this.props.route.params.locationId : null;
             const arr = await getTrainers(locationId);
             this.setState({
-               calls: arr.map(
+               trainersData: arr.map(
                 item => {
                     let newI = item;
                     newI.value = item.firstName + " " + item.lastName
-                    newI.id = parseInt(item.id)
+                    newI.key = parseInt(item.id)
                     newI.gym = item.locations[0] ? item.locations[0].name : '';
                     return newI;
                 }
@@ -55,8 +55,7 @@ export default class AdminTrainerPage extends Component {
                 
            ;
             } catch (e){
-                console.log(e);
-                alert("Could not fetch trainers.");
+                console.log("Error fetching trainers: ", e);
             }
     }
 
@@ -84,7 +83,7 @@ export default class AdminTrainerPage extends Component {
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList
-                    data={this.state.calls}
+                    data={this.state.trainersData}
                     indexLetterColor={'#AED803'}
                     renderCustomSectionHeader={(section) => (
                         <View style={{visibility: 'hidden'}}/>
@@ -153,8 +152,9 @@ export default class AdminTrainerPage extends Component {
                                             {displayKey: 'Affiliate Location:', displayValue: this.state.selectedTrainer.gym},
                                             {displayKey: 'Phone Number:', displayValue: this.state.selectedTrainer.phoneNumber},
                                             {displayKey: 'Email', displayValue: this.state.selectedTrainer.email}
-                                        ].map(row => 
+                                        ].map((row, i) => 
                                             <ModalRow 
+                                            key={i}
                                             displayKey={row.displayKey}
                                             displayValue={row.displayValue}/>
                                         

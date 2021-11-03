@@ -18,7 +18,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
-import { getParticipants } from "../APIServices/APIUtilities";
+import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -47,7 +47,23 @@ export default class AllPatientsPage extends Component {
     super(props);
     this.state = {
       isModalVisible: false,
-      calls: []
+      isAddModalVisible: false,
+      isEditModalVisible: false,
+      name:"",
+      age:"",
+      email:"",
+      phoneNumber:"",
+      cancer:"",
+      treatmentFacility:"",
+      surgeries:"",
+      formsOfTreatments:"",
+      doctNotes:"",
+      trainer:"",
+      dietician:"",
+      startDate:"",
+      goals:"",
+      calls: [],
+      selectedParticipant: {},
     };
   }
   async componentDidMount() {
@@ -82,11 +98,35 @@ export default class AllPatientsPage extends Component {
     return this.props.route.params && this.props.route.params.hideSettingsIcon;
   }
 
-  openModal = () => {
+  openModal = async (participant) =>{
     this.setState({
-      isModalVisible: true
+        isModalVisible:true,
+        selectedParticipant: participant
     });
-  };
+    try {
+     const res = await getParticipantByID(participant.id);
+     this.setState({
+         name: (res.firstName + " " + res.lastName),
+         age: res.age,
+         email: res.email,
+         phoneNumber: res.phoneNumber,
+         cancer: res.typeOfCancer,
+         formsOfTreatments: res.formsOfTreatment,
+         goals: res.goals,
+         doctNotes: res.physicianNotes,
+         startDate: res.startDate.substring(0,10),
+         surgeries: res.surgeries,
+        })
+        
+        
+
+    } catch (e){
+        console.log(e);
+        alert("Could not fetch participants data");
+    }
+
+
+    }
 
   toggleModal = () => {
     this.setState({
@@ -157,7 +197,7 @@ export default class AllPatientsPage extends Component {
                         <Text style={styles.nameTxt}>{item.value}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => this.openModal()}
+                        onPress={() => this.openModal(item)}
                         style={{
                           borderWidth: 1,
                           borderColor: "#AED803",
@@ -200,33 +240,32 @@ export default class AllPatientsPage extends Component {
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                                <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View  style={{justifyContent: 'space-between'}}>
-                                        </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
                                         </View>
+                                     
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
@@ -234,34 +273,29 @@ export default class AllPatientsPage extends Component {
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
                                         </View>
                                     </View>
+
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                    <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
                                         </View>
+                                        
+                                        
                                     </View>
                                 </ScrollView>
                             </View>
