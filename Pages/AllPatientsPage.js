@@ -189,392 +189,88 @@ export default class AllPatientsPage extends Component {
           onSwipeComplete={() => this.closeModal()}
           isVisible={this.state.isModalVisible}
         >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: "75%",
-                borderRadius: "19"
-              }}
-            >
-              <TouchableOpacity
-                style={{ paddingLeft: 260, paddingTop: 10 }}
-                onPress={() => this.closeModal()}
-              >
-                <Icon name={"close"} color={"#E4E4E4"} size={32} />
-              </TouchableOpacity>
-              <View style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingBottom: 30,
-                      width: "75%",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: "19",
-                        color: "#AED803",
-                        fontWeight: "600"
-                      }}
-                    >
-                      Participant Information
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Name:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Grace Jeong{" "}
-                      </Text>
+          <View style={{ flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        <View style={{
+                            backgroundColor: "#fff",
+                            width: '90%',
+                            height: '70%',
+                            borderRadius:'19'}}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1}}>
+                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View  style={{justifyContent: 'space-between'}}>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                        </View>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Age:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        45
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Phone Number:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        734-536-3809
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Email:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        grace@survivorfitness.com
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Trainer:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Lauren Charney
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Dietitian:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Charles Wang
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Start Date
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        1/21/2021
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Goal(s)
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Build muscle
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <View style={{ flexDirection: "row", width: "75%" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Type of Cancer:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Lymphoma
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row", width: "50%" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Treatment Facility:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Vanderbilt Medical Center
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Surgeries:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        N/A
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#AED803",
-                          fontWeight: "500"
-                        }}
-                      >
-                        Forms of Treatment:
-                      </Text>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "13",
-                          color: "#797979",
-                          fontWeight: "400",
-                          width: "75%"
-                        }}
-                      >
-                        Chemotherapy
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10
-                    }}
-                  >
-                    <View>
-                      <Text
-                        style={{
-                          padding: 10,
-                          fontSize: "15",
-                          color: "#797979"
-                        }}
-                      >
-                        Participant Progress Completed?{" "}
-                      </Text>
-                      <View style={styles.appButtonContainer}>
-                        <TouchableOpacity onPress={() => showAlert()}>
-                          <Text style={styles.appButtonText}>
-                            Remove Participant
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-          </View>
         </Modal>
       </View>
     );

@@ -12,8 +12,11 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
 import DateTextBox from '../Components/DateTextBox'
+import Modal from 'react-native-modal'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
+import { Measurements } from "../Components/Measurements";
 
 const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -21,115 +24,89 @@ const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const Category = (props) => {
+const SmallAppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
 
-    return(
-        <View style={styles.categoryContainer}>
-            <TouchableOpacity 
-            style={styles.categoryRow} 
-            onPress={()=>props.toggle()}>
-                            <Text style={styles.title}>{props.categoryType}</Text>
-                            {/* <Icon name={'keyboard-arrow-down'} size={30} color={'#838383'} style={styles.arrowIcon}/> */}
-                            <Icon name={props.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-            </TouchableOpacity>
+const SessionModal = () => {
+    <Modal
+    propagateSwipe={true}
+    animationIn="slideInUp"
+    animationOut="slideOutDown"
+    >
+        <View
+            style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+            }}
+        >
+            <View
+            style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: "50%",
+                borderRadius: "19",
+                alignItems: "center", justifyContent: 'space-around'
+            }}
+            >
+            </View>
         </View>
-    )
+    </Modal>
 }
-
-const Measurement = (props) => {
-    return(
-        <View style={styles.measurement}>
-            <Text style = {styles.measurementText}>{props.measurementName}{": " + props.measurementValue}</Text>
-        </View>
-        
-    )
-}
-
-export default class TrainerCheckpointPage  extends Component{
+export default class TrainerCheckpointPage extends Component {
     constructor(props){
         super(props);
-
         this.state = {
             user: {},
             expanded_general: false,
             expanded_skin_fold: false,
             expanded_girth: false,
             expanded_treadmill: false,
-            weight: "150 lbs",//"Weight (lbs)",
-            BMI: "23.1",
-            body_fat_pct: "15.3%",
-            total_body_fat: "23 lbs",
-            lean_mass: "133 lbs", 
-            blood_pressure: "120/80 mm Hg",
-            range_of_motion:  "Range of Motion",
-            resting_hr: "Resting HR (bpm)",
-            Abdominal_skin_fold: "15",
-            ChestSkinFold: "10",
-            Midaxillary: "12",
-            Subscapular: "8",
-            Supraillac: "Supraillac",
-            Thigh: "Thigh",
-            Tricep: "Tricep",
-            Abdominal_girth: "Abdominal",
-            Biceps: "Biceps",
-            Calf: "Calf",
-            ChestGirth: "Chest",
-            Hip: "Hip",
-            Shoulders: "Shoulders",
-           ThighGirth: "Thigh",
-            Waist: "Waist",
-            Total_Inches_Lost: "Total Inches Lost",
-            Distance: "Distance",
-            Speed: "Speed",
-            HR: "HR",
-            BR: "BR",
             trainerNotes: "",
-            edit: false,
-
-
+            isDateConfirmModalVisible: false,
+            isDatePickerModalVisible: false,
+            sessionDate: new Date(),
+            edit: false
         }
         
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+
+    closeDateConfirmModal = () => {
+        this.setState({
+            isDateConfirmModalVisible: false,
+        })
+    }
+    closeDatePickerModal = () => {
+        this.setState({
+            isDatePickerModalVisible: false,
+        })
+    }
+
     changeText = (newValue)=>{
         this.setState({trainerNotes: newValue});
     }
 
+    getTimePickerWidth = () => {
+        return 115 + 10 * (this.state.sessionDate.getDate() < 10? 0 : 1);
+    }
 
-    toggleExpandGeneral=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_general : !this.state.expanded_general})
-      }
-    toggleExpandSkinFold=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_skin_fold : !this.state.expanded_skin_fold})
-    }
-    toggleExpandGirth=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_girth : !this.state.expanded_girth})
-    }
-    toggleExpandTreadmill=()=>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded_treadmill : !this.state.expanded_treadmill})
+    getAppButtonColor = () => {
+        return edit? "white" : '#AED804';
     }
 
 
     async fetchUser() {
-    //   console.log("I AM HERE 2")
       const res = await getUser();
-    //   console.log("I am here 3")
       this.setState({user: JSON.parse(res)})
-    //   console.log("USER:\n", this.state.user)
-    //   console.log(JSON.parse(res).locations[0].id) 
-    //   console.log("I am here 4")
       const res2 = await getAllSessionNotesByParticipantID(2);
-    //   console.log("i am here 4")
-    //   console.log("NOTES:\n", res2)
     }
-
-    
 
 
     async componentDidMount() {
@@ -137,7 +114,7 @@ export default class TrainerCheckpointPage  extends Component{
         // await this.refreshList();
         await this.fetchUser();
       }
-    
+
     //   async refreshList() {
     //     try {
     //       const locationId =
@@ -172,100 +149,78 @@ export default class TrainerCheckpointPage  extends Component{
                 {/* <View style={styles.fixedHeader}>
 
                 </View > */}
-                <ScrollView contentContainerStyle = {
-
-                    {
-                        position: 'fixed',
-                        paddingBottom: 75,
-                        // overflow: 'hidden',
-                        // backgroundColor: 'green',
-                        alignItems: 'center'
-                    }
-                } 
-                    style={{maxHeight: '100%', width: '85%'}}
+                <ScrollView 
+                    contentContainerStyle = {styles.scrollContentContainer}
+                    style={styles.scrollViewStyle}
                 >
                     <AppButton
-                            title = {this.state.edit ? "Save" : "Log Session"}
-                            onPress={()=>this.setState({edit: !this.state.edit})}
-                        />   
-                    
-                        <DateTextBox edit = {this.state.edit}/>
-                          
-                { this.props.checkpoint ?
-                
-                <View style={styles.categoriesContainer}>
-                    <Category
-                        categoryType="General Data"
-                        toggle={this.toggleExpandGeneral}
-                        expanded={this.state.expanded_general}
-                    ></Category>
-                    {
-                        this.state.expanded_general &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Weight"
-                                measurementValue={this.state.weight}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="BMI"
-                                measurementValue={this.state.BMI}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Body Fat Percentage"
-                                measurementValue={this.state.body_fat_pct}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Lean Mass"
-                                measurementValue={this.state.lean_mass}>
-                            </Measurement> 
+                        title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                        onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
+                    />
 
-                        </View>               
-    
-                    }
-
-                    <Category
-                        categoryType="Skin Fold Tests"
-                        toggle={this.toggleExpandSkinFold}
-                        expanded={this.state.expanded_skin_fold}
-                    ></Category>
-                    {
-                        this.state.expanded_skin_fold &&
-                        <View style={styles.measurementContainer}>
-                            <Measurement
-                                measurementName="Abdominal"
-                                measurementValue={this.state.Abdominal_skin_fold}>
-                            </Measurement> 
-                            <Measurement
-                                measurementName="Chest"
-                                measurementValue={this.state.ChestSkinFold}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Midaxillar"
-                                measurementValue={this.state.Midaxillary}>
-                            </Measurement>  
-                            <Measurement
-                                measurementName="Subscapular"
-                                measurementValue={this.state.Subscapular}>
-                            </Measurement> 
-                        </View>               
-    
-                    }
-                    <Category
-                        categoryType="Girth Measurements (in)"
-                        toggle={this.toggleExpandGirth}
-                        expanded={this.state.expanded_girth}
-                    ></Category>
-                    <Category
-                        categoryType="6 Minute Treadmill Test"
-                        toggle={this.toggleExpandTreadmill}
-                        expanded={this.state.expanded_treadmill}
-                    ></Category>
-                </View>
-                    : null
+                {
+                    (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
+                    <Measurements></Measurements>
                 }
+                    <Modal
+                        propagateSwipe={true}
+                        animationIn="slideInUp"
+                        animationOut="slideOutDown"
+                        onBackdropPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                        onSwipeComplete={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                        isVisible={this.state.isDateConfirmModalVisible}
+                    >
+                        <View
+                            style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center"
+                            }}
+                        >
+                            <View
+                            style={{
+                                backgroundColor: "#fff",
+                                width: "90%",
+                                height: "30%",
+                                borderRadius: "19",
+                                alignItems: "center", justifyContent: 'space-around'
+                            }}
+                            >
+                                <TouchableOpacity
+                                    style={{ paddingLeft: 260, paddingTop: 10 }}
+                                    onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                >
+                                    <Icon name={"close"} color={"#E4E4E4"} size={32} />
+                                </TouchableOpacity>
+                                <View style={{flex: 1, width: '100%'}}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+                                        <Text style={styles.heading}>
+                                        {"Select Date"}
+                                        </Text>
+                                            <DateTimePicker
+                                                style={{height: 40, width: this.getTimePickerWidth(), marginTop: 10, alignItems: "center"}}
+                                                value={this.state.sessionDate}
+                                                mode="date"
+                                                display="calendar"
+                                                onChange={(event, enteredDate) => {
+                                                    this.setState({
+                                                        sessionDate: enteredDate,
+                                                    })
+                                                }}
+                                            />
+                                        <View>
+                                            <SmallAppButton
+                                            title={"Log"}
+                                            onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                                />
+                                        </View>
 
-
-
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
            
         </ScrollView>
       
@@ -315,7 +270,8 @@ const styles = StyleSheet.create({
         color: '#838383',
     },
     categoriesContainer: {
-        paddingVertical: 30
+        paddingVertical: 30,
+        
     },
     categoryContainer: {
         // padding: 10,
@@ -325,8 +281,8 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems:'center',
         backgroundColor: 'white',
-        borderBottomWidth: 1,
-        borderColor: "#C9C9C9",
+        borderBottomWidth: 0.5,
+        borderColor: "#E6E7E6",
 
     },
     
@@ -425,12 +381,23 @@ const styles = StyleSheet.create({
         marginTop: 40
         
     },
+    appButtonContainerSmall: {
+        elevation: 8,
+        backgroundColor: '#AED804',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: '20%',
+        //width: '80%',
+        // marginLeft: '5%'
+        marginTop: 10
+        
+    },
     appButtonText: {
         fontSize: 15,
         color: "#fff",
-        fontWeight: "bold",
+        fontWeight: "600",
         alignSelf: "center",
-        textTransform: "uppercase"
+
     },
     sessionNumberContainer: {
         elevation: 8,
@@ -450,4 +417,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
     },
+    scrollContentContainer: {
+        paddingBottom: 75,
+        // overflow: 'hidden',
+        // backgroundColor: 'green',
+        alignItems: 'center'
+    },
+    scrollViewStyle: {
+        maxHeight: '100%',
+        width: '85%'
+    }
 });

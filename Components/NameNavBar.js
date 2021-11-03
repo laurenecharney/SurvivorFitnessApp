@@ -35,13 +35,12 @@ export default class NameNavBarComponent extends Component {
         <View
           style={{
             flexDirection: "row",
-            flex: 0.9,
             justifyContent: "center",
             alignItems: "center",
-            marginLeft: 50
+            marginLeft: 50,
           }}
         >
-          <Text style={{ fontSize: 25, color: "#3E3E3E", paddingLeft: 20 }}>
+          <Text style={{ fontSize: 25, color: "#3E3E3E", paddingLeft: 35 }}>
             {this.props.name}
           </Text>
         </View>
@@ -51,7 +50,7 @@ export default class NameNavBarComponent extends Component {
 }
 const styles = StyleSheet.create({
   headline: {
-    fontWeight: "bold",
+    fontWeight: "400",
     fontSize: 25,
     position: "absolute",
     marginTop: 45,
@@ -62,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     opacity: 1,
     zIndex: 15,
-    paddingTop: 10
+    paddingTop: 25,
+    paddingBottom:25
   }
 });

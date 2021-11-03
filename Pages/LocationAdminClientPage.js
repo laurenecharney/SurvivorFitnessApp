@@ -37,7 +37,7 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isListOpen: false,
-      calls: []
+      participants: []
     };
   }
 
@@ -47,7 +47,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   isDietitian() {
-    console.log(this.props.route.params)
     return (
       this.props.route.params &&
       this.props.route.params.userType === "DIETITIAN"
@@ -55,6 +54,7 @@ export default class LocationAdminClientPage extends Component {
   }
 
   async refreshParticipants() {
+    console.log("refresh participants - locationAdminClientPage")
     try {
       const locationId = this.props.route.params
         ? this.props.route.params.locationId
@@ -62,14 +62,14 @@ export default class LocationAdminClientPage extends Component {
       const res =  
       this.isDietitian() ? await getParticipants("dietitianOfficeId", locationId) : await getParticipants("gymId", locationId);
       this.setState({
-        calls: res.map(item => {
+        participants: res.map(item => {
           let newI = item;
 
           newI.value =
             item.firstName && item.lastName
               ? item.firstName + " " + item.lastName
               : "";
-          newI.id = parseInt(item.id);
+          newI.key = parseInt(item.id);
           newI.trainer = item.trainer
             ? item.trainer.firstName + " " + item.trainer.lastName
             : "";
@@ -80,7 +80,7 @@ export default class LocationAdminClientPage extends Component {
         })
       });
     } catch (e) {
-      console.log(e);
+      console.log("Error fetching participants", e);
       alert("Could not fetch participants data");
     }
   }
@@ -129,7 +129,7 @@ export default class LocationAdminClientPage extends Component {
         </View>
         <View style={styles.listContainer}>
           <AlphabetList
-            data={this.state.calls}
+            data={this.state.participants}
             indexLetterColor={"#AED803"}
             renderCustomSectionHeader={section => (
               <View style={{ visibility: "hidden" }} />
@@ -138,9 +138,9 @@ export default class LocationAdminClientPage extends Component {
               //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
               // </View>
             )}
-            renderCustomItem={item => (
-              <ScrollView>
-                <View style={styles.row}>
+            renderCustomItem={(item, i) => (
+              // <ScrollView key={i}>
+                <View style={styles.row} key={i}>
                   <View>
                     <View style={styles.nameContainer}>
                       <TouchableOpacity 
@@ -182,91 +182,193 @@ export default class LocationAdminClientPage extends Component {
                     </View>
                   </View>
                 </View>
-              </ScrollView>
+              // </ScrollView>
             )}
           />
         </View>
-        <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '70%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                    </View>
-                                </ScrollView>
-                            </View>
-
-                        </View>
-                    </View>
+        <Modal
+          propagateSwipe={true}
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          onBackdropPress={() => this.closeModal()}
+          onSwipeComplete={() => this.closeModal()}
+          isVisible={this.state.isModalVisible}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: "40%",
+                borderRadius: "19"
+              }}
+            >
+              <TouchableOpacity
+                style={{ paddingLeft: 260, paddingTop: 10 }}
+                onPress={() => this.closeModal()}
+              >
+                <Icon name={"close"} color={"#E4E4E4"} size={32} />
+              </TouchableOpacity>
+              <View style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                  <View
+                    style={{
+                      marginLeft: 40,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#E4E4E4",
+                      paddingBottom: 30,
+                      width: "75%"
+                    }}
+                  >
+                    <Text style={{ fontSize: 19, color: "#AED803" }}>
+                      Participant Information
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 40,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#E4E4E4",
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: "75%"
+                    }}
+                  >
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Name:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Age:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Email:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Phone Number:{" "}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 40,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#E4E4E4",
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: "75%"
+                    }}
+                  >
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Type of Cancer:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Treatment Facility:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Surgeries:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Forms of Treatment:{" "}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 40,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#E4E4E4",
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: "75%"
+                    }}
+                  >
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Trainer
+                    </Text>
+                    <DropDownPicker
+                      items={[
+                        { label: "Lauren Charney", value: "item1" },
+                        { label: "Abby Cohen", value: "item2" },
+                        { label: "Alicia Yang", value: "item3" }
+                      ]}
+                      textColor="#797979"
+                      defaultIndex={0}
+                      containerStyle={styles.dropdown}
+                      onChangeItem={item => console.log(item.label, item.value)}
+                    />
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Dietician:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Start Date:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Goal(s):{" "}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 40,
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#E4E4E4",
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      width: "75%"
+                    }}
+                  >
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Physician Notes:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Start Date:{" "}
+                    </Text>
+                    <Text
+                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
+                    >
+                      Goal(s):{" "}
+                    </Text>
+                  </View>
+                  <AppButton
+                    title={this.state.edit ? "SAVE" : "EDIT"}
+                    onPress={() => this.setState({ edit: !this.state.edit })}
+                  />
+                </ScrollView>
+              </View>
+            </View>
+          </View>
         </Modal>
         <Modal
           propagateSwipe={true}

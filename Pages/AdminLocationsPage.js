@@ -11,8 +11,8 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ModalRow from '../Components/ModalComponents/ModalRow'
-// import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
-import {getLocationByID, getLocations} from '../APIServices/APIUtilities';
+import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
+//import {getLocationByID, getLocations} from '../APIServices/APIUtilities';
 import deviceStorage from '../APIServices/deviceStorage';
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -55,9 +55,10 @@ export default class AdminLocationsPage extends Component {
             const arr = await getLocations();
             this.setState({
                calls: arr.map(
+                //item is a location object
                 item => {
-                    let newI = item;
-                    newI.value = item.name
+                    let newI = item;                // set newItem to be identical to oldItem
+                    newI.value = item.name          // set newItem.value to be the name of the location object
                     newI.id = parseInt(item.id)
                     newI.type = item.type
                     newI.icon = item.type === "TRAINER_GYM" ? 'dumbbell' : 'food-apple'
@@ -69,9 +70,9 @@ export default class AdminLocationsPage extends Component {
                 alert("Could not fetch locations.");
             }
     }
-    changeText = (newValue)=>{
-        this.setState({trainerNotes: newValue});
-    }
+    //changeText = (newValue)=>{
+        //this.setState({trainerNotes: newValue});
+    //}
 
      openModal = async (item) =>{
         this.setState({

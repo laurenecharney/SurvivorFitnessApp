@@ -89,22 +89,25 @@ const styles = StyleSheet.create ({
         alignItems: 'center',
         borderColor: '#E6E6E6',
         backgroundColor: '#fff',
-        width: '100%',
+        // width: '100%',
+        height: 39,
         borderWidth: 0.25,
         padding: 5,
     },
     numberContainer: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '70%',
+        width: 28,
         height: 28,
-        borderWidth: .5,
+        borderWidth: 1,
         borderColor: '#C6E05A',
         borderRadius: 90,
+
     },
     text: {
         color: '#C6E05A',
         fontSize: 16,
+        fontWeight: '700',
         textAlign: 'center',
         paddingTop: '15%',
     }
