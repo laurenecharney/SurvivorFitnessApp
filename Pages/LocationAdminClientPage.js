@@ -143,12 +143,15 @@ export default class LocationAdminClientPage extends Component {
                 <View style={styles.row} key={i}>
                   <View>
                     <View style={styles.nameContainer}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.props.navigation.navigate(
-                            "ClientInformationPage"
-                          )
-                        }
+                      <TouchableOpacity 
+                        onPress={() => {
+                            const routeParams =
+                                {
+                                    id: item.id,
+                                    name: item.firstName + ' ' + item.lastName
+                                } ;
+                            this.props.navigation.navigate('ClientInformationPage', routeParams);
+                        }}
                       >
                         <Text style={styles.nameTxt}>{item.value} </Text>
                         <View
