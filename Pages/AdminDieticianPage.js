@@ -101,7 +101,6 @@ export default class AdminDieticianPage extends Component {
                 
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
                     <Text style={styles.headline}>Dietitians</Text>
-                    <Text>Hello</Text>
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList

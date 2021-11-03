@@ -79,7 +79,7 @@ export default class AdminTrainerPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Trainers hello</Text>
+                    <Text style={styles.headline}>Trainers</Text>
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList
