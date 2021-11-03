@@ -158,7 +158,6 @@ export default class TrainerCheckpointPage extends Component {
                         onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
                     />
 
-                <DateTextBox edit = {this.state.edit}/>
                 {
                     (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
                     <Measurements></Measurements>
