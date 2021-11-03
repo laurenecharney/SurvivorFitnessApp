@@ -8,7 +8,7 @@ import { getItem } from "./deviceStorage";
 // const ENDPOINT = "http://10.66.190.160:8080"; //vuNet - rand
 // const ENDPOINT = "http://192.168.10.85:8080"; //Fido
 // const ENDPOINT = "http://10.251.16.255:8080"; // Sun n fork (VUMC Guest)
-const ENDPOINT = "http://10.66.14.97:8080";
+const ENDPOINT = "http://192.168.1.97:8080";
 
 
 
@@ -18,6 +18,7 @@ export async function getParticipants(paramName, paramValue) {
   const jwt = await getItem();
   const query =
     paramName && paramValue ? "?" + paramName + "=" + paramValue : "";
+    console.log("yo ethan");
 
   const res = await fetch(ENDPOINT + "/api/v1/participants" + query, {
     method: "GET",
@@ -36,7 +37,7 @@ export async function getParticipants(paramName, paramValue) {
 //gets participant by id
 export async function getParticipantByID(id) {
   const jwt = await getItem();
-  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id, {
+  const res = await fetch(ENDPOINT + "/api/v1/participants/194", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -45,7 +46,8 @@ export async function getParticipantByID(id) {
     }
   })
     .then(response => response.json());
-  return res.participants;
+    console.log("GET PARTICIPANTS ID QUERY")
+  return res.participant;
 }
 
 export async function getAllSessionNotesByParticipantID(id) {
@@ -90,6 +92,7 @@ export async function getLocations() {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
+  console.log(res);
   return res && res.locations ? res.locations : [];
 }
 
@@ -104,6 +107,7 @@ export async function getLocationByID(id) {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
+  console.log(res);
   return res && res.location ? res.location : [];
 }
 

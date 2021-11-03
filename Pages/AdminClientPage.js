@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
+import { color } from 'react-native-reanimated';
 
 
 export const AppButton = ({ onPress, title }) => (
@@ -45,7 +46,7 @@ export default class AdminClientPage extends Component {
             goals:"",
             calls: [
             ],
-            selectedParticipant: {}
+            selectedParticipant: {},
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -59,7 +60,6 @@ export default class AdminClientPage extends Component {
                .map(
                item => {
                 let newI = item;
-
                 newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
                 newI.id = parseInt(item.id);
                 newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
@@ -76,10 +76,36 @@ export default class AdminClientPage extends Component {
        }
 
    }
-   openModal = () =>{
+   openModal = async (participant) =>{
        this.setState({
-           isModalVisible:true
-       })
+           isModalVisible:true,
+           selectedParticipant: participant
+       });
+       try {
+        const res = await getParticipantByID(participant.id);
+        this.setState({
+            name: (res.firstName + " " + res.lastName),
+            dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
+            trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
+            age: res.age,
+            email: res.email,
+            phoneNumber: res.phoneNumber,
+            cancer: res.typeOfCancer,
+            formsOfTreatments: res.formsOfTreatment,
+            goals: res.goals,
+            doctNotes: res.physicianNotes,
+            startDate: res.startDate.substring(0,10),
+            surgeries: res.surgeries,
+        })
+       
+        
+
+    } catch (e){
+        console.log(e);
+        alert("Could not fetch participants data");
+    }
+
+
    }
 
     toggleModal = () =>{
@@ -170,7 +196,7 @@ export default class AdminClientPage extends Component {
                                                 <Text style={styles.gymTxt}>{item.dietician} {'>'} {item.nutritionist}</Text>
                                             </View>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal()}
+                                        <TouchableOpacity onPress={()=>this.openModal(item)}
                                                           style={{
                                                               borderWidth:1,
                                                               borderColor:"#AED803",
@@ -207,7 +233,7 @@ export default class AdminClientPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View  style={{justifyContent: 'space-between'}}>
@@ -217,25 +243,25 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.name}</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
@@ -243,33 +269,33 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.trainer}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.nutritionist}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
                                         </View>
                                     </View>
                                 </ScrollView>
@@ -284,8 +310,8 @@ export default class AdminClientPage extends Component {
                         alignItems: 'center'}}>
                         <View style={{
                             backgroundColor: "#fff",
-                            width: '95%',
-                            height: '95%',
+                            width: '90%',
+                            height: '90%',
                             borderRadius:'19'}}>
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeEditModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
@@ -298,45 +324,256 @@ export default class AdminClientPage extends Component {
                                         <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Edit Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                    <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.name || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newName => this.setState({name: newName})}
+                                            />
+                                        }
+
+                                        </View>
+                                        </View>
+
+                                        
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.phoneNumber || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newPhoneNumber => this.setState({phoneNumber: newPhoneNumber})}
+                                            />
+                                        }
+
+                                        </View>
+                                        </View>
+
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.email || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newEmail => this.setState({email: newEmail})}
+                                            />
+                                        }
+
+                                        </View>
+                                        </View>
+
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of Cancer: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.typeOfCancer || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newTypeOfCancer => this.setState({typeOfCancer: newTypeOfCancer})}
+                                            />
+                                        }
+
+                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Age: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.treatmentFacility || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newTreatmentFacility => this.setState({treatmentFacility: newTreatmentFacility})}
+                                            />
+                                        }
+
+                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.surgeries || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newSurgeries => this.setState({surgeries: newSurgeries})}
+                                            />
+                                        }
+
+                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatmnet: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.formsOfTreatments|| ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newFOT => this.setState({formsOfTreatments: newFOT})}
+                                            />
+                                        }
+
+                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Gym: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.doctNotes || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newDoctNotes => this.setState({doctNotes: newDoctNotes})}
+                                            />
+                                        }
+
+                                        </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician Office: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Trainer: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.trainer || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newTrainer => this.setState({trainer: newTrainer})}
+                                            />
+                                        }
+
                                         </View>
+                                        </View>
+
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.dietician || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newDietician => this.setState({dietician: newDietician})}
+                                            />
+                                        }
+
                                         </View>
+                                        </View>
+
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goals: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.startDate || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newStartDate => this.setState({startDate: newStartDate})}
+                                            />
+                                        }
+
                                         </View>
+                                        </View>
+
+
                                         <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of cancer: </Text>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goal(s): </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.goals || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newGoals => this.setState({goals: newGoals})}
+                                            />
+                                        }
+
                                         </View>
-                                        <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
                                         </View>
-                                        <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatment: </Text>
-                                        </View>
-                                        <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
-                                        </View>
-                                        <View style={{paddingBottom: 20}}>
-                                            <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
-                                        </View>
+                                    
+                                        
                                         <TouchableOpacity>
                                             <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
                                         </TouchableOpacity>
