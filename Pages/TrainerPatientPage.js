@@ -84,8 +84,13 @@ export default class TrainerPatientsPage extends Component {
             paddingRight: 25
           }}
         >
-          <Text style={styles.headline}>Participants</Text>
+          <Text style={styles.headline}>ParticipantsTPP</Text>
         </View>
+        <View style={styles.header}>
+                <NameNavBar 
+                  name = {"ParticipantsTPP" }
+                  goBack={()=>this.props.navigation.goBack()}/>
+                </View>
         <View style={styles.listContainer}>
           <AlphabetList
             data={this.state.calls}
