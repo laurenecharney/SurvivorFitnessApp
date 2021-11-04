@@ -269,15 +269,15 @@ export default class AdminLocationsPage extends Component {
                                         </View>
                                     
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                        <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                        <Text style={{fontSize: 15, color: '#AED803'}} >Name: </Text>
                                         <Text style={{color: '#797979'}}>{this.state.name}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25, width:'75%'}}>
-                                        <Text style={{ fontSize: '15', color: '#AED803'}} >Address: </Text>
+                                        <Text style={{ fontSize: 15, color: '#AED803'}} >Address: </Text>
                                         <Text style={{color: '#797979'}}>{this.state.location}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25, width:'75%'}}>
-                                        <Text style={{ fontSize: '15', color: '#AED803'}} >Admin: </Text>
+                                        <Text style={{ fontSize: 15, color: '#AED803'}} >Admin: </Text>
                                         <Text style={{color: '#797979'}}>{this.state.admin}</Text>
                                         </View>
                                     </View>
@@ -308,7 +308,7 @@ export default class AdminLocationsPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                        <Text style={{fontSize: 15, color: '#AED803', paddingBottom: 10}} >Name: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
@@ -328,7 +328,7 @@ export default class AdminLocationsPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803',paddingBottom: 10}} >Address: </Text>
+                                        <Text style={{fontSize: 15, color: '#AED803',paddingBottom: 10}} >Address: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
@@ -348,7 +348,7 @@ export default class AdminLocationsPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Admin: </Text>
+                                        <Text style={{fontSize: 15, color: '#AED803', paddingBottom: 10}} >Admin: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
