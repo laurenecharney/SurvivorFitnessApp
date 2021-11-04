@@ -46,9 +46,12 @@ export default class AdminDieticianPage extends Component {
                 // {id:7,  value: "Gabby Cohen", gym: "Balance Nutrition"},
                 // {id:8,  value: "Felicia Yang", gym: "Free Method Nutrition"} ,
                 // {id:9,  value: "Bucky Wang", gym: "Horizon Nutrition"} ,
-                // {id:10,  value: "Gracie Jeong", gym: "Renu Health"} ,
-                // {id:11,  value: "Bilya Ermakov", gym: "Balance Nutrition"} ,
-                // {id:12,  value: "Corinne Charney", gym: "Renu Health"} ,
+                // {id:10, value: "Gracie Jeong", gym: "Renu Health"} ,
+                // {id:11, value: "Bilya Ermakov", gym: "Balance Nutrition"} ,
+                // {id:12, value: "Corinne Charney", gym: "Renu Health"} ,
+                // {id:13, value: "Ben Gant", gym: "Horizon Nutrition"} ,
+                // {id:14, value: "Adam Hollander", gym: "Balance Nutrition"} ,
+                // {id:15, value: "Ethan Shifrin", gym: "Renu Health"} ,
             ],
             selectedDietician: {}
         };
