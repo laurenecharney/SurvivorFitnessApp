@@ -1,13 +1,9 @@
 import { getItem } from "./deviceStorage";
+import { ENDPOINT } from "./developerEndpoint";
 
 //this should be an env. variable. Fix this later
 
 //put
-const ENDPOINT = "http://10.0.0.222:8080"; //convent
-// const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
-// const ENDPOINT = "http://10.66.190.160:8080"; //vuNet - rand
-// const ENDPOINT = "http://192.168.10.85:8080"; //Fido
-// const ENDPOINT = "http://10.251.16.255:8080"; // Sun n fork (VUMC Guest)
 
 
 
@@ -128,6 +124,7 @@ export async function authenticate(_username, _password) {
     username: _username,
     password: _password
   };
+  console.log("ENDPOINT:", ENDPOINT);
   const res = await fetch(ENDPOINT + "/api/v1/authenticate", {
     method: "POST",
     body: JSON.stringify(_body),
