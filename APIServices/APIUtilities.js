@@ -4,6 +4,7 @@ import { ENDPOINT } from "./developerEndpoint";
 //this should be an env. variable. Fix this later
 
 //put
+// const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
 
 
 
