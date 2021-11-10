@@ -300,7 +300,7 @@ closeEditModal = () =>{
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.name || ''}
@@ -321,7 +321,7 @@ closeEditModal = () =>{
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.phoneNumber || ''}
@@ -343,7 +343,7 @@ closeEditModal = () =>{
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.email || ''}

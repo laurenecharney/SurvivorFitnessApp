@@ -242,59 +242,59 @@ export default class AdminClientPage extends Component {
                                             </TouchableOpacity>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                            <Text style={styles.participantInfoOther} >Name: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
+                                            <Text style={styles.participantInfoOther} >Age: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                            <Text style={styles.participantInfoOther} >Email: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                            <Text style={styles.participantInfoOther}  >Phone Number: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
+                                            <Text style={styles.participantInfoOther}  >Type of Cancer: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
+                                            <Text style={styles.participantInfoOther}  >Treatment Facility: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
+                                            <Text style={styles.participantInfoOther}  >Surgeries: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
+                                            <Text style={styles.participantInfoOther}  >Forms of Treatment: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
+                                            <Text style={styles.participantInfoOther} >Physician Notes: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
+                                            <Text style={styles.participantInfoOther}  >Trainer: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.trainer}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
+                                            <Text style={styles.participantInfoOther} >Dietitian: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.nutritionist}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
+                                            <Text style={styles.participantInfoOther}  >Start Date: </Text>
                                             <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
+                                            <Text style={styles.participantInfoOther}  >Goal(s): </Text>
                                             <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
                                         </View>
                                     </View>
@@ -325,13 +325,13 @@ export default class AdminClientPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                                     <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
+                                        <Text style={styles.participantInfo} >Name: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.name || ''}
@@ -347,13 +347,13 @@ export default class AdminClientPage extends Component {
 
                                         
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone: </Text>
+                                        <Text style={styles.participantInfo} >Phone: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.phoneNumber || ''}
@@ -368,13 +368,13 @@ export default class AdminClientPage extends Component {
                                         </View>
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        <Text style={styles.participantInfo} >Email: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.email || ''}
@@ -389,13 +389,13 @@ export default class AdminClientPage extends Component {
                                         </View>
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Type of Cancer: </Text>
+                                        <Text style={styles.participantInfo}>Type of Cancer: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.typeOfCancer || ''}
@@ -409,13 +409,13 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Treatment Facility: </Text>
+                                        <Text style={styles.participantInfo} >Treatment Facility: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.treatmentFacility || ''}
@@ -429,13 +429,13 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Surgeries: </Text>
+                                        <Text style={styles.participantInfo} >Surgeries: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.surgeries || ''}
@@ -449,13 +449,13 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Forms of Treatmnet: </Text>
+                                        <Text style={styles.participantInfo}>Forms of Treatmnet: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.formsOfTreatments|| ''}
@@ -469,13 +469,13 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Physician Notes: </Text>
+                                        <Text style={styles.participantInfo}>Physician Notes: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.doctNotes || ''}
@@ -489,13 +489,13 @@ export default class AdminClientPage extends Component {
                                         </View>
                                         </View>
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Trainer: </Text>
+                                        <Text style={styles.participantInfo} >Trainer: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.trainer || ''}
@@ -510,13 +510,13 @@ export default class AdminClientPage extends Component {
                                         </View>
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Dietician: </Text>
+                                        <Text style={styles.participantInfo} >Dietician: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.dietician || ''}
@@ -531,13 +531,13 @@ export default class AdminClientPage extends Component {
                                         </View>
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Start Date: </Text>
+                                        <Text style={styles.participantInfo} >Start Date: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.startDate || ''}
@@ -553,13 +553,13 @@ export default class AdminClientPage extends Component {
 
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Goal(s): </Text>
+                                        <Text sstyle={styles.participantInfo} >Goal(s): </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.goals || ''}
@@ -610,7 +610,7 @@ export default class AdminClientPage extends Component {
                                     </View>
                                     <View>
                                         <Text style={styles.childText}>First Name</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -619,7 +619,7 @@ export default class AdminClientPage extends Component {
                                             />
                                         </View>
                                         <Text style={styles.childText}>Last Name</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -628,7 +628,7 @@ export default class AdminClientPage extends Component {
                                             />
                                         </View>
                                         <Text style={styles.childText} >Age</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -637,7 +637,7 @@ export default class AdminClientPage extends Component {
                                             />
                                         </View>
                                         <Text style={styles.childText}>Email</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -646,7 +646,7 @@ export default class AdminClientPage extends Component {
                                             />
                                         </View>
                                         <Text style={styles.childText}>Phone Number</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -679,7 +679,7 @@ export default class AdminClientPage extends Component {
                                             onChangeItem={item => console.log(item)}
                                         />
                                         <Text style={styles.childText}>Start Date</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -688,7 +688,7 @@ export default class AdminClientPage extends Component {
                                             />
                                         </View>
                                         <Text style={styles.childText}>Goal(s)</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                        blurOnSubmit={false}
                                                        underlineColorAndroid = "transparent"
@@ -850,6 +850,15 @@ const styles = StyleSheet.create({
         alignSelf:"center"
 
     },
+    childPt2: {
+        backgroundColor: "white",
+        padding: 10,
+        borderWidth: 1,
+        borderColor: "#E7E7E7",
+        width: "75%",
+        borderRadius: 5,
+        alignSelf: "center"
+      },
     childText:{
         fontSize:13,
         color:"#B7DC21",
@@ -871,5 +880,15 @@ const styles = StyleSheet.create({
     },
     listContainer:{
         paddingBottom: '33%'
-    }
+    },
+    participantInfo:{
+        fontSize: 15, 
+        color: '#AED803', 
+        paddingBottom: 10
+    },
+    participantInfoOther:{
+        fontSize: 15, 
+        color: '#AED803', 
+    },
+
 });

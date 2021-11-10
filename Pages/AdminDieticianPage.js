@@ -166,7 +166,7 @@ export default class AdminDieticianPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Dietitian Information</Text>
+                                        <Text style={{fontSize: 19, color: '#AED803'}} >Dietitian Information</Text>
                                     </View>
                                     <View style={{padding:6}}></View>
                                     <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>

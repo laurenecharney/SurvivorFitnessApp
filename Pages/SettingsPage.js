@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   deleteJWT,
   getUser,
@@ -26,19 +27,21 @@ export default class SettingsPage extends React.Component {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
-            paddingRight: 25
+            borderBottomColor:"#E4E4E4",
+            borderBottomWidth:1,
+            width:"100%"
           }}
         >
           <Text style={styles.workHeadline}>Settings</Text>
         </View>
-        <View style={{ flexDirection: "column" }}>
+        <View style={{ flexDirection: "column", width:"100%" }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("ProfilePage")}
           >
             <View style={styles.row}>
               <Text style={styles.text}>Profile</Text>
+              <Icon name={'keyboard-arrow-right'} size={40} color={'#E4E4E4'}/>
             </View>
           </TouchableOpacity>
           {user.roles && user.roles.includes("TRAINER") && (
@@ -51,6 +54,7 @@ export default class SettingsPage extends React.Component {
             >
               <View style={styles.row}>
                 <Text style={styles.text}>Switch to Trainer Account</Text>
+                <Icon name={'keyboard-arrow-right'} size={40} color={'#E4E4E4'}/>
               </View>
             </TouchableOpacity>
           )}
@@ -70,9 +74,10 @@ export default class SettingsPage extends React.Component {
           <TouchableOpacity>
             <View style={styles.row}>
               <Text style={styles.text}>Download Data</Text>
+              <Icon name={'get-app'} size={40} color={'#E4E4E4'}/>
             </View>
           </TouchableOpacity>
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", paddingTop:100,paddingBottom:300 }}>
             <TouchableOpacity
               style={styles.loginBtn}
               onPress={() => {
@@ -111,14 +116,18 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flex: 1,
     opacity: 1,
-    zIndex: 15
+    zIndex: 15,
+    borderBottomWidth:1,
+    borderBottomColor:"#E4E4E4"
   },
   workHeadline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 15,
-    padding: 25,
-    color: "#AED803"
+    marginLeft: 120,
+    padding: 30,
+    fontWeight:"500",
+    color: "#3E3E3E",
+    alignContent:"center"
   },
   loginBtn: {
     width: "60%",
@@ -139,12 +148,13 @@ const styles = StyleSheet.create({
     borderColor: "#E6E6E6",
     backgroundColor: "#fff",
     borderBottomWidth: 1,
-    padding: 25,
-    justifyContent: "space-between"
+    padding: 35,
+    justifyContent: "space-between",
+    width:"100%"
   },
 
   text: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#3E3E3E",
     flexDirection: "row",
     alignItems: "flex-start",
