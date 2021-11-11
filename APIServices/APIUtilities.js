@@ -1,5 +1,4 @@
 import { getItem } from "./deviceStorage";
-import { ENDPOINT } from "./developerEndpoint";
 
 const ENDPOINT = "http://ec2-34-235-137-139.compute-1.amazonaws.com:8080";
 
