@@ -1,15 +1,7 @@
 import { getItem } from "./deviceStorage";
 import { ENDPOINT } from "./developerEndpoint";
 
-<<<<<<< HEAD
 const ENDPOINT = "http://ec2-34-235-137-139.compute-1.amazonaws.com:8080";
-=======
-//this should be an env. variable. Fix this later
-
-//put
-// const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
-
->>>>>>> master
 
 
 //gets participants with optional query params passed in
