@@ -54,7 +54,10 @@ export default class ProfilePage extends React.Component {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingRight: 25
+                borderBottomColor:"#E4E4E4",
+                borderBottomWidth:1,
+                width:"100%"
+
               }}
             >
               <TouchableOpacity
@@ -64,7 +67,7 @@ export default class ProfilePage extends React.Component {
                 <Icon
                   name={"keyboard-arrow-left"}
                   size={50}
-                  color={"#BEBEBE"}
+                  color={"#E4E4E4"}
                 />
               </TouchableOpacity>
               <Text style={styles.workHeadline}>Profile</Text>
@@ -85,7 +88,7 @@ export default class ProfilePage extends React.Component {
                         ? "keyboard-arrow-up"
                         : "keyboard-arrow-down"
                     }
-                    size={30}
+                    size={40}
                     color={"#E4E4E4"}
                   />
                 </TouchableOpacity>
@@ -166,7 +169,7 @@ export default class ProfilePage extends React.Component {
                       ? "keyboard-arrow-up"
                       : "keyboard-arrow-down"
                   }
-                  size={30}
+                  size={40}
                   color={"#E4E4E4"}
                 />
               </TouchableOpacity>
@@ -281,19 +284,17 @@ const styles = StyleSheet.create({
   workHeadline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 15,
-    padding: 25,
+    padding: 30,
     color: "#3E3E3E",
-    fontWeight: "600",
-    paddingRight: 140
+    paddingRight: 160,
+    fontWeight:"500",
   },
   backButton: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingRight: 50,
     paddingTop: 50,
-    paddingLeft: 30
+    paddingLeft: 10
   },
 
   headline: {
@@ -301,13 +302,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     position: "absolute",
     marginTop: 45,
-    marginLeft: 0,
     color: "#3E3E3E",
     flexDirection: "row",
     flexWrap: "wrap",
     flex: 1,
     opacity: 1,
-    zIndex: 15,
     borderBottomColor: "#BEBEBE",
     borderBottomWidth: 1
   },

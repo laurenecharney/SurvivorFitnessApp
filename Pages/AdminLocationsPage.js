@@ -314,7 +314,7 @@ export default class AdminLocationsPage extends Component {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.name || ''}
@@ -334,7 +334,7 @@ export default class AdminLocationsPage extends Component {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.location || ''}
@@ -354,7 +354,7 @@ export default class AdminLocationsPage extends Component {
                                             <TextInput style = {styles.input}
                                             returnKeyType="done"
                                             editable={this.state.edit}
-                                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
                                             defaultValue = {this.state.admin || ''}
@@ -432,7 +432,7 @@ export default class AdminLocationsPage extends Component {
                                     </View>
                                     <View>
                                         <Text style={styles.childText}>Name</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -441,7 +441,7 @@ export default class AdminLocationsPage extends Component {
                                                 />
                                         </View>
                                         <Text style={styles.childText} >Address</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -450,7 +450,7 @@ export default class AdminLocationsPage extends Component {
                                                 />
                                         </View>
                                         <Text style={styles.childText}>Administrator</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -491,7 +491,7 @@ export default class AdminLocationsPage extends Component {
                                     </View>
                                     <View>
                                         <Text style={styles.childText}>Name</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -500,7 +500,7 @@ export default class AdminLocationsPage extends Component {
                                                 />
                                         </View>
                                         <Text style={styles.childText} >Address</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -509,7 +509,7 @@ export default class AdminLocationsPage extends Component {
                                                 />
                                         </View>
                                         <Text style={styles.childText}>Administrator</Text>
-                                        <View style={styles.child}>
+                                        <View style={styles.childPt2}>
                                             <TextInput style = {styles.input}
                                                 blurOnSubmit={false}
                                                 underlineColorAndroid = "transparent"
@@ -624,6 +624,15 @@ const styles = StyleSheet.create({
             fontWeight: "bold",
             color: "#AED803",
     },
+    childPt2: {
+        backgroundColor: "white",
+        padding: 10,
+        borderWidth: 1,
+        borderColor: "#E7E7E7",
+        width: "75%",
+        borderRadius: 5,
+        alignSelf: "center"
+      },
     addNewContainer: {
         backgroundColor:'#AED804',
         borderRadius: 10,

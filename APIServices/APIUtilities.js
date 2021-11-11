@@ -1,11 +1,6 @@
 import { getItem } from "./deviceStorage";
-import { ENDPOINT } from "./developerEndpoint";
 
-//this should be an env. variable. Fix this later
-
-//put
-// const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
-
+const ENDPOINT = "http://ec2-34-235-137-139.compute-1.amazonaws.com:8080";
 
 
 //gets participants with optional query params passed in
@@ -31,7 +26,7 @@ export async function getParticipants(paramName, paramValue) {
 //gets participant by id
 export async function getParticipantByID(id) {
   const jwt = await getItem();
-  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id, {
+  const res = await fetch(ENDPOINT + "/api/v1/participants/194", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -40,7 +35,8 @@ export async function getParticipantByID(id) {
     }
   })
     .then(response => response.json());
-  return res.participants;
+    console.log("GET PARTICIPANTS ID QUERY")
+  return res.participant;
 }
 
 export async function getAllSessionNotesByParticipantID(id) {
@@ -85,6 +81,7 @@ export async function getLocations() {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
+  console.log(res);
   return res && res.locations ? res.locations : [];
 }
 
@@ -99,6 +96,7 @@ export async function getLocationByID(id) {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
+  console.log(res);
   return res && res.location ? res.location : [];
 }
 

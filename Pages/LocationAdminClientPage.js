@@ -19,7 +19,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/MaterialIcons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AlphabetList } from "react-native-section-alphabet-list";
-import { getParticipants } from "../APIServices/APIUtilities";
+import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -37,6 +37,21 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: false,
       isAddModalVisible: false,
       isListOpen: false,
+      name:"",
+      age:"",
+      email:"",
+      phoneNumber:"",
+      cancer:"",
+      treatmentFacility:"",
+      surgeries:"",
+      formsOfTreatments:"",
+      doctNotes:"",
+      trainer:"",
+      dietician:"",
+      startDate:"",
+      goals:"",
+      calls: [],
+      selectedParticipant: {},
       participants: []
     };
   }
@@ -79,16 +94,41 @@ export default class LocationAdminClientPage extends Component {
           return newI;
         })
       });
+      console.log(res)
     } catch (e) {
       console.log("Error fetching participants", e);
       alert("Could not fetch participants data");
     }
   }
 
-  openModal = () => {
+  openModal = async (participant) => {
     this.setState({
-      isModalVisible: true
+      isModalVisible: true,
+      selectedParticipant: participant
     });
+    try {
+      const res = await getParticipantByID(participant.id);
+      this.setState({
+        name: (res.firstName + " " + res.lastName),
+        dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
+        trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
+        age: res.age,
+        email: res.email,
+        phoneNumber: res.phoneNumber,
+        cancer: res.typeOfCancer,
+        formsOfTreatments: res.formsOfTreatment,
+        goals: res.goals,
+        doctNotes: res.physicianNotes,
+        startDate: res.startDate.substring(0,10),
+        surgeries: res.surgeries,
+      })
+     
+      
+
+  } catch (e){
+      console.log(e);
+      alert("Could not fetch participants data");
+  }
   };
 
   toggleModal = () => {
@@ -165,7 +205,7 @@ export default class LocationAdminClientPage extends Component {
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => this.openModal()}
+                        onPress={() => this.openModal(item)}
                         style={{
                           borderWidth: 1,
                           borderColor: "#AED803",
@@ -186,189 +226,87 @@ export default class LocationAdminClientPage extends Component {
             )}
           />
         </View>
-        <Modal
-          propagateSwipe={true}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          onBackdropPress={() => this.closeModal()}
-          onSwipeComplete={() => this.closeModal()}
-          isVisible={this.state.isModalVisible}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: "40%",
-                borderRadius: "19"
-              }}
-            >
-              <TouchableOpacity
-                style={{ paddingLeft: 260, paddingTop: 10 }}
-                onPress={() => this.closeModal()}
-              >
-                <Icon name={"close"} color={"#E4E4E4"} size={32} />
-              </TouchableOpacity>
-              <View style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingBottom: 30,
-                      width: "75%"
-                    }}
-                  >
-                    <Text style={{ fontSize: 19, color: "#AED803" }}>
-                      Participant Information
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Name:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Age:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Email:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Phone Number:{" "}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Type of Cancer:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Treatment Facility:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Surgeries:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Forms of Treatment:{" "}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Trainer
-                    </Text>
-                    <DropDownPicker
-                      items={[
-                        { label: "Lauren Charney", value: "item1" },
-                        { label: "Abby Cohen", value: "item2" },
-                        { label: "Alicia Yang", value: "item3" }
-                      ]}
-                      textColor="#797979"
-                      defaultIndex={0}
-                      containerStyle={styles.dropdown}
-                      onChangeItem={item => console.log(item.label, item.value)}
-                    />
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Dietician:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Start Date:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Goal(s):{" "}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 40,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#E4E4E4",
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      width: "75%"
-                    }}
-                  >
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Physician Notes:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Start Date:{" "}
-                    </Text>
-                    <Text
-                      style={{ padding: 5, fontSize: 15, color: "#797979" }}
-                    >
-                      Goal(s):{" "}
-                    </Text>
-                  </View>
-                  <AppButton
-                    title={this.state.edit ? "SAVE" : "EDIT"}
-                    onPress={() => this.setState({ edit: !this.state.edit })}
-                  />
-                </ScrollView>
-              </View>
-            </View>
-          </View>
+        <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
+                    <View style={{ flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        <View style={{
+                            backgroundColor: "#fff",
+                            width: '90%',
+                            height: '70%',
+                            borderRadius:'19'}}>
+                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1}}>
+                            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
+                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.trainer}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.nutritionist}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
+                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
+                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
+                                        </View>
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                        </View>
+                    </View>
         </Modal>
         <Modal
           propagateSwipe={true}

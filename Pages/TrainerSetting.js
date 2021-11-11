@@ -39,21 +39,29 @@ export default class TrainerSettingsPage extends React.Component {
     const { user } = this.state;
     return (
       <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <Icon name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
-          </TouchableOpacity>
-          <Text style={styles.workHeadline}>Settings</Text>
-        </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottomColor:"#E4E4E4",
+                borderBottomWidth:1,
+                width:"100%"
+
+              }}
+            >
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon
+                  name={"keyboard-arrow-left"}
+                  size={50}
+                  color={"#E4E4E4"}
+                />
+              </TouchableOpacity>
+              <Text style={styles.workHeadline}>Settings</Text>
+            </View>
         <View style={{ flexDirection: "column", width: "100%" }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("ProfilePage")}
@@ -117,7 +125,7 @@ export default class TrainerSettingsPage extends React.Component {
               </View>
             </TouchableOpacity>
           )}
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", paddingTop:250,paddingBottom:400 }}>
             <TouchableOpacity
               style={styles.loginBtn}
               onPress={() => {
@@ -160,9 +168,17 @@ const styles = StyleSheet.create({
   workHeadline: {
     fontSize: 25,
     marginTop: 50,
-    padding: 25,
-    fontWeight: "600",
-    color: "#3E3E3E"
+    padding: 30,
+    color: "#3E3E3E",
+    paddingRight: 150,
+    fontWeight:"500",
+  },
+  backButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 50,
+    paddingLeft: 10
   },
   loginBtn: {
     width: "40%",
@@ -183,7 +199,7 @@ const styles = StyleSheet.create({
     borderColor: "#E6E6E6",
     backgroundColor: "#fff",
     borderBottomWidth: 1,
-    padding: 25,
+    padding: 35,
     justifyContent: "space-between"
   },
 

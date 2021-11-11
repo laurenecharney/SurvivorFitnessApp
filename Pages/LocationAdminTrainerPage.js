@@ -8,6 +8,7 @@ import {
   TextInput
 } from "react-native";
 import Modal from "react-native-modal";
+import ModalRow from '../Components/ModalComponents/ModalRow'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getTrainers, getDietitians } from "../APIServices/APIUtilities";
 export const AppButton = ({ onPress, title }) => (
@@ -33,7 +34,7 @@ export default class LocationAdminTrainerPage extends Component {
       isAddModalVisible: false,
       isGymModalVisible: false,
       isEditModalVisible: false,
-      selectedUser: [],
+      selectedUser: {},
       calls: [
       ]
     };
@@ -64,6 +65,7 @@ export default class LocationAdminTrainerPage extends Component {
           return newI;
         })
       });
+      console.log(arr)
     } catch (e) {
       console.log(e);
       alert("Could not fetch data.");
@@ -71,10 +73,12 @@ export default class LocationAdminTrainerPage extends Component {
   }
 
   openModal = item => {
+    console.log(item)
     this.setState({
-      isModalVisible: true,
-      selectedUser: item
-    });
+      isModalVisible:true,
+      selectedTrainer: item,
+      name: item.value
+  });
   };
 
   toggleModal = () => {
@@ -250,15 +254,15 @@ closeEditModal = () =>{
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.name}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.email}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
                                             <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                            <Text style={{color: '#797979'}}>{this.state.phoneNumber}</Text>
                                         </View>
                                     </View>
 
@@ -284,28 +288,77 @@ closeEditModal = () =>{
 
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:20, width:'75%'}}>
-                                    <Text style={{ fontSize: 19, color: "#AED803" }}> Edit {this.getUserType(false) + " Information"}</Text>
+                                <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
+                                        <Text style={{fontSize: '19', color: '#AED803'}} >Edit Information</Text>
                                     </View>
+                                    <View style={{padding:6}}></View>
                                     <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{paddingBottom: 20}}>
+                                    <View style={{paddingBottom: 20}}>
                                         <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
-                                        </View>
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
-                                        </View>
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
-                                        </View>
-                                        <TouchableOpacity>
-                                            <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
-                                        </TouchableOpacity>
-                                        <AppButton
-                                            title={this.state.edit ? "SAVE" : "EDIT"}
-                                            onPress={() => {()=>this.closeEditModal()}}
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.name || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newName => this.setState({name: newName})}
                                             />
+                                        }
 
                                         </View>
+                                        </View>
+
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.phoneNumber || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newPhoneNumber => this.setState({phoneNumber: newPhoneNumber})}
+                                            />
+                                        }
+
+                                        </View>
+                                        </View>
+
+
+                                        <View style={{paddingBottom: 20}}>
+                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
+                                        <View style={styles.child}>
+                                        {
+                                            <TextInput style = {styles.input}
+                                            returnKeyType="done"
+                                            editable={this.state.edit}
+                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                            blurOnSubmit={false}
+                                            underlineColorAndroid = "transparent"
+                                            defaultValue = {this.state.email || ''}
+                                            placeholderTextColor = "#D5D5D5"
+                                            color="#797979"
+                                            autoCapitalize = "sentences"
+                                            onChangeText = {newEmail => this.setState({email: newEmail})}
+                                            />
+                                        }
+
+                                        </View>
+                                        </View>
+
+                                        </View>
+
                                 </ScrollView>
                             </View>
 
