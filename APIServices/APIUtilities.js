@@ -1,6 +1,15 @@
 import { getItem } from "./deviceStorage";
+import { ENDPOINT } from "./developerEndpoint";
 
+<<<<<<< HEAD
 const ENDPOINT = "http://ec2-34-235-137-139.compute-1.amazonaws.com:8080";
+=======
+//this should be an env. variable. Fix this later
+
+//put
+// const ENDPOINT = "http://10.76.31.229:8080"; //vuNet - fgh
+
+>>>>>>> master
 
 
 //gets participants with optional query params passed in
@@ -21,7 +30,7 @@ export async function getParticipants(paramName, paramValue) {
     console.log("GET PARTICIPANTS QUERY")
     console.log(paramName + " " + paramValue);
   return res && res.participants ? res.participants : [];
-} //
+} // ,
 
 //gets participant by id
 export async function getParticipantByID(id) {
@@ -123,6 +132,7 @@ export async function authenticate(_username, _password) {
     username: _username,
     password: _password
   };
+  console.log("ENDPOINT:", ENDPOINT);
   const res = await fetch(ENDPOINT + "/api/v1/authenticate", {
     method: "POST",
     body: JSON.stringify(_body),
