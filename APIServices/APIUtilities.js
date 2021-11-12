@@ -1,11 +1,43 @@
 import { getItem } from "./deviceStorage";
-import { ENDPOINT } from "./developerEndpoint";
+//import { ENDPOINT } from "./developerEndpoint";
+
+const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
 
 //this should be an env. variable. Fix this later
 
 //put
 
+export async function getMeasurements(participantID, sessionID) {
+  const jwt = await getItem();
 
+  const res = await fetch(ENDPOINT + "/api/v1/participants/" + participantID + "/all-notes", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+
+  console.log(res);
+
+  let i = 0;
+  while(res.trainerSessions[i]) {
+    if(res.trainerSessions[i].sessionIndexNumber == sessionID) {
+      let ret =  res.trainerSessions[i].measurements ?  res.trainerSessions[i].measurements : {};
+    }
+    ++i;
+  }
+
+  //for debugging
+  console.log(ret);
+  return ret;
+
+  return {};
+}
+
+export async function logMeasurements(sessionID, measurementName) {}
 
 //gets participants with optional query params passed in
 export async function getParticipants(paramName, paramValue) {
@@ -42,10 +74,10 @@ export async function getParticipantByID(id) {
   return res.participants;
 }
 
-export async function getAllSessionNotesByParticipantID(id) {
+export async function getParticipantSessions(id) {
   const jwt = await getItem();
-  console.log("endpoint: ", ENDPOINT + "/api/v1/participants/" + id + "/trainer-notes")
-  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id + "/trainer-notes", {
+  console.log("endpoint: ", ENDPOINT + "/api/v1/participants/" + id + "/all-notes")
+  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id + "/all-notes", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -55,6 +87,7 @@ export async function getAllSessionNotesByParticipantID(id) {
   })
     .then(response => response.json());
   console.log(res);
+  return res;
 } 
 
 export async function getTrainers(_locationId) {
