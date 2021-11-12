@@ -8,7 +8,8 @@ import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View} from 'react-native';
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import SidebarDietician from '../Components/SidebarDietician';
-import DieticianSession from './DieticianSession';
+import DieticianSession from './DieticianSession'
+import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
 
 // LogSessionPage
     // sideBarComponent
@@ -21,19 +22,39 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.state={
             dietician: false,
             numTrainerSessions: 24,
-            trainerSessionsArray:  [],
+            trainerSessionsArray:  [
+                {id: 1, name: '1', logged: false, highlighted: true},
+                {id: 2, name: '2', logged: false, highlighted: false},
+                {id: 3, name: '3', logged: false, highlighted: false},
+                {id: 4, name: '4', logged: false, highlighted: false},
+                {id: 5, name: '5', logged: false, highlighted: false},
+                {id: 6, name: '6', logged: false, highlighted: false},
+                {id: 7, name: '7', logged: false, highlighted: false},
+                {id: 8, name: '8', logged: false, highlighted: false},
+                {id: 9, name: '9', logged: false, highlighted: false},
+                {id: 10, name: '10', logged: false, highlighted: false},
+                {id: 11, name: '11', logged: false, highlighted: false},
+                {id: 12, name: '12', logged: false, highlighted: false},
+                {id: 13, name: '13', logged: false, highlighted: false},
+                {id: 14, name: '14', logged: false, highlighted: false},
+                {id: 15, name: '15', logged: false, highlighted: false},
+                {id: 16, name: '16', logged: false, highlighted: false},
+                {id: 17, name: '17', logged: false, highlighted: false}
+            ],
             
             numDieticianSessions: 3,
-            dieticianSessionsArray: [],
+            dieticianSessionsArray: [
+                ],
             sessionTrainer: 1,
             sessionDietician: 1,
+            numSessions: 24,
             addSessionArray:  [
                 {id: 1, name: '+'}
             ]
         }
-        for (let i = 1; i <= this.state.numTrainerSessions; ++i){
-            this.state.trainerSessionsArray.push({id: i, name: i.toString()})
-        }
+        // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
+        //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
+        // }
         for (let i = 1; i <= this.state.numDieticianSessions; ++i){
             this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
@@ -80,6 +101,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                 <View style={styles.header}>
                     <NameNavBar name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
                     goBack={()=>this.props.navigation.goBack()}/>
+                
                 </View>
                 <View>
                     <TrainerDieticianNavBar
@@ -102,6 +124,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         />
                         :
                         <Sidebar
+                        testProp = "Hello"
                         updateSession={newSession=>this.updateSessionTrainer(newSession)}
                         sessionsArray = {this.state.trainerSessionsArray}
                         addSessionArray = {this.state.addSessionArray}
