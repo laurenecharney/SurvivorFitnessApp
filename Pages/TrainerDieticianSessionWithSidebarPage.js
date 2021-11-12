@@ -9,6 +9,7 @@ import { StyleSheet, View} from 'react-native';
 import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
+import { getParticipantSessions } from "../APIServices/APIUtilities";
 
 // LogSessionPage
     // sideBarComponent
@@ -22,14 +23,14 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             dietician: false,
             numTrainerSessions: 24,
             trainerSessionsArray:  [],
-            
             numDieticianSessions: 3,
             dieticianSessionsArray: [],
             sessionTrainer: 1,
             sessionDietician: 1,
             addSessionArray:  [
                 {id: 1, name: '+'}
-            ]
+            ],
+            sessions: [],
         }
         for (let i = 1; i <= this.state.numTrainerSessions; ++i){
             this.state.trainerSessionsArray.push({id: i, name: i.toString()})
@@ -70,6 +71,28 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
      isCheckpoint(sessionNum){
         return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
+     }
+
+     async fetchSessions() {
+        try {
+            let res = getParticipantSessions(this.props.params.id);
+            this.setState({sessions: res});
+            console.log(this.state.sessions);
+        } catch (e) {
+            console.log(e);
+            alert("Could not fetch participant session data");
+        }
+     }
+
+     async componentDidMount() {
+        try {
+            let res = getParticipantSessions(this.props.route.params.id);
+            this.setState({sessions: res});
+            console.log(this.state.sessions);
+        } catch (e) {
+            console.log(e);
+            alert("Could not fetch participant session data");
+        }
      }
 
     render(){
