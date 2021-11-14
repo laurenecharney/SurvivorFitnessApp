@@ -14,49 +14,22 @@ import MultilineInputSaveComponent from '../Components/MultilineInputSaveCompone
 import DateTextBox from '../Components/DateTextBox'
 import Modal from 'react-native-modal'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
+import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 import { Measurements } from "../Components/Measurements";
 
-const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+const AppButton = ({ onPress, title, isSmall }) => (
+    <TouchableOpacity onPress={onPress} style={isSmall ? styles.appButtonContainerSmall : styles.appButtonContainer}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
 
-const SmallAppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
-        <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
-);
+// const SmallAppButton = ({ onPress, title }) => (
+//     <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
+//         <Text style={styles.appButtonText}>{title}</Text>
+//     </TouchableOpacity>
+// );
 
-const SessionModal = () => {
-    <Modal
-    propagateSwipe={true}
-    animationIn="slideInUp"
-    animationOut="slideOutDown"
-    >
-        <View
-            style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
-            }}
-        >
-            <View
-            style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: "50%",
-                borderRadius: "19",
-                alignItems: "center", justifyContent: 'space-around'
-            }}
-            >
-            </View>
-        </View>
-    </Modal>
-}
 export default class TrainerCheckpointPage extends Component {
     constructor(props){
         super(props);
@@ -105,7 +78,7 @@ export default class TrainerCheckpointPage extends Component {
     async fetchUser() {
       const res = await getUser();
       this.setState({user: JSON.parse(res)})
-      const res2 = await getAllSessionNotesByParticipantID(2);
+      //const res2 = await getParticipantSessions(2);
     }
 
 
@@ -156,11 +129,12 @@ export default class TrainerCheckpointPage extends Component {
                     <AppButton
                         title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
                         onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
+                        isSmall = {false}
                     />
 
                 {
                     (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
-                    <Measurements></Measurements>
+                    <Measurements />
                 }
                     <Modal
                         propagateSwipe={true}
@@ -210,9 +184,10 @@ export default class TrainerCheckpointPage extends Component {
                                                 }}
                                             />
                                         <View>
-                                            <SmallAppButton
+                                            <AppButton
                                             title={"Log"}
                                             onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
+                                            isSmall={true}
                                                 />
                                         </View>
 
@@ -221,10 +196,8 @@ export default class TrainerCheckpointPage extends Component {
                             </View>
                         </View>
                     </Modal>
-           
-        </ScrollView>
-      
-        </View>);
+                </ScrollView>
+            </View>);
         }
         
     }
