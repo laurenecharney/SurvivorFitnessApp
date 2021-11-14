@@ -1,7 +1,7 @@
 import { getItem } from "./deviceStorage";
-//import { ENDPOINT } from "./developerEndpoint";
+import { ENDPOINT } from "./developerEndpoint";
 
-const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
+// const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
 
 //this should be an env. variable. Fix this later
 
@@ -86,7 +86,7 @@ export async function getParticipantSessions(id) {
     }
   })
     .then(response => response.json());
-  console.log(res);
+  // console.log(res);
   return res;
 } 
 

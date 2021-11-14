@@ -51,6 +51,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             addSessionArray:  [
                 {id: 1, name: '+'}
             ],
+            currentSession: 1,
             sessions: [],
         }
         // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
@@ -98,7 +99,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         try {
             let res = getParticipantSessions(this.props.params.id);
             this.setState({sessions: res});
-            console.log(this.state.sessions);
+            // console.log("SESSIONS",)
+            // console.log(this.state.sessions);
         } catch (e) {
             console.log(e);
             alert("Could not fetch participant session data");
@@ -107,9 +109,9 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
      async componentDidMount() {
         try {
-            let res = getParticipantSessions(this.props.route.params.id);
-            this.setState({sessions: res});
-            console.log(this.state.sessions);
+            let res = await getParticipantSessions(this.props.route.params.id);
+            this.setState({sessions: res.trainerSessions});
+            console.log("SESSIONS DATA", this.state.sessions[0]);
         } catch (e) {
             console.log(e);
             alert("Could not fetch participant session data");
@@ -156,6 +158,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     </View>
                     <TrainerCheckpointPage session = {this.state.sessionTrainer}
                     isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
+                    sessionData={this.state.sessions ? this.state.sessions[0] : null}
                     trainerSessionSelected={!this.state.dietician}/>
                 </View>
             </View>

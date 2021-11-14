@@ -14,13 +14,14 @@ import MultilineInputSaveComponent from '../Components/MultilineInputSaveCompone
 import DateTextBox from '../Components/DateTextBox'
 import Modal from 'react-native-modal'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getAllSessionNotesByParticipantID } from "../APIServices/APIUtilities";
+import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 import { Measurements } from "../Components/Measurements";
 
-const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
-        <Text style={styles.appButtonText}>{title}</Text>
+const AppButton = ({ onPress, title, logged }) => (
+    <TouchableOpacity onPress={onPress} 
+        style={!logged ? styles.appButtonContainer : styles.loggedContainer}>
+        <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
@@ -70,7 +71,9 @@ export default class TrainerCheckpointPage extends Component {
             isDateConfirmModalVisible: false,
             isDatePickerModalVisible: false,
             sessionDate: new Date(),
-            edit: false
+            testSessionDate: new Date(2000, 6, 2),
+            edit: false,
+            logged: false
         }
         
         if (Platform.OS === 'android') {
@@ -105,7 +108,10 @@ export default class TrainerCheckpointPage extends Component {
     async fetchUser() {
       const res = await getUser();
       this.setState({user: JSON.parse(res)})
-      const res2 = await getAllSessionNotesByParticipantID(2);
+    //   const res = await getParticipantSessions(2);
+    //   console.log(res);
+
+    //   const res2 = await getAllSessionNotesByParticipantID(2);
     }
 
 
@@ -113,50 +119,42 @@ export default class TrainerCheckpointPage extends Component {
         //TODO
         // await this.refreshList();
         await this.fetchUser();
+        console.log("DATA (from checkpoint page): ", this.props.sessionData)
+        if (this.props.sessionData) {
+            console.log("DIS BOY IS TRUE")
+            this.setState({
+                sessionDate: new Date(parseInt(this.props.sessionData.initalLogDate)),
+                // edit: true,
+                logged: true
+            })
+        } else {
+            console.log("DIS BOY IS FALSE")
+        }
+        // if (this.state)
       }
-
-    //   async refreshList() {
-    //     try {
-    //       const locationId =
-    //         this.props.route.params && this.props.route.params.locationId
-    //           ? this.props.route.params.locationId
-    //           : null;
-    //       const arr =
-    //         this.props.route.params &&
-    //         this.props.route.params.userType === "DIETITIAN"
-    //           ? await getDietitians(locationId)
-    //           : await getTrainers(locationId);
-    //       this.setState({
-    //         calls: arr.map(item => {
-    //           let newI = item;
-    //           newI.value = item.firstName + " " + item.lastName;
-    //           newI.id = parseInt(item.id);
-    //           newI.gym = item.locations[0] ? item.locations[0].name : "";
-    //           return newI;
-    //         })
-    //       });
-    //     } catch (e) {
-    //       console.log(e);
-    //       alert("Could not fetch data.");
-    //     }
-    //   }
 
 
     render(){
-        // const {edit,} = this.state;
         return(
             <View style = {styles.container}>
-                {/* <View style={styles.fixedHeader}>
 
-                </View > */}
                 <ScrollView 
                     contentContainerStyle = {styles.scrollContentContainer}
                     style={styles.scrollViewStyle}
                 >
+   
+                    
                     <AppButton
-                        title = {this.state.edit ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                        title = {this.state.logged ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
                         onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
+                        logged={this.state.logged}
                     />
+                    {/* <AppButton
+                        title = {"reset"}
+                        onPress={()=>this.setState({logged: false})}
+                    /> */}
+
+
 
                 {
                     (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
@@ -211,9 +209,9 @@ export default class TrainerCheckpointPage extends Component {
                                             />
                                         <View>
                                             <SmallAppButton
-                                            title={"Log"}
-                                            onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
-                                                />
+                                                title={!this.state.logged ? "Confirm" : "Confirm New Date"}
+                                                onPress={()=>this.setState({logged: true, isDateConfirmModalVisible: false})}
+                                            />
                                         </View>
 
                                     </ScrollView>
@@ -248,22 +246,31 @@ const styles = StyleSheet.create({
 
     },
     scroll: {
-        // paddingTop: 165,
-        // paddingBottom: 200,
         overflow: 'hidden',
-        // width: '100%'
-        // zIndex: 0
-        // paddingBottom: 300,
-        // height:  100
-        // position: 'absolute',
-        // flexDirection: 'row',
     },
     heading:{
         fontSize: 15,
         fontWeight:'400',
         color: '#838383',
     },
-
+    loggedContainer: {
+        width: '80%',
+        borderRadius: 10,
+        justifyContent: 'center',
+        borderColor: '#AED804',
+        // borderWidth: 2,
+        paddingVertical: 25,
+        paddingHorizontal: '10%',
+        marginTop: 40,
+        backgroundColor: '#dddddd'
+        // marginBottom: -30
+    },
+    loggedText: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#3E3E3E",
+        textAlign: "center",
+    },
     title:{
         fontSize: 15,
         fontWeight:'400',
@@ -377,7 +384,6 @@ const styles = StyleSheet.create({
         paddingVertical: 25,
         paddingHorizontal: '10%',
         width: '80%',
-        // marginLeft: '5%'
         marginTop: 40
         
     },
@@ -397,7 +403,6 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "600",
         alignSelf: "center",
-
     },
     sessionNumberContainer: {
         elevation: 8,
