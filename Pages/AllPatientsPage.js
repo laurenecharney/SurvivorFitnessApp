@@ -204,25 +204,25 @@ export default class AllPatientsPage extends Component {
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Participant Information</Text>
+                                        <Text style={{fontSize: 19, color: '#AED803'}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View  style={{justifyContent: 'space-between'}}>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Name: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Age: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Email: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Phone Number: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                     </View>

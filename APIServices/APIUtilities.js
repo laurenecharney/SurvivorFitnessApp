@@ -7,7 +7,7 @@ const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
 
 //put
 
-export async function getMeasurements(participantID, sessionID) {
+export async function getMeasurements(participantID, sessionID) { //not tested/completed
   const jwt = await getItem();
 
   const res = await fetch(ENDPOINT + "/api/v1/participants/" + participantID + "/all-notes", {
@@ -54,8 +54,8 @@ export async function getParticipants(paramName, paramValue) {
     }
   })
     .then(res => res.json());
-    console.log("GET PARTICIPANTS QUERY")
-    console.log(paramName + " " + paramValue);
+    // console.log("GET PARTICIPANTS QUERY")
+    // console.log(paramName + " " + paramValue);
   return res && res.participants ? res.participants : [];
 } // ,
 
@@ -86,7 +86,7 @@ export async function getParticipantSessions(id) {
     }
   })
     .then(response => response.json());
-  console.log(res);
+  //console.log(res);
   return res;
 } 
 

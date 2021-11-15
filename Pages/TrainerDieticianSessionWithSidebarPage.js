@@ -30,7 +30,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             addSessionArray:  [
                 {id: 1, name: '+'}
             ],
-            sessions: [],
+            sessionData: [],
         }
         for (let i = 1; i <= this.state.numTrainerSessions; ++i){
             this.state.trainerSessionsArray.push({id: i, name: i.toString()})
@@ -75,24 +75,41 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
      async fetchSessions() {
         try {
-            let res = getParticipantSessions(this.props.params.id);
-            this.setState({sessions: res});
-            console.log(this.state.sessions);
+            console.log("route param id: "+this.props.route.params.id);
+            let res = getParticipantSessions(this.props.route.params.id);
+            this.setState({sessionData: JSON.parse(res)});
+            //console.log(this.state.sessionData);
+            console.log("successfully retrived session data");
         } catch (e) {
-            console.log(e);
-            alert("Could not fetch participant session data");
+            console.log("error in fetchSessions()")
+            //console.log(e);
+            //alert("Could not fetch participant session data");
         }
      }
 
      async componentDidMount() {
-        try {
-            let res = getParticipantSessions(this.props.route.params.id);
-            this.setState({sessions: res});
-            console.log(this.state.sessions);
-        } catch (e) {
-            console.log(e);
-            alert("Could not fetch participant session data");
+        await this.fetchSessions();
+     }
+
+     getMeasurementsBySessionNumber = (num) => {
+        if(!this.state.sessionData.trainerSessions) {
+            console.log()
+            console.log("array is undefined. ");
+            return [];
+        } else if(this.state.sessionData.trainerSessions == 0) {
+            console.log("Empty array");
+            return [];
         }
+        for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
+            if(isCheckpoint(num) && 
+                    num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
+                    this.state.sessionData.trainerSessions[i].measurements) {
+                        console.log("returning session "+num+" measurements: "+this.state.sessionData.trainerSessions[i].measurements)
+                return this.state.sessionData.trainerSessions[i].measurements;
+            }
+        }
+        console.log("Couldn't find measurements for session with index " + num.toString());
+        return [];
      }
 
     render(){
@@ -132,9 +149,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         />
                     }
                     </View>
-                    <TrainerCheckpointPage session = {this.state.sessionTrainer}
-                    isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                    trainerSessionSelected={!this.state.dietician}/>
+                    <TrainerCheckpointPage 
+                        measurementData = {this.getMeasurementsBySessionNumber(this.state.sessionTrainer)}
+                        isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
+                        trainerSessionSelected={!this.state.dietician}/>
                 </View>
             </View>
         )

@@ -43,7 +43,8 @@ export default class TrainerCheckpointPage extends Component {
             isDateConfirmModalVisible: false,
             isDatePickerModalVisible: false,
             sessionDate: new Date(),
-            edit: false
+            edit: false,
+            measurementData: this.props.measurements,
         }
         
         if (Platform.OS === 'android') {
@@ -134,7 +135,9 @@ export default class TrainerCheckpointPage extends Component {
 
                 {
                     (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
-                    <Measurements />
+                    <Measurements 
+                        measurementData={this.state.measurementData}
+                    />
                 }
                     <Modal
                         propagateSwipe={true}
