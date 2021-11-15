@@ -8,7 +8,7 @@ import AllPatientsPage from '../Pages/AllPatientsPage.js';
 import ClientInformationPage from '../Pages/TrainerDieticianSessionWithSidebarPage.js';
 import SuperAdminNav from './SuperAdminNavigation';
 import TrainerSession from '../Pages/TrainerSession.js';
-import TrainerCheckpointPage from '../Pages/TrainerCheckpointPage.js';
+// import TrainerCheckpointPage from '../Pages/TrainerCheckpointPage.js';
 import {LocationAdminPage} from './LocationAdminNavigation';
 import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
 import AdminClientPage from '../Pages/AdminClientPage.js';
@@ -31,7 +31,7 @@ function MainStackNavigator() {
         <Stack.Screen name='ClientInformationPage'  component={ClientInformationPage} />
         <Stack.Screen name='SuperAdminPage' component={SuperAdminNav}/>
         <Stack.Screen name='TrainerSession' headerMode="none" component={TrainerSession} />
-        <Stack.Screen name='TrainerCheckpointPage'  component={TrainerCheckpointPage} />
+        {/* <Stack.Screen name='TrainerCheckpointPage'  component={TrainerCheckpointPage} /> */}
         <Stack.Screen name='LocationAdminPage'  component={LocationAdminPage} />
         <Stack.Screen name='AdminTrainerPage'  component={AdminTrainerPage} />
         <Stack.Screen name='AdminDieticianPage'  component={AdminDieticianPage} />

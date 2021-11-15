@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,13 +10,13 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import MultilineInputSaveComponent from '../Components/MultilineInputSaveComponent'
-import DateTextBox from '../Components/DateTextBox'
+import MultilineInputSaveComponent from './MultilineInputSaveComponent'
+import DateTextBox from './DateTextBox'
 import Modal from 'react-native-modal'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
-import { Measurements } from "../Components/Measurements";
+import { Measurements } from "./Measurements";
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -58,46 +58,30 @@ const SessionModal = () => {
         </View>
     </Modal>
 }
-export default class TrainerCheckpointPage extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            user: {},
-            expanded_general: false,
-            expanded_skin_fold: false,
-            expanded_girth: false,
-            expanded_treadmill: false,
-            trainerNotes: "",
-            isDateConfirmModalVisible: false,
-            isDatePickerModalVisible: false,
-            sessionDate: new Date(),
-            testSessionDate: new Date(2000, 6, 2),
-            edit: false,
-            logged: false
-        }
-        
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-    }
+
+export const SessionLogger = ({sessionData, trainerSessionSelected, isCheckpoint}) => {
+    const [user, setUser] = useState({});
+    const [expanded_general, setExpanded_general] = useState(false);
+    const [expanded_skin_fold, setExpanded_skin_fold] = useState(false);
+    const [expanded_girth, setExpanded_girth] = useState(false);
+    const [expanded_treadmill, setExpanded_treadmill] = useState(false);
+    const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
+    const [isDatePickerModalVisible, setIsDatePickerModalVisible] = useState(false);
+    const [sessionDate, setSessionDate] = useState(null);
+    const [timePickerWidth, setTimePickerWidth] = useState(125);
+    const [edit, setEdit] = useState(false)
+    const [logged, setLogged] = useState(false)
 
     closeDateConfirmModal = () => {
-        this.setState({
-            isDateConfirmModalVisible: false,
-        })
+        setIsDateConfirmModalVisible(false);
     }
     closeDatePickerModal = () => {
-        this.setState({
-            isDatePickerModalVisible: false,
-        })
+        setIsDatePickerModalVisible(false);
     }
 
-    changeText = (newValue)=>{
-        this.setState({trainerNotes: newValue});
-    }
-
-    getTimePickerWidth = () => {
-        return 115 + 10 * (this.state.sessionDate.getDate() < 10? 0 : 1);
+    resetTimePickerWidth = (date) => {
+        let tempWidth = 115 + 10 * (date.getDate() < 10? 0 : 1);
+        setTimePickerWidth(tempWidth);
     }
 
     getAppButtonColor = () => {
@@ -105,127 +89,126 @@ export default class TrainerCheckpointPage extends Component {
     }
 
 
-    async fetchUser() {
+    async function fetchUser() {
       const res = await getUser();
-      this.setState({user: JSON.parse(res)})
-    //   const res = await getParticipantSessions(2);
-    //   console.log(res);
-
-    //   const res2 = await getAllSessionNotesByParticipantID(2);
+      setUser(JSON.parse(res))
     }
 
-
-    async componentDidMount() {
-        //TODO
-        // await this.refreshList();
-        await this.fetchUser();
-        console.log("DATA (from checkpoint page): ", this.props.sessionData)
-        if (this.props.sessionData) {
-            console.log("DIS BOY IS TRUE")
-            this.setState({
-                sessionDate: new Date(parseInt(this.props.sessionData.initalLogDate)),
-                // edit: true,
-                logged: true
-            })
+    useEffect(() => {
+        // this React lifecycle hook gets called when the component is first loaded
+        // and when sessionData is changed. It essentially waits
+        // for the async call to get the ParticipantSessions to complete
+        if (sessionData) {
+            let tempDate = new Date(sessionData.initialLogDate)
+            setSessionDate(tempDate)
+            setLogged(true)
+            resetTimePickerWidth(tempDate)
         } else {
-            console.log("DIS BOY IS FALSE")
+            console.log("Data not ready yet")
         }
-        // if (this.state)
-      }
+    }, [sessionData]);
 
+    logSession = () => {
+        setEdit(!edit)
+        setIsDateConfirmModalVisible(true)
+    }
 
-    render(){
-        return(
-            <View style = {styles.container}>
+    return(
+        <View style = {styles.container}>
 
-                <ScrollView 
-                    contentContainerStyle = {styles.scrollContentContainer}
-                    style={styles.scrollViewStyle}
+            <ScrollView 
+                contentContainerStyle = {styles.scrollContentContainer}
+                style={styles.scrollViewStyle}
+            >
+
+                
+                <AppButton
+                    title = {logged ? sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                    onPress={logSession}
+                    logged={logged}
+                />
+                {/* <AppButton
+                    title = {"reset"}
+                    onPress={()=>setLogged(false)}
+                /> */}
+
+            {
+                (trainerSessionSelected && isCheckpoint) &&
+                <Measurements></Measurements>
+            }
+                <Modal
+                    propagateSwipe={true}
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    onBackdropPress={()=> {
+                        setEdit(true)
+                        setIsDateConfirmModalVisible(false)
+                    }}
+                    onSwipeComplete={()=> {
+                        setEdit(true)
+                        setIsDateConfirmModalVisible(false)
+                    }}
+                    isVisible={isDateConfirmModalVisible}
                 >
-   
-                    
-                    <AppButton
-                        title = {this.state.logged ? this.state.sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
-                        onPress={()=>this.setState({edit: !this.state.edit, isDateConfirmModalVisible: true})}
-                        logged={this.state.logged}
-                    />
-                    {/* <AppButton
-                        title = {"reset"}
-                        onPress={()=>this.setState({logged: false})}
-                    /> */}
-
-
-
-                {
-                    (this.props.trainerSessionSelected && this.props.isCheckpoint) &&
-                    <Measurements></Measurements>
-                }
-                    <Modal
-                        propagateSwipe={true}
-                        animationIn="slideInUp"
-                        animationOut="slideOutDown"
-                        onBackdropPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
-                        onSwipeComplete={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
-                        isVisible={this.state.isDateConfirmModalVisible}
+                    <View
+                        style={{
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center"
+                        }}
                     >
                         <View
-                            style={{
-                            flex: 1,
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center"
-                            }}
+                        style={{
+                            backgroundColor: "#fff",
+                            width: "90%",
+                            height: "30%",
+                            borderRadius: "19",
+                            alignItems: "center", justifyContent: 'space-around'
+                        }}
                         >
-                            <View
-                            style={{
-                                backgroundColor: "#fff",
-                                width: "90%",
-                                height: "30%",
-                                borderRadius: "19",
-                                alignItems: "center", justifyContent: 'space-around'
-                            }}
+                            <TouchableOpacity
+                                style={{ paddingLeft: 260, paddingTop: 10 }}
+                                onPress={()=> {
+                                    setEdit(true)
+                                    setIsDateConfirmModalVisible(false)
+                                }}
                             >
-                                <TouchableOpacity
-                                    style={{ paddingLeft: 260, paddingTop: 10 }}
-                                    onPress={()=>this.setState({edit: true, isDateConfirmModalVisible: false})}
-                                >
-                                    <Icon name={"close"} color={"#E4E4E4"} size={32} />
-                                </TouchableOpacity>
-                                <View style={{flex: 1, width: '100%'}}>
-                                    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
-                                        <Text style={styles.heading}>
-                                        {"Select Date"}
-                                        </Text>
-                                            <DateTimePicker
-                                                style={{height: 40, width: this.getTimePickerWidth(), marginTop: 10, alignItems: "center"}}
-                                                value={this.state.sessionDate}
-                                                mode="date"
-                                                display="calendar"
-                                                onChange={(event, enteredDate) => {
-                                                    this.setState({
-                                                        sessionDate: enteredDate,
-                                                    })
-                                                }}
-                                            />
-                                        <View>
-                                            <SmallAppButton
-                                                title={!this.state.logged ? "Confirm" : "Confirm New Date"}
-                                                onPress={()=>this.setState({logged: true, isDateConfirmModalVisible: false})}
-                                            />
-                                        </View>
+                                <Icon name={"close"} color={"#E4E4E4"} size={32} />
+                            </TouchableOpacity>
+                            <View style={{flex: 1, width: '100%'}}>
+                                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+                                    <Text style={styles.heading}>
+                                    {"Select Date"}
+                                    </Text>
+                                        <DateTimePicker
+                                            style={{height: 40, width: timePickerWidth, marginTop: 10, alignItems: "center"}}
+                                            value={sessionDate}
+                                            mode="date"
+                                            display="calendar"
+                                            onChange={(event, enteredDate) => {
+                                                setSessionDate(enteredDate)
+                                            }}
+                                        />
+                                    <View>
+                                        <SmallAppButton
+                                            title={!logged ? "Confirm" : "Confirm New Date"}
+                                            onPress={()=> {
+                                                setLogged(true);
+                                                setIsDateConfirmModalVisible(false);
+                                            }}
+                                        />
+                                    </View>
 
-                                    </ScrollView>
-                                </View>
+                                </ScrollView>
                             </View>
                         </View>
-                    </Modal>
-           
-        </ScrollView>
-      
-        </View>);
-        }
-        
-    }
+                    </View>
+                </Modal>
+            </ScrollView>
+        </View>
+    );
+}
 
 
 const styles = StyleSheet.create({

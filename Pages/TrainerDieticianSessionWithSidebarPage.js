@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.js';
-import TrainerSession from './TrainerSession.js';
+// import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View} from 'react-native';
-import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+// import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+import { SessionLogger } from '../Components/SessionLogger.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
@@ -156,7 +157,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         />
                     }
                     </View>
-                    <TrainerCheckpointPage session = {this.state.sessionTrainer}
+                    {/* <TrainerCheckpointPage session = {this.state.sessionTrainer}
+                    isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
+                    sessionData={this.state.sessions ? this.state.sessions[0] : null}
+                    trainerSessionSelected={!this.state.dietician}/> */}
+                         <SessionLogger session = {this.state.sessionTrainer}
                     isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                     sessionData={this.state.sessions ? this.state.sessions[0] : null}
                     trainerSessionSelected={!this.state.dietician}/>
