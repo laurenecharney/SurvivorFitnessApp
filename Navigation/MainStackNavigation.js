@@ -5,7 +5,7 @@ import { createStackNavigator, StackView } from '@react-navigation/stack';
 import LoginPage from '../Pages/LoginPage.js';
 import ProfilePage from '../Pages/ProfilePage.js'
 import AllPatientsPage from '../Pages/AllPatientsPage.js';
-import ClientInformationPage from '../Pages/TrainerDieticianSessionWithSidebarPage.js';
+import ClientInformationPage from '../Pages/LogSessionPage.js';
 import SuperAdminNav from './SuperAdminNavigation';
 import TrainerSession from '../Pages/TrainerSession.js';
 // import TrainerCheckpointPage from '../Pages/TrainerCheckpointPage.js';
