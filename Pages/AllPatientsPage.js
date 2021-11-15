@@ -228,41 +228,41 @@ export default class AllPatientsPage extends Component {
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Type of Cancer: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Treatment Facility: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Surgeries: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Forms of Treatment: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Physician Notes: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Trainer: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Dietitian: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Start Date: </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                         <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
+                                            <Text style={{fontSize: 15, color: '#AED803'}} >Goal(s): </Text>
                                             <Text style={{color: '#797979'}}>Fill</Text>
                                         </View>
                                     </View>

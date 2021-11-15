@@ -7,7 +7,7 @@ const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
 
 //put
 
-export async function getMeasurements(participantID, sessionID) { //not tested/completed
+export async function getMeasurements(participantID, sessionID) {
   const jwt = await getItem();
 
   const res = await fetch(ENDPOINT + "/api/v1/participants/" + participantID + "/all-notes", {
@@ -86,7 +86,7 @@ export async function getParticipantSessions(id) {
     }
   })
     .then(response => response.json());
-  //console.log(res);
+  console.log("original res: "+JSON.stringify(res, null, 4));
   return res;
 } 
 

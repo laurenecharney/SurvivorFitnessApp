@@ -12,12 +12,25 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 
 export const Measurements = ({ onPress, title, measurementData }) => {
+
     console.log("measurementData = ", measurementData);
-    const [data, setData] = useState(measurementData ? this.props.measurementData : []);
+    const [data, setData] = useState(measurementData ? measurementData : []);
+
     const [expanded_general, setExpanded_general] = useState("false");
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
     const [expanded_girth, setExpanded_girth] = useState("false");
     const [expanded_treadmill, setExpanded_treadmill] = useState("false");
+
+    const getMeasurementValue = (measurementName) => {
+        let ret = "";
+        for(let i = 0; i < measurementData.length; ++i) {
+            // if there were many many measurements, it might be smart to create a 
+            // map from measurement name to value to avoid this iteration
+            if(measurementData[i].name == measurementName) ret = measurementData[i].value;
+        }
+        console.log("getMeasurementCall for "+measurementName+"\n"+ret);
+        return ret;
+    }
 
     const toggleExpandGeneral=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -34,16 +47,6 @@ export const Measurements = ({ onPress, title, measurementData }) => {
     const toggleExpandTreadmill=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded_treadmill(!expanded_treadmill)
-    }
-
-    const getMeasurementValue = (measurementName) => {
-        let ret = "";
-        for(let i = 0; i < measurementData.length; ++i) {
-            //if there were many many measurements, it might be smart to create a map from measurement name to value to avoid this iteration
-            if(measurementData[i].name == measurementName) ret = measurementData[i].value;
-        }
-        console.log("getMeasurementCall for "+measurementName+"\n"+ret);
-        return ret;
     }
 
     const Measurement = ({measurement, id, initialValue, updateValue, postfix}) => {
@@ -71,7 +74,6 @@ export const Measurements = ({ onPress, title, measurementData }) => {
                 onPress={() => toggle()}>
                     <Text style={styles.title}>{category}</Text>
                     <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
-                    
                 </TouchableOpacity>
             </View>
         )
@@ -90,7 +92,7 @@ export const Measurements = ({ onPress, title, measurementData }) => {
                     !expanded &&
                     <View style={styles.measurementContainer}>
                         {
-                            dataLabels.map((item) => (
+                            dataLabels.map((item, i) => (
                                 <Measurement
                                     key={item.id}
                                     measurement={item.measurement}
@@ -310,7 +312,7 @@ const labels = {
     ]
 }
 
-const defaultMeasurementData = {
+const deafultMeasurementData = {
     weight: "150 lbs",//"Weight (lbs)",
     BMI: "23.1",
     body_fat_pct: "15.3%",

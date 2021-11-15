@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.js';
-import TrainerSession from './TrainerSession.js';
+// import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View} from 'react-native';
-import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+// import TrainerCheckpointPage from './TrainerCheckpointPage.js';
+import { SessionLogger } from '../Components/SessionLogger.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
@@ -22,24 +23,41 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.state={
             dietician: false,
             numTrainerSessions: 24,
-            trainerSessionsArray:  [],
+            trainerSessionsArray:  [
+                {id: 1, name: '1', logged: false, highlighted: true},
+                {id: 2, name: '2', logged: false, highlighted: false},
+                {id: 3, name: '3', logged: false, highlighted: false},
+                {id: 4, name: '4', logged: false, highlighted: false},
+                {id: 5, name: '5', logged: false, highlighted: false},
+                {id: 6, name: '6', logged: false, highlighted: false},
+                {id: 7, name: '7', logged: false, highlighted: false},
+                {id: 8, name: '8', logged: false, highlighted: false},
+                {id: 9, name: '9', logged: false, highlighted: false},
+                {id: 10, name: '10', logged: false, highlighted: false},
+                {id: 11, name: '11', logged: false, highlighted: false},
+                {id: 12, name: '12', logged: false, highlighted: false},
+                {id: 13, name: '13', logged: false, highlighted: false},
+                {id: 14, name: '14', logged: false, highlighted: false},
+                {id: 15, name: '15', logged: false, highlighted: false},
+                {id: 16, name: '16', logged: false, highlighted: false},
+                {id: 17, name: '17', logged: false, highlighted: false}
+            ],
+            
             numDieticianSessions: 3,
-            dieticianSessionsArray: [],
+            dieticianSessionsArray: [
+                ],
             sessionTrainer: 1,
             sessionDietician: 1,
+            numSessions: 24,
             addSessionArray:  [
                 {id: 1, name: '+'}
             ],
-<<<<<<< Updated upstream:Pages/TrainerDieticianSessionWithSidebarPage.js
-            sessionData: [],
-        }
-        for (let i = 1; i <= this.state.numTrainerSessions; ++i){
-            this.state.trainerSessionsArray.push({id: i, name: i.toString()})
-=======
             currentSession: 1,
             sessionData: {"trainerSessions": [], "dietitianSessions": []}
->>>>>>> Stashed changes:Pages/LogSessionPage.js
         }
+        // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
+        //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
+        // }
         for (let i = 1; i <= this.state.numDieticianSessions; ++i){
             this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
@@ -75,19 +93,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
     }
 
-<<<<<<< Updated upstream:Pages/TrainerDieticianSessionWithSidebarPage.js
-     async fetchSessions() {
-        try {
-            console.log("route param id: "+this.props.route.params.id);
-            let res = getParticipantSessions(this.props.route.params.id);
-            this.setState({sessionData: JSON.parse(res)});
-            //console.log(this.state.sessionData);
-            console.log("successfully retrived session data");
-        } catch (e) {
-            console.log("error in fetchSessions()")
-            //console.log(e);
-            //alert("Could not fetch participant session data");
-=======
     getDataBySessionNumber = (num) => {
         if(!this.state.sessionData.trainerSessions) {
             console.log()
@@ -96,7 +101,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         } else if(this.state.sessionData.trainerSessions == 0) {
             console.log("Empty array");
             return [];
->>>>>>> Stashed changes:Pages/LogSessionPage.js
         }
         for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
             if(isCheckpoint(num) && 
@@ -110,32 +114,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return [];
     }
 
-<<<<<<< Updated upstream:Pages/TrainerDieticianSessionWithSidebarPage.js
-     async componentDidMount() {
-        await this.fetchSessions();
-     }
-
-     getMeasurementsBySessionNumber = (num) => {
-        if(!this.state.sessionData.trainerSessions) {
-            console.log()
-            console.log("array is undefined. ");
-            return [];
-        } else if(this.state.sessionData.trainerSessions == 0) {
-            console.log("Empty array");
-            return [];
-        }
-        for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
-            if(isCheckpoint(num) && 
-                    num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
-                    this.state.sessionData.trainerSessions[i].measurements) {
-                        console.log("returning session "+num+" measurements: "+this.state.sessionData.trainerSessions[i].measurements)
-                return this.state.sessionData.trainerSessions[i].measurements;
-            }
-        }
-        console.log("Couldn't find measurements for session with index " + num.toString());
-        return [];
-     }
-=======
     async fetchSessions() {
         try {
             let res = getParticipantSessions(this.props.route.params.id);
@@ -154,7 +132,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     async componentDidMount() {
         result = await this.fetchSessions();
     }
->>>>>>> Stashed changes:Pages/LogSessionPage.js
 
     render(){
         return(
@@ -162,15 +139,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             
             >
                 <View style={styles.header}>
-<<<<<<< Updated upstream:Pages/TrainerDieticianSessionWithSidebarPage.js
-                    <NameNavBar name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
-                    goBack={()=>this.props.navigation.goBack()}/>
-=======
                     <NameNavBar 
                         name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
                         goBack={()=>this.props.navigation.goBack()}/>
                 
->>>>>>> Stashed changes:Pages/LogSessionPage.js
                 </View>
                 <View>
                     <TrainerDieticianNavBar
@@ -200,12 +172,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         />
                     }
                     </View>
-<<<<<<< Updated upstream:Pages/TrainerDieticianSessionWithSidebarPage.js
-                    <TrainerCheckpointPage 
-                        measurementData = {this.getMeasurementsBySessionNumber(this.state.sessionTrainer)}
-                        isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                        trainerSessionSelected={!this.state.dietician}/>
-=======
                     {/* <TrainerCheckpointPage session = {this.state.sessionTrainer}
                     isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                     sessionData={this.state.sessions ? this.state.sessions[0] : null}
@@ -217,7 +183,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             //sessionData={this.state.sessionData ? this.state.sessionData[0] : null}
                             trainerSessionSelected={!this.state.dietician}
                         />
->>>>>>> Stashed changes:Pages/LogSessionPage.js
                 </View>
             </View>
         )
