@@ -94,14 +94,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     getDataBySessionNumber = (num) => {
-        if(!this.state.sessionData) {
-            return []
-        } else if(!this.state.sessionData.trainerSessions) {
-            //console.log()
-            console.log("array is undefined. ");
-            return [];
-        } else if(this.state.sessionData.trainerSessions == 0) {
-            console.log("Empty array");
+        if(!this.state.sessionData.trainerSessions) {
+            console.log("Error: sessionData.trainerSessions does not exist.")
             return [];
         }
         for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
