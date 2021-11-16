@@ -20,7 +20,7 @@ import { Measurements } from "./Measurements";
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
-        style={!logged ? styles.appButtonContainer : styles.loggedContainer}>
+        style={[!logged ? styles.appButtonContainer : styles.loggedContainer]}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );

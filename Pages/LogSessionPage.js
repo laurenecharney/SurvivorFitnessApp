@@ -94,8 +94,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     getDataBySessionNumber = (num) => {
-        if(!this.state.sessionData.trainerSessions) {
-            console.log()
+        if(!this.state.sessionData) {
+            return []
+        } else if(!this.state.sessionData.trainerSessions) {
+            //console.log()
             console.log("array is undefined. ");
             return [];
         } else if(this.state.sessionData.trainerSessions == 0) {
@@ -103,7 +105,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             return [];
         }
         for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
-            if(isCheckpoint(num) && 
+            if(this.isCheckpoint(num) && 
                     num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
                     this.state.sessionData.trainerSessions[i]) {
                 console.log("returning session "+num+": "+this.state.sessionData.trainerSessions[i])
@@ -116,28 +118,21 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
     async fetchSessions() {
         try {
-            let res = getParticipantSessions(this.props.route.params.id);
-            console.log("res: "+JSON.stringify(res, null, 4));
+            let res = await getParticipantSessions(this.props.route.params.id);
             this.setState({sessionData: res});
-            // console.log("SESSIONS",)
-            console.log("fetchSessions result: "+JSON.stringify(this.state.sessionData, null, 4));
-            //return Promise.resolve("Success");
         } catch (e) {
             console.log(e);
-            alert("Could not fetch participant session data");
-            //return Promise.reject("Failed");
+            // alert("Could not fetch participant session data");
         }
     }
 
     async componentDidMount() {
-        result = await this.fetchSessions();
+        await this.fetchSessions();
     }
 
     render(){
         return(
-            <View style={styles.container}
-            
-            >
+            <View style={styles.container}>
                 <View style={styles.header}>
                     <NameNavBar 
                         name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
