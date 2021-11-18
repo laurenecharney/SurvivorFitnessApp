@@ -51,6 +51,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
     updateSessionTrainer(newSessionTrainer){
         this.setState({sessionTrainer:newSessionTrainer})// or with es6 this.setState({name})
+        //FIXME: Put logic about updating trainerSessionsArray.highlighted here
      }
 
      updateSessionDietician(sessionDietician){

@@ -35,7 +35,7 @@ export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSes
             {
                 sessionsArray.map((item, index) => (
                     <TouchableOpacity
-                        style = {item.isHighlighted ? styles.highlightedRow: styles.row}
+                        style = {!item.logged ? styles.highlightedRow: styles.row}
                         key = {index}
                         >
                         <TouchableOpacity
