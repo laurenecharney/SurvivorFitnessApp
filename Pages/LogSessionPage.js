@@ -105,8 +105,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     formatSessions(rawSessionsArray){
-        console.log('start formatting sessions')
-        console.log("rawSessionsArray: ", rawSessionsArray, "\n^raw sessions")
        for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
            let isHighlighted = false;
            if (i < 1){
@@ -116,8 +114,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
            let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
            this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
        }
-
-       console.log('hello', this.state.trainerSessionsArray);
     }
 
     async fetchSessions() {

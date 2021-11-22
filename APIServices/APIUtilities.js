@@ -17,9 +17,6 @@ export async function getMeasurements(participantID, sessionID) {
     }
   })
     .then(response => response.json());
-
-  console.log(res);
-
   let i = 0;
   while(res.trainerSessions[i]) {
     if(res.trainerSessions[i].sessionIndexNumber == sessionID) {
@@ -35,21 +32,42 @@ export async function getMeasurements(participantID, sessionID) {
   return {};
 }
 
-export async function updateSession(sessionID, sessionInfo) {
+export async function logTrainerSession(curSessionInfo, date) {
+  // console.log("old participantid", curSessionInfo)
+  const newSessionInfo = {
+    "id": curSessionInfo.id,
+    "initialLogDate": date,
+    "lastUpdatedDate": date,
+    "specialistNotes": curSessionInfo.specialistNotes,
+    "adminNotes": curSessionInfo.adminNotes,
+    "sessionIndexNumber": curSessionInfo.sessionIndexNumber,
+    "whoseNotes": "TRAINER",
+    "participantId": curSessionInfo.participantId,
+    "measurements": []
+}
+const res = await updateSession(newSessionInfo.id, newSessionInfo);
+return res;
+}
+
+async function updateSession(sessionID, sessionInfo) {
   // const _body = {
   //   username: _username,
   //   password: _password
   // };
+  console.log(sessionInfo);
+  const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/sessions/"+sessionID, {
     method: "PUT",
     body: JSON.stringify(sessionInfo),
     headers: {
       Accept: "application/json",
+      Authorization: "Bearer " + jwt,
       "Content-Type": "application/json" // I added this line
     }
   })
     .then(response => response.json());
-  return res;
+    console.log("res received in updateSession: ", res, "\nres^ updateSession")
+  return res.session;
 }
 
 //gets participants with optional query params passed in

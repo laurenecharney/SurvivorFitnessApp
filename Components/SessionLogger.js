@@ -18,6 +18,7 @@ import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../AP
 import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
+import { logTrainerSession } from '../APIServices/APIUtilities';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -39,7 +40,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [edit, setEdit] = useState(false)
     const [logged, setLogged] = useState(false)
-    const [sessionData, setSessionData] = useState([])
+    // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
     //const [measurementData, setMeasurementData] = useState(initSessionData.measurements);
 
@@ -60,13 +61,17 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        // try {
-        //     setMeasurementsChanged(false);
-        //     let res = await updateSession(sessionData.id, sessionData)
+        const dateMilliseconds = sessionDate.getTime()
+        try {
+            setMeasurementsChanged(false);
+            let res = await logTrainerSession(initSessionData, dateMilliseconds)
+            // let res = await updateSession(sessionData.id, sessionData)
+            console.log("result from api call in sessionLogger: ", res)
+            showSessionInfo(res);
             
-        // } catch(e) {
-        //     console.log(e);
-        // }
+        } catch(e) {
+            console.log(e);
+        }
     }
 
 
@@ -75,20 +80,37 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         setUser(JSON.parse(res))
     }
 
+    const showSessionInfo = (newSessionData = null) => {
+        console.log("newSessionData ", newSessionData);
+        // let sessionData = newSessionData;
+        if (newSessionData == null) {
+            newSessionData = initSessionData;
+        }
+        console.log("newSessionData ", newSessionData);
+        console.log("newSession lastUpdatedDate: ", newSessionData.lastUpdatedDate)
+        if (newSessionData.lastUpdatedDate) {
+            console.log("i get here, session: ", newSessionData.id)
+            const dateVal = parseInt(newSessionData.lastUpdatedDate);
+            let tempDate = new Date(dateVal)
+            setSessionDate(tempDate)
+            setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
+            setLogged(true)
+        } else {
+            setLogged(false)
+        }
+    }
+
+
+
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
         // and when initSessionData is changed. It essentially waits
         // for the async call to get the ParticipantSessions to complete
         if (initSessionData) {
             // console.log("initSessionData changed");   
-            const dateVal = parseInt(initSessionData.lastUpdatedDate);
-            let tempDate = new Date(dateVal)
-            setSessionDate(tempDate)
-            setSessionData(initSessionData)
-            setLogged(true)
+            showSessionInfo()
+            // setSessionData(initSessionData)
 
-            setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
-            
         } else {
             console.log("Data not ready yet")
         }
@@ -108,19 +130,25 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 contentContainerStyle = {styles.scrollContentContainer}
                 style={styles.scrollViewStyle}
             >
+                {
+                    logged &&
+                    <View style={{paddingTop: 40, marginBottom: -30}}>
+                        <Text style={styles.loggedText}>Session Logged:</Text>
+                    </View>
+                }
                 <AppButton
                     title = {logged ? sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
                     // title = {logged ? "session logged" : "Log Session"}
                     onPress={() => {
                         setEdit(true);
                         setIsDateConfirmModalVisible(true);
-                        logSession();
+                        // logSession();
                     }}
                     logged={logged}
                 />
                 {/* <AppButton
                     title = {"reset"}
-                    onPress={()=>setLogged(false)}
+                    onPress={()=>logSession()}
                 /> */}
 
             {
@@ -180,6 +208,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                             display="calendar"
                                             onChange={(event, enteredDate) => {
                                                 setSessionDate(enteredDate)
+                                                console.log(enteredDate)
                                             }}
                                         />
                                     <View>
@@ -188,6 +217,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                             onPress={()=> {
                                                 setLogged(true);
                                                 setIsDateConfirmModalVisible(false);
+                                                logSession(sessionDate);
                                             }}
                                         />
                                     </View>
