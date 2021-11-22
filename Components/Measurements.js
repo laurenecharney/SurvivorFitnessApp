@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   TextInput,
+  KeyboardAvoidingView
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 // import { callUpdateSession } from './SessionLogger'
@@ -49,19 +50,36 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
         setExpanded_treadmill(!expanded_treadmill)
     }
 
+    useEffect(() => {
+        console.log("measurementData: ", measurementData)
+    }, [measurementData])
+
+    
+
     const Measurement = ({measurement, id, initialValue, updateValue, postfix}) => {
         const [value, onChangeValue] = useState(initialValue);
+        const inputRef = useRef();
+        const editText = useCallback(() => {
+            inputRef.current.focus();
+        });
 
         return(
             <View style={[styles.measurement, {}]}>
-                <Text style = {styles.measurementText}>{measurement}{": "}{postfix}</Text>
+                <Text 
+                    style = {styles.measurementText}
+                    onPress={() => editText()}
+                >{measurement}{": "}</Text>
                 <TextInput 
-                    style={styles.measurementText}
+                    ref={inputRef}
+                    style={[styles.measurementText]}
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(id, value)}
                     // placeholder={"enter a value"}
                 ></TextInput>
+                    <Text style = {[styles.measurementText, styles.postfix]}
+                    onPress={() => editText()}
+                    >{postfix}</Text>                
             </View>
         )
     }
@@ -99,6 +117,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                                     id={item.id}
                                     initialValue = {getMeasurementValue(item.measurement)}
                                     updateValue={updateValue}
+                                    postfix={item.unit}
                                     // measurementValue={data[item.id]}
                                 />
                             ))
@@ -114,11 +133,15 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
         temp[measurementId] = newValue
         setData(temp)
         //send data up/calls SessionLogger.updateSession(id, data)
-        callUpdateSession(data)
+        // callUpdateSession(data)
     }
 
     return (
-        <View style={styles.categoriesContainer}>
+        // <View style={styles.categoriesContainer}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                enabled
+                style={styles.categoriesContainer}>
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
@@ -143,7 +166,8 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                         expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </View>
+            </KeyboardAvoidingView>
+            // {/* </View> */}
     )
 }
 
@@ -197,7 +221,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight:'400',
         color: '#838383',
-        minWidth: 30
+
+        // minWidth: 30,
+    },
+    postfix: {
+        flex: 1,
+        paddingLeft: 5,
     }
 });
 
@@ -206,102 +235,125 @@ const labels = {
     generalData: [
         {
             measurement: "Weight",
-            id: "weight"
+            id: "weight",
+            unit: "lbs",
         },
         {
             measurement: "BMI",
-            id: "BMI"
+            id: "BMI",
+            unit: "",
         },
         {
             measurement: "Body Fat Percentage",
-            id: "body_fat_pct"
+            id: "body_fat_pct",
+            unit: "%",
         },
         {
             measurement: "Lean Mass",
-            id: "lean_mass"
+            id: "lean_mass",
+            unit: "lbs",
         },
         {
-            measurement: "Blood Pressure (mm Hg)",
-            id: "blood_pressure"
+            measurement: "Blood Pressure",
+            id: "blood_pressure",
+            unit: "mmHg",
         },
         {
             measurement: "Range of Motion",
-            id: "range_of_motion"
+            id: "range_of_motion",
+            unit: "",
         }
     ],
     skinFoldTests: [
         {
             measurement: "Abdominal Skin Fold",
-            id: "Abdominal_skin_fold"
+            id: "Abdominal_skin_fold",
+            unit: "",
         },
         {
             measurement: "Chest Skin Fold",
-            id: "ChestSkinFold"
+            id: "ChestSkinFold",
+            unit: "",
         },
         {
             measurement: "Midaxillary",
-            id: "Midaxillary"
+            id: "Midaxillary",
+            unit: "",
         },
         {
             measurement: "Subscapular",
-            id: "Subscapular"
+            id: "Subscapular",
+            unit: "",
         },
         {
             measurement: "Supraillac",
-            id: "Supraillac"
+            id: "Supraillac",
+            unit: "",
         },
         {
             measurement: "Thigh",
-            id: "Thigh"
+            id: "Thigh",
+            unit: "",
         },
         {
             measurement: "Tricep",
-            id: "Tricep"
+            id: "Tricep",
+            unit: "",
         },
     ],
 
     girthMeasurementTests: [
         {
             measurement: "Abdominal Girth",
-            id: "Abdominal_girth"
+            id: "Abdominal_girth",
+            unit: "in",
         },
         {
             measurement: "Bicep Girth",
-            id: "Bicep_girth"
+            id: "Bicep_girth",
+            unit: "in",
         },
         {
             measurement: "Calf Girth",
-            id: "Calf_girth"
+            id: "Calf_girth",
+            unit: "in",
         },
         {
             measurement: "Chest Girth",
-            id: "ChestGirth"
+            id: "ChestGirth",
+            unit: "in",
         },
         {
             measurement: "Hip Girth",
-            id: "Hip_girth"
+            id: "Hip_girth",
+            unit: "in",
         },
         {
             measurement: "Thigh Girth",
-            id: "ThighGirth"
+            id: "ThighGirth",
+            unit: "in",
         },
         {
             measurement: "Waist Girth",
-            id: "Waist_girth"
+            id: "Waist_girth",
+            unit: "in",
         },
         {
             measurement: "Total Inches Lost",
-            id: "Total_Inches_Lost"
+            id: "Total_Inches_Lost",
+            unit: "in",
         }
     ],
     treadmillTests: [
         {
             measurement: "Distance",
-            id: "Distance"
+            id: "Distance",
+            unit: "",
         },
         {
             measurement: "Speed",
-            id: "Speed"
+            id: "Speed",
+            unit: "",
         },
         {
             measurement: "HR",

@@ -81,15 +81,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     }
 
     const showSessionInfo = (newSessionData = null) => {
-        console.log("newSessionData ", newSessionData);
-        // let sessionData = newSessionData;
         if (newSessionData == null) {
             newSessionData = initSessionData;
         }
-        console.log("newSessionData ", newSessionData);
-        console.log("newSession lastUpdatedDate: ", newSessionData.lastUpdatedDate)
         if (newSessionData.lastUpdatedDate) {
-            console.log("i get here, session: ", newSessionData.id)
             const dateVal = parseInt(newSessionData.lastUpdatedDate);
             let tempDate = new Date(dateVal)
             setSessionDate(tempDate)
