@@ -8,13 +8,13 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-
+import { callUpdateSession } from './SessionLogger'
 
 
 export const Measurements = ({ onPress, title, measurementData }) => {
 
     console.log("measurementData = ", measurementData);
-    const [data, setData] = useState(measurementData ? measurementData : []);
+    const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
 
     const [expanded_general, setExpanded_general] = useState("false");
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
@@ -112,7 +112,9 @@ export const Measurements = ({ onPress, title, measurementData }) => {
     const updateValue = (measurementId, newValue) => {
         const temp = data
         temp[measurementId] = newValue
-        setData[temp]
+        setData(temp)
+        //send data up/calls SessionLogger.updateSession(id, data)
+        callUpdateSession(data)
     }
 
     return (
@@ -312,39 +314,8 @@ const labels = {
     ]
 }
 
-const deafultMeasurementData = {
-    weight: "150 lbs",//"Weight (lbs)",
-    BMI: "23.1",
-    body_fat_pct: "15.3%",
-    total_body_fat: "23 lbs",
-    lean_mass: "133 lbs", 
-    blood_pressure: "120/80 mm Hg",
-    range_of_motion:  "0",
-    resting_hr: "80 bpm",
-    Abdominal_skin_fold: "15",
-    ChestSkinFold: "10",
-    Midaxillary: "12",
-    Subscapular: "8",
-    Supraillac: "11",
-    Thigh: "14",
-    Tricep: "7",
-    Abdominal_girth: "8",
-    Bicep_girth: "7",
-    Calf_girth: "4",
-    ChestGirth: "4",
-    Hip_girth: "12",
-    Shoulder_girth: "10",
-    ThighGirth: "9",
-    Waist_girth: "11",
-    Total_Inches_Lost: "15",
-    Distance: "12",
-    Speed: "14",
-    HR: "15",
-    BR: "12"
 
-}
-
-const emptyMeasurementData = {
+const eemptyMeasurementData = {
     weight: "",//"Weight (lbs)",
     BMI: "",
     body_fat_pct: "%",
@@ -375,3 +346,181 @@ const emptyMeasurementData = {
     BR: ""
 
 }
+const emptyMeasurementData = [
+    {
+        "id": 26,
+        "name": "Weight",
+        "value": "",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "id": 27,
+        "name": "BMI",
+        "value": "",
+        "category": "General Data",
+        "unit": "kg/m^2"
+    },
+    {
+        "id": 28,
+        "name": "Body Fat Percentage",
+        "value": "",
+        "category": "General Data",
+        "unit": "%"
+    },
+    {
+        "id": 29,
+        "name": "Lean Mass",
+        "value": "",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "id": 30,
+        "name": "Blood Pressure",
+        "value": "",
+        "category": "General Data",
+        "unit": "mm Hg"
+    },
+    {
+        "id": 31,
+        "name": "Range of Motion",
+        "value": "",
+        "category": "General Data",
+        "unit": "degree"
+    },
+    {
+        "id": 32,
+        "name": "Abdominal Skin Fold",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 33,
+        "name": "Chest Skin Fold",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 34,
+        "name": "Midaxillary",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 35,
+        "name": "Subscapular",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 36,
+        "name": "Supraillac",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 37,
+        "name": "Thigh",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 38,
+        "name": "Tricep",
+        "value": "",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 39,
+        "name": "Abdominal Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 40,
+        "name": "Bicep Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 41,
+        "name": "Calf Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 42,
+        "name": "Chest Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 43,
+        "name": "Hip Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 44,
+        "name": "Thigh Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 45,
+        "name": "Waist Girth",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 46,
+        "name": "Total Inches Lost",
+        "value": "",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "id": 47,
+        "name": "Distance",
+        "value": "",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 48,
+        "name": "Speed",
+        "value": "",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 49,
+        "name": "HR",
+        "value": "",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "id": 50,
+        "name": "BR",
+        "value": "",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    }
+]
+

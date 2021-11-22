@@ -37,7 +37,22 @@ export async function getMeasurements(participantID, sessionID) {
   return {};
 }
 
-export async function logMeasurements(sessionID, measurementName) {}
+export async function updateSession(sessionID, sessionInfo) {
+  // const _body = {
+  //   username: _username,
+  //   password: _password
+  // };
+  const res = await fetch(ENDPOINT + "/api/v1/sessions/"+sessionID, {
+    method: "PUT",
+    body: JSON.stringify(sessionInfo),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
 
 //gets participants with optional query params passed in
 export async function getParticipants(paramName, paramValue) {

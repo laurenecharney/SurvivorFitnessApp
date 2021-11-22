@@ -16,6 +16,7 @@ import Modal from 'react-native-modal'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
+import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
 
 const AppButton = ({ onPress, title, logged }) => (
@@ -31,46 +32,71 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, sessionData, trainerSessionSelected}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected}) => {
     const [user, setUser] = useState({});
     const [expanded_general, setExpanded_general] = useState(false);
     const [expanded_skin_fold, setExpanded_skin_fold] = useState(false);
     const [expanded_girth, setExpanded_girth] = useState(false);
     const [expanded_treadmill, setExpanded_treadmill] = useState(false);
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
-    const [sessionDate, setSessionDate] = useState(new Date());
+    //const [sessionDate, setSessionDate] = useState(new Date());
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [edit, setEdit] = useState(false)
     const [logged, setLogged] = useState(false)
-    //const [measurementData, setMeasurementData] = useState(sessionData.measurements);
+    const [sessionData, setSessionData] = useState(initSessionData.session)
+    const [measurementsChanged, setMeasurementsChanged] = useState(false)
+    //const [measurementData, setMeasurementData] = useState(initSessionData.measurements);
 
     const getAppButtonColor = () => {
         return edit? "white" : '#AED804';
     }
 
-    const logSession = () => {
-        setEdit(!edit)
-        setIsDateConfirmModalVisible(true)
+    //called by Measurements component when a measurement is updated
+    //will be called on unmount if not already logged
+    export const callUpdateSession = (updatedMeasurements) => {
+        setMeasurementsChanged(true);
+        let temp = sessionData;
+        temp.session.measurements = updatedMeasurements;
+        setSessionData(temp);
+    }
+
+    //calls API utilities updateSession
+    async function logSession() {
+        try {
+            let res = await updateSession(sessionData.id, sessionData)
+            setMeasurementsChanged(false);
+        } catch(e) {
+            console.log(e);
+        }
     }
 
     async function fetchUser() {
-      const res = await getUser();
-      setUser(JSON.parse(res))
+        const res = await getUser()
+        setUser(JSON.parse(res))
     }
 
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
-        // and when sessionData is changed. It essentially waits
+        // and when initSessionData is changed. It essentially waits
         // for the async call to get the ParticipantSessions to complete
-        if (sessionData) {
-            let tempDate = new Date(sessionData.initialLogDate)
-            setSessionDate(tempDate)
+        if (initSessionData) {
+            let tempDate = new Date(initSessionData.lastUpdatedDate)
+            let tempData = sessionData;
+            tempData.lastUpdatedDate = tempDate;
+            setSessionData(tempData)
             setLogged(true)
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
         } else {
             console.log("Data not ready yet")
         }
-    }, [sessionData]);
+
+        //called when logger is updated or unmounts
+        return () => {
+            if(measurementsChanged) {
+                await logSession();
+            }
+        }
+    }, [initSessionData]);
 
     return(
         <View style = {styles.container}>
@@ -79,8 +105,12 @@ export const SessionLogger = ({isCheckpoint, sessionData, trainerSessionSelected
                 style={styles.scrollViewStyle}
             >
                 <AppButton
-                    title = {logged ? sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
-                    onPress={logSession}
+                    title = {logged ? sessionData.lastUpdatedDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                    onPress={() => {
+                        setEdit(true);
+                        setIsDateConfirmModalVisible(true);
+                        logSession();
+                    }}
                     logged={logged}
                 />
                 {/* <AppButton
@@ -90,7 +120,7 @@ export const SessionLogger = ({isCheckpoint, sessionData, trainerSessionSelected
 
             {
                 (trainerSessionSelected && isCheckpoint) &&
-                <Measurements measurementData={sessionData.measurements}/>
+                <Measurements measurementData={initSessionData.measurements}/>
             }
                 <Modal
                     propagateSwipe={true}

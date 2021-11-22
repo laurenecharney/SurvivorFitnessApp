@@ -168,7 +168,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         <SessionLogger 
                             //session = {this.state.sessionTrainer}
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                            sessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
+                            initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
                             //sessionData={this.state.sessionData ? this.state.sessionData[0] : null}
                             trainerSessionSelected={!this.state.dietician}
                         />
