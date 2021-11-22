@@ -1,8 +1,6 @@
 import { getItem } from "./deviceStorage";
 import { ENDPOINT } from "./developerEndpoint";
 
-//const ENDPOINT = "http://ec2-52-201-3-191.compute-1.amazonaws.com:8080";
-
 //this should be an env. variable. Fix this later
 
 //put

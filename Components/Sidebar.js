@@ -1,17 +1,13 @@
-import React, { Component } from
+import React, { Component, useEffect, useState } from
  'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import SidebarRow from '../Components/SidebarRow.js';
 
-class Sidebar extends Component {
-    state = {
-        numSessions: 24,
-        addSession: [
-            {id: 1, name: '+'}
-        ]
-    }
+export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSessions}) =>{
+
     alertItemName = (item) => {
-        this.props.updateSession(item.name)
+        updateSession(item.name)
     }
     alertAddSession = (item) => {
         Alert.alert('Add Another Session?', '',
@@ -32,48 +28,47 @@ class Sidebar extends Component {
         )
     }
 
-    render() {
-        return (
-            <KeyboardAwareScrollView 
-            resetScrollToCoords={{ x: 0, y: 0 }}
-             scrollEnabled={true}>
-                {
-                    this.props.sessionsArray.map((item, index) => (
+    return (
+        <KeyboardAwareScrollView 
+        resetScrollToCoords={{ x: 0, y: 0 }}
+         scrollEnabled={true}>
+            {
+                sessionsArray.map((item, index) => (
+                    <TouchableOpacity
+                        style = {!item.logged ? styles.highlightedRow: styles.row}
+                        key = {index}
+                        >
                         <TouchableOpacity
-                            style = {styles.row}
-                            key = {index}
-                            >
-                            <TouchableOpacity
-                                style = {styles.numberContainer}
-                                onPress = {() => this.alertItemName(item)}>
-                                <Text style = {styles.text}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
+                            style = {styles.numberContainer}
+                            onPress = {() => this.alertItemName(item)}>
+                            <Text style = {styles.text}>
+                                {item.name}
+                            </Text>
                         </TouchableOpacity>
-                    ))
-                }
-                {
-
-                    this.state.addSession.map((item, index) => (
+                    </TouchableOpacity>
+                ))
+            }{/*
+            {
+                addSession.map((item, index) => (
+                    <TouchableOpacity
+                        style = {styles.row}
+                        key = {index}>
                         <TouchableOpacity
-                            style = {styles.row}
-                            key = {index}>
-                            <TouchableOpacity
-                                
-                                style = {styles.container}
-                                onPress = {() => this.alertAddSession(item)}>
-                                <Text style = {styles.text}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
+                            
+                            style = {styles.container}
+                            onPress = {() => this.alertAddSession(item)}>
+                            <Text style = {styles.text}>
+                                {item.name}
+                            </Text>
                         </TouchableOpacity>
-                    ))
-                }
-            </KeyboardAwareScrollView>
-        )
-    }
+                    </TouchableOpacity>
+                ))
+            }
+        */}
+        </KeyboardAwareScrollView>
+    )
 }
+
 export default Sidebar
 
 const styles = StyleSheet.create ({
@@ -91,7 +86,7 @@ const styles = StyleSheet.create ({
         flexDirection: 'column',
         alignItems: 'center',
         borderColor: '#E6E6E6',
-        backgroundColor: '#cccccc',
+        // backgroundColor: '#cccccc',
         // width: '100%',
         height: 39,
         borderWidth: 0.25,

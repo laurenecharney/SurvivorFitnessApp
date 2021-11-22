@@ -23,18 +23,21 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             dietician: false,
             numTrainerSessions: 24,
             trainerSessionsArray:  [],
+            
             numDieticianSessions: 3,
-            dieticianSessionsArray: [],
+            dieticianSessionsArray: [
+                ],
             sessionTrainer: 1,
             sessionDietician: 1,
+            numSessions: 24,
             addSessionArray:  [
                 {id: 1, name: '+'}
             ],
             sessionData: [],
         }
-        for (let i = 1; i <= this.state.numTrainerSessions; ++i){
-            this.state.trainerSessionsArray.push({id: i, name: i.toString()})
-        }
+        // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
+        //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
+        // }
         for (let i = 1; i <= this.state.numDieticianSessions; ++i){
             this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
@@ -47,7 +50,12 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.setState({dietician: true});
     }
     updateSessionTrainer(newSessionTrainer){
-        this.setState({sessionTrainer: newSessionTrainer})// or with es6 this.setState({name})
+        this.setState({sessionTrainer:newSessionTrainer})// or with es6 this.setState({name})
+        //FIXME: Put logic about updating trainerSessionsArray.highlighted here
+     }
+
+     updateSessionDietician(sessionDietician){
+        this.setState({sessionDietician:sessionDietician})// or with es6 this.setState({name})
      }
 
     updateSessionDietician(sessionDietician){
@@ -70,63 +78,46 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
     }
 
-     async fetchSessions() {
-        try {
-            console.log("route param id: "+this.props.route.params.id);
-            let res = getParticipantSessions(this.props.route.params.id);
-            this.setState({sessionData: JSON.parse(res)});
-            //console.log(this.state.sessionData);
-            console.log("successfully retrived session data");
-        } catch (e) {
-            console.log("error in fetchSessions()")
-            //console.log(e);
-            //alert("Could not fetch participant session data");
-        }
-        for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
-            if(isCheckpoint(num) && 
-                    num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
-                    this.state.sessionData.trainerSessions[i]) {
-                console.log("returning session "+num+": "+this.state.sessionData.trainerSessions[i])
-                return this.state.sessionData.trainerSessions[i];
+     formatSessions(rawSessionsArray){
+         console.log('hello')
+        for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
+            let isHighlighted = false;
+            if (i < 1){
+                isHighlighted = true
             }
+            let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+            let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
+            this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
         }
-        console.log("Couldn't find measurements for session with index " + num.toString());
-        return [];
-    }
 
-     async componentDidMount() {
-        await this.fetchSessions();
+        console.log('hello', this.state.trainerSessionsArray);
      }
 
-     getMeasurementsBySessionNumber = (num) => {
-        if(!this.state.sessionData.trainerSessions) {
-            console.log()
-            console.log("array is undefined. ");
-            return [];
-        } else if(this.state.sessionData.trainerSessions == 0) {
-            console.log("Empty array");
-            return [];
-        }
-        for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
-            if(isCheckpoint(num) && 
-                    num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
-                    this.state.sessionData.trainerSessions[i].measurements) {
-                        console.log("returning session "+num+" measurements: "+this.state.sessionData.trainerSessions[i].measurements)
-                return this.state.sessionData.trainerSessions[i].measurements;
-            }
+     async fetchSessions() {
+        try {
+            let res = await getParticipantSessions(this.props.route.params.id);
+            this.setState({sessions: res});            
+        } catch (e) {
+            console.log(e);
+            alert("Could not fetch participant session data");
         }
         console.log("Couldn't find measurements for session with index " + num.toString());
         return [];
+     }
+
+     async componentDidMount(){
+        await this.fetchSessions();
+        this.formatSessions(this.state.sessions);
      }
 
     render(){
         return(
             <View style={styles.container}
-            
             >
                 <View style={styles.header}>
                     <NameNavBar name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
                     goBack={()=>this.props.navigation.goBack()}/>
+                
                 </View>
                 <View>
                     <TrainerDieticianNavBar
@@ -146,6 +137,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             sessionsArray = {this.state.dieticianSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionDietician()}
+                            fetchSessions = {() =>this.fetchSessions()}
                         />
                         :
                         <Sidebar
@@ -153,6 +145,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             sessionsArray = {this.state.trainerSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionTrainer()}
+                            fetchSessions = {() =>this.fetchSessions()}
+                            test = {this.state.test}
                         />
                     }
                     </View>

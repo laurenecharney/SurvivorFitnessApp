@@ -24,23 +24,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             dietician: false,
             numTrainerSessions: 24,
             trainerSessionsArray:  [
-                {id: 1, name: '1', logged: false, highlighted: true},
-                {id: 2, name: '2', logged: false, highlighted: false},
-                {id: 3, name: '3', logged: false, highlighted: false},
-                {id: 4, name: '4', logged: false, highlighted: false},
-                {id: 5, name: '5', logged: false, highlighted: false},
-                {id: 6, name: '6', logged: false, highlighted: false},
-                {id: 7, name: '7', logged: false, highlighted: false},
-                {id: 8, name: '8', logged: false, highlighted: false},
-                {id: 9, name: '9', logged: false, highlighted: false},
-                {id: 10, name: '10', logged: false, highlighted: false},
-                {id: 11, name: '11', logged: false, highlighted: false},
-                {id: 12, name: '12', logged: false, highlighted: false},
-                {id: 13, name: '13', logged: false, highlighted: false},
-                {id: 14, name: '14', logged: false, highlighted: false},
-                {id: 15, name: '15', logged: false, highlighted: false},
-                {id: 16, name: '16', logged: false, highlighted: false},
-                {id: 17, name: '17', logged: false, highlighted: false}
             ],
             
             numDieticianSessions: 3,
@@ -121,10 +104,27 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return [];
     }
 
+    formatSessions(rawSessionsArray){
+        console.log('start formatting sessions')
+        console.log("rawSessionsArray: ", rawSessionsArray, "\n^raw sessions")
+       for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
+           let isHighlighted = false;
+           if (i < 1){
+               isHighlighted = true
+           }
+           let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+           let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
+           this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+       }
+
+       console.log('hello', this.state.trainerSessionsArray);
+    }
+
     async fetchSessions() {
         try {
             let res = await getParticipantSessions(this.props.route.params.id);
             this.setState({sessionData: res});
+            return res;
         } catch (e) {
             console.log(e);
             // alert("Could not fetch participant session data");
@@ -132,7 +132,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     async componentDidMount() {
-        await this.fetchSessions();
+        const rawSessions = await this.fetchSessions();
+        this.formatSessions(rawSessions);
     }
 
     render(){
@@ -169,6 +170,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             sessionsArray = {this.state.trainerSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionTrainer()}
+                            fetchSessions = {() =>this.fetchSessions()}
+                            test = {this.state.test}
                         />
                     }
                     </View>
