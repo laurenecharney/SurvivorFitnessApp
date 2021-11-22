@@ -5,7 +5,7 @@ import Sidebar from '../Components/Sidebar.js';
 // import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Alert} from 'react-native';
 // import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
 import SidebarDietician from '../Components/SidebarDietician';
@@ -52,9 +52,26 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     pressDietician = ()=>{
         this.setState({dietician: true});
     }
-    updateSessionTrainer(newSessionTrainer){
-        this.setState({sessionTrainer: newSessionTrainer})// or with es6 this.setState({name})
-        // console.log("current session: ", newSessionTrainer)
+
+     updateSessionTrainer(newSessionTrainer){
+        let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+
+        if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
+            Alert.alert(
+                "This session Has Not Been Logged",
+                ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
+                [
+                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+        }else{
+            this.setState({sessionTrainer:newSessionTrainer.name})// or with es6 this.setState({name})
+            //FIXME: Put logic about updating trainerSessionsArray.highlighted here
+            //this.state.sessions.indexOf(sessions.find(this.isHighlighted)).highlighted = false;
+            let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
+            this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
+            this.state.trainerSessionsArray[newSessionTrainer.name - 1].highlighted = true;
+        }
      }
 
     updateSessionDietician(sessionDietician){

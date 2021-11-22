@@ -1776,6 +1776,19 @@
   "resolved" "https://registry.npmjs.org/@mdi/react/-/react-1.5.0.tgz"
   "version" "1.5.0"
 
+"@react-native-async-storage/async-storage@react-native-async-storage/async-storage":
+  "resolved" "git+ssh://git@github.com/react-native-async-storage/async-storage.git#94b95208dadd978eb96bef538096ac2a049a58ba"
+  "version" "1.13.0"
+  dependencies:
+    "merge-options" "^3.0.4"
+
+"@react-native-community/async-storage@^1.12.1":
+  "integrity" "sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/async-storage/-/async-storage-1.12.1.tgz"
+  "version" "1.12.1"
+  dependencies:
+    "deep-assign" "^3.0.0"
+
 "@react-native-community/cli-debugger-ui@^4.13.1":
   "integrity" "sha512-UFnkg5RTq3s2X15fSkrWY9+5BKOFjihNSnJjTV2H5PtTUFbd55qnxxPw8CxSfK0bXb1IrSvCESprk2LEpqr5cg=="
   "resolved" "https://registry.npmjs.org/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.13.1.tgz"
@@ -4471,6 +4484,11 @@
   "resolved" "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz"
   "version" "1.0.1"
 
+"is-plain-obj@^2.1.0":
+  "integrity" "sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA=="
+  "resolved" "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-2.1.0.tgz"
+  "version" "2.1.0"
+
 "is-plain-object@^2.0.3", "is-plain-object@^2.0.4":
   "integrity" "sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og=="
   "resolved" "https://registry.npmjs.org/is-plain-object/-/is-plain-object-2.0.4.tgz"
@@ -5103,6 +5121,13 @@
     "map-age-cleaner" "^0.1.1"
     "mimic-fn" "^2.0.0"
     "p-is-promise" "^2.0.0"
+
+"merge-options@^3.0.4":
+  "integrity" "sha512-2Sug1+knBjkaMsMgf1ctR1Ujx+Ayku4EdJN4Z+C2+JzoeF7A3OZ9KM2GY0CpQS51NR61LTurMJrRKPhSs3ZRTQ=="
+  "resolved" "https://registry.npmjs.org/merge-options/-/merge-options-3.0.4.tgz"
+  "version" "3.0.4"
+  dependencies:
+    "is-plain-obj" "^2.1.0"
 
 "merge-stream@^1.0.1":
   "integrity" "sha1-QEEgLVCKNCugAXQAjfDCUbjBNeE="
@@ -6436,6 +6461,11 @@
   dependencies:
     "prop-types" "^15.7.2"
 
+"react-native-async-storage@^0.0.1":
+  "integrity" "sha1-Xy71/zDq5ktCSOJltTTnLqQc3Gk="
+  "resolved" "https://registry.npmjs.org/react-native-async-storage/-/react-native-async-storage-0.0.1.tgz"
+  "version" "0.0.1"
+
 "react-native-codegen@^0.0.7":
   "integrity" "sha512-dwNgR8zJ3ALr480QnAmpTiqvFo+rDtq6V5oCggKhYFlRjzOmVSFn3YD41u8ltvKS5G2nQ8gCs2vReFFnRGLYng=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.7.tgz"
@@ -6610,7 +6640,7 @@
     "whatwg-fetch" "^3.0.0"
     "ws" "^6.1.4"
 
-"react-native@*", "react-native@^0.66.0", "react-native@>=0.42.0", "react-native@>=0.48.4", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@0.66.0", "react-native@https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz":
+"react-native@*", "react-native@^0.0.0-0 || ^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || ^0.65.0 || ^0.66.0 || 1000.0.0", "react-native@^0.66.0", "react-native@>=0.42.0", "react-native@>=0.48.4", "react-native@>=0.5.0", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@0.66.0", "react-native@https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz":
   "integrity" "sha512-wYOQJnPj9CHg1db2/xXebxfzJpdwxeQpsqi9HLz5Y6Zv8xY/J7p6O4eeDyenw1FARWbeAPWwzl2y+OYE4CUrPA=="
   "resolved" "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz"
   "version" "0.63.2"
@@ -6669,7 +6699,7 @@
   "resolved" "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   "version" "0.13.4"
 
-"react@*", "react@^16.0", "react@^16.13.1", "react@^16.3.0", "react@^16.8.0 || ^17.0.0", "react@>=16.5.1", "react@>=16.8.3", "react@16.13.1", "react@17.0.2":
+"react@*", "react@^16.0", "react@^16.13.1", "react@^16.3.0", "react@^16.8", "react@^16.8.0 || ^17.0.0", "react@>=16.5.1", "react@>=16.8.3", "react@16.13.1", "react@17.0.2":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"
