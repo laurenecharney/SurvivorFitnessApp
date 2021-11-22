@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 export const Measurements = ({ onPress, title, measurementData, callUpdateSession }) => {
 
-    console.log("measurementData = ", measurementData);
+    // console.log("measurementData = ", measurementData);
     const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
 
     const [expanded_general, setExpanded_general] = useState("false");
@@ -28,7 +28,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
             // map from measurement name to value to avoid this iteration
             if(measurementData[i].name == measurementName) ret = measurementData[i].value;
         }
-        console.log("getMeasurementCall for "+measurementName+"\n"+ret);
+        // console.log("getMeasurementCall for "+measurementName+"\n"+ret);
         return ret;
     }
 

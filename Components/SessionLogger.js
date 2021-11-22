@@ -34,16 +34,12 @@ const SmallAppButton = ({ onPress, title }) => (
 
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected}) => {
     const [user, setUser] = useState({});
-    const [expanded_general, setExpanded_general] = useState(false);
-    const [expanded_skin_fold, setExpanded_skin_fold] = useState(false);
-    const [expanded_girth, setExpanded_girth] = useState(false);
-    const [expanded_treadmill, setExpanded_treadmill] = useState(false);
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [edit, setEdit] = useState(false)
     const [logged, setLogged] = useState(false)
-    const [sessionData, setSessionData] = useState(initSessionData.session)
+    const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
     //const [measurementData, setMeasurementData] = useState(initSessionData.measurements);
 
@@ -64,13 +60,13 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        try {
-            setMeasurementsChanged(false);
-            let res = await updateSession(sessionData.id, sessionData)
+        // try {
+        //     setMeasurementsChanged(false);
+        //     let res = await updateSession(sessionData.id, sessionData)
             
-        } catch(e) {
-            console.log(e);
-        }
+        // } catch(e) {
+        //     console.log(e);
+        // }
     }
 
 
@@ -84,11 +80,13 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // and when initSessionData is changed. It essentially waits
         // for the async call to get the ParticipantSessions to complete
         if (initSessionData) {
-            let tempDate = new Date(initSessionData.lastUpdatedDate)
-            let tempData = initSessionData;
-            tempData.lastUpdatedDate = tempDate;
-            setSessionData(tempData)
+            // console.log("initSessionData changed");   
+            const dateVal = parseInt(initSessionData.lastUpdatedDate);
+            let tempDate = new Date(dateVal)
+            setSessionDate(tempDate)
+            setSessionData(initSessionData)
             setLogged(true)
+
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
             
         } else {
@@ -111,7 +109,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 style={styles.scrollViewStyle}
             >
                 <AppButton
-                    title = {logged ? sessionData.lastUpdatedDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                    title = {logged ? sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
+                    // title = {logged ? "session logged" : "Log Session"}
                     onPress={() => {
                         setEdit(true);
                         setIsDateConfirmModalVisible(true);

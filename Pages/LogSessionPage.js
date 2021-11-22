@@ -71,6 +71,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
     updateSessionTrainer(newSessionTrainer){
         this.setState({sessionTrainer: newSessionTrainer})// or with es6 this.setState({name})
+        // console.log("current session: ", newSessionTrainer)
      }
 
     updateSessionDietician(sessionDietician){
@@ -94,6 +95,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     getDataBySessionNumber = (num) => {
+        let currentSessionData = []
         if(!this.state.sessionData.trainerSessions) {
             console.log("Error: sessionData.trainerSessions does not exist.")
             return [];
@@ -102,8 +104,17 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             if(this.isCheckpoint(num) && 
                     num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
                     this.state.sessionData.trainerSessions[i]) {
-                console.log("returning session "+num+": "+this.state.sessionData.trainerSessions[i])
+                // console.log("returning session "+num+": ")
+                // console.log(this.state.sessionData.trainerSessions[i])
+            
                 return this.state.sessionData.trainerSessions[i];
+            } else if (
+                num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
+                this.state.sessionData.trainerSessions[i])
+                {
+                    // console.log("returning session "+num+": ")
+                    // console.log(this.state.sessionData.trainerSessions[i])
+                    return this.state.sessionData.trainerSessions[i];
             }
         }
         console.log("Couldn't find measurements for session with index " + num.toString());

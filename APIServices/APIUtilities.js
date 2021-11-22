@@ -91,6 +91,7 @@ export async function getParticipantByID(id) {
 
 export async function getParticipantSessions(id) {
   const jwt = await getItem();
+  
   console.log("endpoint: ", ENDPOINT + "/api/v1/participants/" + id + "/all-notes")
   const res = await fetch(ENDPOINT + "/api/v1/participants/" + id + "/all-notes", {
     method: "GET",
@@ -101,7 +102,7 @@ export async function getParticipantSessions(id) {
     }
   })
     .then(response => response.json());
-  console.log("res recieved in apiutilities");
+  // console.log("res recieved in apiutilities");
   return res;
 } 
 
