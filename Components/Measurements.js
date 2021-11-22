@@ -8,10 +8,10 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { callUpdateSession } from './SessionLogger'
+// import { callUpdateSession } from './SessionLogger'
 
 
-export const Measurements = ({ onPress, title, measurementData }) => {
+export const Measurements = ({ onPress, title, measurementData, callUpdateSession }) => {
 
     console.log("measurementData = ", measurementData);
     const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);

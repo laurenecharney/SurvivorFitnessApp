@@ -39,7 +39,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const [expanded_girth, setExpanded_girth] = useState(false);
     const [expanded_treadmill, setExpanded_treadmill] = useState(false);
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
-    //const [sessionDate, setSessionDate] = useState(new Date());
+    const [sessionDate, setSessionDate] = useState(new Date());
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [edit, setEdit] = useState(false)
     const [logged, setLogged] = useState(false)
@@ -53,22 +53,26 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //called by Measurements component when a measurement is updated
     //will be called on unmount if not already logged
-    export const callUpdateSession = (updatedMeasurements) => {
-        setMeasurementsChanged(true);
-        let temp = sessionData;
-        temp.session.measurements = updatedMeasurements;
-        setSessionData(temp);
+    const callUpdateSession = (updatedMeasurements) => {
+        // setMeasurementsChanged(true);
+        // let temp = initSessionData;
+        // if (temp != null) {
+        //     temp.session.measurements = updatedMeasurements;
+        //     setSessionData(temp);
+        // }
     }
 
     //calls API utilities updateSession
     async function logSession() {
         try {
-            let res = await updateSession(sessionData.id, sessionData)
             setMeasurementsChanged(false);
+            let res = await updateSession(sessionData.id, sessionData)
+            
         } catch(e) {
             console.log(e);
         }
     }
+
 
     async function fetchUser() {
         const res = await getUser()
@@ -81,21 +85,23 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // for the async call to get the ParticipantSessions to complete
         if (initSessionData) {
             let tempDate = new Date(initSessionData.lastUpdatedDate)
-            let tempData = sessionData;
+            let tempData = initSessionData;
             tempData.lastUpdatedDate = tempDate;
             setSessionData(tempData)
             setLogged(true)
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
+            
         } else {
             console.log("Data not ready yet")
         }
 
         //called when logger is updated or unmounts
-        return () => {
-            if(measurementsChanged) {
-                await logSession();
-            }
-        }
+        // return () => {
+        //     if(measurementsChanged) {
+        //         logSession();
+                
+        //     }
+        // }
     }, [initSessionData]);
 
     return(
@@ -120,7 +126,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
             {
                 (trainerSessionSelected && isCheckpoint) &&
-                <Measurements measurementData={initSessionData.measurements}/>
+                <Measurements measurementData={initSessionData.measurements}
+                callUpdateSession={callUpdateSession()}/>
             }
                 <Modal
                     propagateSwipe={true}
