@@ -32,7 +32,7 @@ export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSes
         <KeyboardAwareScrollView 
         resetScrollToCoords={{ x: 0, y: 0 }}
          scrollEnabled={true}>
-            {
+             {
                 sessionsArray.map((item, index) => (
                     <TouchableOpacity
                         style = {!item.highlighted ? styles.row: styles.highlightedRow}

@@ -12,9 +12,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 // import { callUpdateSession } from './SessionLogger'
 
 
-export const Measurements = ({ onPress, title, measurementData, callUpdateSession }) => {
+export const Measurements = ({ onPress, title, measurementData, callUpdateSession, updateMeasurementData}) => {
 
-    // console.log("measurementData = ", measurementData);
     const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
 
     const [expanded_general, setExpanded_general] = useState("false");
@@ -22,14 +21,17 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     const [expanded_girth, setExpanded_girth] = useState("false");
     const [expanded_treadmill, setExpanded_treadmill] = useState("false");
 
-    const getMeasurementValue = (measurementName) => {
-        let ret = "";
-        for(let i = 0; i < measurementData.length; ++i) {
-            // if there were many many measurements, it might be smart to create a 
-            // map from measurement name to value to avoid this iteration
-            if(measurementData[i].name == measurementName) ret = measurementData[i].value;
+    const getMeasurementInfo = (measurementName) => {
+        let ret = {};
+        try {
+            for(let i = 0; i < measurementData.length; ++i) {
+                // if there were many many measurements, it might be smart to create a 
+                // map from measurement name to value to avoid this iteration
+                if(measurementData[i].name == measurementName) ret = measurementData[i];
+            }
+        } catch(e) {
+            console.log(e);
         }
-        // console.log("getMeasurementCall for "+measurementName+"\n"+ret);
         return ret;
     }
 
@@ -48,16 +50,14 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     const toggleExpandTreadmill=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded_treadmill(!expanded_treadmill)
-    }
+    }    
 
     useEffect(() => {
-        console.log("measurementData: ", measurementData)
+        setData(measurementData)
     }, [measurementData])
 
-    
-
-    const Measurement = ({measurement, id, initialValue, updateValue, postfix}) => {
-        const [value, onChangeValue] = useState(initialValue);
+    const Measurement = ({measurement, id, measurementInfo, updateValue, postfix}) => {
+        const [value, onChangeValue] = useState(measurementInfo.value);
         const inputRef = useRef();
         const editText = useCallback(() => {
             inputRef.current.focus();
@@ -74,7 +74,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                     style={[styles.measurementText]}
                     value={value}
                     onChangeText={onChangeValue}
-                    onEndEditing={() => updateValue(id, value)}
+                    onEndEditing={() => updateValue(measurementInfo, value)}
                     // placeholder={"enter a value"}
                 ></TextInput>
                     <Text style = {[styles.measurementText, styles.postfix]}
@@ -115,7 +115,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                                     key={item.id}
                                     measurement={item.measurement}
                                     id={item.id}
-                                    initialValue = {getMeasurementValue(item.measurement)}
+                                    measurementInfo = {getMeasurementInfo(item.measurement)}
                                     updateValue={updateValue}
                                     postfix={item.unit}
                                     // measurementValue={data[item.id]}
@@ -128,12 +128,17 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
         )
     }
 
-    const updateValue = (measurementId, newValue) => {
+    const updateValue = (measurementInfo, newValue) => {
+        const measurementId = measurementInfo.id;
         const temp = data
-        temp[measurementId] = newValue
-        setData(temp)
-        //send data up/calls SessionLogger.updateSession(id, data)
-        // callUpdateSession(data)
+        for (let i = 0; i < data.length; ++i) {
+            if (temp[i].id == measurementId) {
+                temp[i].value = newValue;
+                break;
+            }
+        }
+        setData(temp);
+        updateMeasurementData(temp);
     }
 
     return (
@@ -367,37 +372,6 @@ const labels = {
 }
 
 
-const eemptyMeasurementData = {
-    weight: "",//"Weight (lbs)",
-    BMI: "",
-    body_fat_pct: "%",
-    total_body_fat: "lbs",
-    lean_mass: "lbs", 
-    blood_pressure: " / mm Hg",
-    range_of_motion:  "",
-    resting_hr: "bpm",
-    Abdominal_skin_fold: "",
-    ChestSkinFold: "",
-    Midaxillary: "",
-    Subscapular: "",
-    Supraillac: "",
-    Thigh: "",
-    Tricep: "",
-    Abdominal_girth: "",
-    Bicep_girth: "",
-    Calf_girth: "",
-    ChestGirth: "",
-    Hip_girth: "",
-    Shoulder_girth: "",
-    ThighGirth: "",
-    Waist_girth: "",
-    Total_Inches_Lost: "",
-    Distance: "miles",
-    Speed: "mph",
-    HR: "",
-    BR: ""
-
-}
 const emptyMeasurementData = [
     {
         "id": 26,

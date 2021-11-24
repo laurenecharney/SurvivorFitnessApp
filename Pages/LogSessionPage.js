@@ -36,7 +36,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                 {id: 1, name: '+'}
             ],
             currentSession: 1,
-            sessionData: {"trainerSessions": [], "dietitianSessions": []}
+            sessionData: {"trainerSessions": [], "dietitianSessions": []},
+            refreshFlag: false
         }
         // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
         //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
@@ -44,6 +45,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         for (let i = 1; i <= this.state.numDieticianSessions; ++i){
             this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
+        this.refreshSidebar = this.refreshSidebar.bind(this);
     }
 
     pressTrainer = ()=>{
@@ -53,12 +55,16 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.setState({dietician: true});
     }
 
+    resetRefreshFlag() {
+        this.setState({refreshFlag: false});
+    }
+
      updateSessionTrainer(newSessionTrainer){
         let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
 
         if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
             Alert.alert(
-                "This session Has Not Been Logged",
+                "Session " + newSessionTrainer.name + " Has Not Been Logged",
                 ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
                 [
                   { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -133,6 +139,13 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
        }
     }
 
+    async refreshSidebar() {
+        console.log("refreshing sidebar");
+        const rawSessions = await this.fetchSessions();
+        this.setState({trainerSessionsArray: []})
+        this.formatSessions(rawSessions);
+    }
+
     async fetchSessions() {
         try {
             let res = await getParticipantSessions(this.props.route.params.id);
@@ -178,6 +191,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             addSession = {()=>this.addSessionDietician()}
                         />
                         :
+
                         <Sidebar
                             updateSession={newSession=>this.updateSessionTrainer(newSession)}
                             sessionsArray = {this.state.trainerSessionsArray}
@@ -185,6 +199,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             addSession = {()=>this.addSessionTrainer()}
                             fetchSessions = {() =>this.fetchSessions()}
                             test = {this.state.test}
+                            refreshFlag = {this.state.refreshFlag}
+                            resetRefreshFlag = {()=>this.setState({refreshFlag: false})}
                         />
                     }
                     </View>
@@ -198,6 +214,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
                             //sessionData={this.state.sessionData ? this.state.sessionData[0] : null}
                             trainerSessionSelected={!this.state.dietician}
+                            refreshSidebar={this.refreshSidebar}
                         />
                 </View>
             </View>

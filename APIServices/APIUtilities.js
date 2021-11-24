@@ -37,13 +37,12 @@ export async function logTrainerSession(curSessionInfo, date) {
   const newSessionInfo = {
     "id": curSessionInfo.id,
     "initialLogDate": date,
-    "lastUpdatedDate": date,
     "specialistNotes": curSessionInfo.specialistNotes,
     "adminNotes": curSessionInfo.adminNotes,
     "sessionIndexNumber": curSessionInfo.sessionIndexNumber,
     "whoseNotes": "TRAINER",
     "participantId": curSessionInfo.participantId,
-    "measurements": []
+    "measurements": curSessionInfo.measurements
 }
 const res = await updateSession(newSessionInfo.id, newSessionInfo);
 return res;
@@ -54,7 +53,7 @@ async function updateSession(sessionID, sessionInfo) {
   //   username: _username,
   //   password: _password
   // };
-  console.log(sessionInfo);
+  // console.log(sessionInfo);
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/sessions/"+sessionID, {
     method: "PUT",
@@ -66,7 +65,6 @@ async function updateSession(sessionID, sessionInfo) {
     }
   })
     .then(response => response.json());
-    console.log("res received in updateSession: ", res, "\nres^ updateSession")
   return res.session;
 }
 
