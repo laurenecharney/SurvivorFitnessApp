@@ -2,11 +2,11 @@
   "expo": {
     "name": "SurvivorFitnessApp",
     "slug": "SurvivorFitnessApp",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/home-screen-icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/SF-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "0.1.0",
+      "bundleIdentifier": "com.survivorfitness.change.app"
     },
     "android": {
       "adaptiveIcon": {

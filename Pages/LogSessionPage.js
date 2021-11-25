@@ -66,14 +66,9 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             Alert.alert(
                 "Session " + newSessionTrainer.name + " Has Not Been Logged",
                 ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
-                [
-                  { text: "OK", onPress: () => console.log("OK Pressed") }
-                ]
             );
         }else{
             this.setState({sessionTrainer:newSessionTrainer.name})// or with es6 this.setState({name})
-            //FIXME: Put logic about updating trainerSessionsArray.highlighted here
-            //this.state.sessions.indexOf(sessions.find(this.isHighlighted)).highlighted = false;
             let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
             this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
             this.state.trainerSessionsArray[newSessionTrainer.name - 1].highlighted = true;
@@ -110,16 +105,12 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             if(this.isCheckpoint(num) && 
                     num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
                     this.state.sessionData.trainerSessions[i]) {
-                // console.log("returning session "+num+": ")
-                // console.log(this.state.sessionData.trainerSessions[i])
             
                 return this.state.sessionData.trainerSessions[i];
             } else if (
                 num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
                 this.state.sessionData.trainerSessions[i])
                 {
-                    // console.log("returning session "+num+": ")
-                    // console.log(this.state.sessionData.trainerSessions[i])
                     return this.state.sessionData.trainerSessions[i];
             }
         }
@@ -140,7 +131,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     async refreshSidebar() {
-        console.log("refreshing sidebar");
         const rawSessions = await this.fetchSessions();
         this.setState({trainerSessionsArray: []})
         this.formatSessions(rawSessions);
@@ -153,7 +143,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             return res;
         } catch (e) {
             console.log(e);
-            // alert("Could not fetch participant session data");
         }
     }
 
@@ -204,15 +193,9 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         />
                     }
                     </View>
-                    {/* <TrainerCheckpointPage session = {this.state.sessionTrainer}
-                    isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                    sessionData={this.state.sessions ? this.state.sessions[0] : null}
-                    trainerSessionSelected={!this.state.dietician}/> */}
                         <SessionLogger 
-                            //session = {this.state.sessionTrainer}
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                             initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
-                            //sessionData={this.state.sessionData ? this.state.sessionData[0] : null}
                             trainerSessionSelected={!this.state.dietician}
                             refreshSidebar={this.refreshSidebar}
                         />

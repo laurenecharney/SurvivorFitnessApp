@@ -49,11 +49,6 @@ return res;
 }
 
 async function updateSession(sessionID, sessionInfo) {
-  // const _body = {
-  //   username: _username,
-  //   password: _password
-  // };
-  // console.log(sessionInfo);
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/sessions/"+sessionID, {
     method: "PUT",
@@ -83,8 +78,6 @@ export async function getParticipants(paramName, paramValue) {
     }
   })
     .then(res => res.json());
-    // console.log("GET PARTICIPANTS QUERY")
-    // console.log(paramName + " " + paramValue);
   return res && res.participants ? res.participants : [];
 } // ,
 
@@ -116,7 +109,6 @@ export async function getParticipantSessions(id) {
     }
   })
     .then(response => response.json());
-  // console.log("res recieved in apiutilities");
   return res;
 } 
 

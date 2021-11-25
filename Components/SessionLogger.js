@@ -60,9 +60,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         if (!isCheckpoint || !measurementData) {
             const dateMilliseconds = sessionDate.getTime()
             try {
-                // setMeasurementsChanged(false);
                 let res = await logTrainerSession(initSessionData, dateMilliseconds)
-                // let res = await updateSession(sessionData.id, sessionData)
                 setLogged(true);
                 showSessionInfo(res);
                 refreshSidebar();
@@ -93,7 +91,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             newSessionData = initSessionData;
         }
         if (newSessionData.lastUpdatedDate) {
-            const dateVal = parseInt(newSessionData.lastUpdatedDate);
+            const dateVal = parseInt(newSessionData.initialLogDate);
             let tempDate = new Date(dateVal)
             setSessionDate(tempDate)
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
@@ -117,14 +115,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         } else {
             console.log("Data not ready yet")
         }
-
-        //called when logger is updated or unmounts
-        // return () => {
-        //     if(measurementsChanged) {
-        //         logSession();
-                
-        //     }
-        // }
     }, [initSessionData]);
 
     return(
@@ -146,10 +136,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     }}
                     logged={logged}
                 />
-                {/* <AppButton
-                    title = {"reset"}
-                    onPress={()=>logSession()}
-                /> */}
 
             {
                 (trainerSessionSelected && isCheckpoint) &&
@@ -234,7 +220,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         alignItems: 'flex-start',
-        // backgroundColor: 'red',
         width: '100%',
     },
     headline: {
@@ -260,7 +245,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         borderColor: '#AED804',
-        // borderWidth: 2,
         paddingVertical: 25,
         paddingHorizontal: '10%',
         marginTop: 40,
