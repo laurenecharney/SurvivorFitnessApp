@@ -1,42 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from
+ 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Alert} from 'react-native'
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import SidebarRow from '../Components/SidebarRow.js';
 
-class Sidebar extends Component {
-    state = {
-        numSessions: 24,
-        sessions: [
-            {id: 1, name: '1',},
-            {id: 2, name: '2',},
-            {id: 3, name: '3',},
-            {id: 4, name: '4',},
-            {id: 5, name: '5',},
-            {id: 6, name: '6',},
-            {id: 7, name: '7',},
-            {id: 8, name: '8',},
-            {id: 9, name: '9',},
-            {id: 10, name: '10',},
-            {id: 11, name: '11',},
-            {id: 12, name: '12',},
-            {id: 13, name: '13',},
-            {id: 14, name: '14',},
-            {id: 15, name: '15',},
-            {id: 16, name: '16',},
-            {id: 17, name: '17',},
-            {id: 18, name: '18',},
-            {id: 19, name: '19',},
-            {id: 20, name: '20',},
-            {id: 21, name: '21',},
-            {id: 22, name: '22',},
-            {id: 23, name: '23',},
-            {id: 24, name: '24',}
-        ],
-        addSession: [
-            {id: 1, name: '+'}
-        ]
-    }
+export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSessions}) => {
+
     alertItemName = (item) => {
-        this.props.updateSession(item.name)
+        updateSession(item)
     }
     alertAddSession = (item) => {
         Alert.alert('Add Another Session?', '',
@@ -57,48 +28,47 @@ class Sidebar extends Component {
         )
     }
 
-    render() {
-        return (
-            <KeyboardAwareScrollView 
-            resetScrollToCoords={{ x: 0, y: 0 }}
-             scrollEnabled={true}>
-                {
-                    this.state.sessions.map((item, index) => (
+    return (
+        <KeyboardAwareScrollView 
+        resetScrollToCoords={{ x: 0, y: 0 }}
+         scrollEnabled={true}>
+             {
+                sessionsArray.map((item, index) => (
+                    <TouchableOpacity
+                        style = {!item.highlighted ? styles.row: styles.highlightedRow}
+                        key = {index}
+                        onPress = {() => alertItemName(item)}>
                         <TouchableOpacity
-                            style = {styles.row}
-                            key = {index}>
-                            <TouchableOpacity
-                                
-                                style = {styles.numberContainer}
-                                onPress = {() => this.alertItemName(item)}>
-                                <Text style = {styles.text}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
+                            style = {item.logged ? styles.numberContainer: styles.highlightedNumberContainer}
+                            onPress = {() => alertItemName(item)}>
+                            <Text style = {item.logged ? styles.text: styles.highlightedText}>
+                                {item.name}
+                            </Text>
                         </TouchableOpacity>
-                    ))
-                }
-                {
-
-                    this.state.addSession.map((item, index) => (
+                    </TouchableOpacity>
+                ))
+            }{/*
+            {
+                addSession.map((item, index) => (
+                    <TouchableOpacity
+                        style = {styles.row}
+                        key = {index}>
                         <TouchableOpacity
-                            style = {styles.row}
-                            key = {index}>
-                            <TouchableOpacity
-                                
-                                style = {styles.container}
-                                onPress = {() => this.alertAddSession(item)}>
-                                <Text style = {styles.text}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                            </TouchableOpacity>
-                    ))
-                }
-            </KeyboardAwareScrollView>
-        )
-    }
+                            
+                            style = {styles.container}
+                            onPress = {() => this.alertAddSession(item)}>
+                            <Text style = {styles.text}>
+                                {item.name}
+                            </Text>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                ))
+            }
+        */}
+        </KeyboardAwareScrollView>
+    )
 }
+
 export default Sidebar
 
 const styles = StyleSheet.create ({
@@ -112,6 +82,16 @@ const styles = StyleSheet.create ({
         borderWidth: 0.25,
         padding: 5,
     },
+    highlightedRow: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        borderColor: '#E6E6E6',
+        backgroundColor: '#F4F4F4',
+        // width: '100%',
+        height: 39,
+        borderWidth: 0.25,
+        padding: 5,
+    },
     numberContainer: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -119,8 +99,25 @@ const styles = StyleSheet.create ({
         height: 28,
         borderWidth: 1,
         borderColor: '#C6E05A',
-        borderRadius: 90,
-
+        backgroundColor: '#fff',
+        borderRadius: 90
+    },
+    highlightedNumberContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: 28,
+        height: 28,
+        borderWidth: 1,
+        borderColor: '#B8B8B8',
+        backgroundColor: '#fff',
+        borderRadius: 90
+    },
+    highlightedText: {
+        color: '#B8B8B8',
+        fontSize: 16,
+        fontWeight: '700',
+        textAlign: 'center',
+        paddingTop: '15%',
     },
     text: {
         color: '#C6E05A',
@@ -129,4 +126,5 @@ const styles = StyleSheet.create ({
         textAlign: 'center',
         paddingTop: '15%',
     }
+
 })

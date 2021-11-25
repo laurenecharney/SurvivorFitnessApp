@@ -102,17 +102,17 @@ export default class TrainerPatientsPage extends Component {
                 <View style={styles.row}>
                   <View>
                     <View style={styles.nameContainer}>
-                    <TouchableOpacity 
-                      onPress={() => {
-                          const routeParams =
-                              {
-                                  id: item.id,
-                                  name: item.firstName + ' ' + item.lastName
-                              } ;
-                          this.props.navigation.navigate('ClientInformationPage', routeParams);
-                      }}
-                    >
-                        <Text style={styles.nameTxt}>{item.value}</Text>
+                      <TouchableOpacity 
+                        onPress={() => {
+                            const routeParams =
+                                {
+                                    id: item.id,
+                                    name: item.firstName + ' ' + item.lastName
+                                } ;
+                            this.props.navigation.navigate('ClientInformationPage', routeParams);
+                        }}
+                      >
+                      <Text style={styles.nameTxt}>{item.value}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => this.openModal()}
