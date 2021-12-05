@@ -33,16 +33,22 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+const ConfirmButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.confirmButtonContainer}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
+    const [newSessionDate, setNewSessionDate] = useState(new Date());
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [logged, setLogged] = useState(false)
     const [measurementData, setMeasurementData] = useState([])
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
-
 
     //called by Measurements component when a measurement is updated
     //will be called on unmount if not already logged
@@ -78,9 +84,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         }
     }
 
-
-
-
     async function fetchUser() {
         const res = await getUser()
         setUser(JSON.parse(res))
@@ -105,7 +108,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         setMeasurementData(newMeasurementData);
     }
 
-
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
         // and when initSessionData is changed. It essentially waits
@@ -123,20 +125,24 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 contentContainerStyle = {styles.scrollContentContainer}
                 style={styles.scrollViewStyle}
             >
-                {
-                    logged &&
-                    <View style={{paddingTop: 40, marginBottom: -30}}>
-                        <Text style={styles.loggedText}>Session {initSessionData.sessionIndexNumber} Logged:</Text>
+                <View style={{paddingTop: 20}}>
+                    <Text style={styles.loggedText}>
+                        {"Session "+initSessionData.sessionIndexNumber+ (logged ? " Saved" : " Unsaved")}
+                        </Text>
+                </View>
+                <TouchableOpacity
+                    style={{marginTop: 20, marginBottom: -20, width: '90%', borderWidth: 1, borderRadius: 10, borderColor: 'gray'}}
+                    onPress={() => {setIsDateConfirmModalVisible(true);}}
+                >
+                    <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <Text style = {{margin: 10}}>
+                        {sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
+                    </Text>
+                    <Text style = {{margin: 10, color: '#AED804', fontWeight: 'bold', fontSize: 11}}>
+                        {'Change'}
+                    </Text>
                     </View>
-                }
-                <AppButton
-                    title = {logged ? sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'}) : "Log Session"}
-                    onPress={() => {
-                        setIsDateConfirmModalVisible(true);
-                    }}
-                    logged={logged}
-                />
-
+                </TouchableOpacity>
             {
                 (trainerSessionSelected && isCheckpoint) &&
                 <Measurements measurementData={initSessionData.measurements}
@@ -167,40 +173,47 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         style={{
                             backgroundColor: "#fff",
                             width: "90%",
-                            height: "30%",
+                            height: "52%",
                             borderRadius: "19",
                             alignItems: "center", justifyContent: 'space-around'
                         }}
                         >
-                            <TouchableOpacity
-                                style={{ paddingLeft: 260, paddingTop: 10 }}
-                                onPress={()=> {
-                                    setIsDateConfirmModalVisible(false)
-                                }}
-                            >
-                                <Icon name={"close"} color={"#E4E4E4"} size={32} />
-                            </TouchableOpacity>
                             <View style={{flex: 1, width: '100%'}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
-                                    <Text style={styles.heading}>
-                                    {"Select Date"}
-                                    </Text>
+                                <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
+                                    <Text style={styles.heading}> {"Select Date"} </Text>
                                         <DateTimePicker
-                                            style={{height: 40, width: timePickerWidth, marginTop: 10, alignItems: "center"}}
-                                            value={sessionDate}
+                                            style={{width: 300}}
+                                            value={newSessionDate}
                                             mode="date"
-                                            display="calendar"
+                                            display="spinner"
                                             onChange={(event, enteredDate) => {
-                                                setSessionDate(enteredDate)
+                                                setNewSessionDate(enteredDate)
+                                                console.log("date changed")
+                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
+                                            }}
+                                            />
+                                    <View style={styles.datePickerModalButtonContainer}>
+                                        <SmallAppButton
+                                            title={"Confirm"}
+                                            onPress={() => {
+                                                console.log("confirm tapped")
+                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
+                                                setIsDateConfirmModalVisible(false);
+                                                setLogged(false);
+                                                setSessionDate(newSessionDate);
+                                                console.log("still in confirm")
+                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                             }}
                                         />
-                                    <View>
                                         <SmallAppButton
-                                            title={!logged ? "Confirm" : "Confirm New Date"}
-                                            onPress={()=> {
-                                                // setLogged(true);
+                                            title={"Cancel"}
+                                            onPress={() => {
+                                                console.log("cancel tapped")
+                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                                 setIsDateConfirmModalVisible(false);
-                                                logSession(sessionDate);
+                                                setNewSessionDate(sessionDate);
+                                                console.log("still in cancel")
+                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                             }}
                                         />
                                     </View>
@@ -211,6 +224,16 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     </View>
                 </Modal>
             </ScrollView>
+            <View style={{margin: 12, width: '89%', justifyContent: "center"}}>
+                <ConfirmButton
+                    title={"Log Session"}
+                    onPress={() => {
+                        logSession(newSessionDate);
+                    }}
+                />
+            </View>
+
+
         </View>
     );
 }
@@ -236,8 +259,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     heading:{
-        fontSize: 15,
-        fontWeight:'400',
+        fontSize: 18,
+        marginTop: 20,
+        fontWeight:'600',
         color: '#838383',
     },
     loggedContainer: {
@@ -278,8 +302,6 @@ const styles = StyleSheet.create({
         borderColor: "#E6E7E6",
 
     },
-    
-    
     categoryRow: {
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -296,7 +318,6 @@ const styles = StyleSheet.create({
         // alignItems: 
         paddingRight: '10%'
     },
-    
     row:{
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -353,7 +374,6 @@ const styles = StyleSheet.create({
 
         // position: 'absolute'
     },
-
     sessionNumber:{
        fontSize: 17,
         textAlign: 'center',
@@ -362,7 +382,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingBottom: 20,
     },
-
     appButtonContainer: {
         elevation: 8,
         backgroundColor: '#AED804',
@@ -378,17 +397,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#AED804',
         borderRadius: 10,
         paddingVertical: 15,
-        paddingHorizontal: '20%',
-        //width: '80%',
-        // marginLeft: '5%'
-        marginTop: 10
-        
+        paddingHorizontal: '12%',
     },
     appButtonText: {
         fontSize: 15,
         color: "#fff",
         fontWeight: "600",
         alignSelf: "center",
+    },
+    confirmButtonContainer: {
+        elevation: 8,
+        backgroundColor: '#AED804',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: '12%',
+        width: '88%',
+    },
+    datePickerModalButtonContainer: {
+        flexDirection: "row",
+        width: '90%',
+        justifyContent: "space-around"
     },
     sessionNumberContainer: {
         elevation: 8,
