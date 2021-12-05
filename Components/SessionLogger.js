@@ -19,7 +19,6 @@ import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
 import { logTrainerSession } from '../APIServices/APIUtilities';
-import { red100 } from 'react-native-paper/lib/typescript/styles/colors';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -34,9 +33,9 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const ConfirmButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.confirmButtonContainer}>
-        <Text style={styles.appButtonText}>{title}</Text>
+const ConfirmButton = ({ onPress, title, logged }) => (
+    <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
+        <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
@@ -205,6 +204,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     onPress={() => {
                         logSession(newSessionDate);
                     }}
+                    logged={logged}
                 />
             </View>
 
@@ -380,13 +380,23 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         alignSelf: "center",
     },
-    confirmButtonContainer: {
+    confirmButton: {
         elevation: 8,
         backgroundColor: '#AED804',
         borderRadius: 10,
         paddingVertical: 15,
         paddingHorizontal: '12%',
         width: '88%',
+    },
+    confirmButtonGrayed: {
+        elevation: 8,
+        backgroundColor: '#DDDDDD',
+        borderRadius: 10,
+        paddingVertical: 15,
+        paddingHorizontal: '12%',
+        width: '88%',
+        borderRadius: 10,
+        borderColor: '#AED804',
     },
     dateBar: {
         marginTop: 20,
