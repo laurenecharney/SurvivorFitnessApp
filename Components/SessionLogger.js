@@ -19,6 +19,7 @@ import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
 import { logTrainerSession } from '../APIServices/APIUtilities';
+import { red100 } from 'react-native-paper/lib/typescript/styles/colors';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -131,14 +132,14 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         </Text>
                 </View>
                 <TouchableOpacity
-                    style={{marginTop: 20, marginBottom: -20, width: '90%', borderWidth: 1, borderRadius: 10, borderColor: 'gray'}}
+                    style={styles.dateBar}
                     onPress={() => {setIsDateConfirmModalVisible(true);}}
                 >
                     <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                    <Text style = {{margin: 10}}>
+                    <Text style = {{margin: 15, fontSize: 15}}>
                         {sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
                     </Text>
-                    <Text style = {{margin: 10, color: '#AED804', fontWeight: 'bold', fontSize: 11}}>
+                    <Text style = {{margin: 15, color: '#AED804', fontWeight: 'bold', fontSize: 12}}>
                         {'Change'}
                     </Text>
                     </View>
@@ -161,23 +162,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     }}
                     isVisible={isDateConfirmModalVisible}
                 >
-                    <View
-                        style={{
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center"
-                        }}
-                    >
-                        <View
-                        style={{
-                            backgroundColor: "#fff",
-                            width: "90%",
-                            height: "52%",
-                            borderRadius: "19",
-                            alignItems: "center", justifyContent: 'space-around'
-                        }}
-                        >
+                    <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                        <View style={{backgroundColor: "#fff", width: "90%", height: "52%", borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
                             <View style={{flex: 1, width: '100%'}}>
                                 <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
                                     <Text style={styles.heading}> {"Select Date"} </Text>
@@ -188,43 +174,32 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                             display="spinner"
                                             onChange={(event, enteredDate) => {
                                                 setNewSessionDate(enteredDate)
-                                                console.log("date changed")
-                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                             }}
                                             />
                                     <View style={styles.datePickerModalButtonContainer}>
                                         <SmallAppButton
                                             title={"Confirm"}
                                             onPress={() => {
-                                                console.log("confirm tapped")
-                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                                 setIsDateConfirmModalVisible(false);
                                                 setLogged(false);
                                                 setSessionDate(newSessionDate);
-                                                console.log("still in confirm")
-                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                             }}
                                         />
                                         <SmallAppButton
                                             title={"Cancel"}
                                             onPress={() => {
-                                                console.log("cancel tapped")
-                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                                 setIsDateConfirmModalVisible(false);
                                                 setNewSessionDate(sessionDate);
-                                                console.log("still in cancel")
-                                                console.log("\tsessionDate: "+sessionDate+"\n\tnewSessionDate: "+newSessionDate)
                                             }}
                                         />
                                     </View>
-
                                 </ScrollView>
                             </View>
                         </View>
                     </View>
                 </Modal>
             </ScrollView>
-            <View style={{margin: 12, width: '89%', justifyContent: "center"}}>
+            <View style={{margin: 13, width: '88%', justifyContent: "center"}}>
                 <ConfirmButton
                     title={"Log Session"}
                     onPress={() => {
@@ -412,6 +387,14 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: '12%',
         width: '88%',
+    },
+    dateBar: {
+        marginTop: 20,
+        marginBottom: -20,
+        width: '90%',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: 'gray',
     },
     datePickerModalButtonContainer: {
         flexDirection: "row",
