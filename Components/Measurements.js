@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // import { callUpdateSession } from './SessionLogger'
 
 
@@ -103,7 +104,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                 <CategoryHeader
                             category={category}
                             toggle={toggleExpand}
-                            expanded={expanded_general}
+                            expanded={expanded}
                             measurements={labels.generalData}
                 ></CategoryHeader>
                 { 
@@ -143,10 +144,8 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
 
     return (
         // <View style={styles.categoriesContainer}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                enabled
-                style={styles.categoriesContainer}>
+        <KeyboardAwareScrollView style={styles.categoriesContainer}>
+        
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
@@ -171,7 +170,8 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                         expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </KeyboardAvoidingView>
+            {/* //  </KeyboardAvoidingView> */}
+            </KeyboardAwareScrollView>
             // {/* </View> */}
     )
 }
