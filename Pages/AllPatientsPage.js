@@ -68,7 +68,14 @@ export default class AllPatientsPage extends Component {
   }
   async componentDidMount(){
     try {
-        const res = await getParticipants(null,null);
+      const paramKey =
+      this.props.route.params && this.props.route.params.participantsParam
+        ? Object.keys(this.props.route.params.participantsParam)[0]
+        : null;
+    const paramValue = paramKey
+      ? this.props.route.params.participantsParam[paramKey]
+      : null;
+    const res = await getParticipants(paramKey, paramValue);
        this.setState({calls: res
            .map(
            item => {
