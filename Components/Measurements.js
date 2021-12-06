@@ -148,25 +148,25 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
-                        expanded={!expanded_general}
+                        expanded={expanded_general}
                         toggleExpand={toggleExpandGeneral}
                     />
                     <MeasurementCategory
                         category={"Skin Fold Tests"}
                         dataLabels={labels.skinFoldTests}
-                        expanded={!expanded_skin_fold}
+                        expanded={expanded_skin_fold}
                         toggleExpand={toggleExpandSkinFold}
                     />
                     <MeasurementCategory
                         category={"Girth Measurements (in)"}
                         dataLabels={labels.girthMeasurementTests}
-                        expanded={!expanded_girth}
+                        expanded={expanded_girth}
                         toggleExpand={toggleExpandGirth}
                     />
                     <MeasurementCategory
                         category={"6 Minute Treadmill Test"}
                         dataLabels={labels.treadmillTests}
-                        expanded={!expanded_treadmill}
+                        expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
             </KeyboardAwareScrollView>
