@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // import { callUpdateSession } from './SessionLogger'
 
 
@@ -75,6 +76,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(measurementInfo, value)}
+                    onFocus={() => console.log("focus")}
                     // placeholder={"enter a value"}
                 ></TextInput>
                     <Text style = {[styles.measurementText, styles.postfix]}
@@ -91,7 +93,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                 style={styles.categoryHeaderButton} 
                 onPress={() => toggle()}>
                     <Text style={styles.title}>{category}</Text>
-                    <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
+                    <Icon name={!expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                 </TouchableOpacity>
             </View>
         )
@@ -103,7 +105,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                 <CategoryHeader
                             category={category}
                             toggle={toggleExpand}
-                            expanded={expanded_general}
+                            expanded={expanded}
                             measurements={labels.generalData}
                 ></CategoryHeader>
                 { 
@@ -142,37 +144,33 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     }
 
     return (
-        // <View style={styles.categoriesContainer}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                enabled
-                style={styles.categoriesContainer}>
+        <KeyboardAwareScrollView style={styles.categoriesContainer}>
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
-                        expanded={expanded_general}
+                        expanded={!expanded_general}
                         toggleExpand={toggleExpandGeneral}
                     />
                     <MeasurementCategory
                         category={"Skin Fold Tests"}
                         dataLabels={labels.skinFoldTests}
-                        expanded={expanded_skin_fold}
+                        expanded={!expanded_skin_fold}
                         toggleExpand={toggleExpandSkinFold}
                     />
                     <MeasurementCategory
                         category={"Girth Measurements (in)"}
                         dataLabels={labels.girthMeasurementTests}
-                        expanded={expanded_girth}
+                        expanded={!expanded_girth}
                         toggleExpand={toggleExpandGirth}
                     />
                     <MeasurementCategory
                         category={"6 Minute Treadmill Test"}
                         dataLabels={labels.treadmillTests}
-                        expanded={expanded_treadmill}
+                        expanded={!expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </KeyboardAvoidingView>
-            // {/* </View> */}
+            </KeyboardAwareScrollView>
+
     )
 }
 
