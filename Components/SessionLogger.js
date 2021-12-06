@@ -162,7 +162,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     isVisible={isDateConfirmModalVisible}
                 >
                     <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                        <View style={{backgroundColor: "#fff", width: "90%", height: "52%", borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
+                        <View style={{backgroundColor: "#fff", width: "90%", height: 350, borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
                             <View style={{flex: 1, width: '100%'}}>
                                 <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
                                     <Text style={styles.heading}> {"Select Date"} </Text>
@@ -198,7 +198,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     </View>
                 </Modal>
             </ScrollView>
-            <View style={{margin: 13, width: '88%', justifyContent: "center"}}>
+            <View style={{margin: 13, width: '88%', justifyContent: "center", paddingBottom: 20}}>
                 <ConfirmButton
                     title={"Log Session"}
                     onPress={() => {
