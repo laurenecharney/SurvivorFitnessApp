@@ -61,7 +61,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
      updateSessionTrainer(newSessionTrainer){
         let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
-
         if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
             Alert.alert(
                 "Session " + newSessionTrainer.name + " Has Not Been Logged",
@@ -119,12 +118,14 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     formatSessions(rawSessionsArray){
-       for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
-           let isHighlighted = false;
-           if (i < 1){
-               isHighlighted = true
-           }
-           let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+        for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
+            let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+            let isHighlighted = false;
+            let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+            if (!hasLogDate && mostRecentLogged == -1){
+                isHighlighted = true
+                this.state.sessionTrainer = i + 1
+            }
            let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
            this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
        }
