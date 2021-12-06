@@ -38,6 +38,7 @@ export default class SettingsPage extends React.Component {
         <View style={{ flexDirection: "column", width:"100%" }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("ProfilePage")}
+            hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}
           >
             <View style={styles.row}>
               <Text style={styles.text}>Profile</Text>
