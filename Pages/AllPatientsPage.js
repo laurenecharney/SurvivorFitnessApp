@@ -252,61 +252,61 @@ export default class AllPatientsPage extends Component {
                                         <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Name: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.value}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Age: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.age}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Email: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.email}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Phone Number: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.phoneNumber}</Text>
                                         </View>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.trainer}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Type of Cancer: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.typeOfCancer}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.nutritionist}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Treatment Facility: </Text>
+                                            <Text style={styles.modalText}>Fill</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Surgeries: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.surgeries}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Forms of Treatment: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.formsOfTreatment}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Physician Notes: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.physicianNotes}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Trainer: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.trainer}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Dietitian: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.nutritionist}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Start Date: </Text>
+                                            <Text style={styles.modalText}>{this.state.startDate}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Goal(s): </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.goals}</Text>
                                         </View>
                                     </View>
                                 </ScrollView>
@@ -329,7 +329,18 @@ const styles = StyleSheet.create({
     color: "#AED803",
     fontWeight: "500"
   },
-
+  modalLabel: {
+    fontSize: 15,
+    color: '#AED803'
+  },
+  modalText: {
+    color: '#797979'
+  },
+  modalRow: {
+    flexDirection:"row",
+    paddingBottom:25,
+    width:'75%'
+  },
   settings: {
     color: "#E4E4E4",
     marginTop: 50,

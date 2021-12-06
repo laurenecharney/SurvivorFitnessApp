@@ -89,7 +89,6 @@ export async function getParticipantByID(id) {
     }
   })
     .then(response => response.json());
-    console.log("GET PARTICIPANTS ID QUERY")
   return res.participant;
 }
 
