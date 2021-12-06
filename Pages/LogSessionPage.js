@@ -122,10 +122,12 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
             let isHighlighted = false;
             let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+
             if (!hasLogDate && mostRecentLogged == -1){
                 isHighlighted = true
                 this.state.sessionTrainer = i + 1
             }
+            
            let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
            this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
        }
