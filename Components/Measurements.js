@@ -21,6 +21,9 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
     const [expanded_girth, setExpanded_girth] = useState("false");
     const [expanded_treadmill, setExpanded_treadmill] = useState("false");
+    const [extraScroll, setExtraScroll] = useState(0);
+    // const [scrollRef, setScrollRef] = useState(null);
+    const myScrollRef = useRef();
 
     const getMeasurementInfo = (measurementName) => {
         let ret = {};
@@ -76,14 +79,38 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(measurementInfo, value)}
+                    onFocus={() => console.log("focus")}
                     // placeholder={"enter a value"}
                 ></TextInput>
                     <Text style = {[styles.measurementText, styles.postfix]}
-                    onPress={() => editText()}
+                    // onPress={() => editText()}
+                    onPress={() =>  {
+                        console.log("scroll");
+                        myScrollRef.current.scrollToPosition(0, 0);
+                        myScrollRef.current.scrollToEnd();
+                        myScrollRef.current.scrollToPosition(0, 200);
+                    }}
                     >{postfix}</Text>                
             </View>
         )
     }
+
+    const onFocusSetExtraScroll = (i) => {
+        setExtraScroll(i * 45); 
+    }
+
+    useEffect(() => {
+        if (myScrollRef) {
+            console.log("hey now")
+            console.log(Object.keys(myScrollRef.current))
+            console.log(Object.keys(myScrollRef.current.props))
+            console.log("extra height", myScrollRef.current.props.extraHeight)
+            console.log("scroll to end", myScrollRef.current.scrollToEnd())
+            myScrollRef.current.scrollToPosition(0, 200); 
+            // console.log("scrollRef", myScrollRef.current.props);
+            // myScrollRef.current.props.scrollToEnd();
+        }
+    }, [extraScroll])
 
     const CategoryHeader = ({category, toggle, expanded}) => {
         return(
@@ -92,7 +119,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                 style={styles.categoryHeaderButton} 
                 onPress={() => toggle()}>
                     <Text style={styles.title}>{category}</Text>
-                    <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
+                    <Icon name={!expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
                 </TouchableOpacity>
             </View>
         )
@@ -144,32 +171,54 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
 
     return (
         // <View style={styles.categoriesContainer}>
-        <KeyboardAwareScrollView style={styles.categoriesContainer}>
+        <KeyboardAwareScrollView style={styles.categoriesContainer}
+        onKeyboardWillShow={(frames) => {
+            console.log('Keyboard event', frames)
+          }}
+          ref={myScrollRef}
+        //   innerRef={myScrollRef}
+          extraHeight={200}
+          extraScrollheight={45}
+          >
+              
         
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
-                        expanded={expanded_general}
+                        expanded={!expanded_general}
                         toggleExpand={toggleExpandGeneral}
                     />
                     <MeasurementCategory
                         category={"Skin Fold Tests"}
                         dataLabels={labels.skinFoldTests}
-                        expanded={expanded_skin_fold}
+                        expanded={!expanded_skin_fold}
                         toggleExpand={toggleExpandSkinFold}
                     />
                     <MeasurementCategory
                         category={"Girth Measurements (in)"}
                         dataLabels={labels.girthMeasurementTests}
-                        expanded={expanded_girth}
+                        expanded={!expanded_girth}
                         toggleExpand={toggleExpandGirth}
                     />
                     <MeasurementCategory
                         category={"6 Minute Treadmill Test"}
                         dataLabels={labels.treadmillTests}
-                        expanded={expanded_treadmill}
+                        expanded={!expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
+                <TextInput
+                    style={[styles.measurementText]}
+                ></TextInput>
+
+                <Measurement
+                                    key={"weight"}
+                                    measurement={"Weight"}
+                                    id={"weight"}
+                                    measurementInfo = {getMeasurementInfo("weight")}
+                                    updateValue={updateValue}
+                                    postfix={"lbs"}
+                                    // measurementValue={data[item.id]}
+                                />
             {/* //  </KeyboardAvoidingView> */}
             </KeyboardAwareScrollView>
             // {/* </View> */}
