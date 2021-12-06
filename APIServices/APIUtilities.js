@@ -1,5 +1,5 @@
 import { getItem } from "./deviceStorage";
-import {ENDPOINT} from './developerEndpoint';
+import {ENDPOINT} from './developerEndpoint.js';
 
 export async function getMeasurements(participantID, sessionID) {
   const jwt = await getItem();
@@ -80,7 +80,7 @@ export async function getParticipants(paramName, paramValue) {
 //gets participant by id
 export async function getParticipantByID(id) {
   const jwt = await getItem();
-  const res = await fetch(ENDPOINT + "/api/v1/participants/194", {
+  const res = await fetch(ENDPOINT + "/api/v1/participants/id", {
     method: "GET",
     headers: {
       Accept: "application/json",
