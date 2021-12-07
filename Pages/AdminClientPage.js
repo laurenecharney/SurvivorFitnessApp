@@ -85,18 +85,18 @@ export default class AdminClientPage extends Component {
        try {
         const res = await getParticipantByID(participant.id);
         this.setState({
-            name: (res.firstName + " " + res.lastName),
-            dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
-            trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
-            age: res.age,
-            email: res.email,
-            phoneNumber: res.phoneNumber,
-            cancer: res.typeOfCancer,
-            formsOfTreatments: res.formsOfTreatment,
-            goals: res.goals,
-            doctNotes: res.physicianNotes,
-            startDate: res.startDate.substring(0,10),
-            surgeries: res.surgeries,
+            //name: (res.firstName + " " + res.lastName),
+            //dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
+            //trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
+            //age: res.age,
+            //email: res.email,
+            //phoneNumber: res.phoneNumber,
+            //cancer: res.typeOfCancer,
+            //formsOfTreatments: res.formsOfTreatment,
+            //goals: res.goals,
+            //doctNotes: res.physicianNotes,
+            //startDate: res.startDate.substring(0,10),
+            //surgeries: res.surgeries,
         })
        
         

@@ -66,33 +66,36 @@ export default class AllPatientsPage extends Component {
       selectedParticipant: {},
     };
   }
-  async componentDidMount() {
+  async componentDidMount(){
     try {
       const paramKey =
-        this.props.route.params && this.props.route.params.participantsParam
-          ? Object.keys(this.props.route.params.participantsParam)[0]
-          : null;
-      const paramValue = paramKey
-        ? this.props.route.params.participantsParam[paramKey]
+      this.props.route.params && this.props.route.params.participantsParam
+        ? Object.keys(this.props.route.params.participantsParam)[0]
         : null;
-      const res = await getParticipants(paramKey, paramValue);
-      this.setState({
-        calls: res.map(item => {
-          let newI = item;
+    const paramValue = paramKey
+      ? this.props.route.params.participantsParam[paramKey]
+      : null;
+    const res = await getParticipants(paramKey, paramValue);
+       this.setState({calls: res
+           .map(
+           item => {
+            let newI = item;
+            newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+            newI.key = parseInt(item.id);
+            newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
+            newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+            newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
+            newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
+            return newI; 
+           
+           })})
+      
+   } catch (e){
+       console.log(e);
+       alert("Could not fetch participants data");
+   }
 
-          newI.value =
-            item.firstName && item.lastName
-              ? item.firstName + " " + item.lastName
-              : "";
-          newI.id = parseInt(item.id);
-          return newI;
-        })
-      });
-    } catch (e) {
-      console.log(e);
-      alert("Could not fetch participants data");
-    }
-  }
+}
 
   getHideSettingsIcon() {
     return this.props.route.params && this.props.route.params.hideSettingsIcon;
@@ -106,27 +109,29 @@ export default class AllPatientsPage extends Component {
     try {
      const res = await getParticipantByID(participant.id);
      this.setState({
-         name: (res.firstName + " " + res.lastName),
-         age: res.age,
-         email: res.email,
-         phoneNumber: res.phoneNumber,
-         cancer: res.typeOfCancer,
-         formsOfTreatments: res.formsOfTreatment,
-         goals: res.goals,
-         doctNotes: res.physicianNotes,
-         startDate: res.startDate.substring(0,10),
-         surgeries: res.surgeries,
-        })
-        
-        
+         //name: (res.firstName + " " + res.lastName),
+         //dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
+         //trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
+         //age: res.age,
+         //email: res.email,
+         //phoneNumber: res.phoneNumber,
+         //cancer: res.typeOfCancer,
+         //formsOfTreatments: res.formsOfTreatment,
+         //goals: res.goals,
+         //doctNotes: res.physicianNotes,
+         //startDate: res.startDate.substring(0,10),
+         //surgeries: res.surgeries,
+     })
+    
+     
 
-    } catch (e){
-        console.log(e);
-        alert("Could not fetch participants data");
-    }
+ } catch (e){
+     console.log(e);
+     alert("Could not fetch participants data");
+ }
 
 
-    }
+}
 
   toggleModal = () => {
     this.setState({
@@ -247,71 +252,67 @@ export default class AllPatientsPage extends Component {
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803'}} >Participant Information</Text>
+                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Name: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.value}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Age: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.age}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Email: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.email}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                     
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Treatment Facility: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Phone Number: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.phoneNumber}</Text>
                                         </View>
                                     </View>
-
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Type of Cancer: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.typeOfCancer}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Treatment Facility: </Text>
+                                            <Text style={styles.modalText}>Fill</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Surgeries: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.surgeries}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: 15, color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Forms of Treatment: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.formsOfTreatment}</Text>
                                         </View>
-                                        
-                                        
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Physician Notes: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.physicianNotes}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Trainer: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.trainer}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Dietitian: </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.nutritionist}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Start Date: </Text>
+                                            <Text style={styles.modalText}>{this.state.startDate}</Text>
+                                        </View>
+                                        <View style={styles.modalRow}>
+                                            <Text style={styles.modalLabel} >Goal(s): </Text>
+                                            <Text style={styles.modalText}>{this.state.selectedParticipant.goals}</Text>
+                                        </View>
                                     </View>
                                 </ScrollView>
                             </View>
@@ -333,7 +334,18 @@ const styles = StyleSheet.create({
     color: "#AED803",
     fontWeight: "500"
   },
-
+  modalLabel: {
+    fontSize: 15,
+    color: '#AED803'
+  },
+  modalText: {
+    color: '#797979'
+  },
+  modalRow: {
+    flexDirection:"row",
+    paddingBottom:25,
+    width:'75%'
+  },
   settings: {
     color: "#E4E4E4",
     marginTop: 50,

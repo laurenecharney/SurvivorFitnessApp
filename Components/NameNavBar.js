@@ -20,18 +20,22 @@ export default class NameNavBarComponent extends Component {
 
   render() {
     return (
-      <View style={styles.headline}>
+      <View style={[styles.headline]}>
         <TouchableOpacity
           style={{
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            // backgroundColor: "yellow" 
           }}
-          onPress={()=>this.props.goBack()
-          }
+          onPress={()=>this.props.goBack()}
         >
-          <Icon name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
+          <View 
+            style={styles.iconContainer}
+            onPress={()=>this.props.goBack()}
+          >
+            <Icon name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} 
+            />
+          </View>
         </TouchableOpacity>
         <View style={styles.nameContainer}>
           <Text style={styles.title}>
@@ -56,6 +60,10 @@ const styles = StyleSheet.create({
     zIndex: 15,
     paddingTop: 25,
     paddingBottom:25,
+  },
+  iconContainer: {
+    width: 75, 
+    height: 50, 
   },
   nameContainer: {
     flexDirection: "row",
