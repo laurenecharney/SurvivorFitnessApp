@@ -201,6 +201,7 @@ export default class AllPatientsPage extends Component {
                               } ;
                           this.props.navigation.navigate('ClientInformationPage', routeParams);
                       }}
+                      hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
                     >
                         <Text style={styles.nameTxt}>{item.value}</Text>
                       </TouchableOpacity>
@@ -216,9 +217,13 @@ export default class AllPatientsPage extends Component {
                           backgroundColor: "#fff",
                           borderRadius: 50
                         }}
+                        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
                       >
                         <Text style={{ color: "#AED803" }}>i</Text>
                       </TouchableOpacity>
+
+
+
                     </View>
                   </View>
                 </View>

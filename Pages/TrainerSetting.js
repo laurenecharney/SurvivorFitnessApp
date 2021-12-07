@@ -53,6 +53,7 @@ export default class TrainerSettingsPage extends React.Component {
               <TouchableOpacity
                 style={styles.backButton}
                 onPress={() => this.props.navigation.goBack()}
+                hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
               >
                 <Icon
                   name={"keyboard-arrow-left"}
