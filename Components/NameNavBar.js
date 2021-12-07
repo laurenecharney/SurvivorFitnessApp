@@ -66,10 +66,12 @@ const styles = StyleSheet.create({
     height: 50, 
   },
   nameContainer: {
+    // backgroundColor: 'blue',
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: -10,
+    paddingRight: 25,
     flex: 1
   },
   title: {
