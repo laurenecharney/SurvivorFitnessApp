@@ -105,6 +105,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     }
 
     const updateMeasurementData = (newMeasurementData) => {
+        setLogged(false)
         setMeasurementData(newMeasurementData);
     }
 
@@ -125,17 +126,25 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 contentContainerStyle = {styles.scrollContentContainer}
                 style={styles.scrollViewStyle}
             >
-                <View style={{paddingTop: 20}}>
-                    <Text style={styles.loggedText}>
-                        {"Session "+initSessionData.sessionIndexNumber+ (logged ? " Saved" : " Unsaved")}
+                <View style={styles.sessionHeader}>
+                    <Text style={styles.sessionheaderText}>
+                        {"Session "+initSessionData.sessionIndexNumber}
+                    </Text>
+                    {
+                    (trainerSessionSelected && isCheckpoint) &&
+                        <Text style={styles.sessionSubheaderText}>
+                            It's measurement day! Record your participant's measurements before
+                            logging the session.
                         </Text>
+                    }
                 </View>
+                
                 <TouchableOpacity
                     style={styles.dateBar}
                     onPress={() => {setIsDateConfirmModalVisible(true);}}
                 >
                     <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                    <Text style = {{margin: 15, fontSize: 15}}>
+                    <Text style = {{marginHorizontal: 15, marginVertical: 10, fontSize: 15, color: '#838383'}}>
                         {sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
                     </Text>
                     <Text style = {{margin: 15, color: '#AED804', fontWeight: 'bold', fontSize: 12}}>
@@ -198,9 +207,9 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     </View>
                 </Modal>
             </ScrollView>
-            <View style={{margin: 13, width: '88%', justifyContent: "center", paddingBottom: 20}}>
+            <View style={{marginBottom: 20, marginLeft: 20, marginTop: 5, width: '84%', justifyContent: "center", paddingBottom: 35}}>
                 <ConfirmButton
-                    title={"Log Session"}
+                    title={!logged ? "Log Session" : "Logged"}
                     onPress={() => {
                         logSession(newSessionDate);
                     }}
@@ -230,6 +239,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
 
     },
+    sessionHeader: {
+        width: '84%',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        // backgroundColor: 'blue',
+        paddingTop: 50,
+        marginBottom: 10
+    },
+    sessionheaderText: {
+        fontSize: 17,
+        fontWeight: "600",
+        color: '#838383',
+        textAlign: "center",
+    },
+    sessionSubheaderText: {
+        marginTop: 23,
+        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: "400",
+        color: '#838383',
+    },
     scroll: {
         overflow: 'hidden',
     },
@@ -252,8 +282,8 @@ const styles = StyleSheet.create({
     },
     loggedText: {
         fontSize: 15,
-        fontWeight: "600",
-        color: "#3E3E3E",
+        fontWeight:'600',
+        color: '#838383',
         textAlign: "center",
     },
     title:{
@@ -384,27 +414,31 @@ const styles = StyleSheet.create({
         elevation: 8,
         backgroundColor: '#AED804',
         borderRadius: 10,
-        paddingVertical: 15,
+        paddingVertical: 20,
         paddingHorizontal: '12%',
-        width: '88%',
+        marginLeft: '2%',
+        width: '84%',
     },
     confirmButtonGrayed: {
         elevation: 8,
-        backgroundColor: '#DDDDDD',
+        backgroundColor: 'white',
         borderRadius: 10,
-        paddingVertical: 15,
+        paddingVertical: 20,
         paddingHorizontal: '12%',
-        width: '88%',
+        marginLeft: '2%',
+        width: '84%',
         borderRadius: 10,
-        borderColor: '#AED804',
+        borderColor: "#D5D5D5",
+        borderWidth: 1,
+        // backgroundColor: 'blue'
     },
     dateBar: {
-        marginTop: 20,
-        marginBottom: -20,
-        width: '90%',
+        marginVertical: 15,
+        width: '84%',
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: 'gray',
+        borderColor: '#D5D5D5',
+        // backgroundColor: 'blue'
     },
     datePickerModalButtonContainer: {
         flexDirection: "row",

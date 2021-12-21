@@ -93,7 +93,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                 style={styles.categoryHeaderButton} 
                 onPress={() => toggle()}>
                     <Text style={styles.title}>{category}</Text>
-                    <Icon name={!expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#838383'} />
+                    <Icon name={!expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={"#D5D5D5"} />
                 </TouchableOpacity>
             </View>
         )
@@ -178,8 +178,8 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
 const styles = StyleSheet.create({
     
     categoriesContainer: {
-        paddingVertical: 30,
-        width: '90%'
+        paddingVertical: 8,
+        width: '84%'
     },
     categoryContainer: {
         width: "100%",
@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems:'center',
         backgroundColor: 'white',
-        borderBottomWidth: 1,
-        borderColor: "#C9C9C9",
+        borderBottomWidth: .1,
+        borderColor: '#D5D5D5',//"#C9C9C9",
         paddingRight: '15%',
     },
     title:{
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         color: '#838383',
     },
     measurementContainer: {
-        width: "75%",
+        width: "80%",
     },
     measurement:{
         paddingTop:25,
