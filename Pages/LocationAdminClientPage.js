@@ -165,7 +165,7 @@ export default class LocationAdminClientPage extends Component {
             paddingRight: 25
           }}
         >
-          <Text style={styles.headline}>Participants</Text>
+          <Text style={styles.headline}>Participants (location admin)</Text>
         </View>
         <View style={styles.listContainer}>
           <AlphabetList
@@ -202,6 +202,7 @@ export default class LocationAdminClientPage extends Component {
                         >
                           <Icon name={this.isDietitian() ? "food-apple" : "dumbbell"} color={"#AED803"} />
                           <Text style={styles.gymTxt}> {this.isDietitian() ? item.nutritionist : item.trainer} </Text>
+                          {/* <Text style={styles.gymText}> hello world</Text> */}
                         </View>
                       </TouchableOpacity>
                       <TouchableOpacity

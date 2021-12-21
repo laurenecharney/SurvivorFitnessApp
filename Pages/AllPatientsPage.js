@@ -19,6 +19,7 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import { ParticipantsList } from "../Components/ParticipantsList";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -76,9 +77,8 @@ export default class AllPatientsPage extends Component {
       ? this.props.route.params.participantsParam[paramKey]
       : null;
     const res = await getParticipants(paramKey, paramValue);
-       this.setState({calls: res
-           .map(
-           item => {
+        let temp = res.map(
+          item => {
             let newI = item;
             newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
             newI.key = parseInt(item.id);
@@ -88,7 +88,24 @@ export default class AllPatientsPage extends Component {
             newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
             return newI; 
            
-           })})
+          }
+        )
+        console.log("this.state.calls", JSON.stringify(temp), "calls^")
+        // console.log("calls res: ", res, "calls^")
+        this.setState({calls: temp});
+      //  this.setState({calls: res
+      //      .map(
+      //      item => {
+      //       let newI = item;
+      //       newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+      //       newI.key = parseInt(item.id);
+      //       newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
+      //       newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+      //       newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
+      //       newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
+      //       return newI; 
+           
+      //      })})
       
    } catch (e){
        console.log(e);
@@ -176,61 +193,12 @@ export default class AllPatientsPage extends Component {
             </TouchableOpacity>
           )}
         </View>
-        <View style={styles.listContainer}>
-          <AlphabetList
-            data={this.state.calls}
-            indexLetterColor={"#AED803"}
-            renderCustomSectionHeader={section => (
-              <View style={{ visibility: "hidden" }} />
-              // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-              // <View style={styles.sectionHeaderContainer}>
-              //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-              // </View>
-            )}
-            renderCustomItem={item => (
-              <ScrollView>
-                <View style={styles.row}>
-                  <View>
-                    <View style={styles.nameContainer}>
-                    <TouchableOpacity 
-                      onPress={() => {
-                          const routeParams =
-                              {
-                                  id: item.id,
-                                  name: item.firstName + ' ' + item.lastName
-                              } ;
-                          this.props.navigation.navigate('ClientInformationPage', routeParams);
-                      }}
-                      hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
-                    >
-                        <Text style={styles.nameTxt}>{item.value}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => this.openModal(item)}
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#AED803",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 25,
-                          height: 25,
-                          backgroundColor: "#fff",
-                          borderRadius: 50
-                        }}
-                        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-                      >
-                        <Text style={{ color: "#AED803" }}>i</Text>
-                      </TouchableOpacity>
-
-
-
-                    </View>
-                  </View>
-                </View>
-              </ScrollView>
-            )}
-          />
-        </View>
+        <ParticipantsList
+            participantsInfo={this.state.calls}
+            openModal={item => this.openModal(item)}
+        
+        />        
+        {/* </View> */}
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"

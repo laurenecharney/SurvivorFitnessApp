@@ -163,7 +163,7 @@ export default class AdminClientPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Participants</Text>
+                    <Text style={styles.headline}>Participants (super admin)</Text>
 
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
