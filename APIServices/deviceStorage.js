@@ -2,7 +2,6 @@ import { AsyncStorage } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 export async function saveItem(key, value) {
-  console.log("SAVE ITEM");
   try {
     
     await SecureStore.setItemAsync(key, value);
@@ -27,7 +26,8 @@ export async function deleteUserInfo(){
 
 export async function getCurrentRole(){
   try {
-    await AsyncStorage.getItem("role");
+    const res = await AsyncStorage.getItem("role");
+    return res;
   } catch (error){
     console.log("AsyncStorage Error: " + error.message);
   }
@@ -35,7 +35,7 @@ export async function getCurrentRole(){
 
 export async function saveCurrentRole(newRole){
   try {
-    await AsyncStorage.setItem("role", newRole);
+    await AsyncStorage.setItem("role", JSON.stringify(newRole));
   } catch (error){
     console.log("AsyncStorage Error: " + error.message);
   }

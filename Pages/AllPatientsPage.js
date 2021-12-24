@@ -20,6 +20,8 @@ import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import { ParticipantsList } from "../Components/ParticipantsList";
+import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
+
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -65,8 +67,10 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
+      currentRole: ""
     };
   }
+
   async componentDidMount(){
     try {
       const paramKey =
@@ -90,22 +94,9 @@ export default class AllPatientsPage extends Component {
            
           }
         )
-        console.log("this.state.calls", JSON.stringify(temp), "calls^")
-        // console.log("calls res: ", res, "calls^")
-        this.setState({calls: temp});
-      //  this.setState({calls: res
-      //      .map(
-      //      item => {
-      //       let newI = item;
-      //       newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-      //       newI.key = parseInt(item.id);
-      //       newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-      //       newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-      //       newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-      //       newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-      //       return newI; 
-           
-      //      })})
+        
+        const currentRole = await getCurrentRole();
+        this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
       
    } catch (e){
        console.log(e);
@@ -196,9 +187,11 @@ export default class AllPatientsPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.calls}
             openModal={item => this.openModal(item)}
-        
+            showTrainer={this.state.currentRole === "TRAINER"}
+            showDietitian={this.state.currentRole === "DIETITIAN"}
+            // showLocations={true}
+            // showDietitian={true}
         />        
-        {/* </View> */}
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"
