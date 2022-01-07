@@ -39,6 +39,13 @@ const ConfirmButton = ({ onPress, title, logged }) => (
     </TouchableOpacity>
 );
 
+const NotesSection = ({}) => {
+    const [note, addNote] = useState(false);
+    {!note && <div></div> //get button from patients page
+    }
+    {note && <TextInput />}
+}
+
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
