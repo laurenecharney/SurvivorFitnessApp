@@ -40,10 +40,24 @@ const ConfirmButton = ({ onPress, title, logged }) => (
 );
 
 const NotesSection = ({}) => {
-    const [note, addNote] = useState(false);
-    {!note && <div></div> //get button from patients page
-    }
-    {note && <TextInput />}
+    const [noteDisplay, setNoteDisplay] = useState(false);
+
+    const addNote = () => setNoteDisplay(true);
+
+    {!note && 
+    <SmallAppButton 
+        onPress = {addNote}
+        title = "+"
+        />}
+    {note && 
+    <div>
+        <Text style = {[styles.appButtonText, {color: #AED804}]}>Note</Text>
+        <TextInput 
+            style={styles.dateBar}
+            multiline
+            
+        />
+    </div>}
 }
 
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
