@@ -33,31 +33,41 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+const SmallerAppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.appButtonContainerSmall, {width: "60%"}]}>
+        <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 const ConfirmButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
-const NotesSection = ({}) => {
-    const [noteDisplay, setNoteDisplay] = useState(false);
+const NotesSection = ({callback}) => {
+    const [note, setNoteDisplay] = useState(false);
 
     const addNote = () => setNoteDisplay(true);
 
-    {!note && 
-    <SmallAppButton 
-        onPress = {addNote}
-        title = "+"
-        />}
-    {note && 
-    <div>
-        <Text style = {[styles.appButtonText, {color: #AED804}]}>Note</Text>
-        <TextInput 
-            style={styles.dateBar}
-            multiline
-            
-        />
-    </div>}
+    const editNote = (text) => {
+        callback(text); //placeholder; will handle api call
+    }
+
+    return(
+        <View style = {{width: "84%", marginVertical: 15}}>
+            <SmallerAppButton 
+            onPress = {addNote}
+            title = {!note ? "Add Note" : "Delete Note"}
+            />
+            {note && 
+                <TextInput 
+                style={[styles.dateBar, {height: "60%", width: "100%", padding: 10, paddingTop: 10}]}
+                multiline
+                onChangeText={editNote}
+                />}
+        </View>
+    );
 }
 
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
@@ -173,12 +183,14 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     </Text>
                     </View>
                 </TouchableOpacity>
-            {
+                {
                 (trainerSessionSelected && isCheckpoint) &&
-                <Measurements measurementData={initSessionData.measurements}
-                updateMeasurementData={updateMeasurementData}
-                callUpdateSession={callUpdateSession()}/>
-            }
+                    <Measurements measurementData={initSessionData.measurements}
+                    updateMeasurementData={updateMeasurementData}
+                    callUpdateSession={callUpdateSession()}/>
+                }
+                <NotesSection 
+                    callback={() => console.log("note edited.")}/>
                 <Modal
                     propagateSwipe={true}
                     animationIn="slideInUp"
