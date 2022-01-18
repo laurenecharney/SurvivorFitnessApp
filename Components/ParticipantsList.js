@@ -19,8 +19,6 @@ const info = JSON.parse(callsString)
 
 export const ParticipantsList = ({participantsInfo, openModal, showTrainer, showDietitian, showLocations}) => {
     const navigation = useNavigation();
-    const [showParticipants, setShowParticipants] = useState(false);
-
 
     const TrainerText = ({item}) => {
       return (

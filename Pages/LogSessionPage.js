@@ -8,8 +8,6 @@ import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View, Alert} from 'react-native';
 // import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
-import SidebarDietician from '../Components/SidebarDietician';
-import DieticianSession from './DieticianSession';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
 
 // LogSessionPage

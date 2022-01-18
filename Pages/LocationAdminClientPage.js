@@ -20,6 +20,8 @@ import Icon2 from "react-native-vector-icons/MaterialIcons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import { ParticipantsList } from "../Components/ParticipantsList";
+import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -59,6 +61,8 @@ export default class LocationAdminClientPage extends Component {
   async componentDidMount() {
     //TODO
     await this.refreshParticipants();
+    const currentRole = await getCurrentRole();
+    console.log("My role is:\n", currentRole);
   }
 
   isDietitian() {
@@ -165,68 +169,14 @@ export default class LocationAdminClientPage extends Component {
             paddingRight: 25
           }}
         >
-          <Text style={styles.headline}>Participants (location admin)</Text>
+          <Text style={styles.headline}>Participants</Text>
         </View>
-        <View style={styles.listContainer}>
-          <AlphabetList
-            data={this.state.participants}
-            indexLetterColor={"#AED803"}
-            renderCustomSectionHeader={section => (
-              <View style={{ visibility: "hidden" }} />
-              // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-              // <View style={styles.sectionHeaderContainer}>
-              //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-              // </View>
-            )}
-            renderCustomItem={(item, i) => (
-              // <ScrollView key={i}>
-                <View style={styles.row} key={i}>
-                  <View>
-                    <View style={styles.nameContainer}>
-                      <TouchableOpacity 
-                        onPress={() => {
-                            const routeParams =
-                                {
-                                    id: item.id,
-                                    name: item.firstName + ' ' + item.lastName
-                                } ;
-                            this.props.navigation.navigate('ClientInformationPage', routeParams);
-                        }}
-                      >
-                        <Text style={styles.nameTxt}>{item.value} </Text>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          <Icon name={this.isDietitian() ? "food-apple" : "dumbbell"} color={"#AED803"} />
-                          <Text style={styles.gymTxt}> {this.isDietitian() ? item.nutritionist : item.trainer} </Text>
-                          {/* <Text style={styles.gymText}> hello world</Text> */}
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => this.openModal(item)}
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#AED803",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 25,
-                          height: 25,
-                          backgroundColor: "#fff",
-                          borderRadius: 50
-                        }}
-                      >
-                        <Text style={{ color: "#AED803" }}>i</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              // </ScrollView>
-            )}
+        <ParticipantsList
+            participantsInfo={this.state.participants}
+            openModal={item => this.openModal(item)}
+            showTrainer={!this.isDietitian()}
+            showDietitian={this.isDietitian()}
           />
-        </View>
         <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
