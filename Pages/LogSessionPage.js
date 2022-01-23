@@ -43,7 +43,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         for (let i = 1; i <= this.state.numDieticianSessions; ++i){
             this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         }
-        this.refreshSidebar = this.refreshSidebar.bind(this);
+        this.showLoggedSessionInSidebar = this.showLoggedSessionInSidebar.bind(this);
     }
 
     pressTrainer = ()=>{
@@ -57,14 +57,17 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         this.setState({refreshFlag: false});
     }
 
+    // gets called when the user presses a session number on the sidebar
      updateSessionTrainer(newSessionTrainer){
         let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+        // 
         if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
             Alert.alert(
                 "Session " + newSessionTrainer.name + " Has Not Been Logged",
                 ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
             );
         }else{
+            // sessionTrainer is the session number reflected in the sessionLogger
             this.setState({sessionTrainer:newSessionTrainer.name})// or with es6 this.setState({name})
             let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
             this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
@@ -115,14 +118,18 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return [];
     }
 
+    // formats the sidebar
     formatSessions(rawSessionsArray){
+        let nextToLog = -1;
         for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
-            let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
             let isHighlighted = false;
             let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
 
-            if (!hasLogDate && mostRecentLogged == -1){
+            // if the session is not logged and there are unlogged sessions, highlight it
+            if (!hasLogDate && nextToLog == -1){
                 isHighlighted = true
+                nextToLog = i + 1;
+                // dictates what session the sessionLogger will start at
                 this.state.sessionTrainer = i + 1
             }
             
@@ -131,10 +138,17 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
        }
     }
 
-    async refreshSidebar() {
-        const rawSessions = await this.fetchSessions();
-        this.setState({trainerSessionsArray: []})
-        this.formatSessions(rawSessions);
+    // called after a session is logged or updated
+    showLoggedSessionInSidebar(sessionNum, previouslyLogged){
+        // call fetch sessions so the data that was recently updated in the sessionLogger is refelected in the state
+        // of the logSessionPage
+        this.fetchSessions();
+        if (!previouslyLogged) {
+            let temp = this.state.trainerSessionsArray;
+            temp[sessionNum - 1] = {id: sessionNum, name: sessionNum.toString(), logged: true, highlighted: true};
+            this.setState({trainerSessionsArray: temp})
+        } // else, if the session was previously logged, the sidebar remains the exact same
+        
     }
 
     async fetchSessions() {
@@ -198,7 +212,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                             initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
                             trainerSessionSelected={!this.state.dietician}
-                            refreshSidebar={this.refreshSidebar}
+                            showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
                         />
                 </View>
             </View>

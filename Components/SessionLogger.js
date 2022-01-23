@@ -39,7 +39,7 @@ const ConfirmButton = ({ onPress, title, logged }) => (
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, showLoggedSessionInSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -63,13 +63,15 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
+        let previouslyHadLogDate = initSessionData['initialLogDate'] != null;
+
         if (!isCheckpoint || !measurementData) {
             const dateMilliseconds = sessionDate.getTime()
             try {
                 let res = await logTrainerSession(initSessionData, dateMilliseconds)
                 setLogged(true);
                 showSessionInfo(res);
-                refreshSidebar();
+                showLoggedSessionInSidebar(initSessionData.sessionIndexNumber, previouslyHadLogDate)
             } catch(e) {
                 console.log("session cannot be logged: ", e);
             }
@@ -80,7 +82,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             let res = await logTrainerSession(tempSessionData, dateMilliseconds)
             setLogged(true);
             showSessionInfo(res);
-            refreshSidebar();
+            showLoggedSessionInSidebar(tempSessionData.sessionIndexNumber, previouslyHadLogDate)
         }
     }
 
@@ -97,9 +99,13 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             const dateVal = parseInt(newSessionData.initialLogDate);
             let tempDate = new Date(dateVal)
             setSessionDate(tempDate)
+            setNewSessionDate(tempDate)
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
             setLogged(true)
         } else {
+            let tempDate = new Date()
+            setSessionDate(tempDate)
+            setNewSessionDate(tempDate)
             setLogged(false)
         }
     }
