@@ -19,6 +19,7 @@ import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
 import { logTrainerSession } from '../APIServices/APIUtilities';
+import NotesSection from './NoteSection';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -33,42 +34,11 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const SmallerAppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.appButtonContainerSmall, {width: "60%"}]}>
-        <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
-);
-
 const ConfirmButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
-
-const NotesSection = ({callback}) => {
-    const [note, setNoteDisplay] = useState(false);
-
-    const addNote = () => setNoteDisplay(true);
-
-    const editNote = (text) => {
-        callback(text); //placeholder; will handle api call
-    }
-
-    return(
-        <View style = {{width: "84%", marginVertical: 15}}>
-            <SmallerAppButton 
-            onPress = {addNote}
-            title = {!note ? "Add Note" : "Delete Note"}
-            />
-            {note && 
-                <TextInput 
-                style={[styles.dateBar, {height: "60%", width: "100%", padding: 10, paddingTop: 10}]}
-                multiline
-                onChangeText={editNote}
-                />}
-        </View>
-    );
-}
 
 export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
     const [user, setUser] = useState({});
@@ -78,6 +48,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [logged, setLogged] = useState(false)
     const [measurementData, setMeasurementData] = useState([])
+    const [noteData, setNoteData] = useState('')
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
 
@@ -94,24 +65,17 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        if (!isCheckpoint || !measurementData) {
-            const dateMilliseconds = sessionDate.getTime()
-            try {
-                let res = await logTrainerSession(initSessionData, dateMilliseconds)
-                setLogged(true);
-                showSessionInfo(res);
-                refreshSidebar();
-            } catch(e) {
-                console.log("session cannot be logged: ", e);
-            }
-        } else {
-            const dateMilliseconds = sessionDate.getTime()
-            let tempSessionData = initSessionData;
-            tempSessionData.measurements = measurementData;
+        let tempSessionData = initSessionData;
+        if (isCheckpoint && measurementData) tempSessionData.measurements = measurementData;
+        if (noteData) tempSessionData.specialistNotes = noteData;
+        const dateMilliseconds = sessionDate.getTime()
+        try {
             let res = await logTrainerSession(tempSessionData, dateMilliseconds)
             setLogged(true);
             showSessionInfo(res);
             refreshSidebar();
+        } catch(e) {
+            console.log("session cannot be logged: ", e);
         }
     }
 
@@ -138,6 +102,11 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const updateMeasurementData = (newMeasurementData) => {
         setLogged(false)
         setMeasurementData(newMeasurementData);
+    }
+
+    const updateNote = (newNote) => {
+        setLogged(false);
+        setNoteData(newNote);
     }
 
     useEffect(() => {
@@ -190,7 +159,9 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     callUpdateSession={callUpdateSession()}/>
                 }
                 <NotesSection 
-                    callback={() => console.log("note edited.")}/>
+                    initNote={initSessionData.specialistNotes}
+                    callback={updateNote}
+                    sessionIndexNumber={sessionIndexNumber}/>
                 <Modal
                     propagateSwipe={true}
                     animationIn="slideInUp"

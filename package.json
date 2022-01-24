@@ -10,8 +10,7 @@
   "dependencies": {
     "@mdi/js": "^5.9.55",
     "@mdi/react": "^1.4.0",
-    "@react-native-async-storage/async-storage": "^1.15.14",
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.15.16",
     "@react-native-community/datetimepicker": "4.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.8",
