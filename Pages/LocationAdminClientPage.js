@@ -20,6 +20,8 @@ import Icon2 from "react-native-vector-icons/MaterialIcons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import InformationRow from "../Components/ModalComponents/InformationRow";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -245,62 +247,23 @@ export default class LocationAdminClientPage extends Component {
                                         <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.value}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Age: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.age}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.email}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.phoneNumber}</Text>
-                                        </View>
+                                        <InformationRow title = "Name: " value = {this.state.selectedParticipant.value}/>
+                                        <InformationRow title = "Age: " value = {this.state.selectedParticipant.age}/>
+                                        <InformationRow title = "Email: " value = {this.state.selectedParticipant.email}/>
+                                        <InformationRow title = "Phone Number: " value = {this.state.selectedParticipant.phoneNumber}/>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Type of Cancer: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.typeOfCancer}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Treatment Facility: </Text>
-                                            <Text style={{color: '#797979'}}>Fill</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Surgeries: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.surgeries}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Forms of Treatment: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.formsOfTreatment}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Physician Notes: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.physicianNotes}</Text>
-                                        </View>
+                                        <InformationRow title = "Type of Cancer: " value = {this.state.selectedParticipant.typeOfCancer}/>
+                                        <InformationRow title = "Treatment Facility: " value = "Fill"/>
+                                        <InformationRow title = "Surgeries: " value = {this.state.selectedParticipant.surgeries}/>
+                                        <InformationRow title = "Forms of Treatment: " value = {this.state.selectedParticipant.formsOfTreatment}/>
+                                        <InformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes}/>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Trainer: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.trainer}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Dietitian: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.nutritionist}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Start Date: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.startDate}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Goal(s): </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.selectedParticipant.goals}</Text>
-                                        </View>
+                                        <InformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer}/>
+                                        <InformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist}/>
+                                        <InformationRow title = "Start Date: " value = {this.state.selectedParticipant.startDate}/>
+                                        <InformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals}/>
                                     </View>
                                 </ScrollView>
                             </View>

@@ -19,6 +19,8 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import InformationRow from "../Components/ModalComponents/InformationRow";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -257,62 +259,23 @@ export default class AllPatientsPage extends Component {
                                         <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Name: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.value}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Age: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.age}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Email: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.email}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Phone Number: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.phoneNumber}</Text>
-                                        </View>
+                                        <InformationRow title = "Name: " value = {this.state.selectedParticipant.value}/>
+                                        <InformationRow title = "Age: " value = {this.state.selectedParticipant.age}/>
+                                        <InformationRow title = "Email: " value = {this.state.selectedParticipant.email}/>
+                                        <InformationRow title = "Phone Number: " value = {this.state.selectedParticipant.phoneNumber}/>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Type of Cancer: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.typeOfCancer}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Treatment Facility: </Text>
-                                            <Text style={styles.modalText}>Fill</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Surgeries: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.surgeries}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Forms of Treatment: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.formsOfTreatment}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Physician Notes: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.physicianNotes}</Text>
-                                        </View>
+                                        <InformationRow title = "Type of Cancer: " value = {this.state.selectedParticipant.typeOfCancer}/>
+                                        <InformationRow title = "Treatment Facility: " value = "Fill"/>
+                                        <InformationRow title = "Surgeries: " value = {this.state.selectedParticipant.surgeries}/>
+                                        <InformationRow title = "Forms of Treatment: " value = {this.state.selectedParticipant.formsOfTreatment}/>
+                                        <InformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes}/>
                                     </View>
                                     <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Trainer: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.trainer}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Dietitian: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.nutritionist}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Start Date: </Text>
-                                            <Text style={styles.modalText}>{this.state.startDate}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Goal(s): </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.goals}</Text>
-                                        </View>
+                                        <InformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer}/>
+                                        <InformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist}/>
+                                        <InformationRow title = "Start Date: " value = {this.state.selectedParticipant.startDate}/>
+                                        <InformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals}/>
                                     </View>
                                 </ScrollView>
                             </View>
