@@ -7,7 +7,6 @@ import SidebarRow from '../Components/SidebarRow.js';
 export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSessions}) => {
 
     alertItemName = (item) => {
-        console.log("update session, item:", item)
         updateSession(item)
 
     }

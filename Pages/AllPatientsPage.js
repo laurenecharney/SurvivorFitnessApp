@@ -96,6 +96,7 @@ export default class AllPatientsPage extends Component {
         )
         
         const currentRole = await getCurrentRole();
+        console.log("currentRole", currentRole);
         this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
       
    } catch (e){

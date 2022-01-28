@@ -93,7 +93,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     const showSessionInfo = (newSessionData = null) => {
         if (newSessionData == null) {
-            newSessionData = initSessionData;
+            newSessionData = JSON.parse(JSON.stringify(initSessionData));
+            setMeasurementData(newSessionData.measurements)
+        } else {
+            console.log("showsession info and newSessionData is not null")
         }
         if (newSessionData.lastUpdatedDate) {
             const dateVal = parseInt(newSessionData.initialLogDate);
@@ -110,8 +113,27 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         }
     }
 
+    const didMeasurementsChange = (newMeasurementData) => {
+        const oldMeasurementData = initSessionData.measurements
+        if (oldMeasurementData.length != newMeasurementData.length) {
+            return true;
+        }
+        for (let i = 0; i < oldMeasurementData.length; i++) {
+            if (oldMeasurementData[i].value != newMeasurementData[i].value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     const updateMeasurementData = (newMeasurementData) => {
-        setLogged(false)
+        if (didMeasurementsChange(newMeasurementData)) {
+            setLogged(false)
+        } else if (initSessionData.lastUpdatedDate) {
+            // if a session has been logged and the "new measurement data" is identical
+            // to what is stored in the backend, then the session is still logged
+            setLogged(true)
+        }
         setMeasurementData(newMeasurementData);
     }
 
@@ -124,6 +146,12 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         } else {
             console.log("Data not ready yet")
         }
+
+        // initSessionData always holds the data which is stored in the backend for the particular session.
+        // When the page first loads, it makes a call to the backend, and initSessionData
+        // changes from null to the data returned.
+        // When a session is logged, it makes a call to the backend, and initSessionData
+        // again takes the data returned from the backend.
     }, [initSessionData]);
 
     return(
@@ -160,7 +188,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 </TouchableOpacity>
             {
                 (trainerSessionSelected && isCheckpoint) &&
-                <Measurements measurementData={initSessionData.measurements}
+                <Measurements measurementData={measurementData}
                 updateMeasurementData={updateMeasurementData}
                 callUpdateSession={callUpdateSession()}/>
             }
