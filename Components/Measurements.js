@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { callUpdateSession } from './SessionLogger'
 
 
 export const Measurements = ({ measurementData, updateMeasurementData}) => {
