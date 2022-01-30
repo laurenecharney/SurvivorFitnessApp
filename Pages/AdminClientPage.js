@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
-import { color } from 'react-native-reanimated';
+// import { color } from 'react-native-reanimated';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
 
