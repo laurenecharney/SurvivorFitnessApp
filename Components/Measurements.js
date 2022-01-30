@@ -143,7 +143,7 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
     }
 
     return (
-        <KeyboardAwareScrollView style={styles.categoriesContainer}>
+        <View style={styles.categoriesContainer}>
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
@@ -168,7 +168,7 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
                         expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </KeyboardAwareScrollView>
+            </View>
 
     )
 }

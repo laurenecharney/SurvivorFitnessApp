@@ -21,6 +21,8 @@ import { Measurements } from "./Measurements";
 import { logTrainerSession } from '../APIServices/APIUtilities';
 import NotesSection from './NoteSection';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
         style={[!logged ? styles.appButtonContainer : styles.loggedContainer]}>
@@ -122,7 +124,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     return(
         <View style = {styles.container}>
-            <ScrollView 
+            <KeyboardAwareScrollView 
                 contentContainerStyle = {styles.scrollContentContainer}
                 style={styles.scrollViewStyle}
             >
@@ -209,7 +211,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         </View>
                     </View>
                 </Modal>
-            </ScrollView>
+            </KeyboardAwareScrollView>
             <View style={{marginBottom: 20, marginLeft: 20, marginTop: 5, width: '84%', justifyContent: "center", paddingBottom: 35}}>
                 <ConfirmButton
                     title={!logged ? "Log Session" : "Logged"}
@@ -468,6 +470,7 @@ const styles = StyleSheet.create({
     },
     scrollContentContainer: {
         paddingBottom: 75,
+        overflow: "visible",
         // overflow: 'hidden',
         // backgroundColor: 'green',
         alignItems: 'center'
