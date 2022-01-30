@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-native-modal'
+import {StyleSheet,
+        View, 
+        TouchableOpacity, 
+        Text, 
+        ScrollView,
+        TextInput } from 'react-native'
 
 const SmallAppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainerSmall}>
@@ -12,10 +19,9 @@ const SmallerAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const NotesSection = ({initNote = '', setCallback, sessionIndexNumber}) => {
-    const [isNote, setIsNote] = useState(initNote != '');
-    const [text, setText] = useState(initNote);
-    //const [confirmNoteDelete, setConfirmDelete] = useState(false);
+const NotesSection = ({noteData, callback}) => {
+    const [isNote, setIsNote] = useState(noteData && noteData != '');
+    const [text, setText] = useState(noteData || "");
     const [confirmDeleteModal, showConfirmDelete] = useState(false);
 
     const toggleNote = () => {
@@ -26,25 +32,16 @@ const NotesSection = ({initNote = '', setCallback, sessionIndexNumber}) => {
         }
     }
 
-    const editNote = (newText) => {
-        setText(newText);
-        callback(newText); //placeholder; will handle api call
-    }
-
     useEffect(() => {
-        if (initSessionData) { 
-            showSessionInfo()
-
-        } else {
-            console.log("Data not ready yet")
-        }
-    }, [sessionIndexNumber]);
+        setIsNote(noteData && noteData != '')
+        setText(noteData || "")
+    }, [noteData])
 
     return(
         <View style = {{width: "84%", marginVertical: 15}}>
             <SmallerAppButton 
             onPress = {toggleNote}
-            title = {!note ? "Add Note" : "Delete Note"}
+            title = {!isNote ? "Add Note" : "Delete Note"}
             />
             <Modal
                 propagateSwipe={true}
@@ -52,25 +49,22 @@ const NotesSection = ({initNote = '', setCallback, sessionIndexNumber}) => {
                 animationOut="slideOutDown"
                 isVisible={confirmDeleteModal}>
                 <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <View style={{backgroundColor: "#fff", width: "90%", height: "24%", borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
+                    <View style={{backgroundColor: "#fff", width: "90%", height: "24%", borderRadius: 19, alignItems: "center", justifyContent: 'space-around'}}>
                         <View style={{flex: 1, width: '100%'}}>
                             <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
-                                <Text style={styles.cdheading}> {"Are you sure you want to delete this note?"} </Text>
-                                <View style={styles.datePickerModalButtonContainer}>
+                                <Text style={styles.cdheading}>{"Are you sure you want to delete this note?"}</Text>
+                                <View style={styles.cdButtonContainer}>
                                     <SmallAppButton
-                                        title={"Continue"}
+                                        title={"Confirm"}
                                         onPress={() => {
-                                            setConfirmDelete(true);
+                                            setText("");
                                             showConfirmDelete(false);
                                             setIsNote(false);
                                         }}
                                     />
                                     <SmallAppButton
                                         title={"Cancel"}
-                                        onPress={() => {
-                                            setConfirmDelete(false);
-                                            showConfirmDelete(false);
-                                        }}
+                                        onPress={() => showConfirmDelete(false)}
                                     />
                                 </View>
                             </ScrollView>
@@ -78,18 +72,17 @@ const NotesSection = ({initNote = '', setCallback, sessionIndexNumber}) => {
                     </View>
                 </View>
             </Modal>
-            {note && 
+            {isNote && 
                 <TextInput 
-                style={[styles.dateBar, {height: "60%", width: "100%", padding: 10, paddingTop: 10}]}
+                style={styles.noteInputBox}
                 multiline
-                onChangeText={editNote}
+                onChangeText={txt => setText(txt)}
+                onEndEditing={() => callback(text)}
                 defaultValue={text}
                 />}
         </View>
     );
 }
-
-export default NotesSection;
 
 const styles = StyleSheet.create({
     appButtonContainerSmall: {
@@ -105,6 +98,11 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         alignSelf: "center",
     },
+    cdButtonContainer: {
+        flexDirection: "row",
+        width: '90%',
+        justifyContent: "space-around"
+    },
     cdheading:{
         fontSize: 18,
         margin: 20,
@@ -112,16 +110,16 @@ const styles = StyleSheet.create({
         color: '#838383',
         textAlign: 'center'
     },
-    dateBar: {
+    noteInputBox: {
         marginVertical: 15,
-        width: '84%',
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#D5D5D5',
-    },
-    datePickerModalButtonContainer: {
-        flexDirection: "row",
-        width: '90%',
-        justifyContent: "space-around"
+        height: "45%", 
+        width: "100%", 
+        padding: 10, 
+        paddingTop: 10
     },
 });
+
+export default NotesSection;

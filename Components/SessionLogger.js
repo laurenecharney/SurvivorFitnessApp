@@ -159,9 +159,9 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     callUpdateSession={callUpdateSession()}/>
                 }
                 <NotesSection 
-                    initNote={initSessionData.specialistNotes}
+                    noteData={initSessionData.specialistNotes}
                     callback={updateNote}
-                    sessionIndexNumber={sessionIndexNumber}/>
+                    />
                 <Modal
                     propagateSwipe={true}
                     animationIn="slideInUp"
