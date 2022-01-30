@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 // import { callUpdateSession } from './SessionLogger'
 
 
-export const Measurements = ({ onPress, title, measurementData, callUpdateSession, updateMeasurementData}) => {
+export const Measurements = ({ measurementData, updateMeasurementData}) => {
 
     const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
 

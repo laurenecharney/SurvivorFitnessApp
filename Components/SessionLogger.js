@@ -155,8 +155,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                 {
                 (trainerSessionSelected && isCheckpoint) &&
                     <Measurements measurementData={initSessionData.measurements}
-                    updateMeasurementData={updateMeasurementData}
-                    callUpdateSession={callUpdateSession()}/>
+                    updateMeasurementData={updateMeasurementData}/>
                 }
                 <NotesSection 
                     noteData={initSessionData.specialistNotes}
