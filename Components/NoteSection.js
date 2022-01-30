@@ -60,6 +60,7 @@ const NotesSection = ({noteData, callback}) => {
                                             setText("");
                                             showConfirmDelete(false);
                                             setIsNote(false);
+                                            callback("");
                                         }}
                                     />
                                     <SmallAppButton
