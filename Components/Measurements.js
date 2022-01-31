@@ -14,7 +14,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export const Measurements = ({ measurementData, updateMeasurementData}) => {
 
-    const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
+    const [data, setData] = useState(measurementData ? JSON.parse(JSON.stringify(measurementData)) : emptyMeasurementData);
 
     const [expanded_general, setExpanded_general] = useState("false");
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
@@ -53,7 +53,9 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
     }    
 
     useEffect(() => {
-        setData(measurementData)
+        if (measurementData) {
+            setData(JSON.parse(JSON.stringify(measurementData)))
+        }
     }, [measurementData])
 
     const Measurement = ({measurement, id, measurementInfo, updateValue, postfix}) => {
@@ -75,8 +77,6 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(measurementInfo, value)}
-                    onFocus={() => console.log("focus")}
-                    // placeholder={"enter a value"}
                 ></TextInput>
                     <Text style = {[styles.measurementText, styles.postfix]}
                     onPress={() => editText()}
@@ -131,7 +131,7 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
 
     const updateValue = (measurementInfo, newValue) => {
         const measurementId = measurementInfo.id;
-        const temp = data
+        let temp = data
         for (let i = 0; i < data.length; ++i) {
             if (temp[i].id == measurementId) {
                 temp[i].value = newValue;

@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
+import { ParticipantsList } from '../Components/ParticipantsList';
+
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -39,7 +41,7 @@ export default class AdminClientPage extends Component {
             formsOfTreatments:"",
             doctNotes:"",
             trainer:"",
-            dietician:"",
+            dietitian:"",
             startDate:"",
             goals:"",
             calls: [
@@ -161,7 +163,7 @@ export default class AdminClientPage extends Component {
         return(
             <View style={{ flex: 1, backgroundColor:'#fff' }} >
                 <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Participants</Text>
+                    <Text style={styles.headline}>Participants (super admin)</Text>
 
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
@@ -169,66 +171,13 @@ export default class AdminClientPage extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.listContainer}>
-                <AlphabetList
-                    data={this.state.calls}
-                    indexLetterColor={'#AED803'}
-                    renderCustomSectionHeader={(section, i) => (
-                        <View 
-                            
-                        style={{visibility: 'hidden'}}/>
-                        // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-                        // <View style={styles.sectionHeaderContainer}>
-                        //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-                        // </View>
-                    )}
-                    renderCustomItem={(item) => (
-                        <ScrollView>
-                            <View style={styles.row}>
-                                <View>
-                                    <View style={styles.nameContainer}>
-                                        <TouchableOpacity 
-                                            onPress={() => {
-                                                const routeParams =
-                                                    {
-                                                        id: item.id,
-                                                        name: item.firstName + ' ' + item.lastName
-                                                    } ;
-                                                this.props.navigation.navigate('ClientInformationPage', routeParams);
-                                            }}
-                                            >
-                                            
-                                            <Text style={styles.nameTxt}>{item.value} </Text>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                                <Icon name={"dumbbell"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym} &gt; {item.trainer} </Text>
-                                            </View>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                                <Icon name={"food-apple"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.dietician} &gt; {item.nutritionist}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal(item)}
-                                                          style={{
-                                                              borderWidth:1,
-                                                              borderColor:"#AED803",
-                                                              alignItems:'center',
-                                                              justifyContent:'center',
-                                                              width:25,
-                                                              height:25,
-                                                              backgroundColor:'#fff',
-                                                              borderRadius:50,
-                                                          }}>
-
-                                            <Text style={{color:"#AED803"}}>i</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        </ScrollView>
-                    )}
-                />
-                </View>
+                <ParticipantsList
+                    participantsInfo={this.state.calls}
+                    openModal={item => this.openModal(item)}
+                    showLocations={true}
+                    showTrainer={true}
+                    showDietitian={true}
+                />   
                 <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1,
                         flexDirection: 'column',
@@ -522,7 +471,7 @@ export default class AdminClientPage extends Component {
                                         </View>
 
                                         <View style={{paddingBottom: 20}}>
-                                        <Text style={styles.participantInfo} >Dietician: </Text>
+                                        <Text style={styles.participantInfo} >Dietitian: </Text>
                                         <View style={styles.child}>
                                         {
                                             <TextInput style = {styles.input}
@@ -531,11 +480,11 @@ export default class AdminClientPage extends Component {
                                             //onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                             blurOnSubmit={false}
                                             underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.dietician || ''}
+                                            defaultValue = {this.state.dietitian || ''}
                                             placeholderTextColor = "#D5D5D5"
                                             color="#797979"
                                             autoCapitalize = "sentences"
-                                            onChangeText = {newDietician => this.setState({dietician: newDietician})}
+                                            onChangeText = {newDietician => this.setState({dietitian: newDietician})}
                                             />
                                         }
 
@@ -678,7 +627,7 @@ export default class AdminClientPage extends Component {
                                             onChangeItem={item => console.log(item.label, item.value)}
                                         />
 
-                                        <Text style={styles.childText}>Dietician Office</Text>
+                                        <Text style={styles.childText}>Dietitian Office</Text>
                                         <DropDownPicker
                                             items={[
                                                 {label: 'Renu Health', value: 'item1'},
