@@ -4,20 +4,13 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  Image,
   Alert,
   ScrollView,
-  Dimensions,
-  FlatList,
-  Button,
-  Settings
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
-import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import { ParticipantsList } from "../Components/ParticipantsList";
 import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
@@ -155,7 +148,7 @@ export default class AllPatientsPage extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>        
         <View
           style={{
             flexDirection: "row",
@@ -163,7 +156,7 @@ export default class AllPatientsPage extends Component {
             alignItems: "center",
             paddingRight: 25
           }}
-        >
+        >    
           {this.getHideSettingsIcon() && 
           <TouchableOpacity
             style={styles.backButton}

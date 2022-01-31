@@ -5,7 +5,7 @@ import Sidebar from '../Components/Sidebar.js';
 // import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
-import { StyleSheet, View, Alert} from 'react-native';
+import { StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
 // import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
@@ -168,8 +168,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
     render(){
         return(
-            <View style={styles.container}>
-                <View style={styles.header}>
+            <View style={styles.container}>           
+                <View style={styles.header}>         
                     <NameNavBar 
                         name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
                         goBack={()=>this.props.navigation.goBack()}/>
@@ -213,7 +213,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
                             trainerSessionSelected={!this.state.dietician}
                             showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
-                        />
+                        /> 
                 </View>
             </View>
         )
