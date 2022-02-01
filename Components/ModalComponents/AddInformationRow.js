@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
+import TextBoxSingleLine from "../TextBoxSingleLine";
 
 export default class AddInformationRow extends Component {
   constructor(props) {
@@ -17,24 +18,21 @@ export default class AddInformationRow extends Component {
 
   render() {
     return ( 
-        <View>
+        <View style={styles.container}>
             <Text style={styles.childText}>{this.props.title}</Text>
-                <View style={styles.childPt2}>
-                <TextInput style = {styles.input}
-                                    blurOnSubmit={false}
-                                    underlineColorAndroid = "transparent"
-                                    color="black"
-                                    autoCapitalize = "sentences"/>
-                </View>
+            <TextBoxSingleLine content = ""/>
         </View>
     );
   }
 }
 const styles = StyleSheet.create({
+    container:{
+      width: "85%",
+      alignSelf: "center"
+    },
     childText:{
         fontSize:13,
         color:"#B7DC21",
-        marginLeft: 30,
         padding: 12
     },
     childPt2: {

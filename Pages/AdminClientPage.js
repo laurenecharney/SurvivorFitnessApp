@@ -15,6 +15,7 @@ import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
+import RemoveButton from '../Components/ModalComponents/RemoveButton';
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -144,7 +145,6 @@ export default class AdminClientPage extends Component {
             <View style={styles.container} >
                 <View style={styles.pageContainer}>
                     <Text style={styles.headline}>Participants</Text>
-
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
                             <Text style={styles.addButtonText}>+</Text>
@@ -179,7 +179,6 @@ export default class AdminClientPage extends Component {
                                                 this.props.navigation.navigate('ClientInformationPage', routeParams);
                                             }}
                                             >
-                                            
                                             <Text style={styles.nameTxt}>{item.value} </Text>
                                             <View style={styles.participantOverviewRow}>
                                                 <Icon name={"dumbbell"} color={"#AED803"}/>
@@ -201,7 +200,13 @@ export default class AdminClientPage extends Component {
                     )}
                 />
                 </View>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeModal()} 
+                    onSwipeComplete={()=>this.closeModal()} 
+                    isVisible={this.state.isModalVisible}>
                     <View style={styles.modalStyle}>
                         <View style={styles.modalView}>
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
@@ -223,7 +228,6 @@ export default class AdminClientPage extends Component {
                                         <InformationRow title = "Email: " value = {this.state.selectedParticipant.email}/>
                                         <InformationRow title = "Phone Number: " value = {this.state.selectedParticipant.phoneNumber}/>
                                     </View>
-
                                     <View style={styles.modalInformationContainer}>
                                         <InformationRow title = "Type of Cancer: " value = {this.state.selectedParticipant.typeOfCancer}/>
                                         <InformationRow title = "Treatment Facility: " value = "Fill"/>
@@ -241,35 +245,36 @@ export default class AdminClientPage extends Component {
                             </View>
                         </View>
                     </View>
-                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeEditModal()} onSwipeComplete={()=>this.closeEditModal()} isVisible={this.state.isEditModalVisible}>
+                    <Modal 
+                        propagateSwipe={true} 
+                        animationIn="slideInUp" 
+                        animationOut="slideOutDown" 
+                        onBackdropPress={()=>this.closeEditModal()} 
+                        onSwipeComplete={()=>this.closeEditModal()} 
+                        isVisible={this.state.isEditModalVisible}>
                         <View style={styles.modalStyle}>
                             <View style={styles.modalView}>
                                 <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeEditModal()}>
                                     <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                                 </TouchableOpacity>
                                 <View style={{flex: 1}}>
-
                                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={styles.modalHeaderContainer}>
                                             <ModalHeader title = "Edit Participant Information"/>
                                         </View>
                                         <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                            <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Phone: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Email: " value = {this.state.email} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Name: " value = {this.state.selectedParticipant.value} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Phone: " value = {this.state.selectedParticipant.phoneNumber} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Email: " value = {this.state.selectedParticipant.email} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Type of Cancer: " value = {this.state.typeOfCancer} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Treatment Facility: " value = {this.state.treatmentFacility} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Surgeries: " value = {this.state.surgeries} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Forms of Treatment: " value = {this.state.formsOfTreatment} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Physician Notes: " value = {this.state.physicianNotes} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Trainer: " value = {this.state.trainer} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Dietician: " value = {this.state.dietician} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Start Date: " value = {this.state.startDate} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Goal(s): " value = {this.state.goals} edit = {this.state.edit}/>
-
-                                            <TouchableOpacity>
-                                                <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
-                                            </TouchableOpacity>
+                                            <EditInformationRow title = "Treatment Facility: " value = {this.state.selectedParticipant.treatmentFacility} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Surgeries: " value = {this.state.selectedParticipant.surgeries} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Forms of Treatment: " value = {this.state.selectedParticipant.formsOfTreatment} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals} edit = {this.state.edit}/>
+                                            <RemoveButton/>
                                             <AppButton
                                                 title={this.state.edit ? "SAVE" : "EDIT"}
                                                 onPress={() => {()=>this.closeEditModal()}}
@@ -282,7 +287,14 @@ export default class AdminClientPage extends Component {
                         </View>  
                     </Modal>
                 </Modal>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeAddModal()} onSwipeComplete={()=>this.closeAddModal()} transparent={true} isVisible={this.state.isAddModalVisible}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeAddModal()} 
+                    onSwipeComplete={()=>this.closeAddModal()} 
+                    transparent={true} 
+                    isVisible={this.state.isAddModalVisible}>
                     <View style={styles.modalStyle}>
                         <View style={styles.modalView}>
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeAddModal()}>
@@ -293,17 +305,15 @@ export default class AdminClientPage extends Component {
                                     <View style={{paddingBottom:10, width:'100%'}}>
                                         <Text style={styles.modalText} >Add Participant</Text>
                                     </View>
-                                    <View>
-                                        <AddInformationRow title = "First Name: "/>
-                                        <AddInformationRow title = "Last Name: "/>
-                                        <AddInformationRow title = "Age: "/>
-                                        <AddInformationRow title = "Email: "/>
-                                        <AddInformationRow title = "Phone Number: "/>
-                                        <AddInformationRow title = "Gym: "/>
-                                        <AddInformationRow title = "Dietician Office: "/>
-                                        <AddInformationRow title = "Start Date: "/>
-                                        <AddInformationRow title = "Goal(s): "/>
-                                    </View>
+                                    <AddInformationRow title = "First Name: "/>
+                                    <AddInformationRow title = "Last Name: "/>
+                                    <AddInformationRow title = "Age: "/>
+                                    <AddInformationRow title = "Email: "/>
+                                    <AddInformationRow title = "Phone Number: "/>
+                                    <AddInformationRow title = "Gym: "/>
+                                    <AddInformationRow title = "Dietician Office: "/>
+                                    <AddInformationRow title = "Start Date: "/>
+                                    <AddInformationRow title = "Goal(s): "/>
                                     <View style={{marginTop: 20}}>
                                         <AppButton title = {"Add"}/>
                                     </View>
@@ -338,7 +348,7 @@ const styles = StyleSheet.create({
     headline: {
         fontSize: 25,
         marginTop: 50,
-        marginLeft: 15,
+        marginLeft: 10,
         padding: 25,
         color: '#AED803',
     },
@@ -419,7 +429,7 @@ const styles = StyleSheet.create({
         marginLeft:40, 
         borderBottomWidth:1, 
         borderBottomColor: "#E4E4E4", 
-        paddingBottom:30, 
+        paddingBottom:20, 
         width:'75%'},
     modalInformationContainer:{
         marginLeft:40, 

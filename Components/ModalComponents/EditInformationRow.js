@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
+import TextBoxSingleLine from "../TextBoxSingleLine";
 
 export default class EditInformationRow extends Component {
   constructor(props) {
@@ -19,23 +20,7 @@ export default class EditInformationRow extends Component {
     return ( 
         <View style={{paddingBottom: 20}}>
         <Text style={styles.participantInfo} >{this.props.title}</Text>
-        <View style={styles.child}>
-        {
-            <TextInput style = {styles.input}
-            returnKeyType="done"
-            editable={this.props.edit}
-            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-            blurOnSubmit={false}
-            underlineColorAndroid = "transparent"
-            defaultValue = {this.props.value || ''}
-            placeholderTextColor = "#D5D5D5"
-            color="#797979"
-            autoCapitalize = "sentences"
-            onChangeText = {newGoals => this.setState({goals: newGoals})}
-            />
-        }
-
-        </View>
+        <TextBoxSingleLine content = {this.props.value}/>
         </View>
     );
   }

@@ -1,4 +1,4 @@
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import  AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 
 export async function saveItem(key, value) {
@@ -61,7 +61,7 @@ export async function getItem() {
   try {
     // const res = await AsyncStorage.getItem('id_token');
     const res = await SecureStore.getItemAsync("id_token");
-
+    console.log(res)
     return res;
   } catch (error) {
     console.log("AsyncStorage Error: " + error.message);
@@ -75,5 +75,3 @@ export async function deleteJWT() {
     console.log("AsyncStorage Error: " + error.message);
   }
 }
-
-
