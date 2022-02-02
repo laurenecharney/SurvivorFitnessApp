@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
-import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole} from '../APIServices/deviceStorage';
 
 
 const credentials = {
@@ -78,6 +78,8 @@ export default class LoginPage extends React.Component {
 
             } else if (res.user.roles.includes('TRAINER')) {
                 await saveCurrentRole("TRAINER");
+                const role = await getCurrentRole();
+                console.log("role: ", role);
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
                 });
@@ -139,8 +141,8 @@ export default class LoginPage extends React.Component {
                             name='email'
                             value={email}
                             style={styles.inputText}
-                            placeholder=""
-                            placeholderTextColor="#003f5c"
+                            placeholder="email"
+                            placeholderTextColor="#AAAAAA"
                             keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
@@ -150,8 +152,8 @@ export default class LoginPage extends React.Component {
                             value={password}
                             secureTextEntry={hidePass ? true : false}
                             style={styles.inputText}
-                            placeholder=""
-                            placeholderTextColor="#003f5c"
+                            placeholder="password"
+                            placeholderTextColor="#AAAAAA"
                             returnKeyType='done'
                             onSubmitEditing={() => this.handleLoginPress()}
                             onChangeText={this.handlePasswordChange}/>

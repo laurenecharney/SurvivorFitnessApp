@@ -16,6 +16,8 @@ import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
+import { ParticipantsList } from '../Components/ParticipantsList';
+
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -43,7 +45,7 @@ export default class AdminClientPage extends Component {
             formsOfTreatments:"",
             doctNotes:"",
             trainer:"",
-            dietician:"",
+            dietitian:"",
             startDate:"",
             goals:"",
             calls: [
@@ -151,55 +153,15 @@ export default class AdminClientPage extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.listContainer}>
-                <AlphabetList
-                    data={this.state.calls}
-                    indexLetterColor={'#AED803'}
-                    renderCustomSectionHeader={(section, i) => (
-                        <View 
-                            
-                        style={{visibility: 'hidden'}}/>
-                        // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-                        // <View style={styles.sectionHeaderContainer}>
-                        //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-                        // </View>
-                    )}
-                    renderCustomItem={(item) => (
-                        <ScrollView>
-                            <View style={styles.row}>
-                                <View>
-                                    <View style={styles.nameContainer}>
-                                        <TouchableOpacity 
-                                            onPress={() => {
-                                                const routeParams =
-                                                    {
-                                                        id: item.id,
-                                                        name: item.firstName + ' ' + item.lastName
-                                                    } ;
-                                                this.props.navigation.navigate('ClientInformationPage', routeParams);
-                                            }}
-                                            >
-                                            <Text style={styles.nameTxt}>{item.value} </Text>
-                                            <View style={styles.participantOverviewRow}>
-                                                <Icon name={"dumbbell"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.gym} &gt; {item.trainer} </Text>
-                                            </View>
-                                            <View style={styles.participantOverviewRow}>
-                                                <Icon name={"food-apple"} color={"#AED803"}/>
-                                                <Text style={styles.gymTxt}>{item.dietician} &gt; {item.nutritionist}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal(item)}
-                                                          style={styles.infoModalIcon}>
-                                            <Text style={{color:"#AED803"}}>i</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        </ScrollView>
-                    )}
-                />
-                </View>
+                {/* <View style={styles.listContainer}> */}
+                <ParticipantsList
+                    participantsInfo={this.state.calls}
+                    openModal={item => this.openModal(item)}
+                    showLocations={true}
+                    showTrainer={true}
+                    showDietitian={true}
+                />   
+                {/* </View> */}
                 <Modal 
                     propagateSwipe={true} 
                     animationIn="slideInUp" 

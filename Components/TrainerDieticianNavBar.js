@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 class TrainerDieticianNavBar extends Component {
@@ -21,26 +22,35 @@ class TrainerDieticianNavBar extends Component {
     this.props.pressTrainer();
   };
   pressDietician = () => {
-    this.props.pressDietician();
+    Alert.alert('Not a dietician!', 'This page is still in progress.\nNormally, you could click here to view information logged by this participant\'s dietician. ',
+        [
+            {
+                text: 'Got it',
+                onPress: () => console.log('No Pressed')
+            }
+        ]
+        )
+    // this.props.pressDietician();
   };
 
   render() {
     return (
       <View style={{ flexDirection: "row",paddingTop:40 }}>
-      <TouchableOpacity
-          onPress={() => this.pressTrainer()}
+      <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
             borderWidth: 0.5,
+            borderBottomWidth: .5,
+            borderRightWidth: .5,
             alignItems: "center",
-            borderColor: "#E6E6E6",
+            borderColor: "#D5D5D5",
             padding:0,
-            width:60
+            width:'15%'
           }}
         >
          <Image source={require('../assets/sessionLogo.png')} style={styles.logo}/>
-        </TouchableOpacity>
+        </View>
         <TouchableOpacity
           onPress={() => this.pressTrainer()}
           style={{
@@ -48,7 +58,8 @@ class TrainerDieticianNavBar extends Component {
             flexDirection: "row",
             justifyContent: "center",
             borderWidth: 1,
-            padding:10,
+            borderLeftWidth: 0,
+            paddingVertical: 10,
             alignItems: "center",
             borderColor: "#E6E6E6",
             borderTopColor: this.props.dietician ? "#e6e6e6" : "#AED804",
@@ -78,7 +89,7 @@ class TrainerDieticianNavBar extends Component {
             flexDirection: "row",
             justifyContent: "center",
             borderWidth: 1,
-            padding:15,
+            padding:0,
             alignItems: "center",
             borderColor: "#E6E6E6",
             borderTopColor: !this.props.dietician ? "#e6e6e6" : "#AED804",

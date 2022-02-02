@@ -4,23 +4,19 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  Image,
   Alert,
   ScrollView,
-  Dimensions,
-  FlatList,
-  Button,
-  Settings
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
-import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import { ParticipantsList } from "../Components/ParticipantsList";
+import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
+
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -66,8 +62,10 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
+      currentRole: ""
     };
   }
+
   async componentDidMount(){
     try {
       const paramKey =
@@ -78,9 +76,8 @@ export default class AllPatientsPage extends Component {
       ? this.props.route.params.participantsParam[paramKey]
       : null;
     const res = await getParticipants(paramKey, paramValue);
-       this.setState({calls: res
-           .map(
-           item => {
+        let temp = res.map(
+          item => {
             let newI = item;
             newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
             newI.key = parseInt(item.id);
@@ -90,7 +87,12 @@ export default class AllPatientsPage extends Component {
             newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
             return newI; 
            
-           })})
+          }
+        )
+        
+        const currentRole = await getCurrentRole();
+        console.log("currentRole", currentRole);
+        this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
       
    } catch (e){
        console.log(e);
@@ -151,45 +153,14 @@ export default class AllPatientsPage extends Component {
             </TouchableOpacity>
           )}
         </View>
-        <View style={styles.listContainer}>
-          <AlphabetList
-            data={this.state.calls}
-            indexLetterColor={"#AED803"}
-            renderCustomSectionHeader={section => (
-              <View style={{ visibility: "hidden" }} />
-              // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-              // <View style={styles.sectionHeaderContainer}>
-              //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-              // </View>
-            )}
-            renderCustomItem={item => (
-              <ScrollView>
-                <View style={styles.row}>
-                  <View>
-                    <View style={styles.nameContainer}>
-                      <TouchableOpacity 
-                        onPress={() => {
-                            const routeParams =
-                                {
-                                    id: item.id,
-                                    name: item.firstName + ' ' + item.lastName
-                                } ;
-                            this.props.navigation.navigate('ClientInformationPage', routeParams);
-                        }}
-                        hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
-                      >
-                          <Text style={styles.nameTxt}>{item.value}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
-                        <Text style={styles.infoTxt}>i</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </ScrollView>
-            )}
-          />
-        </View>
+        <ParticipantsList
+            participantsInfo={this.state.calls}
+            openModal={item => this.openModal(item)}
+            showTrainer={this.state.currentRole === "TRAINER"}
+            showDietitian={this.state.currentRole === "DIETITIAN"}
+            // showLocations={true}
+            // showDietitian={true}
+        />        
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"

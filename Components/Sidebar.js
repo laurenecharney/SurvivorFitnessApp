@@ -8,6 +8,7 @@ export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSes
 
     alertItemName = (item) => {
         updateSession(item)
+
     }
     alertAddSession = (item) => {
         Alert.alert('Add Another Session?', '',
@@ -75,11 +76,13 @@ const styles = StyleSheet.create ({
     row: {
         flexDirection: 'column',
         alignItems: 'center',
-        borderColor: '#E6E6E6',
+        borderColor: '#D5D5D5',//'#E6E6E6',
         backgroundColor: '#fff',
         // width: '100%',
         height: 39,
-        borderWidth: 0.25,
+        borderTopWidth: 0,
+        borderBottomWidth: 0.5,
+        borderWidth: 0.5,
         padding: 5,
     },
     highlightedRow: {
@@ -100,7 +103,8 @@ const styles = StyleSheet.create ({
         borderWidth: 1,
         borderColor: '#C6E05A',
         backgroundColor: '#fff',
-        borderRadius: 90
+        borderRadius: 90,
+        // backgroundColor: 'blue'
     },
     highlightedNumberContainer: {
         flexDirection: 'column',
@@ -117,14 +121,15 @@ const styles = StyleSheet.create ({
         fontSize: 16,
         fontWeight: '700',
         textAlign: 'center',
-        paddingTop: '15%',
+
+        paddingTop: '12%',
     },
     text: {
         color: '#C6E05A',
         fontSize: 16,
         fontWeight: '700',
         textAlign: 'center',
-        paddingTop: '15%',
+        paddingTop: '12%',
     }
 
 })
