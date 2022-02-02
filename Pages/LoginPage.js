@@ -66,8 +66,7 @@ export default class LoginPage extends React.Component {
         try {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
-            await Promise.all[saveItem("id_token", res.jwt),
-            saveUserInfo(res.user)];
+            await Promise.all[(saveItem("id_token", res.jwt), saveUserInfo(res.user))];
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.replace('SuperAdminPage');
                 await saveCurrentRole('SUPER_ADMIN');

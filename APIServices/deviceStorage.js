@@ -64,7 +64,7 @@ export async function getItem() {
   try {
     // const res = await AsyncStorage.getItem('id_token');
     const res = await SecureStore.getItemAsync("id_token");
-
+    console.log(res)
     return res;
   } catch (error) {
     console.log("SecureStore Error in getItem: " + error.message);
@@ -78,5 +78,3 @@ export async function deleteJWT() {
     console.log("Secure Store Error in deleteJWT: " + error.message);
   }
 }
-
-

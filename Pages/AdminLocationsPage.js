@@ -6,20 +6,22 @@ import {
     TouchableOpacity,
     ScrollView,
     TextInput,
-    ActivityIndicator
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ModalRow from '../Components/ModalComponents/ModalRow'
 import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
-//import {getLocationByID, getLocations} from '../APIServices/APIUtilities';
-import deviceStorage from '../APIServices/deviceStorage';
+import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
+import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
+import InformationRow from '../Components/ModalComponents/InformationRow';
+import RemoveButton from '../Components/ModalComponents/RemoveButton';
+import { AlphabetList } from "react-native-section-alphabet-list";
+import ModalHeader from '../Components/ModalComponents/ModalHeader';
+
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
         <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
 );
-import { AlphabetList } from "react-native-section-alphabet-list";
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -70,11 +72,8 @@ export default class AdminLocationsPage extends Component {
                 alert("Could not fetch locations.");
             }
     }
-    //changeText = (newValue)=>{
-        //this.setState({trainerNotes: newValue});
-    //}
 
-     openModal = async (item) =>{
+    openModal = async (item) =>{
         this.setState({
             isModalVisible:true,
             selectedLocation: item,
@@ -92,7 +91,6 @@ export default class AdminLocationsPage extends Component {
         }
         
     }
-
     toggleModal = () =>{
         this.setState({
             isModalVisible:!this.state.isModalVisible
@@ -110,7 +108,6 @@ export default class AdminLocationsPage extends Component {
             edit: true
         })
     }
-
     toggleEditModal = () =>{
         this.setState({
             isEditModalVisible:!this.state.isEditModalVisible
@@ -128,8 +125,6 @@ export default class AdminLocationsPage extends Component {
             isAddModalVisible:true
         })
     }
-
-
     toggleAddModal = () =>{
         this.setState({
             isAddModalVisible:!this.state.isAddModalVisible
@@ -160,13 +155,11 @@ export default class AdminLocationsPage extends Component {
 
         })
     }
-
     openDieticianModal = () =>{
         this.setState({
             isDieticianModalVisible:true,
         })
     }
-
     toggleDieticianModal = () =>{
         this.setState({
             isDieticianModalVisible:!this.state.isDieticianModalVisible
@@ -182,8 +175,8 @@ export default class AdminLocationsPage extends Component {
 
     render() {
         return(
-            <View style={{ flex: 1, backgroundColor:'#fff' }} >
-                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 40}}>
+            <View style={styles.container} >
+                <View style={styles.heading}>
                     <Text style={styles.headline}>Locations</Text>
                     <View style={styles.addButtonContainer} >
                         <TouchableOpacity onPress={()=>this.openAddModal()}>
@@ -212,25 +205,14 @@ export default class AdminLocationsPage extends Component {
                                     this.props.navigation.navigate(page, 
                                     {locationId: item.id})
                                     }}>
-                                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                        <View style={styles.locationContainer}>
                                             <Icon name={item.icon} style={styles.icon} size={25}/>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                         </View>
 
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={()=>this.openModal(item)}
-                                                      style={{
-                                                          borderWidth:1,
-                                                          borderColor:"#AED803",
-                                                          alignItems:'center',
-                                                          justifyContent:'center',
-                                                          width:25,
-                                                          height:25,
-                                                          backgroundColor:'#fff',
-                                                          borderRadius:50,
-                                                      }}>
-
-                                        <Text style={{color:"#AED803"}}>i</Text>
+                                    <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
+                                            <Text style={styles.infoTxt}>i</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -238,162 +220,81 @@ export default class AdminLocationsPage extends Component {
                     )}
                 />}
                 </View>
-                <Modal propagateSwipe={true} 
-                animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} 
-                onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '35%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeModal()} 
+                    onSwipeComplete={()=>this.closeModal()} 
+                    isVisible={this.state.isModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalStyle}>
+                            <TouchableOpacity style={styles.close} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
-
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:20, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Gym Information</Text>
+                                    <View style={styles.modalHeaderContainer}>
+                                        <ModalHeader title = "Location Information"/>
                                     </View>
-                        
-                                    <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
+                                    <View style={styles.modalInformationContainer}>
                                         <View  style={{justifyContent: 'space-between'}}>
                                             <TouchableOpacity onPress={()=>this.openEditModal()}>
                                                 <Text style = {styles.editStyle}>edit</Text>
                                             </TouchableOpacity>
                                         </View>
-                                    
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                        <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                        <Text style={{color: '#797979'}}>{this.state.name}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25, width:'75%'}}>
-                                        <Text style={{ fontSize: '15', color: '#AED803'}} >Address: </Text>
-                                        <Text style={{color: '#797979'}}>{this.state.location}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25, width:'75%'}}>
-                                        <Text style={{ fontSize: '15', color: '#AED803'}} >Admin: </Text>
-                                        <Text style={{color: '#797979'}}>{this.state.admin}</Text>
-                                        </View>
+                                        <InformationRow title = "Name: " value = {this.state.name}/>
+                                        <InformationRow title = "Address: " value = {this.state.location}/>
+                                        <InformationRow title = "Admin: " value = {this.state.admin}/>
                                     </View>
                                 </ScrollView>
                             </View>
-
                         </View>
                     </View>
-                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeEditModal()} onSwipeComplete={()=>this.closeEditModal()} isVisible={this.state.isEditModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '60%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeEditModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
+                    <Modal 
+                        propagateSwipe={true} 
+                        animationIn="slideInUp" 
+                        animationOut="slideOutDown" 
+                        onBackdropPress={()=>this.closeEditModal()} 
+                        onSwipeComplete={()=>this.closeEditModal()} 
+                        isVisible={this.state.isEditModalVisible}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.editModalStyle}>
+                                <TouchableOpacity style={styles.close} onPress={()=>this.closeEditModal()}>
+                                    <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                                </TouchableOpacity>
+                                <View style={{flex: 1}}>
 
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:20, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Edit Location Information</Text>
-                                    </View>
-                                    <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.name || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newName => this.setState({name: newName})}
-                                            />
-                                        }
-
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <View style={styles.modalHeaderContainer}>
+                                            <ModalHeader title = "Edit Location"/>
                                         </View>
+                                        <View style={styles.modalInformationContainer}>
+                                            <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Address: " value = {this.state.location} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Admin: " value = {this.state.admin} edit = {this.state.edit}/>
+                                            <RemoveButton/>
+                                            <AppButton
+                                                title={this.state.edit ? "SAVE" : "EDIT"}
+                                                onPress={() => {()=>this.closeEditModal()}}
+                                                />
                                         </View>
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803',paddingBottom: 10}} >Address: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.location || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newLocation => this.setState({location: newLocation})}
-                                            />
-                                        }
-
-                                        </View>
-                                        </View>
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Admin: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.admin || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newAdmin => this.setState({admin: newAdmin})}
-                                            />
-                                        }
-
-                                        </View>
-                                        </View>
-                                        <TouchableOpacity>
-                                            <Text style = {{fontSize: 14, color: "#AED803",alignSelf: "center"}}>remove</Text>
-                                        </TouchableOpacity>
-                                        <AppButton
-                                            title={this.state.edit ? "SAVE" : "EDIT"}
-                                            onPress={() => {()=>this.closeEditModal()}}
-                                            />
-
-                                        </View>
-                                </ScrollView>
+                                    </ScrollView>
+                                </View>
                             </View>
-
-                        </View>
-                    </View>  
+                        </View>  
                     </Modal>
                 </Modal>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeAddModal()} onSwipeComplete={()=>this.closeAddModal()} isVisible={this.state.isAddModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '40%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeAddModal()}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeAddModal()} 
+                    onSwipeComplete={()=>this.closeAddModal()} 
+                    isVisible={this.state.isAddModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalStyle}>
+                            <TouchableOpacity style={styles.close} onPress={()=>this.closeAddModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
@@ -409,131 +310,75 @@ export default class AdminLocationsPage extends Component {
                                         onPress={()=>this.openDieticianModal()}/>
                                 </ScrollView>
                             </View>
-
                         </View>
                     </View>
-                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeGymModal()} onSwipeComplete={()=>this.closeGymModal()} transparent={true} isVisible={this.state.isGymModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '60%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeGymModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{paddingBottom:10, width:'100%'}}>
-                                        <Text style={styles.modalText} >Add Gym</Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.childText}>Name</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                    <Modal 
+                        propagateSwipe={true} 
+                        animationIn="slideInUp" 
+                        animationOut="slideOutDown" 
+                        onBackdropPress={()=>this.closeGymModal()} 
+                        onSwipeComplete={()=>this.closeGymModal()} 
+                        transparent={true} 
+                        isVisible={this.state.isGymModalVisible}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.addNewModalStyle}>
+                                <TouchableOpacity style={styles.close} onPress={()=>this.closeGymModal()}>
+                                    <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                                </TouchableOpacity>
+                                <View style={{flex: 1}}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                        <View style={{paddingBottom:10, width:'100%'}}>
+                                            <Text style={styles.modalText} >Add Gym</Text>
                                         </View>
-                                        <Text style={styles.childText} >Address</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                                        <View>
+                                            <AddInformationRow title = "Name: "/>
+                                            <AddInformationRow title = "Address: "/>
+                                            <AddInformationRow title = "Admin: "/>
                                         </View>
-                                        <Text style={styles.childText}>Administrator</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                                        <View style={{marginTop: 20}}>
+                                            <AppButton
+                                                title = {"Add"}/>
                                         </View>
+                                        
+                                    </ScrollView>
+                                </View>
 
-                                    </View>
-                                    <View style={{marginTop: 20}}>
-                                        <AppButton
-                                            title = {"Add"}/>
-                                    </View>
-                                    
-                                </ScrollView>
                             </View>
-
                         </View>
-                    </View>
-                </Modal>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeDieticianModal()} onSwipeComplete={()=>this.closeDieticianModal()} transparent={true} isVisible={this.state.isDieticianModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '60%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeDieticianModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{paddingBottom:10, width:'100%'}}>
-                                        <Text style={styles.modalText} >Add Dietitian Office</Text>
-                                    </View>
-                                    <View>
-                                        <Text style={styles.childText}>Name</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                    </Modal>
+                    <Modal 
+                        propagateSwipe={true} 
+                        animationIn="slideInUp" 
+                        animationOut="slideOutDown" 
+                        onBackdropPress={()=>this.closeDieticianModal()} 
+                        onSwipeComplete={()=>this.closeDieticianModal()} 
+                        transparent={true} 
+                        isVisible={this.state.isDieticianModalVisible}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.addNewModalStyle}>
+                                <TouchableOpacity style={styles.close} onPress={()=>this.closeDieticianModal()}>
+                                    <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                                </TouchableOpacity>
+                                <View style={{flex: 1}}>
+                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                        <View style={{paddingBottom:10, width:'100%'}}>
+                                            <Text style={styles.modalText} >Add Dietitian Office</Text>
                                         </View>
-                                        <Text style={styles.childText} >Address</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                                        <View>
+                                            <AddInformationRow title = "Name: "/>
+                                            <AddInformationRow title = "Address: "/>
+                                            <AddInformationRow title = "Admin: "/>
                                         </View>
-                                        <Text style={styles.childText}>Administrator</Text>
-                                        <View style={styles.childPt2}>
-                                            <TextInput style = {styles.input}
-                                                blurOnSubmit={false}
-                                                underlineColorAndroid = "transparent"
-                                                color="black"
-                                                autoCapitalize = "sentences"
-                                                />
+                                        <View style={{marginTop: 20}}>
+                                            <AppButton
+                                                title = {"Add"}/>
                                         </View>
-
-                                    </View>
-                                    <View style={{marginTop: 20}}>
-                                        <AppButton
-                                            title = {"Add"}/>
-                                    </View>
-                                    
-                                    
-                                </ScrollView>
+                                    </ScrollView>
+                                </View>
                             </View>
-
                         </View>
-                    </View>
+                    </Modal>
                 </Modal>
-                </Modal>
-                
-
             </View>
         );
     }
@@ -543,18 +388,19 @@ const styles = StyleSheet.create({
     headline: {
         fontSize: 25,
         marginTop: 50,
-        marginLeft: 15,
+        marginLeft: 10,
         padding: 25,
         color: '#AED803',
-        fontWeight: "600"
     },
-
-    settings:{
-        color: '#E4E4E4',
-        marginTop: 50,
-        paddingHorizontal: 10,
-        paddingBottom: 0,
-        marginRight: 30,
+    container:{
+        flex: 1, 
+        backgroundColor:'#fff'
+    },
+    heading:{
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        paddingRight : 25
     },
     row: {
         flexDirection: 'row',
@@ -564,11 +410,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
         padding: 40,
-    },
-    pic: {
-        borderRadius: 30,
-        width: 60,
-        height: 60,
     },
     nameContainer: {
         flexDirection: 'row',
@@ -580,21 +421,6 @@ const styles = StyleSheet.create({
         color: '#3E3E3E',
         fontSize: 18,
         width:170,
-    },
-    mblTxt: {
-        fontWeight: '200',
-        color: '#777',
-        fontSize: 13,
-    },
-    msgContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    msgTxt: {
-        fontWeight: '400',
-        color: '#008B8B',
-        fontSize: 12,
-        marginLeft: 15,
     },
     icon:{
         color: '#E4E4E4',
@@ -624,32 +450,6 @@ const styles = StyleSheet.create({
             fontWeight: "bold",
             color: "#AED803",
     },
-    childPt2: {
-        backgroundColor: "white",
-        padding: 10,
-        borderWidth: 1,
-        borderColor: "#E7E7E7",
-        width: "75%",
-        borderRadius: 5,
-        alignSelf: "center"
-      },
-    addNewContainer: {
-        backgroundColor:'#AED804',
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        width: 75,
-        alignSelf: "center",
-        margin: 5,
-        marginTop: 50
-    },
-    addNewText: {
-        fontSize: 25,
-        color: "#fff",
-        fontWeight: "bold",
-        alignSelf: "center",
-    },
-
     appButtonContainer: {
         backgroundColor:'#AED804',
         borderRadius: 10,
@@ -664,29 +464,12 @@ const styles = StyleSheet.create({
         color: "#fff",
         alignSelf: "center",
     },
-
     editStyle: {
         fontSize: 14,
         color: "#AED803",
         alignSelf: "center",
         alignSelf: 'flex-end'
-    },
-
-    child:{
-        backgroundColor: 'white',
-        padding:10,
-        borderWidth: 1,
-        borderColor: "#E7E7E7",
-
-        borderRadius: 5,
-
-    },
-    childText:{
-        fontSize:13,
-        color:"#B7DC21",
-        marginLeft: 30,
-        padding: 12 
-    },    
+    },   
     sectionHeaderContainer:{
         backgroundColor: '#E4E4E4'
     },
@@ -694,29 +477,66 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 10
     },
-    dateContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        width: '50%',
-        marginTop: 10,
-          height: 34
-      },
-      headingText: {
-        padding: 10,
-        fontSize: 20,
-        fontWeight: "bold"
-      },
-    title:{
-        top: 7,
-        fontSize: 16,
-        fontWeight:'bold',
-        color: '#838383',
-    },
     listContainer:{
         paddingBottom: '33%'
     },
-    input:{
-        margin:0
+    modalHeaderContainer:{
+        marginLeft:40, 
+        borderBottomWidth:1, 
+        borderBottomColor: "#E4E4E4", 
+        paddingBottom:20, 
+        width:'75%'
     },
+    locationContainer:{
+        flexDirection: "row", 
+        justifyContent: "space-between"
+    },
+    infoButton:{
+        borderWidth:1,
+        borderColor:"#AED803",
+        alignItems:'center',
+        justifyContent:'center',
+        width:25,
+        height:25,
+        backgroundColor:'#fff',
+        borderRadius:50,
+    },
+    infoTxt:{
+        color:"#AED803" 
+    },
+    modalContainer:{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalStyle:{
+        backgroundColor: "#fff",
+        width: '90%',
+        height: '40%',
+        borderRadius:19
+    },
+    close:{
+        paddingLeft:260, 
+        paddingTop:30
+    },
+    modalInformationContainer:{
+        marginLeft:40, 
+        paddingTop:10, 
+        paddingBottom:10, 
+        width:'75%',
+    },
+    editModalStyle:{
+        backgroundColor: "#fff",
+        width: '90%',
+        height: '60%',
+        borderRadius:19
+    },
+    addNewModalStyle:{
+        backgroundColor: "#fff",
+        width: '90%',
+        height: '60%',
+        borderRadius:19
+    }
 
 });
