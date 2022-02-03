@@ -13,36 +13,38 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const SmallerAppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.appButtonContainerSmall, {width: "60%"}]}>
-        <Text style={styles.appButtonText}>{title}</Text>
+const LinkPressable = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.linkOpacity}>
+        <Text style={styles.linkText}>{title}</Text>
     </TouchableOpacity>
 );
 
 const NotesSection = ({noteData, callback}) => {
-    const [isNote, setIsNote] = useState(noteData && noteData != '');
+    const [isNote, setIsNote] = useState(noteData != '');
     const [text, setText] = useState(noteData || "");
     const [confirmDeleteModal, showConfirmDelete] = useState(false);
 
     const toggleNote = () => {
         if(isNote) {
-            showConfirmDelete(true);
+            if(text == '') {
+                setIsNote(false);
+                if(noteData != '') callback("");
+            } else {
+                showConfirmDelete(true);
+            }
         } else {
             setIsNote(true);
         }
     }
 
-    useEffect(() => console.log(isNote), [isNote])
-
     useEffect(() => {
-        setIsNote(noteData && noteData != '')
+        setIsNote(noteData != '')
         setText(noteData || "")
-        console.log(isNote)
     }, [noteData])
 
     return(
         <View style = {{width: "84%", marginVertical: 15}}>
-            <SmallerAppButton 
+            <LinkPressable 
             onPress = {toggleNote}
             title = {!isNote ? "Add Note" : "Delete Note"}
             />
@@ -101,6 +103,22 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "600",
         alignSelf: "center",
+    },
+    linkOpacity: {
+        //elevation: 8,
+        //backgroundColor: '#AED804',
+        //borderRadius: 10,
+        width: "60%",
+        marginTop: 8,
+        marginBottom: -8,
+        paddingHorizontal: '3%',
+    },
+    linkText: {
+        fontSize: 15,
+        color: '#AED804',
+        fontWeight: "600",
+        //alignSelf: "center",
+        textDecorationLine: 'underline',
     },
     cdButtonContainer: {
         flexDirection: "row",

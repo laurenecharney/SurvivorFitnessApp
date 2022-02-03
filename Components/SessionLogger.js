@@ -140,8 +140,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     }
 
     const updateNote = (newNote) => {
-        setLogged(false);
-        setNoteData(newNote);
+        if(newNote != noteData) {
+            setLogged(false);
+            setNoteData(newNote); 
+        }
     }
 
     useEffect(() => {
