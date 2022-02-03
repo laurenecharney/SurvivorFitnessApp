@@ -73,9 +73,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         if (isCheckpoint && measurementData) {
             tempSessionData.measurements = measurementData;
         }
-        if (noteData) {
-            tempSessionData.specialistNotes = noteData;
-        }
+        tempSessionData.specialistNotes = noteData;
         const dateMilliseconds = sessionDate.getTime()
         let previouslyHadLogDate = initSessionData['initialLogDate'] != null;
 
@@ -273,8 +271,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     logged={logged}
                 />
             </View>
-                    </View>
-                }
+            </View>
+        }
 
         </View>
     );

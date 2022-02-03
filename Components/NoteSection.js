@@ -32,9 +32,12 @@ const NotesSection = ({noteData, callback}) => {
         }
     }
 
+    useEffect(() => console.log(isNote), [isNote])
+
     useEffect(() => {
         setIsNote(noteData && noteData != '')
         setText(noteData || "")
+        console.log(isNote)
     }, [noteData])
 
     return(
@@ -73,7 +76,7 @@ const NotesSection = ({noteData, callback}) => {
                     </View>
                 </View>
             </Modal>
-            {isNote && 
+            {isNote!="" && 
                 <TextInput 
                 style={styles.noteInputBox}
                 multiline
