@@ -19,6 +19,34 @@ const LinkPressable = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+const ConfirmDeleteModal = ({onConfirm, onCancel}) => {
+    <Modal
+        propagateSwipe={true}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        isVisible={confirmDeleteModal}>
+        <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+            <View style={{backgroundColor: "#fff", width: "90%", height: "24%", borderRadius: 19, alignItems: "center", justifyContent: 'space-around'}}>
+                <View style={{flex: 1, width: '100%'}}>
+                    <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
+                        <Text style={styles.cdheading}>{"Are you sure you want to delete this note?"}</Text>
+                        <View style={styles.cdButtonContainer}>
+                            <SmallAppButton
+                                title={"Confirm"}
+                                onPress={() => onConfirm()}
+                            />
+                            <SmallAppButton
+                                title={"Cancel"}
+                                onPress={() => onCancel()}
+                            />
+                        </View>
+                    </ScrollView>
+                </View>
+            </View>
+        </View>
+    </Modal>
+}
+
 const NotesSection = ({noteData, callback}) => {
     const [isNote, setIsNote] = useState(noteData != '');
     const [text, setText] = useState(noteData || "");
@@ -37,6 +65,13 @@ const NotesSection = ({noteData, callback}) => {
         }
     }
 
+    const onConfirmDelete = () => {
+        setText("");
+        showConfirmDelete(false);
+        setIsNote(false);
+        callback("");
+    }
+
     useEffect(() => {
         setIsNote(noteData != '')
         setText(noteData || "")
@@ -48,36 +83,9 @@ const NotesSection = ({noteData, callback}) => {
             onPress = {toggleNote}
             title = {!isNote ? "Add Note" : "Delete Note"}
             />
-            <Modal
-                propagateSwipe={true}
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                isVisible={confirmDeleteModal}>
-                <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <View style={{backgroundColor: "#fff", width: "90%", height: "24%", borderRadius: 19, alignItems: "center", justifyContent: 'space-around'}}>
-                        <View style={{flex: 1, width: '100%'}}>
-                            <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
-                                <Text style={styles.cdheading}>{"Are you sure you want to delete this note?"}</Text>
-                                <View style={styles.cdButtonContainer}>
-                                    <SmallAppButton
-                                        title={"Confirm"}
-                                        onPress={() => {
-                                            setText("");
-                                            showConfirmDelete(false);
-                                            setIsNote(false);
-                                            callback("");
-                                        }}
-                                    />
-                                    <SmallAppButton
-                                        title={"Cancel"}
-                                        onPress={() => showConfirmDelete(false)}
-                                    />
-                                </View>
-                            </ScrollView>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            <ConfirmDeleteModal
+            onConfirm={() => onConfirm()} 
+            onCancel={() => showConfirmDelete(false)}/>
             {isNote!="" && 
                 <TextInput 
                 style={styles.noteInputBox}
