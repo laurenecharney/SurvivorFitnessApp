@@ -121,7 +121,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     // formats the sidebar
     formatSessions(rawSessionsArray){
         let nextToLog = -1;
-        for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
+        let numSessions = rawSessionsArray['trainerSessions'].length;
+        for(let i = 0; i < numSessions; i++){    // for each session
             let isHighlighted = false;
             let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
 
@@ -130,7 +131,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                 isHighlighted = true
                 nextToLog = i + 1;
                 // dictates what session the sessionLogger will start at
-                this.state.sessionTrainer = i + 1
+                this.setState({sessionTrainer: i + 1 })
+            } else if (hasLogDate && i === numSessions - 1) {
+                isHighlighted = true;   // if all sessions are logged, show the last one
+                this.setState({ sessionTrainer: i + 1})
             }
             
            let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
