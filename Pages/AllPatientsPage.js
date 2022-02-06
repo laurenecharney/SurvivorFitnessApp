@@ -19,6 +19,7 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import { getCurrentRole } from "../APIServices/deviceStorage";
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -64,6 +65,7 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
+      userType: ""
     };
   }
   async componentDidMount(){
@@ -75,6 +77,7 @@ export default class AllPatientsPage extends Component {
     const paramValue = paramKey
       ? this.props.route.params.participantsParam[paramKey]
       : null;
+      this.setState({userType: paramKey.substring(0, paramKey.indexOf('User'))});
     const res = await getParticipants(paramKey, paramValue);
        this.setState({calls: res
            .map(
@@ -89,12 +92,15 @@ export default class AllPatientsPage extends Component {
             return newI; 
            
            })})
+
+
+           const currentRole = await getCurrentRole();
+           console.log("getcurrentrole", currentRole)
       
    } catch (e){
        console.log(e);
        alert("Could not fetch participants data");
    }
-
 }
 
   getHideSettingsIcon() {
@@ -197,7 +203,8 @@ export default class AllPatientsPage extends Component {
                           const routeParams =
                               {
                                   id: item.id,
-                                  name: item.firstName + ' ' + item.lastName
+                                  name: item.firstName + ' ' + item.lastName,
+                                  user: this.state.userType
                               } ;
                           this.props.navigation.navigate('ClientInformationPage', routeParams);
                       }}

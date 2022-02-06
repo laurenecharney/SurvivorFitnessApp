@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
-import {saveItem, saveUserInfo, saveCurrentRole, getUser} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole} from '../APIServices/deviceStorage';
 
 
 const credentials = {
@@ -71,6 +71,7 @@ export default class LoginPage extends React.Component {
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.replace('SuperAdminPage');
                 await saveCurrentRole('SUPER_ADMIN');
+                
             } else if (res.user.roles.includes('DIETITIAN')){
                 await saveCurrentRole("DIETITIAN");
                 this.props.navigation.replace('AllPatientsPage', {
@@ -78,7 +79,11 @@ export default class LoginPage extends React.Component {
                 });
 
             } else if (res.user.roles.includes('TRAINER')) {
+                console.log("I am about to save role")
                 await saveCurrentRole("TRAINER");
+                let current_role = await getCurrentRole();
+                console.log("Roley", current_role);
+                console.log("I just saved role")
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
                 });
@@ -140,8 +145,8 @@ export default class LoginPage extends React.Component {
                             name='email'
                             value={email}
                             style={styles.inputText}
-                            placeholder="email"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
@@ -151,8 +156,8 @@ export default class LoginPage extends React.Component {
                             value={password}
                             secureTextEntry={hidePass ? true : false}
                             style={styles.inputText}
-                            placeholder="password"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             returnKeyType='done'
                             onSubmitEditing={() => this.handleLoginPress()}
                             onChangeText={this.handlePasswordChange}/>

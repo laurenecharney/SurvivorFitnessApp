@@ -193,7 +193,8 @@ export default class AdminClientPage extends Component {
                                                 const routeParams =
                                                     {
                                                         id: item.id,
-                                                        name: item.firstName + ' ' + item.lastName
+                                                        name: item.firstName + ' ' + item.lastName,
+                                                        user: "super-admin"
                                                     } ;
                                                 this.props.navigation.navigate('ClientInformationPage', routeParams);
                                             }}

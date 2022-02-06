@@ -18,7 +18,7 @@ import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../AP
 import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
-import { logTrainerSession } from '../APIServices/APIUtilities';
+import { logTrainerSession, logDietitianSession } from '../APIServices/APIUtilities';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -63,17 +63,29 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        if (!isCheckpoint || !measurementData) {
-            const dateMilliseconds = sessionDate.getTime()
-            try {
-                let res = await logTrainerSession(initSessionData, dateMilliseconds)
+        if(trainerSessionSelected)
+        {
+            if (!isCheckpoint || !measurementData) {
+                const dateMilliseconds = sessionDate.getTime()
+                try {
+                    let res = await logTrainerSession(initSessionData, dateMilliseconds)
+                    setLogged(true);
+                    showSessionInfo(res);
+                    refreshSidebar();
+                } catch(e) {
+                    console.log("session cannot be logged: ", e);
+                }
+            } else {
+                const dateMilliseconds = sessionDate.getTime()
+                let tempSessionData = initSessionData;
+                tempSessionData.measurements = measurementData;
+                let res = await logTrainerSession(tempSessionData, dateMilliseconds)
                 setLogged(true);
                 showSessionInfo(res);
                 refreshSidebar();
-            } catch(e) {
-                console.log("session cannot be logged: ", e);
             }
-        } else {
+        }else{
+            console.log('Dietitian Logged')
             const dateMilliseconds = sessionDate.getTime()
             let tempSessionData = initSessionData;
             tempSessionData.measurements = measurementData;

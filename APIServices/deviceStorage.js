@@ -75,5 +75,3 @@ export async function deleteJWT() {
     console.log("AsyncStorage Error: " + error.message);
   }
 }
-
-

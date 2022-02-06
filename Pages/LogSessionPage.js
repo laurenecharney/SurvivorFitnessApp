@@ -11,6 +11,7 @@ import { SessionLogger } from '../Components/SessionLogger.js';
 import SidebarDietician from '../Components/SidebarDietician';
 import DieticianSession from './DieticianSession';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
+import { getCurrentRole } from '../APIServices/deviceStorage.js';
 
 // LogSessionPage
     // sideBarComponent
@@ -21,7 +22,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     constructor(props){
         super(props);
         this.state={
-            dietician: false,
+            dietician: this.props.route.params.user == 'dietitian',
             numTrainerSessions: 24,
             trainerSessionsArray:  [
             ],
@@ -42,41 +43,60 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
         //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
         // }
-        for (let i = 1; i <= this.state.numDieticianSessions; ++i){
-            this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
-        }
+        //for (let i = 1; i <= this.state.numDieticianSessions; ++i){
+         //   this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
+        //}
         this.refreshSidebar = this.refreshSidebar.bind(this);
     }
 
     pressTrainer = ()=>{
-        this.setState({dietician: false});
+        if(this.state.dietician)
+        {
+            Alert.alert(
+                "Permission Denied",
+                ("Please log in using a trainer account to access this information."),
+            );
+        }else{
+            this.setState({dietician: false});
+        }
     }
     pressDietician = ()=>{
-        this.setState({dietician: true});
+        if(this.props.route.params.user == 'trainer')
+        {
+            Alert.alert(
+                "Permission Denied",
+                ("Please log in using a dietitian account to access this information."),
+            );
+        }else{
+            this.setState({dietician: false});
+        }
     }
 
     resetRefreshFlag() {
         this.setState({refreshFlag: false});
     }
 
-     updateSessionTrainer(newSessionTrainer){
-        let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
-        if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
+     updateSession(newSession){
+        let mostRecentLogged = this.state.dietician ? this.state.dieticianSessionsArray.findIndex(i => i.logged === false) : this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+        if(!(newSession.logged || (newSession.name == (mostRecentLogged + 1)))){
             Alert.alert(
-                "Session " + newSessionTrainer.name + " Has Not Been Logged",
+                "Session " + newSession.name + " Has Not Been Logged",
                 ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
             );
         }else{
-            this.setState({sessionTrainer:newSessionTrainer.name})// or with es6 this.setState({name})
-            let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
-            this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
-            this.state.trainerSessionsArray[newSessionTrainer.name - 1].highlighted = true;
+            if(this.state.dietician){
+                this.setState({sessionDietician:newSession.name})// or with es6 this.setState({name})
+                let indexPrevHighlight = this.state.dieticianSessionsArray.findIndex(i => i.highlighted === true);
+                this.state.dieticianSessionsArray[indexPrevHighlight].highlighted = false;
+                this.state.dieticianSessionsArray[newSession.name - 1].highlighted = true;
+            }else{
+                this.setState({sessionTrainer:newSession.name})// or with es6 this.setState({name})
+                let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
+                this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
+                this.state.trainerSessionsArray[newSession.name - 1].highlighted = true;
+            }
         }
      }
-
-    updateSessionDietician(sessionDietician){
-        this.setState({sessionDietician: sessionDietician})// or with es6 this.setState({name})
-    }
 
     addSessionDietician(){
         this.setState({numDieticianSessions: this.state.numDieticianSessions + 1})
@@ -94,7 +114,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
     }
 
-    getDataBySessionNumber = (num) => {
+    getTrainerDataBySessionNumber = (num) => {
         let currentSessionData = []
         if(!this.state.sessionData.trainerSessions) {
             console.log("Error: sessionData.trainerSessions does not exist.")
@@ -117,25 +137,57 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return [];
     }
 
+    getDietitianDataBySessionNumber = (num) => {
+        let currentSessionData = []
+        if(!this.state.sessionData.dietitianSessions) {
+            console.log("Error: sessionData.dietitianSessions does not exist.")
+            return [];
+        }
+        for(let i = 0; i < this.state.sessionData.dietitianSessions.length; ++i) {
+            if (
+                num == this.state.sessionData.dietitianSessions[i].sessionIndexNumber && 
+                this.state.sessionData.dietitianSessions[i])
+            {
+                return this.state.sessionData.dietitianSessions[i];
+            }
+        }
+        console.log("Couldn't find measurements for session with index " + num.toString());
+        return [];
+    }
+
     formatSessions(rawSessionsArray){
-        for(let i = 0; i < rawSessionsArray['trainerSessions'].length; i++){
-            let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+        let sessionType = this.props.route.params.user + "Sessions"; 
+        for(let i = 0; i < rawSessionsArray[sessionType].length; i++){
+            let mostRecentLogged = this.state.dietician ? this.state.dieticianSessionsArray.findIndex(i => i.logged === false) : this.state.trainerSessionsArray.findIndex(i => i.logged === false);
             let isHighlighted = false;
-            let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+            let hasLogDate = (rawSessionsArray[sessionType][i]['initialLogDate']) != null;
 
             if (!hasLogDate && mostRecentLogged == -1){
                 isHighlighted = true
-                this.state.sessionTrainer = i + 1
+                if(this.state.dietician){
+                    this.state.sessionDietician = i + 1
+                }else{
+                    this.state.sessionTrainer = i + 1
+                }
             }
             
-           let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
-           this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+            let sessionId = rawSessionsArray[sessionType][i]['sessionIndexNumber'];
+            if(this.state.dietician){
+                this.setState({ dieticianSessionsArray: [...this.state.dieticianSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+            }else{
+                this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+            }              
        }
     }
 
     async refreshSidebar() {
         const rawSessions = await this.fetchSessions();
-        this.setState({trainerSessionsArray: []})
+        if(this.state.dietician)
+        {
+            this.setState({dieticianSessionsArray: []})
+        }else{
+            this.setState({trainerSessionsArray: []})
+        }
         this.formatSessions(rawSessions);
     }
 
@@ -152,6 +204,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     async componentDidMount() {
         const rawSessions = await this.fetchSessions();
         this.formatSessions(rawSessions);
+        const role = await getCurrentRole();
+        console.log('Roll ', role)
     }
 
     render(){
@@ -177,15 +231,20 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     <View style={{ width: '15%' }}>
                     {this.state.dietician ? 
                         <Sidebar
-                            updateSession = {newSession => this.updateSessionDietician(newSession)}
+                            updateSession = {newSession => this.updateSession(newSession)}
                             sessionsArray = {this.state.dieticianSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionDietician()}
+                            fetchSessions = {() =>this.fetchSessions()}
+                            test = {this.state.test}
+                            refreshFlag = {this.state.refreshFlag}
+                            resetRefreshFlag = {()=>this.setState({refreshFlag: false})}
+
                         />
                         :
 
                         <Sidebar
-                            updateSession={newSession=>this.updateSessionTrainer(newSession)}
+                            updateSession={newSession => this.updateSession(newSession)}
                             sessionsArray = {this.state.trainerSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionTrainer()}
@@ -198,7 +257,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     </View>
                         <SessionLogger 
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                            initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
+                            initSessionData = {this.state.dietician ? this.getDietitianDataBySessionNumber(this.state.sessionDietician) : this.getTrainerDataBySessionNumber(this.state.sessionTrainer)}
                             trainerSessionSelected={!this.state.dietician}
                             refreshSidebar={this.refreshSidebar}
                         />

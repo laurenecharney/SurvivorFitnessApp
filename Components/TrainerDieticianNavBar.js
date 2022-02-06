@@ -22,7 +22,7 @@ class TrainerDieticianNavBar extends Component {
     this.props.pressTrainer();
   };
   pressDietician = () => {
-    Alert.alert('Not a dietician!', 'This page is still in progress.\nNormally, you could click here to view information logged by this participant\'s dietician. ',
+    /*Alert.alert('Not a dietician!', 'This page is still in progress.\nNormally, you could click here to view information logged by this participant\'s dietician. ',
         [
             {
                 text: 'Got it',
@@ -30,7 +30,8 @@ class TrainerDieticianNavBar extends Component {
             }
         ]
         )
-    // this.props.pressDietician();
+      */
+     this.props.pressDietician();
   };
 
   render() {
