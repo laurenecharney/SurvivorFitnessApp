@@ -19,6 +19,7 @@ import {AlphabetList} from "react-native-section-alphabet-list";
 import { getDietitians } from '../APIServices/APIUtilities';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
+import Icon4 from "react-native-vector-icons/MaterialIcons";
 import {
     deleteJWT,
     getUser,
@@ -39,6 +40,10 @@ export default class AdminDieticianPage extends Component {
             calls: [],
             selectedDietician: {}
         };
+    }
+
+    getHideBackButton() {
+        return this.props.route.params
     }
 
     async componentDidMount(){
@@ -80,12 +85,29 @@ export default class AdminDieticianPage extends Component {
             selectedDietician: {}
         })
     }
+    
+    getHideSettingsIcon() {
+        return this.props.route.params && this.props.route.params.hideSettingsIcon;
+    }
+
 
     render() {
         return(
             <View style={styles.container} >
-                <View style={styles.heading}>
-                    <Text style={styles.headline}>Dietitians</Text>
+                <View>
+                    {this.getHideSettingsIcon() && 
+                        <View style={styles.backHeading}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
+                            <Icon4 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
+                        </TouchableOpacity>
+                        <Text style={styles.backHeadline}>Dietitians</Text>
+                        </View>
+                    }
+                    {!this.getHideSettingsIcon() && (
+                        <View style={styles.heading}>
+                            <Text style={styles.headline}>Dietitians</Text>
+                        </View>
+                    )}
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList
@@ -245,5 +267,21 @@ const styles = StyleSheet.create({
     close:{
         paddingLeft:260, 
         paddingTop:30
-    }
+    },
+    backHeading:{
+        flexDirection: "row", 
+    },
+    backHeadline: {
+    fontSize: 25,
+    marginTop: 50,
+    paddingTop: 25,
+    paddingBottom:25,
+    color: "#AED803",
+    fontWeight: "500",
+    textAlign:'left'
+    },
+    backButton:{
+    color: "#E4E4E4",
+    marginTop: 65,
+    },
 });

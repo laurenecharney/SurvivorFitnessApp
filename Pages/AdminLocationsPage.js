@@ -203,7 +203,7 @@ export default class AdminLocationsPage extends Component {
                                     <TouchableOpacity onPress={() => {
                                     const page = item && item.type === 'TRAINER_GYM' ? 'AdminTrainerPage' : 'AdminDieticianPage';
                                     this.props.navigation.navigate(page, 
-                                    {locationId: item.id})
+                                    {locationId: item.id, hideSettingsIcon: true})
                                     }}>
                                         <View style={styles.locationContainer}>
                                             <Icon name={item.icon} style={styles.icon} size={25}/>

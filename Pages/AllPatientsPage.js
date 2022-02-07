@@ -134,23 +134,28 @@ export default class AllPatientsPage extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <View style={styles.heading}>
+        <View>
           {this.getHideSettingsIcon() && 
-            <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
-              <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
-            </TouchableOpacity>
+            <View style={styles.backHeading}>
+              <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
+                <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
+              </TouchableOpacity>
+              <Text style={styles.backHeadline}>Participants</Text>
+            </View>
           }
-          <Text style={styles.headline}>Participants</Text>
           {!this.getHideSettingsIcon() && (
-            <TouchableOpacity
-              style={{ paddingLeft: 87 }}
-              onPress={() =>
-                this.props.navigation.navigate("TrainerSettingsPage")
-              }
-            >
-              <Icon2 style={styles.settings} size={30} name={"settings"} />
-              {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
-            </TouchableOpacity>
+            <View style={styles.settingsHeading}>
+              <Text style={styles.headline}>Participants</Text>
+              <TouchableOpacity
+                style={{ paddingLeft: 87 }}
+                onPress={() =>
+                  this.props.navigation.navigate("TrainerSettingsPage")
+                }
+              >
+                <Icon2 style={styles.settings} size={30} name={"settings"} />
+                {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
+              </TouchableOpacity>
+            </View>
           )}
         </View>
         <ParticipantsList
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor:'#fff'
   },
-  heading:{
+  settingsHeading:{
       flexDirection: "row", 
       justifyContent: "space-between", 
       alignItems: "center", 
@@ -226,6 +231,22 @@ const styles = StyleSheet.create({
     padding: 25,
     color: "#AED803",
     fontWeight: "500"
+  },
+  backHeading:{
+    flexDirection: "row", 
+  },
+  backHeadline: {
+    fontSize: 25,
+    marginTop: 50,
+    paddingTop: 25,
+    paddingBottom:25,
+    color: "#AED803",
+    fontWeight: "500",
+    textAlign:'left'
+  },
+  backButton:{
+    color: "#E4E4E4",
+    marginTop: 65,
   },
   settings: {
     color: "#E4E4E4",

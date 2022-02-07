@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants } from "../APIServices/APIUtilities";
 
@@ -76,15 +77,11 @@ export default class TrainerPatientsPage extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingRight: 25
-          }}
-        >
-          <Text style={styles.headline}>Participants</Text>
+        <View style={styles.backHeading}>
+          <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
+              <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
+          </TouchableOpacity>
+          <Text style={styles.backHeadline}>Participants</Text>
         </View>
         <View style={styles.listContainer}>
           <AlphabetList
@@ -374,5 +371,21 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: "33%"
-  }
+  },
+  backHeading:{
+    flexDirection: "row", 
+  },
+  backHeadline: {
+    fontSize: 25,
+    marginTop: 50,
+    paddingTop: 25,
+    paddingBottom:25,
+    color: "#AED803",
+    fontWeight: "500",
+    textAlign:'left'
+  },
+  backButton:{
+    color: "#E4E4E4",
+    marginTop: 65,
+  },
 });
