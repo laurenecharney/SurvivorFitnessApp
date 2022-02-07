@@ -146,7 +146,7 @@ export default class LocationAdminClientPage extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <View style={styles.pageContainer}>
+        <View style={styles.heading}>
           <Text style={styles.headline}>Participants</Text>
         </View>
         <ParticipantsList
@@ -205,39 +205,98 @@ const styles = StyleSheet.create({
   headline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 15,
+    marginLeft: 10,
     padding: 25,
-    color: "#AED803"
-  },
-  container:{
+    color: '#AED803',
+    fontWeight: '400',
+},
+iconContainer:{
+    alignItems:'center',
+    justifyContent:'center',
+    width:35,
+    height:35,
+    backgroundColor:'#F8F8F8',
+    borderRadius:6,
+},
+container:{
     flex: 1, 
     backgroundColor:'#fff'
-  },
-  heading:{
-      flexDirection: "row", 
-      justifyContent: "space-between", 
-      alignItems: "center", 
-      paddingRight : 25
-  },
+},
+heading:{
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    paddingRight : 25,
+    borderColor: '#E4E4E4',
+    borderBottomWidth: 1
+},
   row: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#E6E6E6",
-    backgroundColor: "#fff",
+    flexDirection: 'row',
+    borderColor: '#E6E6E6',
+    backgroundColor: '#fff',
     borderBottomWidth: 0.25,
-    borderTopWidth: 0.25,
-    padding: 40
+    borderTopWidth:0.25,
+    paddingTop: 35,
+    paddingBottom: 35,
+    width:"85%",
+    alignSelf:'center',
+    paddingRight:10,
+    justifyContent: 'center', //Centered horizontally
   },
   nameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 280
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems:'center',
+    width: "90%",
+    paddingLeft:10,
   },
   nameTxt: {
-    fontWeight: "600",
-    color: "#3E3E3E",
-    fontSize: 20,
-    width: 170
+      fontWeight: '400',
+      color: '#3E3E3E',
+      fontSize: 18,
+      width: "100%",
+  },
+  appButtonContainer: {
+    backgroundColor: "#AED804",
+    borderRadius: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 12,
+    width: 150,
+    alignSelf: "center",
+    margin: 10
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    alignSelf: "center"
+  },  modalText: {
+    fontSize: 18,
+    paddingTop: 20,
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "#AED803"
+  },
+  addNewContainer: {
+    backgroundColor: "#AED804",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: 75,
+    alignSelf: "center",
+    margin: 5,
+    marginTop: 50
+  },
+  addNewText: {
+    fontSize: 25,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center"
+  },
+  editStyle: {
+    fontSize: 14,
+    color: "#AED803",
+    alignSelf: "center",
+    alignSelf: 'flex-end'
   },
   appButtonContainer: {
     backgroundColor: "#AED804",
@@ -253,10 +312,27 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignSelf: "center"
   },
-  gymTxt: {
-    color: "#cfcfcf",
-    fontSize: 12,
-    width: 170,
+
+  child: {
+    backgroundColor: "white",
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#E7E7E7",
+    width: "75%",
+    borderRadius: 5,
+    alignSelf: "center"
+  },
+  childText: {
+    fontSize: 13,
+    color: "#B7DC21",
+    marginLeft: 30,
+    padding: 12
+  },
+  sectionHeaderContainer: {
+    backgroundColor: "#E4E4E4"
+  },
+  sectionHeaderLabel: {
+    fontSize: 16,
     paddingLeft: 10
   },
   listContainer: {
@@ -276,7 +352,7 @@ const styles = StyleSheet.create({
       color:"#AED803" 
   },
   descriptionContainer:{
-    flexDirection: "row",
+    flexDirection: "row", 
     justifyContent: "space-between"
   },
   modalContainer:{
@@ -288,7 +364,13 @@ const styles = StyleSheet.create({
   modalStyle:{
     backgroundColor: "#fff",
     width: '90%',
-    height: '70%',
+    height: '90%',
+    borderRadius: 19
+  },
+  editModalStyle:{
+    backgroundColor: "#fff",
+    width: '90%',
+    height: '60%',
     borderRadius: 19
   },
   close:{
@@ -296,9 +378,7 @@ const styles = StyleSheet.create({
     paddingTop:30
   },
   informationModalContainer:{
-    marginLeft:40, 
-    borderBottomWidth:1, 
-    borderBottomColor: "#E4E4E4", 
+    marginLeft:40,  
     paddingTop:10, 
     paddingBottom:10, 
     width:'75%'

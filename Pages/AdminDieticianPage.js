@@ -119,8 +119,8 @@ export default class AdminDieticianPage extends Component {
                     renderCustomItem={(item) => (
                         <ScrollView>
                             <View style={styles.row}>
-                                <View>
                                     <View style={styles.nameContainer}>
+                                    <View>
                                     <TouchableOpacity
                                             onPress={() => {
                                                 const routeParams =
@@ -148,11 +148,12 @@ export default class AdminDieticianPage extends Component {
                                                 <Text style={styles.gymTxt}>{item.gym}</Text>
                                             </View>
                                         </TouchableOpacity>
+                                        </View>
                                         <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
                                             <Text style={styles.infoTxt}>i</Text>
                                         </TouchableOpacity>
+                                        
                                     </View>
-                                </View>
                             </View>
                         </ScrollView>
                     )}
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         padding: 25,
         color: '#AED803',
+        fontWeight: '400',
     },
     container:{
         flex: 1, 
@@ -207,32 +209,44 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         justifyContent: "space-between", 
         alignItems: "center", 
-        paddingRight : 25
+        paddingRight : 25,
+        borderColor: '#E4E4E4',
+        borderBottomWidth: 1
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center',
         borderColor: '#E6E6E6',
         backgroundColor: '#fff',
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
-        padding: 40,
+        paddingTop: 35,
+        paddingBottom: 35,
+        width:"85%",
+        alignSelf:'center',
+        justifyContent: 'center', //Centered horizontally
+        alignItems: 'center', //Centered vertically
+        flex:1
     },
     nameContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 280,
+        justifyContent: 'space-between', //Centered horizontally
+        alignItems: 'center', //Centered vertically
+        flex:1,
+        width: "100%",
+        paddingLeft:10,
+        paddingRight:10
     },
     nameTxt: {
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#3E3E3E',
-        fontSize: 20,
-        width:170,
+        fontSize: 18,
+        paddingBottom: 10,
+        paddingLeft:5
     },
     gymTxt: {
         color: '#cfcfcf',
         fontSize: 12,
-        width:170,
+        paddingLeft: 5
     },
     listContainer: {
         paddingBottom: '33%'
@@ -242,10 +256,11 @@ const styles = StyleSheet.create({
         borderBottomWidth:1, 
         borderBottomColor: "#E4E4E4", 
         paddingBottom:20, 
-        width:'75%'},
+        width:'75%'
+    },
     locationContainer:{
         flexDirection: "row", 
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     },
     modalContainer:{
         flex: 1,
@@ -274,6 +289,7 @@ const styles = StyleSheet.create({
         height:25,
         backgroundColor:'#fff',
         borderRadius:50,
+        
     },
     infoTxt:{
         color:"#AED803" 
@@ -286,16 +302,23 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
     },
     backHeadline: {
-    fontSize: 25,
-    marginTop: 50,
-    paddingTop: 25,
-    paddingBottom:25,
-    color: "#AED803",
-    fontWeight: "500",
-    textAlign:'left'
+        fontSize: 25,
+        marginTop: 50,
+        paddingTop: 25,
+        paddingBottom:25,
+        color: "#AED803",
+        fontWeight: "400",
+        textAlign:'left'
     },
     backButton:{
-    color: "#E4E4E4",
-    marginTop: 65,
+        color: "#E4E4E4",
+        marginTop: 65,
+    },
+    settings: {
+        color: "#E4E4E4",
+        marginTop: 50,
+        paddingHorizontal: 10,
+        paddingBottom: 0,
+        marginRight: 30
     },
 });

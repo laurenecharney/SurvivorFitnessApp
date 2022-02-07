@@ -302,7 +302,9 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         justifyContent: "space-between", 
         alignItems: "center", 
-        paddingRight : 25
+        paddingRight : 25,
+        borderColor: '#E4E4E4',
+        borderBottomWidth: 1
     },
     participantOverviewRow:{
         flexDirection: "row", 
@@ -314,6 +316,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         padding: 25,
         color: '#AED803',
+        fontWeight: '400',
     },
     row: {
         flexDirection: 'row',
@@ -322,18 +325,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
-        padding: 40,
+        paddingTop: 35,
+        paddingBottom: 35,
     },
     nameContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 280,
+        width: "90%",
     },
     nameTxt: {
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#3E3E3E',
-        fontSize: 20,
-        width:170,
+        fontSize: 18,
+        paddingTop:5,
+        width: "90%",
+        paddingLeft: 20
     },
     editStyle: {
         fontSize: 14,

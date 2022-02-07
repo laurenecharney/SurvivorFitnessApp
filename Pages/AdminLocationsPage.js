@@ -205,7 +205,9 @@ export default class AdminLocationsPage extends Component {
                                     {locationId: item.id, hideBackButton: true})
                                     }}>
                                         <View style={styles.locationContainer}>
-                                            <Icon name={item.icon} style={styles.icon} size={25}/>
+                                            <View style={styles.iconContainer}>
+                                                <Icon name={item.icon} style={styles.icon} size={25}/>
+                                            </View>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                         </View>
 
@@ -390,6 +392,15 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         padding: 25,
         color: '#AED803',
+        fontWeight: '400',
+    },
+    iconContainer:{
+        alignItems:'center',
+        justifyContent:'center',
+        width:35,
+        height:35,
+        backgroundColor:'#F8F8F8',
+        borderRadius:6,
     },
     container:{
         flex: 1, 
@@ -399,31 +410,41 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         justifyContent: "space-between", 
         alignItems: "center", 
-        paddingRight : 25
+        paddingRight : 25,
+        borderColor: '#E4E4E4',
+        borderBottomWidth: 1
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center',
         borderColor: '#E6E6E6',
         backgroundColor: '#fff',
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
-        padding: 40,
+        paddingTop: 35,
+        paddingBottom: 35,
+        width:"85%",
+        alignSelf:'center',
+        paddingRight:10,
+        justifyContent: 'center', //Centered horizontally
     },
     nameContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 280,
+        alignItems:'center',
+        width: "90%",
+        paddingLeft:10,
     },
     nameTxt: {
         fontWeight: '400',
         color: '#3E3E3E',
         fontSize: 18,
-        width:170,
+        paddingTop:5,
+        width: "90%",
+        paddingLeft: 20
     },
     icon:{
         color: '#E4E4E4',
-        paddingRight: 10,
+        position: 'relative'
     },
     addButtonContainer: {
         backgroundColor:'#AED804',
