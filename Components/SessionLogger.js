@@ -79,7 +79,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             }
         } else {
             const dateMilliseconds = sessionDate.getTime()
-            let tempSessionData = initSessionData;
+            let tempSessionData = JSON.parse(JSON.stringify(initSessionData));
             tempSessionData.measurements = measurementData;
             let res = await logTrainerSession(tempSessionData, dateMilliseconds)
             setLogged(true);
@@ -137,6 +137,30 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             setLogged(true)
         }
         setMeasurementData(newMeasurementData);
+    }
+
+    const confirmDate = () => {
+        setIsDateConfirmModalVisible(false);
+        setSessionDate(newSessionDate);
+
+        const dateVal = parseInt(initSessionData['initialLogDate']);
+        const initialLogDate = new Date(dateVal)
+
+        // check if the new date is different from the previously logged date
+        if (isSameDate(newSessionDate, initialLogDate)) {
+            setLogged(true)
+            console.log("dates are equal")
+        } else {
+            setLogged(false)
+            console.log("dates are not equal")
+        }
+    }
+
+    const isSameDate = (date1, date2) => {
+        const [month1, day1, year1]       = [date1.getMonth(), date1.getDate(), date1.getFullYear()];
+        const [month2, day2, year2]       = [date2.getMonth(), date2.getDate(), date2.getFullYear()];
+        
+        return month1 == month2 && day1 == day2 && year1 == year2
     }
 
     useEffect(() => {
@@ -231,9 +255,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                                 <SmallAppButton
                                                     title={"Confirm"}
                                                     onPress={() => {
-                                                        setIsDateConfirmModalVisible(false);
-                                                        setLogged(false);
-                                                        setSessionDate(newSessionDate);
+                                                            confirmDate()
                                                     }}
                                                 />
                                                 <SmallAppButton
