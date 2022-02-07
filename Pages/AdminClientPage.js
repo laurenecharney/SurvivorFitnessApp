@@ -14,7 +14,6 @@ import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
-import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
@@ -262,20 +261,22 @@ export default class AdminClientPage extends Component {
                             <TouchableOpacity style={{paddingLeft:260, paddingTop:10}} onPress={()=>this.closeAddModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
-                            <View style={{flex: 1}}>
+                            <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                     <View style={{paddingBottom:10, width:'100%'}}>
                                         <Text style={styles.modalText} >Add Participant</Text>
                                     </View>
-                                    <AddInformationRow title = "First Name: "/>
-                                    <AddInformationRow title = "Last Name: "/>
-                                    <AddInformationRow title = "Age: "/>
-                                    <AddInformationRow title = "Email: "/>
-                                    <AddInformationRow title = "Phone Number: "/>
-                                    <AddInformationRow title = "Gym: "/>
-                                    <AddInformationRow title = "Dietician Office: "/>
-                                    <AddInformationRow title = "Start Date: "/>
-                                    <AddInformationRow title = "Goal(s): "/>
+                                    <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Phone: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Email: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Type of Cancer: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Treatment Facility: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Surgeries: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Forms of Treatment: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Physician Notes: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Trainer: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Dietician: " value = "" edit = {true}/>
+                                    <EditInformationRow title = "Goal(s): " value = "" edit = {true}/>
                                     <View style={{marginTop: 20}}>
                                         <AppButton title = {"Add"}/>
                                     </View>

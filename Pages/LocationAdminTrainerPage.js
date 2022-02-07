@@ -15,7 +15,6 @@ import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
-import AddInformationRow from "../Components/ModalComponents/AddInformationRow";
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -259,8 +258,8 @@ export default class LocationAdminTrainerPage extends Component {
                       </View>
                       <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                         <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
+                        <EditInformationRow title = "Phone Number: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
                         <EditInformationRow title = "Email: " value = {this.state.email} edit = {this.state.edit}/>
-                        <EditInformationRow title = "Phone: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
                         <RemoveButton/>
                         <AppButton
                             title={this.state.edit ? "SAVE" : "EDIT"}
@@ -285,14 +284,14 @@ export default class LocationAdminTrainerPage extends Component {
               <TouchableOpacity style={styles.close} onPress={() => this.closeAddModal()}>
                 <Icon name={"close"} color={"#E4E4E4"} size={32} />
               </TouchableOpacity>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, width: '75%', alignSelf: 'center' }}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                   <View style={{paddingBottom:10, width:'100%'}}>
                     <Text style={styles.modalText}>{"Add " + this.getUserType(false)}</Text>
                   </View>
-                  <AddInformationRow title = "Name: "/>
-                  <AddInformationRow title = "Email: "/>
-                  <AddInformationRow title = "Phone Number: "/>
+                  <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Phone Number: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Email: " value = "" edit = {true}/>
                   <View style={{marginTop: 20}}>
                       <AppButton title = {"Add"}/>
                   </View>

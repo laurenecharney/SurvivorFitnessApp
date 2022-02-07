@@ -10,7 +10,6 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
-import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
@@ -359,15 +358,15 @@ export default class AdminLocationsPage extends Component {
                                 <TouchableOpacity style={styles.close} onPress={()=>this.closeDieticianModal()}>
                                     <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                                 </TouchableOpacity>
-                                <View style={{flex: 1}}>
+                                <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
                                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={{paddingBottom:10, width:'100%'}}>
                                             <Text style={styles.modalText} >Add Dietitian Office</Text>
                                         </View>
                                         <View>
-                                            <AddInformationRow title = "Name: "/>
-                                            <AddInformationRow title = "Address: "/>
-                                            <AddInformationRow title = "Admin: "/>
+                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
