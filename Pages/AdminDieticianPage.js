@@ -121,12 +121,30 @@ export default class AdminDieticianPage extends Component {
                             <View style={styles.row}>
                                 <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => {
-                                            this.props.navigation.navigate('TrainerPatientsPage', {dietitianUserId: item.id}  
-                                        )}}>
+                                    <TouchableOpacity
+                                            onPress={() => {
+                                                const routeParams =
+                                                this.props.route.params &&
+                                                this.props.route.params.userType === "DIETITIAN"
+                                                    ? {
+                                                        hideSettingsIcon: true,
+                                                        participantsParam: {dietitianUserId: item.id}
+                                                    }
+                                                    : {
+                                                        hideSettingsIcon: true,
+                                                        participantsParam: {dietitianUserId: item.id}
+                                                    };
+                                                console.log("ROUTE PARAMS");
+                                                console.log(routeParams);
+                                                this.props.navigation.navigate(
+                                                "AllPatientsPage",
+                                                routeParams
+                                                );
+                                            }}
+                                        >
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                             <View style={styles.locationContainer}>
-                                                <Icon3 name={"location"} size={20} color={"#AED803"}/>
+                                                {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"}/>}
                                                 <Text style={styles.gymTxt}>{item.gym}</Text>
                                             </View>
                                         </TouchableOpacity>
