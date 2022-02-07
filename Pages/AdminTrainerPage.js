@@ -76,15 +76,15 @@ export default class AdminTrainerPage extends Component {
         })
     }
 
-    getHideSettingsIcon() {
-        return this.props.route.params && this.props.route.params.hideSettingsIcon;
+    getHideBackButton() {
+        return this.props.route.params && this.props.route.params.hideBackButton;
     }
 
     render() {
         return(
             <View style={styles.container} >
                 <View>
-                    {this.getHideSettingsIcon() && 
+                    {this.getHideBackButton() && 
                         <View style={styles.backHeading}>
                         <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
                             <Icon4 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
@@ -92,7 +92,7 @@ export default class AdminTrainerPage extends Component {
                         <Text style={styles.backHeadline}>Trainers</Text>
                         </View>
                     }
-                    {!this.getHideSettingsIcon() && (
+                    {!this.getHideBackButton() && (
                         <View style={styles.heading}>
                             <Text style={styles.headline}>Trainers</Text>
                         </View>

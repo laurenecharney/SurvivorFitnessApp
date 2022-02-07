@@ -42,10 +42,6 @@ export default class AdminDieticianPage extends Component {
         };
     }
 
-    getHideBackButton() {
-        return this.props.route.params
-    }
-
     async componentDidMount(){
         await this.refreshDietitians();
         console.log(await getCurrentRole());
@@ -86,8 +82,8 @@ export default class AdminDieticianPage extends Component {
         })
     }
     
-    getHideSettingsIcon() {
-        return this.props.route.params && this.props.route.params.hideSettingsIcon;
+    getHideBackButton() {
+        return this.props.route.params && this.props.route.params.hideBackButton;
     }
 
 
@@ -95,7 +91,7 @@ export default class AdminDieticianPage extends Component {
         return(
             <View style={styles.container} >
                 <View>
-                    {this.getHideSettingsIcon() && 
+                    {this.getHideBackButton() && 
                         <View style={styles.backHeading}>
                         <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
                             <Icon4 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
@@ -103,7 +99,7 @@ export default class AdminDieticianPage extends Component {
                         <Text style={styles.backHeadline}>Dietitians</Text>
                         </View>
                     }
-                    {!this.getHideSettingsIcon() && (
+                    {!this.getHideBackButton() && (
                         <View style={styles.heading}>
                             <Text style={styles.headline}>Dietitians</Text>
                         </View>

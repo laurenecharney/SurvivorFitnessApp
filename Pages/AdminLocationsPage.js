@@ -203,7 +203,7 @@ export default class AdminLocationsPage extends Component {
                                     <TouchableOpacity onPress={() => {
                                     const page = item && item.type === 'TRAINER_GYM' ? 'AdminTrainerPage' : 'AdminDieticianPage';
                                     this.props.navigation.navigate(page, 
-                                    {locationId: item.id, hideSettingsIcon: true})
+                                    {locationId: item.id, hideBackButton: true})
                                     }}>
                                         <View style={styles.locationContainer}>
                                             <Icon name={item.icon} style={styles.icon} size={25}/>
@@ -325,15 +325,15 @@ export default class AdminLocationsPage extends Component {
                                 <TouchableOpacity style={styles.close} onPress={()=>this.closeGymModal()}>
                                     <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                                 </TouchableOpacity>
-                                <View style={{flex: 1}}>
+                                <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
                                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={{paddingBottom:10, width:'100%'}}>
                                             <Text style={styles.modalText} >Add Gym</Text>
                                         </View>
                                         <View>
-                                            <AddInformationRow title = "Name: "/>
-                                            <AddInformationRow title = "Address: "/>
-                                            <AddInformationRow title = "Admin: "/>
+                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
