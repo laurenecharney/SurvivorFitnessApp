@@ -19,12 +19,13 @@ const LinkPressable = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const ConfirmDeleteModal = ({onConfirm, onCancel}) => {
-    <Modal
+const DeleteModal = ({isVisible, onConfirm, onCancel}) => {
+    
+    return(<Modal
         propagateSwipe={true}
         animationIn="slideInUp"
         animationOut="slideOutDown"
-        isVisible={confirmDeleteModal}>
+        isVisible={isVisible}>
         <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <View style={{backgroundColor: "#fff", width: "90%", height: "24%", borderRadius: 19, alignItems: "center", justifyContent: 'space-around'}}>
                 <View style={{flex: 1, width: '100%'}}>
@@ -44,7 +45,7 @@ const ConfirmDeleteModal = ({onConfirm, onCancel}) => {
                 </View>
             </View>
         </View>
-    </Modal>
+    </Modal>);
 }
 
 const NotesSection = ({noteData, callback}) => {
@@ -83,8 +84,9 @@ const NotesSection = ({noteData, callback}) => {
             onPress = {toggleNote}
             title = {!isNote ? "Add Note" : "Delete Note"}
             />
-            <ConfirmDeleteModal
-            onConfirm={() => onConfirm()} 
+            <DeleteModal
+            isVisible={confirmDeleteModal}
+            onConfirm={() => onConfirmDelete()} 
             onCancel={() => showConfirmDelete(false)}/>
             {isNote!="" && 
                 <TextInput 

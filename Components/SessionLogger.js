@@ -51,7 +51,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [logged, setLogged] = useState(false)
     const [measurementData, setMeasurementData] = useState([])
-    const [noteData, setNoteData] = useState('')
+    const [noteData, setNoteData] = useState(initSessionData.specialistNotes)
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
     const [loading, setLoading] = useState(true);
@@ -140,7 +140,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     }
 
     const updateNote = (newNote) => {
-        if(newNote != noteData) {
+        if(newNote != initSessionData.specialistNotes) {
             setLogged(false);
             setNoteData(newNote); 
         }
