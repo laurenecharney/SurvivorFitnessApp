@@ -18,6 +18,7 @@ import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
 import SettingsPage from "../Pages/SettingsPage.js";
 import TrainerSettingsPage from "../Pages/TrainerSetting.js"
 
+
 const Stack = createStackNavigator()
 
 function MainStackNavigator() {
