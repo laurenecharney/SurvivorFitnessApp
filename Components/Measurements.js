@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { callUpdateSession } from './SessionLogger'
 
 
-export const Measurements = ({ onPress, title, measurementData, callUpdateSession, updateMeasurementData}) => {
+export const Measurements = ({ measurementData, updateMeasurementData}) => {
 
     const [data, setData] = useState(measurementData ? JSON.parse(JSON.stringify(measurementData)) : emptyMeasurementData);
 
@@ -144,7 +143,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     }
 
     return (
-        <KeyboardAwareScrollView style={styles.categoriesContainer}>
+        <View style={styles.categoriesContainer}>
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
@@ -169,7 +168,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                         expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </KeyboardAwareScrollView>
+            </View>
 
     )
 }
