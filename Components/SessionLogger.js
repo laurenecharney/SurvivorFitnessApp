@@ -146,6 +146,30 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         }
     }
 
+    const confirmDate = () => {
+        setIsDateConfirmModalVisible(false);
+        setSessionDate(newSessionDate);
+
+        const dateVal = parseInt(initSessionData['initialLogDate']);
+        const initialLogDate = new Date(dateVal)
+
+        // check if the new date is different from the previously logged date
+        if (isSameDate(newSessionDate, initialLogDate)) {
+            setLogged(true)
+            console.log("dates are equal")
+        } else {
+            setLogged(false)
+            console.log("dates are not equal")
+        }
+    }
+
+    const isSameDate = (date1, date2) => {
+        const [month1, day1, year1]       = [date1.getMonth(), date1.getDate(), date1.getFullYear()];
+        const [month2, day2, year2]       = [date2.getMonth(), date2.getDate(), date2.getFullYear()];
+        
+        return month1 == month2 && day1 == day2 && year1 == year2
+    }
+
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
         // and when initSessionData is changed. It essentially waits
@@ -244,9 +268,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                             <SmallAppButton
                                                 title={"Confirm"}
                                                 onPress={() => {
-                                                    setIsDateConfirmModalVisible(false);
-                                                    setLogged(false);
-                                                    setSessionDate(newSessionDate);
+                                                    confirmDate()
                                                 }}
                                             />
                                             <SmallAppButton

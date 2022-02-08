@@ -14,11 +14,11 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import { getDietitians } from '../APIServices/APIUtilities';
-import ModalRow from '../Components/ModalComponents/ModalRow'
+import ModalHeader from '../Components/ModalComponents/ModalHeader';
+import InformationRow from '../Components/ModalComponents/InformationRow';
 import {
     deleteJWT,
     getUser,
@@ -36,20 +36,7 @@ export default class AdminDieticianPage extends Component {
         super(props);
         this.state = {
             isModalVisible: false,
-            calls: [
-                // {id:1,  value: "Abby Cohen", gym: "Balance Nutrition"},
-                // {id:2,  value: "Alicia Yang", gym: "Free Method Nutrition"} ,
-                // {id:3,  value: "Charles Wang", gym: "Horizon Nutrition"} ,
-                // {id:4,  value: "Grace Jeong", gym: "Renu Health"} ,
-                // {id:5,  value: "Ilya Ermakov", gym: "Balance Nutrition"} ,
-                // {id:6,  value: "Lauren Charney", gym: "Renu Health"} ,
-                // {id:7,  value: "Gabby Cohen", gym: "Balance Nutrition"},
-                // {id:8,  value: "Felicia Yang", gym: "Free Method Nutrition"} ,
-                // {id:9,  value: "Bucky Wang", gym: "Horizon Nutrition"} ,
-                // {id:10,  value: "Gracie Jeong", gym: "Renu Health"} ,
-                // {id:11,  value: "Bilya Ermakov", gym: "Balance Nutrition"} ,
-                // {id:12,  value: "Corinne Charney", gym: "Renu Health"} ,
-            ],
+            calls: [],
             selectedDietician: {}
         };
     }
@@ -87,7 +74,6 @@ export default class AdminDieticianPage extends Component {
         })
     }
 
-
     closeModal = () =>{
         this.setState({
             isModalVisible:false,
@@ -97,9 +83,8 @@ export default class AdminDieticianPage extends Component {
 
     render() {
         return(
-            <View style={{ flex: 1, backgroundColor:'#fff' }} >
-                
-                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
+            <View style={styles.container} >
+                <View style={styles.heading}>
                     <Text style={styles.headline}>Dietitians</Text>
                 </View>
                 <View style={styles.listContainer}>
@@ -122,25 +107,13 @@ export default class AdminDieticianPage extends Component {
                                             this.props.navigation.navigate('TrainerPatientsPage', {dietitianUserId: item.id}  
                                         )}}>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                            <View style={styles.locationContainer}>
                                                 <Icon3 name={"location"} size={20} color={"#AED803"}/>
                                                 <Text style={styles.gymTxt}>{item.gym}</Text>
                                             </View>
-
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal(item)}
-                                                          style={{
-                                                              borderWidth:1,
-                                                              borderColor:"#AED803",
-                                                              alignItems:'center',
-                                                              justifyContent:'center',
-                                                              width:25,
-                                                              height:25,
-                                                              backgroundColor:'#fff',
-                                                              borderRadius:50,
-                                                          }}>
-
-                                            <Text style={{color:"#AED803"}}>i</Text>
+                                        <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
+                                            <Text style={styles.infoTxt}>i</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -149,38 +122,28 @@ export default class AdminDieticianPage extends Component {
                     )}
                 />
                 </View>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '30%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeModal()} 
+                    onSwipeComplete={()=>this.closeModal()} 
+                    isVisible={this.state.isModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalStyle}>
+                            <TouchableOpacity style={styles.close} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803'}} >Dietitian Information</Text>
+                                    <View style={styles.modalHeaderContainer}>
+                                        <ModalHeader title = "Dietitian Information"/>
                                     </View>
-                                    <View style={{padding:6}}></View>
-                                    <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                    {[
-                                            {displayKey: 'Name:', displayValue: this.state.selectedDietician.value},
-                                            {displayKey: 'Affiliate Location:', displayValue: this.state.selectedDietician.gym},
-                                            {displayKey: 'Phone Number:', displayValue: this.state.selectedDietician.phoneNumber},
-                                            {displayKey: 'Email', displayValue: this.state.selectedDietician.email}
-                                        ].map((row, i) => 
-                                            <ModalRow 
-                                            key={i}
-                                            displayKey={row.displayKey}
-                                            displayValue={row.displayValue}/>
-                                        
-                                        )}
+                                    <View style={styles.modalInformationContainer}>
+                                        <InformationRow title = "Name: " value = {this.state.selectedDietician.value}/>
+                                        <InformationRow title = "Affiliate Location: " value = {this.state.selectedDietician.gym}/>
+                                        <InformationRow title = "Phone Number: " value = {this.state.selectedDietician.phoneNumber}/>
+                                        <InformationRow title = "Email: " value = {this.state.selectedDietician.email}/>
                                     </View>
                                 </ScrollView>
                             </View>
@@ -200,13 +163,15 @@ const styles = StyleSheet.create({
         padding: 25,
         color: '#AED803',
     },
-
-    settings:{
-        color: '#E4E4E4',
-        marginTop: 50,
-        paddingHorizontal: 10,
-        paddingBottom: 0,
-        marginRight: 30,
+    container:{
+        flex: 1, 
+        backgroundColor:'#fff'
+    },
+    heading:{
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        paddingRight : 25
     },
     row: {
         flexDirection: 'row',
@@ -216,11 +181,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
         padding: 40,
-    },
-    pic: {
-        borderRadius: 30,
-        width: 60,
-        height: 60,
     },
     nameContainer: {
         flexDirection: 'row',
@@ -238,22 +198,52 @@ const styles = StyleSheet.create({
         fontSize: 12,
         width:170,
     },
-    mblTxt: {
-        fontWeight: '200',
-        color: '#777',
-        fontSize: 13,
-    },
-    msgContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    msgTxt: {
-        fontWeight: '400',
-        color: '#008B8B',
-        fontSize: 12,
-        marginLeft: 15,
-    },
     listContainer: {
         paddingBottom: '33%'
+    },
+    modalHeaderContainer:{
+        marginLeft:40, 
+        borderBottomWidth:1, 
+        borderBottomColor: "#E4E4E4", 
+        paddingBottom:20, 
+        width:'75%'},
+    locationContainer:{
+        flexDirection: "row", 
+        justifyContent: "space-between"
+    },
+    modalContainer:{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalStyle:{
+        backgroundColor: "#fff",
+        width: '90%',
+        height: '40%',
+        borderRadius:19
+    },
+    modalInformationContainer:{
+        marginLeft:40, 
+        paddingTop:10, 
+        paddingBottom:10, 
+        width:'75%',
+    },
+    infoButton:{
+        borderWidth:1,
+        borderColor:"#AED803",
+        alignItems:'center',
+        justifyContent:'center',
+        width:25,
+        height:25,
+        backgroundColor:'#fff',
+        borderRadius:50,
+    },
+    infoTxt:{
+        color:"#AED803" 
+    },
+    close:{
+        paddingLeft:260, 
+        paddingTop:30
     }
 });
