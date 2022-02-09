@@ -15,7 +15,6 @@ import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
-import AddInformationRow from "../Components/ModalComponents/AddInformationRow";
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -149,7 +148,7 @@ export default class LocationAdminTrainerPage extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <View style={styles.pageContainer}>
+        <View style={styles.heading}>
           <Text style={styles.headline}>{this.getUserType(true)}</Text>
           <View style={styles.addButtonContainer} >
             <TouchableOpacity onPress={()=>this.openAddModal()}>
@@ -194,8 +193,7 @@ export default class LocationAdminTrainerPage extends Component {
                         );
                       }}
                     >
-                     <View style={styles.descriptionContainer}>
-                        <Icon name={item.icon} style={styles.icon} size={25} />
+                      <View style={styles.locationContainer}>
                         <Text style={styles.nameTxt}>{item.value}</Text>
                       </View>
                     </TouchableOpacity>
@@ -259,8 +257,8 @@ export default class LocationAdminTrainerPage extends Component {
                       </View>
                       <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
                         <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
+                        <EditInformationRow title = "Phone Number: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
                         <EditInformationRow title = "Email: " value = {this.state.email} edit = {this.state.edit}/>
-                        <EditInformationRow title = "Phone: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
                         <RemoveButton/>
                         <AppButton
                             title={this.state.edit ? "SAVE" : "EDIT"}
@@ -285,14 +283,14 @@ export default class LocationAdminTrainerPage extends Component {
               <TouchableOpacity style={styles.close} onPress={() => this.closeAddModal()}>
                 <Icon name={"close"} color={"#E4E4E4"} size={32} />
               </TouchableOpacity>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, width: '75%', alignSelf: 'center' }}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                   <View style={{paddingBottom:10, width:'100%'}}>
                     <Text style={styles.modalText}>{"Add " + this.getUserType(false)}</Text>
                   </View>
-                  <AddInformationRow title = "Name: "/>
-                  <AddInformationRow title = "Email: "/>
-                  <AddInformationRow title = "Phone Number: "/>
+                  <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Phone Number: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Email: " value = "" edit = {true}/>
                   <View style={{marginTop: 20}}>
                       <AppButton title = {"Add"}/>
                   </View>
@@ -310,198 +308,171 @@ const styles = StyleSheet.create({
   headline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 15,
+    marginLeft: 10,
     padding: 25,
-    color: "#AED803"
-  },
-  pageContainer:{
+    color: '#AED803',
+    fontWeight: '400',
+},
+iconContainer:{
+    alignItems:'center',
+    justifyContent:'center',
+    width:35,
+    height:35,
+    backgroundColor:'#F8F8F8',
+    borderRadius:6,
+},
+container:{
+    flex: 1, 
+    backgroundColor:'#fff'
+},
+heading:{
     flexDirection: "row", 
     justifyContent: "space-between", 
     alignItems: "center", 
-    paddingRight : 25
-  },
-  container:{
-    flex: 1, 
-    backgroundColor:'#fff'
-  },
-  heading:{
-      flexDirection: "row", 
-      justifyContent: "space-between", 
-      alignItems: "center", 
-      paddingRight : 25
-  },
-  settings: {
-    color: "#E4E4E4",
-    marginTop: 50,
-    paddingHorizontal: 10,
-    paddingBottom: 0,
-    marginRight: 30
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#E6E6E6",
-    backgroundColor: "#fff",
-    borderBottomWidth: 0.25,
-    borderTopWidth: 0.25,
-    padding: 40
-  },
-  pic: {
-    borderRadius: 30,
-    width: 60,
-    height: 60
-  },
-  nameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 280
-  },
-  nameTxt: {
-    fontWeight: "600",
-    color: "#3E3E3E",
-    fontSize: 20,
-    width: 170
-  },
-  icon: {
-    color: "#E4E4E4",
-    paddingRight: 10
-  },
-  addButtonContainer: {
-    backgroundColor: "#AED804",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: 48,
-    alignSelf: "center",
-    margin: 5,
-    marginTop: 50
-  },
-  addButtonText: {
+    paddingRight : 25,
+    borderColor: '#E4E4E4',
+    borderBottomWidth: 1
+},
+row: {
+  flexDirection: 'row',
+  borderColor: '#E6E6E6',
+  backgroundColor: '#fff',
+  borderBottomWidth: 0.25,
+  borderTopWidth:0.25,
+  paddingTop: 30,
+  paddingBottom: 30,
+  width:"85%",
+  alignSelf:'center',
+  paddingRight:10,
+  justifyContent: 'center', //Centered horizontally
+},
+nameContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems:'center',
+  width: "90%",
+  paddingLeft:10,
+},
+nameTxt: {
+    fontWeight: '400',
+    color: '#3E3E3E',
     fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  },
-  modalText: {
-    fontSize: 18,
-    paddingTop: 20,
-    alignSelf: "center",
-    fontWeight: "bold",
-    color: "#AED803"
-  },
-  addNewContainer: {
-    backgroundColor: "#AED804",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: 75,
-    alignSelf: "center",
-    margin: 5,
-    marginTop: 50
-  },
-  addNewText: {
-    fontSize: 25,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center"
-  },
-  editStyle: {
-    fontSize: 14,
-    color: "#AED803",
-    alignSelf: "center",
-    alignSelf: 'flex-end'
-  },
-  appButtonContainer: {
-    backgroundColor: "#AED804",
+    width: "100%",
+},
+icon:{
+    color: '#E4E4E4',
+    position: 'relative'
+},
+addButtonContainer: {
+  backgroundColor:'#AED804',
+  borderRadius: 10,
+  paddingVertical: 10,
+  paddingHorizontal: 10,
+  width: 48,
+  alignSelf: "center",
+  margin: 5,
+  marginTop: 50
+},
+addButtonText: {
+  fontSize: 18,
+  color: "#fff",
+  fontWeight: "bold",
+  alignSelf: "center",
+  textTransform: "uppercase"
+},
+modalText:{
+        fontSize: 18,
+        paddingTop: 20,
+        alignSelf: "center",
+        fontWeight: "bold",
+        color: "#AED803",
+},
+appButtonContainer: {
+    backgroundColor:'#AED804',
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 12,
     width: 150,
     alignSelf: "center",
     margin: 10
-  },
-  appButtonText: {
+},
+appButtonText: {
     fontSize: 18,
     color: "#fff",
-    alignSelf: "center"
-  },
-
-  child: {
-    backgroundColor: "white",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#E7E7E7",
-    width: "75%",
-    borderRadius: 5,
-    alignSelf: "center"
-  },
-  childText: {
-    fontSize: 13,
-    color: "#B7DC21",
-    marginLeft: 30,
-    padding: 12
-  },
-  sectionHeaderContainer: {
-    backgroundColor: "#E4E4E4"
-  },
-  sectionHeaderLabel: {
+    alignSelf: "center",
+},
+editStyle: {
+    fontSize: 14,
+    color: "#AED803",
+    alignSelf: "center",
+    alignSelf: 'flex-end'
+},   
+sectionHeaderContainer:{
+    backgroundColor: '#E4E4E4'
+},
+sectionHeaderLabel:{
     fontSize: 16,
     paddingLeft: 10
-  },
-  listContainer: {
-    paddingBottom: "33%"
-  },
-  infoButton:{
-    borderWidth:1,
-    borderColor:"#AED803",
-    alignItems:'center',
-    justifyContent:'center',
-    width:25,
-    height:25,
-    backgroundColor:'#fff',
-    borderRadius:50,
-  },
-  infoTxt:{
-      color:"#AED803" 
-  },
-  descriptionContainer:{
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  modalContainer:{
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modalStyle:{
-    backgroundColor: "#fff",
-    width: '90%',
-    height: '40%',
-    borderRadius: 19
-  },
-  editModalStyle:{
-    backgroundColor: "#fff",
-    width: '90%',
-    height: '60%',
-    borderRadius: 19
-  },
-  close:{
-    paddingLeft:260,
-    paddingTop:30
-  },
-  informationModalContainer:{
-    marginLeft:40,  
-    paddingTop:10, 
-    paddingBottom:10, 
-    width:'75%'
-  },
-  modalHeaderContainer:{
+},
+listContainer:{
+    paddingBottom: '33%'
+},
+modalHeaderContainer:{
     marginLeft:40, 
     borderBottomWidth:1, 
     borderBottomColor: "#E4E4E4", 
     paddingBottom:20, 
     width:'75%'
 },
+locationContainer:{
+  flexDirection: "row", 
+  justifyContent: "space-between"
+},
+infoButton:{
+  borderWidth:1,
+  borderColor:"#AED803",
+  alignItems:'center',
+  justifyContent:'center',
+  width:25,
+  height:25,
+  backgroundColor:'#fff',
+  borderRadius:50,
+},
+infoTxt:{
+  color:"#AED803" 
+},
+modalContainer:{
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+},
+modalStyle:{
+  backgroundColor: "#fff",
+  width: '90%',
+  height: '40%',
+  borderRadius: 19
+},
+close:{
+    paddingLeft:260, 
+    paddingTop:30
+},
+informationModalContainer:{
+  marginLeft:40,  
+  paddingTop:10, 
+  paddingBottom:10, 
+  width:'75%'
+},
+editModalStyle:{
+    backgroundColor: "#fff",
+    width: '90%',
+    height: '60%',
+    borderRadius:19
+},
+addNewModalStyle:{
+    backgroundColor: "#fff",
+    width: '90%',
+    height: '60%',
+    borderRadius:19
+}
 });

@@ -48,33 +48,37 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
             )}
             renderCustomItem={item => (
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.participantButton}
-                        onPress={() => {
-                            const routeParams =
-                                {
-                                    id: item.id,
-                                    name: item.firstName + ' ' + item.lastName
-                                } ;
-                            navigation.navigate('ClientInformationPage', routeParams);
-                        }}
-                    >
-                        <Text style={styles.nameTxt}>{item.value}</Text>
-                        {
-                          showTrainer &&
-                          <TrainerText item={item}/>
-                        }
-                        {
-                          showDietitian &&
-                          <DietitianText item={item}/>
-                        }
-                    </TouchableOpacity>
+                  <View style={styles.nameContainer}>
+                    <View>
+                      <TouchableOpacity
+                          onPress={() => {
+                              const routeParams =
+                                  {
+                                      id: item.id,
+                                      name: item.firstName + ' ' + item.lastName
+                                  } ;
+                              navigation.navigate('ClientInformationPage', routeParams);
+                          }}
+                      >
+                          <Text style={styles.nameTxt}>{item.value}</Text>
+                          {
+                            showTrainer &&
+                            <TrainerText item={item}/>
+                          }
+                          {
+                            showDietitian &&
+                            <DietitianText item={item}/>
+                          }
+                      </TouchableOpacity>
+                    </View>
                     <TouchableOpacity
                       onPress={() => openModal(item)}
                       style={styles.infoButton}
                       hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}
                     >
-                        <Text style={styles.infoButtonText}>i</Text>
+                        <Text style={styles.infoTxt}>i</Text>
                     </TouchableOpacity>
+                    </View>
                 </View>
             )}
           />
@@ -86,52 +90,58 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
 
 const styles = StyleSheet.create({
     container: {
+      paddingBottom: '33%'
     },
     row: {
-        flexDirection: "row",
-        alignItems: "center",
-        borderColor: "#E6E6E6",
-        backgroundColor: "#fff",
-        width: "75%",
-        borderBottomWidth: 0.25,
-        borderTopWidth: 0.25,
-        justifyContent: "space-between",
-        alignSelf: 'center',
-        paddingVertical: 15,
-        height: 90
-      },
-    nameTxt: {
-      fontWeight: "400",
-      color: "#3E3E3E",
-      fontSize: 18,
-      paddingBottom: 5,
+      flexDirection: 'row',
+      borderColor: '#E6E6E6',
+      backgroundColor: '#fff',
+      borderBottomWidth: 0.25,
+      borderTopWidth:0.25,
+      paddingTop: 35,
+      paddingBottom: 35,
+      width:"85%",
+      alignSelf:'center',
+      justifyContent: 'center', //Centered horizontally
+      alignItems: 'center', //Centered vertically
+      flex:1
     },
     nameContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width: 280
+      flexDirection: 'row',
+      justifyContent: 'space-between', //Centered horizontally
+      alignItems: 'center', //Centered vertically
+      flex:1,
+      width: "100%",
+      paddingLeft:10,
+      paddingRight:10
       },
-      infoButton: {
-        borderWidth: 1,
-        borderColor: "#AED803",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 25,
-        height: 25,
-        backgroundColor: "#fff",
-        borderRadius: 50,
-
-      },
-      infoButtonText: { 
-          color: "#AED803"
+      nameTxt: {
+          fontWeight: '400',
+          color: '#3E3E3E',
+          fontSize: 18,
+          paddingBottom: 10,
           
       },
+      infoButton:{
+        borderWidth:1,
+        borderColor:"#AED803",
+        alignItems:'center',
+        justifyContent:'center',
+        width:25,
+        height:25,
+        backgroundColor:'#fff',
+        borderRadius:50,
+        
+    },
+    infoTxt:{
+        color:"#AED803" 
+    },
       participantButton: {
+        
       },
       subText: {
         color: "#cfcfcf",
         fontSize: 12,
-        paddingLeft: 10
       },
       subTextContainer: {
         flexDirection: "row",

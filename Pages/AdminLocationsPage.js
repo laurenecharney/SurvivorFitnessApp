@@ -10,7 +10,6 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
-import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
@@ -203,10 +202,12 @@ export default class AdminLocationsPage extends Component {
                                     <TouchableOpacity onPress={() => {
                                     const page = item && item.type === 'TRAINER_GYM' ? 'AdminTrainerPage' : 'AdminDieticianPage';
                                     this.props.navigation.navigate(page, 
-                                    {locationId: item.id})
+                                    {locationId: item.id, hideBackButton: true})
                                     }}>
                                         <View style={styles.locationContainer}>
-                                            <Icon name={item.icon} style={styles.icon} size={25}/>
+                                            <View style={styles.iconContainer}>
+                                                <Icon name={item.icon} style={styles.icon} size={25}/>
+                                            </View>
                                             <Text style={styles.nameTxt}>{item.value}</Text>
                                         </View>
 
@@ -325,15 +326,15 @@ export default class AdminLocationsPage extends Component {
                                 <TouchableOpacity style={styles.close} onPress={()=>this.closeGymModal()}>
                                     <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                                 </TouchableOpacity>
-                                <View style={{flex: 1}}>
+                                <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
                                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={{paddingBottom:10, width:'100%'}}>
                                             <Text style={styles.modalText} >Add Gym</Text>
                                         </View>
                                         <View>
-                                            <AddInformationRow title = "Name: "/>
-                                            <AddInformationRow title = "Address: "/>
-                                            <AddInformationRow title = "Admin: "/>
+                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
@@ -359,15 +360,15 @@ export default class AdminLocationsPage extends Component {
                                 <TouchableOpacity style={styles.close} onPress={()=>this.closeDieticianModal()}>
                                     <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                                 </TouchableOpacity>
-                                <View style={{flex: 1}}>
+                                <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
                                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={{paddingBottom:10, width:'100%'}}>
                                             <Text style={styles.modalText} >Add Dietitian Office</Text>
                                         </View>
                                         <View>
-                                            <AddInformationRow title = "Name: "/>
-                                            <AddInformationRow title = "Address: "/>
-                                            <AddInformationRow title = "Admin: "/>
+                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
+                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
@@ -391,6 +392,15 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         padding: 25,
         color: '#AED803',
+        fontWeight: '400',
+    },
+    iconContainer:{
+        alignItems:'center',
+        justifyContent:'center',
+        width:35,
+        height:35,
+        backgroundColor:'#F8F8F8',
+        borderRadius:6,
     },
     container:{
         flex: 1, 
@@ -400,31 +410,41 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         justifyContent: "space-between", 
         alignItems: "center", 
-        paddingRight : 25
+        paddingRight : 25,
+        borderColor: '#E4E4E4',
+        borderBottomWidth: 1
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center',
         borderColor: '#E6E6E6',
         backgroundColor: '#fff',
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
-        padding: 40,
+        paddingTop: 35,
+        paddingBottom: 35,
+        width:"85%",
+        alignSelf:'center',
+        paddingRight:10,
+        justifyContent: 'center', //Centered horizontally
     },
     nameContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 280,
+        alignItems:'center',
+        width: "90%",
+        paddingLeft:10,
     },
     nameTxt: {
         fontWeight: '400',
         color: '#3E3E3E',
         fontSize: 18,
-        width:170,
+        paddingTop:5,
+        width: "90%",
+        paddingLeft: 20
     },
     icon:{
         color: '#E4E4E4',
-        paddingRight: 10,
+        position: 'relative'
     },
     addButtonContainer: {
         backgroundColor:'#AED804',
