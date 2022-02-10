@@ -140,9 +140,11 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     }
 
     const updateNote = (newNote) => {
+        setNoteData(newNote);
         if(newNote != initSessionData.specialistNotes) {
             setLogged(false);
-            setNoteData(newNote); 
+        } else {
+            setLogged(true);
         }
     }
 
