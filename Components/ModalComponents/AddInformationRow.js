@@ -11,19 +11,16 @@ import {
 } from "react-native";
 import TextBoxSingleLine from "../TextBoxSingleLine";
 
-export default class AddInformationRow extends Component {
-  constructor(props) {
-    super(props);
-  }
+export default AddInformationRow = ({title, callback}) => {
 
-  render() {
-    return ( 
-        <View style={styles.container}>
-            <Text style={styles.childText}>{this.props.title}</Text>
-            <TextBoxSingleLine content = ""/>
-        </View>
-    );
-  }
+  return ( 
+      <View style={styles.container}>
+          <Text style={styles.childText}>{title}</Text>
+          <TextBoxSingleLine 
+            content = ""
+            callback = {text => callback(text)}/>
+      </View>
+  );
 }
 const styles = StyleSheet.create({
     container:{
