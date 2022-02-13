@@ -17,11 +17,12 @@ export default AddInformationRow = ({title, callback}) => {
       <View style={styles.container}>
         <Text style={styles.childText}>{title}</Text>
         <TextBoxSingleLine 
-          content = ""
+          initValue = ""
           callback = {text => callback(text)}/>
       </View>
   );
 }
+
 const styles = StyleSheet.create({
     container:{
       width: "85%",

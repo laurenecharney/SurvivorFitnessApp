@@ -17,12 +17,12 @@ export default  EditInformationRow = ({title, defaultVal, callback}) => {
       <View style={{paddingBottom: 20}}>
         <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
-          content = {defaultVal}
+          initValue = {defaultVal}
           callback = {callback}/>
       </View>
   );
-
 }
+
 const styles = StyleSheet.create({
     participantInfo:{
         fontSize: 15, 
