@@ -44,7 +44,6 @@ class SidebarDietician extends Component {
     }
 
     render() {
-        console.log(this.props.sessionsArray);
         return (
             <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true}>
                 {

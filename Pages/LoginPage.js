@@ -69,7 +69,7 @@ export default class LoginPage extends React.Component {
             await Promise.all[saveItem("id_token", res.jwt),
             saveUserInfo(res.user)];
             if (res.user.roles.includes('SUPER_ADMIN')){
-                this.props.navigation.replace('SuperAdminPage');
+                this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
                 
             } else if (res.user.roles.includes('DIETITIAN')){
@@ -79,11 +79,7 @@ export default class LoginPage extends React.Component {
                 });
 
             } else if (res.user.roles.includes('TRAINER')) {
-                console.log("I am about to save role")
                 await saveCurrentRole("TRAINER");
-                let current_role = await getCurrentRole();
-                console.log("Roley", current_role);
-                console.log("I just saved role")
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
                 });

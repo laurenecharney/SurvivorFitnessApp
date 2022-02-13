@@ -77,7 +77,6 @@ export default class AllPatientsPage extends Component {
     const paramValue = paramKey
       ? this.props.route.params.participantsParam[paramKey]
       : null;
-      this.setState({userType: paramKey.substring(0, paramKey.indexOf('User'))});
     const res = await getParticipants(paramKey, paramValue);
        this.setState({calls: res
            .map(
@@ -94,8 +93,6 @@ export default class AllPatientsPage extends Component {
            })})
 
 
-           const currentRole = await getCurrentRole();
-           console.log("getcurrentrole", currentRole)
       
    } catch (e){
        console.log(e);
@@ -204,7 +201,6 @@ export default class AllPatientsPage extends Component {
                               {
                                   id: item.id,
                                   name: item.firstName + ' ' + item.lastName,
-                                  user: this.state.userType
                               } ;
                           this.props.navigation.navigate('ClientInformationPage', routeParams);
                       }}

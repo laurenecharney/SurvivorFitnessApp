@@ -33,13 +33,13 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const ConfirmButton = ({ onPress, title, logged }) => (
-    <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
+const ConfirmButton = ({ onPress, title, logged, disabled}) => (
+    <TouchableOpacity disabled={disabled} onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -124,7 +124,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
         // and when initSessionData is changed. It essentially waits
-        // for the async call to get the ParticipantSessions to complete
+        // for the async call to get the ParticipantSessions to complet
+        
         if (initSessionData) { 
             showSessionInfo()
         } else {
@@ -225,6 +226,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     onPress={() => {
                         logSession(newSessionDate);
                     }}
+                    disabled={isDisabled}
                     logged={logged}
                 />
             </View>

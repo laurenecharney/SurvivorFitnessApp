@@ -23,7 +23,6 @@ export default class TrainerPatientsPage extends Component {
       calls: [
       ]
     };
-    console.log(this.props.route);
   }
 
   async componentDidMount() {

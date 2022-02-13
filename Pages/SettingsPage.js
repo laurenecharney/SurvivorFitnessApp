@@ -48,7 +48,6 @@ export default class SettingsPage extends React.Component {
           {user.roles && user.roles.includes("TRAINER") && (
             <TouchableOpacity
               onPress={async () => {
-                console.log("HERE");
                 await saveCurrentRole("TRAINER");
                 this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId:user.id}});
               }}
@@ -62,7 +61,6 @@ export default class SettingsPage extends React.Component {
           {user.roles && user.roles.includes("DIETITIAN") && (
             <TouchableOpacity
               onPress={async () => {
-                console.log("HERE1");
                 await saveCurrentRole("DIETITIAN");
                 this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:user.id}});
               }}

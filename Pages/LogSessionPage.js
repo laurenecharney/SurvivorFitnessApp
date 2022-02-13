@@ -19,10 +19,12 @@ import { getCurrentRole } from '../APIServices/deviceStorage.js';
     // LogSessionComponent
 
 export default class TrainerDieticianSessionWithSidebarPage extends Component{
+
     constructor(props){
         super(props);
         this.state={
-            dietician: this.props.route.params.user == 'dietitian',
+            user: "",
+            dietician: false,
             numTrainerSessions: 24,
             trainerSessionsArray:  [
             ],
@@ -50,26 +52,26 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     pressTrainer = ()=>{
-        if(this.state.dietician)
+        if(this.state.dietician && !(this.state.user == "SUPER_ADMIN"))
         {
             Alert.alert(
-                "Permission Denied",
-                ("Please log in using a trainer account to access this information."),
+                "View Only Permission",
+                ("Please log in using a trainer account to edit this information."),
             );
-        }else{
-            this.setState({dietician: false});
         }
+        this.refreshSidebar();
+        this.setState({dietician: false});
     }
     pressDietician = ()=>{
-        if(this.props.route.params.user == 'trainer')
+        if((!this.state.dietician) && !(this.state.user == "SUPER_ADMIN"))
         {
             Alert.alert(
-                "Permission Denied",
-                ("Please log in using a dietitian account to access this information."),
+                "View Only Permission",
+                ("Please log in using a dietitian account to edit this information."),
             );
-        }else{
-            this.setState({dietician: false});
         }
+        this.refreshSidebar();
+        this.setState({dietician: true});
     }
 
     resetRefreshFlag() {
@@ -156,7 +158,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     formatSessions(rawSessionsArray){
-        let sessionType = this.props.route.params.user + "Sessions"; 
+        let sessionType = this.state.dietician ? "dietitianSessions" : "trainerSessions"; 
         for(let i = 0; i < rawSessionsArray[sessionType].length; i++){
             let mostRecentLogged = this.state.dietician ? this.state.dieticianSessionsArray.findIndex(i => i.logged === false) : this.state.trainerSessionsArray.findIndex(i => i.logged === false);
             let isHighlighted = false;
@@ -202,10 +204,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     async componentDidMount() {
+        const role = await getCurrentRole();
+        this.setState({user: role});
+        this.setState({dietician: (role == "DIETITIAN")});
         const rawSessions = await this.fetchSessions();
         this.formatSessions(rawSessions);
-        const role = await getCurrentRole();
-        console.log('Roll ', role)
     }
 
     render(){
@@ -260,6 +263,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             initSessionData = {this.state.dietician ? this.getDietitianDataBySessionNumber(this.state.sessionDietician) : this.getTrainerDataBySessionNumber(this.state.sessionTrainer)}
                             trainerSessionSelected={!this.state.dietician}
                             refreshSidebar={this.refreshSidebar}
+                            isDisabled={((this.state.user == "DIETITIAN" && !this.state.dietician) || (this.state.user == "TRAINER" && this.state.dietician)) && (this.state.user != 'SUPER_ADMIN')}
                         />
                 </View>
             </View>
