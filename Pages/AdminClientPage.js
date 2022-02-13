@@ -25,6 +25,20 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+const categories = {
+    firstname: "First Name: ",
+    lastname: "Last Name: ",
+    age: "Age: ",
+    email: "Email: ",
+    phoneNumber: "Phone Number: ",
+    gym: "Gym: ",
+    dieticianOffice: "Dietician Office: ",
+    startDate: "Start Date: ",
+    goals: "Goal(s): ",
+    // numberOfTrainings: "Number of Trainings: ",
+    // numberOFAppointments: "Number of Appointments: ",
+};
+
 export default class AdminClientPage extends Component {
     state = {
         isModalVisible:false
@@ -35,22 +49,22 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             isEditModalVisible: false,
-            name:"",
-            age:"",
-            email:"",
-            phoneNumber:"",
-            cancer:"",
-            treatmentFacility:"",
-            surgeries:"",
-            formsOfTreatments:"",
-            doctNotes:"",
-            trainer:"",
-            dietitian:"",
-            startDate:"",
-            goals:"",
-            calls: [
-            ],
+            calls: [],
             selectedParticipant: {},
+            newParticipant: [
+                {id: "firstname: ", val: "",},
+                {id: "lastname: ", val: "",},
+                {id: "age: ", val: "",},
+                {id: "email: ", val: "",},
+                {id: "phoneNumber: ", val: "",},
+                {id: "gym: ", val: "",},
+                {id: "dieticianOffice: ", val: "",},
+                {id: "startDate: ", val: "",}, //probs want another datepicker
+                {id: "goals: ", val: "",},
+                {id: "numberOfTrainings: ", val: 24,},
+                {id: "numberOFAppointments: ", val: 3}],
+            //a way to implement editing a participant is preloading values on edit modal open,
+            //then changing as the user changes values, then sending to endpoint
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -142,6 +156,14 @@ export default class AdminClientPage extends Component {
 
     }
 
+    setNPVal = (key, value) => {
+        this.setState({
+            newParticipant: newParticipant.map(row => {
+                row.id==key ? {id: row.id, val: value} : row}
+                )
+        })
+    }
+
     render() {
         return(
             <View style={styles.container} >
@@ -225,7 +247,30 @@ export default class AdminClientPage extends Component {
                                             <ModalHeader title = "Edit Participant Information"/>
                                         </View>
                                         <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                            <EditInformationRow title = "Name: " value = {this.state.selectedParticipant.value} edit = {this.state.edit}/>
+                                            {
+                                                Object.keys(categories).map(key => (
+                                                <EditInformationRow
+                                                    title={categories[key]}
+                                                    callback={alert("clicked on edit "+key)}
+                                                    />
+                                                ))
+
+                                                    /** TODO
+                                                     * change EditInformationRow to accept callback (look add AddInfoRow)
+                                                     * create temp object in setNPVal
+                                                     *  - multiple state variables? one state object that is being updated?
+                                                     * remove comments
+                                                     * test add participant form - use console.log
+                                                     * api call? 
+                                                     */
+
+
+
+
+                                            }
+                                            
+                                            
+                                            {/* <EditInformationRow title = "Name: " value = {this.state.selectedParticipant.value} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Phone: " value = {this.state.selectedParticipant.phoneNumber} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Email: " value = {this.state.selectedParticipant.email} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Type of Cancer: " value = {this.state.typeOfCancer} edit = {this.state.edit}/>
@@ -235,7 +280,7 @@ export default class AdminClientPage extends Component {
                                             <EditInformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer} edit = {this.state.edit}/>
                                             <EditInformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals} edit = {this.state.edit}/>
+                                            <EditInformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals} edit = {this.state.edit}/> */}
                                             <RemoveButton/>
                                             <AppButton
                                                 title={this.state.edit ? "SAVE" : "EDIT"}
@@ -267,7 +312,15 @@ export default class AdminClientPage extends Component {
                                     <View style={{paddingBottom:10, width:'100%'}}>
                                         <Text style={styles.modalText} >Add Participant</Text>
                                     </View>
-                                    <AddInformationRow title = "First Name: "/>
+                                    {
+                                        Object.keys(categories).map(key => (
+                                            <EditInformationRow
+                                                title={categories[key]}
+                                                callback={value => setNPVal(key, value)}
+                                                />
+                                        ))
+                                    }
+                                    {/* <AddInformationRow title = "First Name: "/>
                                     <AddInformationRow title = "Last Name: "/>
                                     <AddInformationRow title = "Age: "/>
                                     <AddInformationRow title = "Email: "/>
@@ -275,7 +328,7 @@ export default class AdminClientPage extends Component {
                                     <AddInformationRow title = "Gym: "/>
                                     <AddInformationRow title = "Dietician Office: "/>
                                     <AddInformationRow title = "Start Date: "/>
-                                    <AddInformationRow title = "Goal(s): "/>
+                                    <AddInformationRow title = "Goal(s): "/> */}
                                     <View style={{marginTop: 20}}>
                                         <AppButton title = {"Add"}/>
                                     </View>
