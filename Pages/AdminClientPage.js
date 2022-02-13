@@ -10,7 +10,7 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
-import {getParticipants, getParticipantByID} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant} from '../APIServices/APIUtilities';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
@@ -157,11 +157,22 @@ export default class AdminClientPage extends Component {
     }
 
     setNPVal = (key, value) => {
-        this.setState({
-            newParticipant: newParticipant.map(row => {
-                row.id==key ? {id: row.id, val: value} : row}
-                )
+        let temp = this.state.newParticipant.map(row => {
+            row.id==key ? {id: row.id, val: value} : row
         })
+        this.setState({
+            newParticipant: temp
+        })
+    }
+
+    createNewParticipant = () => {
+        let participant = {};
+        for (const row of this.state.newParticipant) {
+            participant[row.id] = row.val;
+        }
+
+        console.log(participant);
+        addParticipant(participant);
     }
 
     render() {
@@ -250,37 +261,12 @@ export default class AdminClientPage extends Component {
                                             {
                                                 Object.keys(categories).map(key => (
                                                 <EditInformationRow
+                                                    key = {key}
                                                     title={categories[key]}
-                                                    callback={alert("clicked on edit "+key)}
+                                                    callback={console.log("clicked on edit "+key)}
                                                     />
                                                 ))
-
-                                                    /** TODO
-                                                     * change EditInformationRow to accept callback (look add AddInfoRow)
-                                                     * create temp object in setNPVal
-                                                     *  - multiple state variables? one state object that is being updated?
-                                                     * remove comments
-                                                     * test add participant form - use console.log
-                                                     * api call? 
-                                                     */
-
-
-
-
                                             }
-                                            
-                                            
-                                            {/* <EditInformationRow title = "Name: " value = {this.state.selectedParticipant.value} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Phone: " value = {this.state.selectedParticipant.phoneNumber} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Email: " value = {this.state.selectedParticipant.email} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Type of Cancer: " value = {this.state.typeOfCancer} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Treatment Facility: " value = {this.state.selectedParticipant.treatmentFacility} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Surgeries: " value = {this.state.selectedParticipant.surgeries} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Forms of Treatment: " value = {this.state.selectedParticipant.formsOfTreatment} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals} edit = {this.state.edit}/> */}
                                             <RemoveButton/>
                                             <AppButton
                                                 title={this.state.edit ? "SAVE" : "EDIT"}
@@ -312,25 +298,22 @@ export default class AdminClientPage extends Component {
                                     <View style={{paddingBottom:10, width:'100%'}}>
                                         <Text style={styles.modalText} >Add Participant</Text>
                                     </View>
-                                    {
-                                        Object.keys(categories).map(key => (
-                                            <EditInformationRow
-                                                title={categories[key]}
-                                                callback={value => setNPVal(key, value)}
-                                                />
-                                        ))
-                                    }
-                                    {/* <AddInformationRow title = "First Name: "/>
-                                    <AddInformationRow title = "Last Name: "/>
-                                    <AddInformationRow title = "Age: "/>
-                                    <AddInformationRow title = "Email: "/>
-                                    <AddInformationRow title = "Phone Number: "/>
-                                    <AddInformationRow title = "Gym: "/>
-                                    <AddInformationRow title = "Dietician Office: "/>
-                                    <AddInformationRow title = "Start Date: "/>
-                                    <AddInformationRow title = "Goal(s): "/> */}
+                                    {Object.keys(categories).map(key => (
+                                        <EditInformationRow
+                                            key = {key}
+                                            title={categories[key]}
+                                            callback={value => setNPVal(key, value)}
+                                            />
+                                        /** TODO
+                                         * test add participant form - use console.log
+                                         * api call? 
+                                         * after merge, create default vals for number of sessions
+                                         */
+                                    ))}
                                     <View style={{marginTop: 20}}>
-                                        <AppButton title = {"Add"}/>
+                                        <AppButton 
+                                            title = {"Add"}
+                                            onPress = {() => createNewParticipant()}/>
                                     </View>
                                 </ScrollView>
                             </View>
