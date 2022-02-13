@@ -15,10 +15,10 @@ export default AddInformationRow = ({title, callback}) => {
 
   return ( 
       <View style={styles.container}>
-          <Text style={styles.childText}>{title}</Text>
-          <TextBoxSingleLine 
-            content = ""
-            callback = {text => callback(text)}/>
+        <Text style={styles.childText}>{title}</Text>
+        <TextBoxSingleLine 
+          content = ""
+          callback = {text => callback(text)}/>
       </View>
   );
 }
