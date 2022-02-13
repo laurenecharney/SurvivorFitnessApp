@@ -15,7 +15,7 @@ export default  EditInformationRow = ({title, defaultVal, callback}) => {
 
   return (
       <View style={{paddingBottom: 20}}>
-        <Text style={styles.participantInfo} >{this.props.title}</Text>
+        <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
           content = {defaultVal}
           callback = {callback}/>
