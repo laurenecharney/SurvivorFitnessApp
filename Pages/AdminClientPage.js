@@ -159,6 +159,7 @@ export default class AdminClientPage extends Component {
                     showLocations={true}
                     showTrainer={true}
                     showDietitian={true}
+                    listType="participants"
                 />   
                 {/* </View> */}
                 <Modal 

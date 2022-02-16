@@ -149,7 +149,7 @@ export default class LocationAdminTrainerPage extends Component {
     return (
       <View style={styles.container} >
         <View style={styles.heading}>
-          <Text style={styles.headline}>{this.getUserType(true)}</Text>
+          <Text style={styles.headline}>{this.getUserType(true)} location admin</Text>
           <View style={styles.addButtonContainer} >
             <TouchableOpacity onPress={()=>this.openAddModal()}>
                 <Text style={styles.addButtonText}>+</Text>
@@ -157,6 +157,16 @@ export default class LocationAdminTrainerPage extends Component {
            </View>
         </View>
         <View style={styles.listContainer}>
+          { false ?
+            <ParticipantsList
+                    participantsInfo={this.state.calls}
+                    openModal={item => this.openModal(item)}
+                    // showLocations={true}
+                    // showTrainer={true}
+                    showDietitian={true}
+                    listType="participants"
+                />   
+          :
           <AlphabetList
             data={this.state.calls}
             indexLetterSize={46}
@@ -205,6 +215,7 @@ export default class LocationAdminTrainerPage extends Component {
               </View>
             )}
           />
+                    }
         </View>
         <Modal 
           propagateSwipe={true} 

@@ -17,7 +17,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const callsString = ' [{"id":1476,"firstName":"Punita","lastName":"Septus","age":33,"email":"Punita.Septus@website.com","phoneNumber":"123 456 7890","startDate":1640116118038,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Punita Septus","key":1476,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"},{"id":1580,"firstName":"Celestino","lastName":"Maureen","age":34,"email":"Celestino.Maureen@website.com","phoneNumber":"123 456 7890","startDate":1640116118039,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Celestino Maureen","key":1580,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"}] ';
 const info = JSON.parse(callsString)
 
-export const ParticipantsList = ({participantsInfo, openModal, showTrainer, showDietitian, showLocations}) => {
+export const ParticipantsList = ({participantsInfo, openModal, showTrainer, showDietitian, showLocations, listType}) => {
     const navigation = useNavigation();
 
     const TrainerText = ({item}) => {
@@ -38,6 +38,17 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
       )
     }
 
+    const navigate = ({item}) => {
+        if (listType === "participants") {
+          const routeParams =
+                    {
+                        id: item.id,
+                        name: item.firstName + ' ' + item.lastName
+                    } ;
+          navigation.navigate('ClientInformationPage', routeParams);
+        }
+    }
+
     return (
         <View style={styles.container}>
           <AlphabetList
@@ -52,12 +63,7 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
                     <View>
                       <TouchableOpacity
                           onPress={() => {
-                              const routeParams =
-                                  {
-                                      id: item.id,
-                                      name: item.firstName + ' ' + item.lastName
-                                  } ;
-                              navigation.navigate('ClientInformationPage', routeParams);
+                            navigate({item})
                           }}
                       >
                           <Text style={styles.nameTxt}>{item.value}</Text>

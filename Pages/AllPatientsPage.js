@@ -163,6 +163,7 @@ export default class AllPatientsPage extends Component {
             openModal={item => this.openModal(item)}
             showTrainer={this.state.currentRole === "TRAINER"}
             showDietitian={this.state.currentRole === "DIETITIAN"}
+            listType="participants"
             // showLocations={true}
             // showDietitian={true}
         />        

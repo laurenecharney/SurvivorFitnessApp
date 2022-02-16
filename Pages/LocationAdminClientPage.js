@@ -154,6 +154,7 @@ export default class LocationAdminClientPage extends Component {
             openModal={item => this.openModal(item)}
             showTrainer={!this.isDietitian()}
             showDietitian={this.isDietitian()}
+            listType="participants"
           />
         <Modal 
           propagateSwipe={true} 
