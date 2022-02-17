@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import LocationAdminClientPage from "../Pages/LocationAdminClientPage.js";
-import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
-import AdminLocationsPage from "../Pages/AdminLocationsPage.js";
 import LocationAdminTrainerPage from "../Pages/LocationAdminTrainerPage.js";
-import AdminParticipantPage from "../Pages/AdminClientPage.js";
-import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
 import SettingsPage from "../Pages/SettingsPage.js";
+import { LocationTrainerStackNavigator, SettingsStackNavigator }from "./AdminStackNav.js";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -34,7 +31,7 @@ export function LocationAdminPage() {
       {user.roles && user.roles.includes("TRAINER") && (
         <Tab.Screen
           name="Trainers"
-          component={LocationAdminTrainerPage}
+          component={LocationTrainerStackNavigator}
           initialParams={{
             userType: "TRAINER",
             locationId: user.locations ? user.locations[0].id : null
@@ -50,7 +47,7 @@ export function LocationAdminPage() {
       {user.roles && user.roles.includes("DIETITIAN") && (
         <Tab.Screen
           name="Dietitians"
-          component={LocationAdminTrainerPage}
+          component={LocationTrainerStackNavigator}
           initialParams={{
             userType: "DIETITIAN",
             locationId: user.locations ? user.locations[0].id : null
@@ -84,7 +81,7 @@ export function LocationAdminPage() {
       />
       <Tab.Screen
         name="Settings"
-        component={SettingsPage}
+        component={SettingsStackNavigator}
         options={{
           tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (

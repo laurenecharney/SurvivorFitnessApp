@@ -4,22 +4,19 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
-  Image,
   Alert,
   ScrollView,
-  Dimensions,
-  FlatList,
-  Button,
-  Settings
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
-import { AlphabetList } from "react-native-section-alphabet-list";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import { getCurrentRole } from "../APIServices/deviceStorage";
+import InformationRow from "../Components/ModalComponents/InformationRow";
+import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import { ParticipantsList } from "../Components/ParticipantsList";
+
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -65,9 +62,11 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
-      userType: ""
+      userType: "",
+      currentRole: ""
     };
   }
+
   async componentDidMount(){
     try {
       const paramKey =
@@ -78,9 +77,8 @@ export default class AllPatientsPage extends Component {
       ? this.props.route.params.participantsParam[paramKey]
       : null;
     const res = await getParticipants(paramKey, paramValue);
-       this.setState({calls: res
-           .map(
-           item => {
+        let temp = res.map(
+          item => {
             let newI = item;
             newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
             newI.key = parseInt(item.id);
@@ -90,9 +88,10 @@ export default class AllPatientsPage extends Component {
             newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
             return newI; 
            
-           })})
-
-
+           })        
+        const currentRole = await getCurrentRole();
+        console.log("currentRole", currentRole);
+        this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
       
    } catch (e){
        console.log(e);
@@ -112,28 +111,11 @@ export default class AllPatientsPage extends Component {
     try {
      const res = await getParticipantByID(participant.id);
      this.setState({
-         //name: (res.firstName + " " + res.lastName),
-         //dietician: (res.dietitian.firstName+ " " + res.dietitian.lastName),
-         //trainer: (res.trainer.firstName+ " " + res.trainer.lastName),
-         //age: res.age,
-         //email: res.email,
-         //phoneNumber: res.phoneNumber,
-         //cancer: res.typeOfCancer,
-         //formsOfTreatments: res.formsOfTreatment,
-         //goals: res.goals,
-         //doctNotes: res.physicianNotes,
-         //startDate: res.startDate.substring(0,10),
-         //surgeries: res.surgeries,
      })
-    
-     
-
- } catch (e){
-     console.log(e);
-     alert("Could not fetch participants data");
- }
-
-
+    } catch (e){
+        console.log(e);
+        alert("Could not fetch participants data");
+    }
 }
 
   toggleModal = () => {
@@ -149,91 +131,39 @@ export default class AllPatientsPage extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingRight: 25
-          }}
-        >
+      <View style={styles.container} >
+        <View>
           {this.getHideSettingsIcon() && 
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"} />
-          </TouchableOpacity>
-  }
-          <Text style={styles.headline}>Participants</Text>
+            <View style={styles.backHeading}>
+              <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
+                <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
+              </TouchableOpacity>
+              <Text style={styles.backHeadline}>Participants</Text>
+            </View>
+          }
           {!this.getHideSettingsIcon() && (
-            <TouchableOpacity
-              style={{ paddingLeft: 87 }}
-              onPress={() =>
-                this.props.navigation.navigate("TrainerSettingsPage")
-              }
-            >
-              <Icon2 style={styles.settings} size={30} name={"settings"} />
-              {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
-            </TouchableOpacity>
+            <View style={styles.settingsHeading}>
+              <Text style={styles.headline}>Participants</Text>
+              <TouchableOpacity
+                style={{ paddingLeft: 125 }}
+                onPress={() =>
+                  this.props.navigation.navigate("TrainerSettingsPage")
+                }
+              >
+                <Icon2 style={styles.settings} size={30} name={"settings"} />
+                {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
+              </TouchableOpacity>
+            </View>
           )}
         </View>
-        <View style={styles.listContainer}>
-          <AlphabetList
-            data={this.state.calls}
-            indexLetterColor={"#AED803"}
-            renderCustomSectionHeader={section => (
-              <View style={{ visibility: "hidden" }} />
-              // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-              // <View style={styles.sectionHeaderContainer}>
-              //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-              // </View>
-            )}
-            renderCustomItem={item => (
-              <ScrollView>
-                <View style={styles.row}>
-                  <View>
-                    <View style={styles.nameContainer}>
-                    <TouchableOpacity 
-                      onPress={() => {
-                          const routeParams =
-                              {
-                                  id: item.id,
-                                  name: item.firstName + ' ' + item.lastName,
-                              } ;
-                          this.props.navigation.navigate('ClientInformationPage', routeParams);
-                      }}
-                      hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
-                    >
-                        <Text style={styles.nameTxt}>{item.value}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => this.openModal(item)}
-                        style={{
-                          borderWidth: 1,
-                          borderColor: "#AED803",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 25,
-                          height: 25,
-                          backgroundColor: "#fff",
-                          borderRadius: 50
-                        }}
-                        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-                      >
-                        <Text style={{ color: "#AED803" }}>i</Text>
-                      </TouchableOpacity>
-
-
-
-                    </View>
-                  </View>
-                </View>
-              </ScrollView>
-            )}
-          />
-        </View>
+        <ParticipantsList
+            participantsInfo={this.state.calls}
+            openModal={item => this.openModal(item)}
+            showTrainer={this.state.currentRole === "TRAINER"}
+            showDietitian={this.state.currentRole === "DIETITIAN"}
+            // showLocations={true}
+            // showDietitian={true}
+        />        
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"
@@ -242,86 +172,39 @@ export default class AllPatientsPage extends Component {
           onSwipeComplete={() => this.closeModal()}
           isVisible={this.state.isModalVisible}
         >
-          <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '70%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-                            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803', fontWeight: "500"}} >Participant Information</Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Name: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.value}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Age: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.age}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Email: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.email}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Phone Number: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.phoneNumber}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Type of Cancer: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.typeOfCancer}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Treatment Facility: </Text>
-                                            <Text style={styles.modalText}>Fill</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Surgeries: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.surgeries}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Forms of Treatment: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.formsOfTreatment}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Physician Notes: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.physicianNotes}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Trainer: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.trainer}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Dietitian: </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.nutritionist}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Start Date: </Text>
-                                            <Text style={styles.modalText}>{this.state.startDate}</Text>
-                                        </View>
-                                        <View style={styles.modalRow}>
-                                            <Text style={styles.modalLabel} >Goal(s): </Text>
-                                            <Text style={styles.modalText}>{this.state.selectedParticipant.goals}</Text>
-                                        </View>
-                                    </View>
-                                </ScrollView>
-                            </View>
-
-                        </View>
-                    </View>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalStyle}>
+              <TouchableOpacity style={styles.close} onPress={()=>this.closeModal()}>
+                  <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+              </TouchableOpacity>
+              <View style={{flex: 1}}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                  <View style={styles.modalHeaderContainer}>
+                      <ModalHeader title = "Participant Information"/>
+                  </View>
+                  <View style={styles.modalInformationContainer}>
+                      <InformationRow title = "Name: " value = {this.state.selectedParticipant.value}/>
+                      <InformationRow title = "Age: " value = {this.state.selectedParticipant.age}/>
+                      <InformationRow title = "Email: " value = {this.state.selectedParticipant.email}/>
+                      <InformationRow title = "Phone Number: " value = {this.state.selectedParticipant.phoneNumber}/>
+                  </View>
+                  <View style={styles.modalInformationContainer}>
+                      <InformationRow title = "Type of Cancer: " value = {this.state.selectedParticipant.typeOfCancer}/>
+                      <InformationRow title = "Treatment Facility: " value = "Fill"/>
+                      <InformationRow title = "Surgeries: " value = {this.state.selectedParticipant.surgeries}/>
+                      <InformationRow title = "Forms of Treatment: " value = {this.state.selectedParticipant.formsOfTreatment}/>
+                      <InformationRow title = "Physician Notes: " value = {this.state.selectedParticipant.physicianNotes}/>
+                  </View>
+                  <View style={styles.modalInformationContainer}>
+                      <InformationRow title = "Trainer: " value = {this.state.selectedParticipant.trainer}/>
+                      <InformationRow title = "Dietician: " value = {this.state.selectedParticipant.nutritionist}/>
+                      <InformationRow title = "Start Date: " value = {this.state.selectedParticipant.startDate}/>
+                      <InformationRow title = "Goal(s): " value = {this.state.selectedParticipant.goals}/>
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </View>
         </Modal>
       </View>
     );
@@ -329,25 +212,41 @@ export default class AllPatientsPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1, 
+    backgroundColor:'#fff'
+  },
+  settingsHeading:{
+      flexDirection: "row", 
+      justifyContent: "space-between", 
+      alignItems: "center", 
+      paddingRight : 25,
+      borderColor: '#E4E4E4',
+      borderBottomWidth: 1
+  },
   headline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 25,
+    marginLeft: 10,
     padding: 25,
-    color: "#AED803",
-    fontWeight: "500"
+    color: '#AED803',
+    fontWeight: '400',
   },
-  modalLabel: {
-    fontSize: 15,
-    color: '#AED803'
+  backHeading:{
+    flexDirection: "row", 
   },
-  modalText: {
-    color: '#797979'
+  backHeadline: {
+      fontSize: 25,
+      marginTop: 50,
+      paddingTop: 25,
+      paddingBottom:25,
+      color: "#AED803",
+      fontWeight: "400",
+      textAlign:'left'
   },
-  modalRow: {
-    flexDirection:"row",
-    paddingBottom:25,
-    width:'75%'
+  backButton:{
+      color: "#E4E4E4",
+      marginTop: 65,
   },
   settings: {
     color: "#E4E4E4",
@@ -356,7 +255,6 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     marginRight: 30
   },
-
   row: {
     flexDirection: "row",
     alignItems: "center",
@@ -365,11 +263,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.25,
     borderTopWidth: 0.25,
     padding: 50
-  },
-  pic: {
-    borderRadius: 30,
-    width: 60,
-    height: 60
   },
   nameContainer: {
     flexDirection: "row",
@@ -381,21 +274,6 @@ const styles = StyleSheet.create({
     color: "#3E3E3E",
     fontSize: 18,
     width: 170
-  },
-  mblTxt: {
-    fontWeight: "200",
-    color: "#777",
-    fontSize: 13
-  },
-  msgContainer: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  msgTxt: {
-    fontWeight: "400",
-    color: "#008B8B",
-    fontSize: 12,
-    marginLeft: 15
   },
   appButtonContainer: {
     backgroundColor: "#AED804",
@@ -413,5 +291,48 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: "33%"
-  }
+  },
+  infoButton:{
+    borderWidth:1,
+    borderColor:"#AED803",
+    alignItems:'center',
+    justifyContent:'center',
+    width:25,
+    height:25,
+    backgroundColor:'#fff',
+    borderRadius:50,
+},
+infoTxt:{
+    color:"#AED803" 
+},
+modalContainer:{
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+},
+modalStyle:{
+  backgroundColor: "#fff",
+  width: '90%',
+  height: '70%',
+  borderRadius:19
+},
+modalInformationContainer:{
+  marginLeft:40, 
+  borderBottomWidth:1, 
+  borderBottomColor: "#E4E4E4", 
+  paddingTop:10, 
+  paddingBottom:10, 
+  width:'75%'
+},
+close:{
+  paddingLeft:260, 
+  paddingTop:30
+},
+modalHeaderContainer:{
+  marginLeft:40, 
+  borderBottomWidth:1, 
+  borderBottomColor: "#E4E4E4", 
+  paddingBottom:20, 
+  width:'75%'},
 });

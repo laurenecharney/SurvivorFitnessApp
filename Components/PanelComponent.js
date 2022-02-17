@@ -1,4 +1,4 @@
-import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight,Animated} from 'react-native'; //Step 1
+import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight} from 'react-native'; //Step 1
 
 class Panel extends Component{
     constructor(props){

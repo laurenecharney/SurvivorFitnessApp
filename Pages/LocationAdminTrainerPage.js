@@ -8,15 +8,19 @@ import {
   TextInput
 } from "react-native";
 import Modal from "react-native-modal";
-import ModalRow from '../Components/ModalComponents/ModalRow'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getTrainers, getDietitians } from "../APIServices/APIUtilities";
+import { AlphabetList } from "react-native-section-alphabet-list";
+import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import InformationRow from "../Components/ModalComponents/InformationRow";
+import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
+import RemoveButton from '../Components/ModalComponents/RemoveButton';
+
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
   </TouchableOpacity>
 );
-import { AlphabetList } from "react-native-section-alphabet-list";
 
 export default class LocationAdminTrainerPage extends Component {
   state = {
@@ -95,19 +99,18 @@ export default class LocationAdminTrainerPage extends Component {
         isEditModalVisible:true,
         edit: true
     })
-}
-
-toggleEditModal = () =>{
-    this.setState({
-        isEditModalVisible:!this.state.isEditModalVisible
-    })
-}
-closeEditModal = () =>{
-    this.setState({
-        isEditModalVisible:false,
-        edit: false
-    })
-}
+  }
+  toggleEditModal = () =>{
+      this.setState({
+          isEditModalVisible:!this.state.isEditModalVisible
+      })
+  }
+  closeEditModal = () =>{
+      this.setState({
+          isEditModalVisible:false,
+          edit: false
+      })
+  }
   openAddModal = () => {
     this.setState({
       isAddModalVisible: true
@@ -142,21 +145,14 @@ closeEditModal = () =>{
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingRight: 25
-          }}
-        >
+      <View style={styles.container} >
+        <View style={styles.heading}>
           <Text style={styles.headline}>{this.getUserType(true)}</Text>
-          <View style={styles.addButtonContainer}>
-            <TouchableOpacity onPress={() => this.openAddModal()}>
-              <Text style={styles.addButtonText}>+</Text>
+          <View style={styles.addButtonContainer} >
+            <TouchableOpacity onPress={()=>this.openAddModal()}>
+                <Text style={styles.addButtonText}>+</Text>
             </TouchableOpacity>
-          </View>
+           </View>
         </View>
         <View style={styles.listContainer}>
           <AlphabetList
@@ -194,30 +190,12 @@ closeEditModal = () =>{
                         );
                       }}
                     >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <Icon name={item.icon} style={styles.icon} size={25} />
+                      <View style={styles.locationContainer}>
                         <Text style={styles.nameTxt}>{item.value}</Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => this.openModal(item)}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: "#AED803",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: 25,
-                        height: 25,
-                        backgroundColor: "#fff",
-                        borderRadius: 50
-                      }}
-                    >
-                      <Text style={{ color: "#AED803" }}>i</Text>
+                    <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
+                      <Text style={styles.infoTxt}>i</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -225,215 +203,93 @@ closeEditModal = () =>{
             )}
           />
         </View>
-        <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '40%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
-                                    <Text style={{ fontSize: 19, color: "#AED803" }}>{this.getUserType(false) + " Information"}</Text>
-                                    </View>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        <View  style={{justifyContent: 'space-between'}}>
-                                            <TouchableOpacity onPress={()=>this.openEditModal()}>
-                                                <Text style = {styles.editStyle}>edit</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Name: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.name}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Email: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.email}</Text>
-                                        </View>
-                                        <View style={{flexDirection:"row", paddingBottom:25,width:'75%' }}>
-                                            <Text style={{fontSize: '15', color: '#AED803'}} >Phone Number: </Text>
-                                            <Text style={{color: '#797979'}}>{this.state.phoneNumber}</Text>
-                                        </View>
-                                    </View>
-
-                                </ScrollView>
+        <Modal 
+          propagateSwipe={true} 
+          animationIn="slideInUp" 
+          animationOut="slideOutDown" 
+          onBackdropPress={()=>this.closeModal()} 
+          onSwipeComplete={()=>this.closeModal()} 
+          isVisible={this.state.isModalVisible}>
+          <View style={styles.modalContainer}>
+              <View style={styles.modalStyle}>
+                  <TouchableOpacity style={styles.close} onPress={()=>this.closeModal()}>
+                      <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                  </TouchableOpacity>
+                  <View style={{flex: 1}}>
+                      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                          <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:30, width:'75%'}}>
+                          <Text style={{ fontSize: 19, color: "#AED803" }}>{this.getUserType(false) + " Information"}</Text>
+                          </View>
+                          <View style={styles.informationModalContainer}>
+                            <View  style={{justifyContent: 'space-between'}}>
+                              <TouchableOpacity onPress={()=>this.openEditModal()}>
+                                  <Text style = {styles.editStyle}>edit</Text>
+                              </TouchableOpacity>
                             </View>
+                            <InformationRow title = "Name: " value = {this.state.name}/>
+                            <InformationRow title = "Email: " value = {this.state.email}/>
+                            <InformationRow title = "Phone Number: " value = {this.state.phoneNumber}/>
+                          </View>
+                      </ScrollView>
+                  </View>
 
-                        </View>
-                    </View>
-                    <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeEditModal()} onSwipeComplete={()=>this.closeEditModal()} isVisible={this.state.isEditModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '45%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeEditModal()}>
-                                <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1}}>
-
-                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    
-                                <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: '19', color: '#AED803'}} >Edit Information</Text>
-                                    </View>
-                                    <View style={{padding:6}}></View>
-                                    <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                    <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Name: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.name || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newName => this.setState({name: newName})}
-                                            />
-                                        }
-
-                                        </View>
-                                        </View>
-
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Email: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.phoneNumber || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newPhoneNumber => this.setState({phoneNumber: newPhoneNumber})}
-                                            />
-                                        }
-
-                                        </View>
-                                        </View>
-
-
-                                        <View style={{paddingBottom: 20}}>
-                                        <Text style={{fontSize: '15', color: '#AED803', paddingBottom: 10}} >Phone Number: </Text>
-                                        <View style={styles.child}>
-                                        {
-                                            <TextInput style = {styles.input}
-                                            returnKeyType="done"
-                                            editable={this.state.edit}
-                                            //onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                            blurOnSubmit={false}
-                                            underlineColorAndroid = "transparent"
-                                            defaultValue = {this.state.email || ''}
-                                            placeholderTextColor = "#D5D5D5"
-                                            color="#797979"
-                                            autoCapitalize = "sentences"
-                                            onChangeText = {newEmail => this.setState({email: newEmail})}
-                                            />
-                                        }
-
-                                        </View>
-                                        </View>
-
-                                        </View>
-
-                                </ScrollView>
-                            </View>
-
-                        </View>
-                    </View>  
-                    </Modal>
-                </Modal>
+              </View>
+            </View>
+            <Modal 
+              propagateSwipe={true} 
+              animationIn="slideInUp" 
+              animationOut="slideOutDown" 
+              onBackdropPress={()=>this.closeEditModal()} 
+              onSwipeComplete={()=>this.closeEditModal()} 
+              isVisible={this.state.isEditModalVisible}>
+              <View style={styles.modalContainer}>
+                <View style={styles.editModalStyle}>
+                  <TouchableOpacity style={styles.close} onPress={()=>this.closeEditModal()}>
+                      <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                  </TouchableOpacity>
+                  <View style={{flex: 1}}>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                      <View style={styles.modalHeaderContainer}>
+                        <ModalHeader title = "Edit Information"/>
+                      </View>
+                      <View style={{marginLeft:40,  paddingTop:10, paddingBottom:10, width:'75%'}}>
+                        <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
+                        <EditInformationRow title = "Phone Number: " value = {this.state.phoneNumber} edit = {this.state.edit}/>
+                        <EditInformationRow title = "Email: " value = {this.state.email} edit = {this.state.edit}/>
+                        <RemoveButton/>
+                        <AppButton
+                            title={this.state.edit ? "SAVE" : "EDIT"}
+                            onPress={() => {()=>this.closeEditModal()}}
+                            />
+                      </View>
+                    </ScrollView>
+                  </View>
+                </View>
+              </View>  
+            </Modal>
+        </Modal>
         <Modal
           propagateSwipe={true}
           animationIn="slideInUp"
           animationOut="slideOutDown"
           onBackdropPress={() => this.closeAddModal()}
           onSwipeComplete={() => this.closeAddModal()}
-          isVisible={this.state.isAddModalVisible}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "90%",
-                height: "50%",
-                borderRadius: "19"
-              }}
-            >
-              <TouchableOpacity
-                style={{ paddingLeft: 260, paddingTop: 10 }}
-                onPress={() => this.closeAddModal()}
-              >
+          isVisible={this.state.isAddModalVisible}>
+          <View style={styles.modalContainer}>
+                <View style={styles.editModalStyle}>
+              <TouchableOpacity style={styles.close} onPress={() => this.closeAddModal()}>
                 <Icon name={"close"} color={"#E4E4E4"} size={32} />
               </TouchableOpacity>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, width: '75%', alignSelf: 'center' }}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                  <View style={{ paddingBottom: 10, width: "100%" }}>
-                    <Text style={styles.modalText}>
-                      {"Add " + this.getUserType(false)}
-                    </Text>
+                  <View style={{paddingBottom:10, width:'100%'}}>
+                    <Text style={styles.modalText}>{"Add " + this.getUserType(false)}</Text>
                   </View>
-                  <View>
-                    <Text style={styles.childText}>Name</Text>
-                    <View style={styles.child}>
-                      <TextInput
-                        style={styles.input}
-                        blurOnSubmit={false}
-                        underlineColorAndroid="transparent"
-                        color="black"
-                        autoCapitalize="sentences"
-                      />
-                    </View>
-                    <Text style={styles.childText}>Email</Text>
-                    <View style={styles.child}>
-                      <TextInput
-                        style={styles.input}
-                        blurOnSubmit={false}
-                        underlineColorAndroid="transparent"
-                        color="black"
-                        autoCapitalize="sentences"
-                      />
-                    </View>
-                    <Text style={styles.childText}>Phone Number</Text>
-                    <View style={styles.child}>
-                      <TextInput
-                        style={styles.input}
-                        blurOnSubmit={false}
-                        underlineColorAndroid="transparent"
-                        color="black"
-                        autoCapitalize="sentences"
-                      />
-                    </View>
-                  </View>
-                  <View style={{ marginTop: 20 }}>
-                    <AppButton title={"Add"} />
+                  <EditInformationRow title = "Name: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Phone Number: " value = "" edit = {true}/>
+                  <EditInformationRow title = "Email: " value = "" edit = {true}/>
+                  <View style={{marginTop: 20}}>
+                      <AppButton title = {"Add"}/>
                   </View>
                 </ScrollView>
               </View>
@@ -449,147 +305,171 @@ const styles = StyleSheet.create({
   headline: {
     fontSize: 25,
     marginTop: 50,
-    marginLeft: 15,
+    marginLeft: 10,
     padding: 25,
-    color: "#AED803"
-  },
-
-  settings: {
-    color: "#E4E4E4",
-    marginTop: 50,
-    paddingHorizontal: 10,
-    paddingBottom: 0,
-    marginRight: 30
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#E6E6E6",
-    backgroundColor: "#fff",
-    borderBottomWidth: 0.25,
-    borderTopWidth: 0.25,
-    padding: 40
-  },
-  pic: {
-    borderRadius: 30,
-    width: 60,
-    height: 60
-  },
-  nameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 280
-  },
-  nameTxt: {
-    fontWeight: "600",
-    color: "#3E3E3E",
-    fontSize: 20,
-    width: 170
-  },
-  mblTxt: {
-    fontWeight: "200",
-    color: "#777",
-    fontSize: 13
-  },
-  msgContainer: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  msgTxt: {
-    fontWeight: "400",
-    color: "#008B8B",
-    fontSize: 12,
-    marginLeft: 15
-  },
-  icon: {
-    color: "#E4E4E4",
-    paddingRight: 10
-  },
-  addButtonContainer: {
-    backgroundColor: "#AED804",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: 48,
-    alignSelf: "center",
-    margin: 5,
-    marginTop: 50
-  },
-  addButtonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  },
-  modalText: {
-    fontSize: 18,
-    paddingTop: 20,
-    alignSelf: "center",
-    fontWeight: "bold",
-    color: "#AED803"
-  },
-  addNewContainer: {
-    backgroundColor: "#AED804",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: 75,
-    alignSelf: "center",
-    margin: 5,
-    marginTop: 50
-  },
-  addNewText: {
-    fontSize: 25,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center"
-  },
-  editStyle: {
-    fontSize: 14,
-    color: "#AED803",
-    alignSelf: "center",
-    alignSelf: 'flex-end'
+    color: '#AED803',
+    fontWeight: '400',
 },
-
-  appButtonContainer: {
-    backgroundColor: "#AED804",
+iconContainer:{
+    alignItems:'center',
+    justifyContent:'center',
+    width:35,
+    height:35,
+    backgroundColor:'#F8F8F8',
+    borderRadius:6,
+},
+container:{
+    flex: 1, 
+    backgroundColor:'#fff'
+},
+heading:{
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    paddingRight : 25,
+    borderColor: '#E4E4E4',
+    borderBottomWidth: 1
+},
+row: {
+  flexDirection: 'row',
+  borderColor: '#E6E6E6',
+  backgroundColor: '#fff',
+  borderBottomWidth: 0.25,
+  borderTopWidth:0.25,
+  paddingTop: 30,
+  paddingBottom: 30,
+  width:"85%",
+  alignSelf:'center',
+  paddingRight:10,
+  justifyContent: 'center', //Centered horizontally
+},
+nameContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems:'center',
+  width: "90%",
+  paddingLeft:10,
+},
+nameTxt: {
+    fontWeight: '400',
+    color: '#3E3E3E',
+    fontSize: 18,
+    width: "100%",
+},
+icon:{
+    color: '#E4E4E4',
+    position: 'relative'
+},
+addButtonContainer: {
+  backgroundColor:'#AED804',
+  borderRadius: 10,
+  paddingVertical: 10,
+  paddingHorizontal: 10,
+  width: 48,
+  alignSelf: "center",
+  margin: 5,
+  marginTop: 50
+},
+addButtonText: {
+  fontSize: 18,
+  color: "#fff",
+  fontWeight: "bold",
+  alignSelf: "center",
+  textTransform: "uppercase"
+},
+modalText:{
+        fontSize: 18,
+        paddingTop: 20,
+        alignSelf: "center",
+        fontWeight: "bold",
+        color: "#AED803",
+},
+appButtonContainer: {
+    backgroundColor:'#AED804',
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 12,
     width: 150,
     alignSelf: "center",
     margin: 10
-  },
-  appButtonText: {
+},
+appButtonText: {
     fontSize: 18,
     color: "#fff",
-    alignSelf: "center"
-  },
-
-  child: {
-    backgroundColor: "white",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#E7E7E7",
-    width: "75%",
-    borderRadius: 5,
-    alignSelf: "center"
-  },
-  childText: {
-    fontSize: 13,
-    color: "#B7DC21",
-    marginLeft: 30,
-    padding: 12
-  },
-  sectionHeaderContainer: {
-    backgroundColor: "#E4E4E4"
-  },
-  sectionHeaderLabel: {
+    alignSelf: "center",
+},
+editStyle: {
+    fontSize: 14,
+    color: "#AED803",
+    alignSelf: "center",
+    alignSelf: 'flex-end'
+},   
+sectionHeaderContainer:{
+    backgroundColor: '#E4E4E4'
+},
+sectionHeaderLabel:{
     fontSize: 16,
     paddingLeft: 10
-  },
-  listContainer: {
-    paddingBottom: "33%"
-  }
+},
+listContainer:{
+    paddingBottom: '33%'
+},
+modalHeaderContainer:{
+    marginLeft:40, 
+    borderBottomWidth:1, 
+    borderBottomColor: "#E4E4E4", 
+    paddingBottom:20, 
+    width:'75%'
+},
+locationContainer:{
+  flexDirection: "row", 
+  justifyContent: "space-between"
+},
+infoButton:{
+  borderWidth:1,
+  borderColor:"#AED803",
+  alignItems:'center',
+  justifyContent:'center',
+  width:25,
+  height:25,
+  backgroundColor:'#fff',
+  borderRadius:50,
+},
+infoTxt:{
+  color:"#AED803" 
+},
+modalContainer:{
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+},
+modalStyle:{
+  backgroundColor: "#fff",
+  width: '90%',
+  height: '40%',
+  borderRadius: 19
+},
+close:{
+    paddingLeft:260, 
+    paddingTop:30
+},
+informationModalContainer:{
+  marginLeft:40,  
+  paddingTop:10, 
+  paddingBottom:10, 
+  width:'75%'
+},
+editModalStyle:{
+    backgroundColor: "#fff",
+    width: '90%',
+    height: '60%',
+    borderRadius:19
+},
+addNewModalStyle:{
+    backgroundColor: "#fff",
+    width: '90%',
+    height: '60%',
+    borderRadius:19
+}
 });

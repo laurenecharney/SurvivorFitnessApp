@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView, 
+  ActivityIndicator,
   Platform,
   LayoutAnimation,
   TextInput,
@@ -19,6 +20,9 @@ import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
 import { logTrainerSession, logDietitianSession } from '../APIServices/APIUtilities';
+import NotesSection from './NoteSection';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const AppButton = ({ onPress, title, logged }) => (
     <TouchableOpacity onPress={onPress} 
@@ -39,7 +43,7 @@ const ConfirmButton = ({ onPress, title, logged, disabled}) => (
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -47,8 +51,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     const [timePickerWidth, setTimePickerWidth] = useState(125);
     const [logged, setLogged] = useState(false)
     const [measurementData, setMeasurementData] = useState([])
+    const [noteData, setNoteData] = useState(initSessionData.specialistNotes)
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
+    const [loading, setLoading] = useState(true);
 
     //called by Measurements component when a measurement is updated
     //will be called on unmount if not already logged
@@ -63,36 +69,49 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        if(trainerSessionSelected)
-        {
-            if (!isCheckpoint || !measurementData) {
-                const dateMilliseconds = sessionDate.getTime()
-                try {
-                    let res = await logTrainerSession(initSessionData, dateMilliseconds)
-                    setLogged(true);
-                    showSessionInfo(res);
-                    refreshSidebar();
-                } catch(e) {
-                    console.log("session cannot be logged: ", e);
-                }
-            } else {
-                const dateMilliseconds = sessionDate.getTime()
-                let tempSessionData = initSessionData;
-                tempSessionData.measurements = measurementData;
-                let res = await logTrainerSession(tempSessionData, dateMilliseconds)
-                setLogged(true);
-                showSessionInfo(res);
-                refreshSidebar();
-            }
-        }else{
-            console.log('Dietitian Logged')
-            const dateMilliseconds = sessionDate.getTime()
-            let tempSessionData = initSessionData;
+        // ********** FIXME can delete with merge ***********************************
+        // if(trainerSessionSelected)
+        // {
+        //     // if (!isCheckpoint || !measurementData) {
+        //     //     const dateMilliseconds = sessionDate.getTime()
+        //     //     try {
+        //     //         let res = await logTrainerSession(initSessionData, dateMilliseconds)
+        //     //         setLogged(true);
+        //     //         showSessionInfo(res);
+        //     //         refreshSidebar();
+        //     //     } catch(e) {
+        //     //         console.log("session cannot be logged: ", e);
+        //     //     }
+        //     // } else {
+        //     //     const dateMilliseconds = sessionDate.getTime()
+        //     //     let tempSessionData = initSessionData;
+        //     //     tempSessionData.measurements = measurementData;
+        //     //     let res = await logTrainerSession(tempSessionData, dateMilliseconds)
+        //     //     setLogged(true);
+        //     //     showSessionInfo(res);
+        //     //     refreshSidebar();
+        //     // }
+        // }else{
+        //     console.log('Dietitian Logged')
+        //     const dateMilliseconds = sessionDate.getTime()
+        //     let tempSessionData = JSON.parse(JSON.stringify(initSessionData));
+        let tempSessionData = JSON.parse(JSON.stringify(initSessionData));
+        if (isCheckpoint && measurementData) {
             tempSessionData.measurements = measurementData;
+        }
+        tempSessionData.specialistNotes = noteData;
+        const dateMilliseconds = sessionDate.getTime()
+        let previouslyHadLogDate = initSessionData['initialLogDate'] != null;
+
+
+        try {
             let res = await logTrainerSession(tempSessionData, dateMilliseconds)
             setLogged(true);
             showSessionInfo(res);
-            refreshSidebar();
+            showLoggedSessionInSidebar(initSessionData.sessionIndexNumber, previouslyHadLogDate)
+            // refreshSidebar(); // this is redundant, with slightly different logic 
+        } catch(e) {
+            console.log("session cannot be logged: ", e);
         }
     }
 
@@ -103,123 +122,197 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     const showSessionInfo = (newSessionData = null) => {
         if (newSessionData == null) {
-            newSessionData = initSessionData;
+            newSessionData = JSON.parse(JSON.stringify(initSessionData));
+            setMeasurementData(newSessionData.measurements)
+        } else {
+            console.log("showsession info and newSessionData is not null")
         }
         if (newSessionData.lastUpdatedDate) {
             const dateVal = parseInt(newSessionData.initialLogDate);
             let tempDate = new Date(dateVal)
             setSessionDate(tempDate)
+            setNewSessionDate(tempDate)
             setTimePickerWidth(115 + 10 * (tempDate.getDate() < 10? 0 : 1))
             setLogged(true)
         } else {
+            let tempDate = new Date()
+            setSessionDate(tempDate)
+            setNewSessionDate(tempDate)
             setLogged(false)
         }
     }
 
+    const didMeasurementsChange = (newMeasurementData) => {
+        const oldMeasurementData = initSessionData.measurements
+        if (oldMeasurementData.length != newMeasurementData.length) {
+            return true;
+        }
+        for (let i = 0; i < oldMeasurementData.length; i++) {
+            if (oldMeasurementData[i].value != newMeasurementData[i].value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     const updateMeasurementData = (newMeasurementData) => {
-        setLogged(false)
+        if (didMeasurementsChange(newMeasurementData)) {
+            setLogged(false)
+        } else if (initSessionData.lastUpdatedDate) {
+            // if a session has been logged and the "new measurement data" is identical
+            // to what is stored in the backend, then the session is still logged
+            setLogged(true)
+        }
         setMeasurementData(newMeasurementData);
+    }
+
+    const updateNote = (newNote) => {
+        if(newNote != initSessionData.specialistNotes) {
+            setLogged(false);
+            setNoteData(newNote); 
+        }
+    }
+
+    const confirmDate = () => {
+        setIsDateConfirmModalVisible(false);
+        setSessionDate(newSessionDate);
+
+        const dateVal = parseInt(initSessionData['initialLogDate']);
+        const initialLogDate = new Date(dateVal)
+
+        // check if the new date is different from the previously logged date
+        if (isSameDate(newSessionDate, initialLogDate)) {
+            setLogged(true)
+            console.log("dates are equal")
+        } else {
+            setLogged(false)
+            console.log("dates are not equal")
+        }
+    }
+
+    const isSameDate = (date1, date2) => {
+        const [month1, day1, year1]       = [date1.getMonth(), date1.getDate(), date1.getFullYear()];
+        const [month2, day2, year2]       = [date2.getMonth(), date2.getDate(), date2.getFullYear()];
+        
+        return month1 == month2 && day1 == day2 && year1 == year2
     }
 
     useEffect(() => {
         // this React lifecycle hook gets called when the component is first loaded
         // and when initSessionData is changed. It essentially waits
-        // for the async call to get the ParticipantSessions to complet
-        
-        if (initSessionData) { 
+        // for the async call to get the ParticipantSessions to complete
+
+        // if initSessionData is an (empty) array, data is not ready. Otherwise it is an object, data is ready
+        if (!Array.isArray(initSessionData)) { 
+            setLoading(false)
             showSessionInfo()
-        } else {
-            console.log("Data not ready yet")
         }
+
+        // ****** initSessionData always holds the data which is stored in the backend for the particular session.
+        // When the page first loads, it makes a call to the backend, and initSessionData
+        // changes from null to the data returned.
+        // When a session is logged, it makes a call to the backend, and initSessionData
+        // again takes the data returned from the backend.
     }, [initSessionData]);
 
     return(
-        <View style = {styles.container}>
-            <ScrollView 
-                contentContainerStyle = {styles.scrollContentContainer}
-                style={styles.scrollViewStyle}
-            >
-                <View style={styles.sessionHeader}>
-                    <Text style={styles.sessionheaderText}>
-                        {"Session "+initSessionData.sessionIndexNumber}
-                    </Text>
+        <View style={styles.container}>
+            {
+                loading ? 
+                <ActivityIndicator style={{position: "absolute", left: "30%", top: 200}} size="large"/>
+                :
+                <View style = {styles.container}>
+                
+                    <KeyboardAwareScrollView 
+                        contentContainerStyle = {styles.scrollContentContainer}
+                        style={styles.scrollViewStyle}
+                    >
+                        <View style={styles.sessionHeader}>
+                            <Text style={styles.sessionheaderText}>
+                                {"Session "+initSessionData.sessionIndexNumber}
+                            </Text>
+                            {
+                            (trainerSessionSelected && isCheckpoint) &&
+                                <Text style={styles.sessionSubheaderText}>
+                                    It's measurement day! Record your participant's measurements before
+                                    logging the session.
+                                </Text>
+                            }
+                        </View>
+                        
+                        
+                
+                
+                    <TouchableOpacity
+                        style={styles.dateBar}
+                        onPress={() => {setIsDateConfirmModalVisible(true);}}
+                    >
+                        <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                        <Text style = {{marginHorizontal: 15, marginVertical: 10, fontSize: 15, color: '#838383'}}>
+                            {sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
+                        </Text>
+                        <Text style = {{margin: 15, color: '#AED804', fontWeight: 'bold', fontSize: 12}}>
+                            {'Change'}
+                        </Text>
+                        </View>
+                    </TouchableOpacity>
                     {
                     (trainerSessionSelected && isCheckpoint) &&
-                        <Text style={styles.sessionSubheaderText}>
-                            It's measurement day! Record your participant's measurements before
-                            logging the session.
-                        </Text>
+                        <Measurements measurementData={initSessionData.measurements}
+                        updateMeasurementData={updateMeasurementData}/>
                     }
-                </View>
-                
-                <TouchableOpacity
-                    style={styles.dateBar}
-                    onPress={() => {setIsDateConfirmModalVisible(true);}}
-                >
-                    <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                    <Text style = {{marginHorizontal: 15, marginVertical: 10, fontSize: 15, color: '#838383'}}>
-                        {sessionDate.toLocaleDateString('en-US', {weekday: 'short', month: 'long', day: 'numeric'})}
-                    </Text>
-                    <Text style = {{margin: 15, color: '#AED804', fontWeight: 'bold', fontSize: 12}}>
-                        {'Change'}
-                    </Text>
-                    </View>
-                </TouchableOpacity>
-            {
-                (trainerSessionSelected && isCheckpoint) &&
-                <Measurements measurementData={initSessionData.measurements}
-                updateMeasurementData={updateMeasurementData}
-                callUpdateSession={callUpdateSession()}/>
-            }
-                <Modal
-                    propagateSwipe={true}
-                    animationIn="slideInUp"
-                    animationOut="slideOutDown"
-                    onBackdropPress={()=> {
-                        setIsDateConfirmModalVisible(false)
-                    }}
-                    onSwipeComplete={()=> {
-                        setIsDateConfirmModalVisible(false)
-                    }}
-                    isVisible={isDateConfirmModalVisible}
-                >
-                    <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                        <View style={{backgroundColor: "#fff", width: "90%", height: 350, borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
-                            <View style={{flex: 1, width: '100%'}}>
-                                <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
-                                    <Text style={styles.heading}> {"Select Date"} </Text>
-                                        <DateTimePicker
-                                            style={{width: 300}}
-                                            value={newSessionDate}
-                                            mode="date"
-                                            display="spinner"
-                                            onChange={(event, enteredDate) => {
-                                                setNewSessionDate(enteredDate)
-                                            }}
+                    <NotesSection 
+                        noteData={initSessionData.specialistNotes}
+                        callback={updateNote}
+                        />
+                    <Modal
+                        propagateSwipe={true}
+                        animationIn="slideInUp"
+                        animationOut="slideOutDown"
+                        onBackdropPress={()=> {
+                            setIsDateConfirmModalVisible(false)
+                        }}
+                        onSwipeComplete={()=> {
+                            setIsDateConfirmModalVisible(false)
+                        }}
+                        isVisible={isDateConfirmModalVisible}
+                    >
+                        <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                            <View style={{backgroundColor: "#fff", width: "90%", height: 350, borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
+                                <View style={{flex: 1, width: '100%'}}>
+                                    <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
+                                        <Text style={styles.heading}> {"Select Date"} </Text>
+                                            <DateTimePicker
+                                                style={{width: 300}}
+                                                value={newSessionDate}
+                                                mode="date"
+                                                display="spinner"
+                                                onChange={(event, enteredDate) => {
+                                                    setNewSessionDate(enteredDate)
+                                                }}
+                                                />
+                                        <View style={styles.datePickerModalButtonContainer}>
+                                            <SmallAppButton
+                                                title={"Confirm"}
+                                                onPress={() => {
+                                                    confirmDate()
+                                                }}
                                             />
-                                    <View style={styles.datePickerModalButtonContainer}>
-                                        <SmallAppButton
-                                            title={"Confirm"}
-                                            onPress={() => {
-                                                setIsDateConfirmModalVisible(false);
-                                                setLogged(false);
-                                                setSessionDate(newSessionDate);
-                                            }}
-                                        />
-                                        <SmallAppButton
-                                            title={"Cancel"}
-                                            onPress={() => {
-                                                setIsDateConfirmModalVisible(false);
-                                                setNewSessionDate(sessionDate);
-                                            }}
-                                        />
-                                    </View>
-                                </ScrollView>
+                                            <SmallAppButton
+                                                title={"Cancel"}
+                                                onPress={() => {
+                                                    setIsDateConfirmModalVisible(false);
+                                                    setNewSessionDate(sessionDate);
+                                                }}
+                                            />
+                                        </View>
+                                        </ScrollView>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
-            </ScrollView>
+                    </Modal>
+                    
+            </KeyboardAwareScrollView>
             <View style={{marginBottom: 20, marginLeft: 20, marginTop: 5, width: '84%', justifyContent: "center", paddingBottom: 35}}>
                 <ConfirmButton
                     title={!logged ? "Log Session" : "Logged"}
@@ -230,7 +323,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     logged={logged}
                 />
             </View>
-
+            </View>
+        }
 
         </View>
     );
@@ -242,6 +336,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'flex-start',
         width: '100%',
+        height: '100%',
     },
     headline: {
         fontWeight: 'bold',
@@ -479,6 +574,7 @@ const styles = StyleSheet.create({
     },
     scrollContentContainer: {
         paddingBottom: 75,
+        overflow: "visible",
         // overflow: 'hidden',
         // backgroundColor: 'green',
         alignItems: 'center'

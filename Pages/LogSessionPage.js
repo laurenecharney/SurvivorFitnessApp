@@ -5,11 +5,9 @@ import Sidebar from '../Components/Sidebar.js';
 // import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
-import { StyleSheet, View, Alert} from 'react-native';
+import { StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
 // import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
-import SidebarDietician from '../Components/SidebarDietician';
-import DieticianSession from './DieticianSession';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
 import { getCurrentRole } from '../APIServices/deviceStorage.js';
 
@@ -49,6 +47,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
          //   this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
         //}
         this.refreshSidebar = this.refreshSidebar.bind(this);
+        for (let i = 1; i <= this.state.numDieticianSessions; ++i){
+            this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
+        }
+        this.showLoggedSessionInSidebar = this.showLoggedSessionInSidebar.bind(this);
     }
 
     pressTrainer = ()=>{
@@ -158,19 +160,23 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     formatSessions(rawSessionsArray){
+        let nextToLog = -1;
         let sessionType = this.state.dietician ? "dietitianSessions" : "trainerSessions"; 
-        for(let i = 0; i < rawSessionsArray[sessionType].length; i++){
+        let numSessions = rawSessionsArray[sessionType].length;
+        for(let i = 0; i < numSessions; i++){
             let mostRecentLogged = this.state.dietician ? this.state.dieticianSessionsArray.findIndex(i => i.logged === false) : this.state.trainerSessionsArray.findIndex(i => i.logged === false);
             let isHighlighted = false;
             let hasLogDate = (rawSessionsArray[sessionType][i]['initialLogDate']) != null;
 
-            if (!hasLogDate && mostRecentLogged == -1){
+            // if the session is not logged and there are unlogged sessions, highlight it
+            if (!hasLogDate && nextToLog == -1){
                 isHighlighted = true
                 if(this.state.dietician){
-                    this.state.sessionDietician = i + 1
+                    this.setState({sessionDietician: i + 1 })
                 }else{
-                    this.state.sessionTrainer = i + 1
+                    this.setState({sessionTrainer: i + 1 })
                 }
+                nextToLog = i + 1;
             }
             
             let sessionId = rawSessionsArray[sessionType][i]['sessionIndexNumber'];
@@ -182,6 +188,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
        }
     }
 
+    /// do we need both of these ???????
     async refreshSidebar() {
         const rawSessions = await this.fetchSessions();
         if(this.state.dietician)
@@ -191,6 +198,21 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             this.setState({trainerSessionsArray: []})
         }
         this.formatSessions(rawSessions);
+
+    }
+
+
+    // called after a session is logged or updated
+    showLoggedSessionInSidebar(sessionNum, previouslyLogged){
+        // call fetch sessions so the data that was recently updated in the sessionLogger is refelected in the state
+        // of the logSessionPage
+        this.fetchSessions();
+        if (!previouslyLogged) {
+            let temp = this.state.trainerSessionsArray;
+            temp[sessionNum - 1] = {id: sessionNum, name: sessionNum.toString(), logged: true, highlighted: true};
+            this.setState({trainerSessionsArray: temp})
+        } // else, if the session was previously logged, the sidebar remains the exact same
+        
     }
 
     async fetchSessions() {
@@ -213,8 +235,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
 
     render(){
         return(
-            <View style={styles.container}>
-                <View style={styles.header}>
+            <View style={styles.container}>           
+                <View style={styles.header}>         
                     <NameNavBar 
                         name = {this.props.route.params.name ? this.props.route.params.name: "No Name Found"}
                         goBack={()=>this.props.navigation.goBack()}/>
@@ -264,7 +286,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             trainerSessionSelected={!this.state.dietician}
                             refreshSidebar={this.refreshSidebar}
                             isDisabled={((this.state.user == "DIETITIAN" && !this.state.dietician) || (this.state.user == "TRAINER" && this.state.dietician)) && (this.state.user != 'SUPER_ADMIN')}
-                        />
+                            showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
+                        /> 
                 </View>
             </View>
         )

@@ -14,11 +14,12 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import {getTrainers} from '../APIServices/APIUtilities';
-import ModalRow from '../Components/ModalComponents/ModalRow'
+import ModalHeader from '../Components/ModalComponents/ModalHeader';
+import InformationRow from '../Components/ModalComponents/InformationRow';
+import Icon4 from "react-native-vector-icons/MaterialIcons";
 
 export default class AdminTrainerPage extends Component {
     state = {
@@ -33,6 +34,7 @@ export default class AdminTrainerPage extends Component {
             selectedTrainer: [],
         };
     }
+
     async componentDidMount(){
         await this.refreshTrainers();
     }
@@ -41,6 +43,7 @@ export default class AdminTrainerPage extends Component {
         try {
             const locationId = this.props.route.params && this.props.route.params.locationId ? 
             this.props.route.params.locationId : null;
+
             const arr = await getTrainers(locationId);
             this.setState({
                trainersData: arr.map(
@@ -73,13 +76,27 @@ export default class AdminTrainerPage extends Component {
         })
     }
 
+    getHideBackButton() {
+        return this.props.route.params && this.props.route.params.hideBackButton;
+    }
 
     render() {
-       
         return(
-            <View style={{ flex: 1, backgroundColor:'#fff' }} >
-                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingRight : 25}}>
-                    <Text style={styles.headline}>Trainers</Text>
+            <View style={styles.container} >
+                <View>
+                    {this.getHideBackButton() && 
+                        <View style={styles.backHeading}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}>
+                            <Icon4 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
+                        </TouchableOpacity>
+                        <Text style={styles.backHeadline}>Trainers</Text>
+                        </View>
+                    }
+                    {!this.getHideBackButton() && (
+                        <View style={styles.heading}>
+                            <Text style={styles.headline}>Trainers</Text>
+                        </View>
+                    )}
                 </View>
                 <View style={styles.listContainer}>
                 <AlphabetList
@@ -95,70 +112,67 @@ export default class AdminTrainerPage extends Component {
                     renderCustomItem={(item) => (
                         <ScrollView>
                             <View style={styles.row}>
-                                <View>
                                     <View style={styles.nameContainer}>
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerPatientsPage', 
-                                        {trainerUserId: item.id})}>
-                                            <Text style={styles.nameTxt}>{item.value}</Text>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                                {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"}/>}
-                                                <Text style={styles.gymTxt}>{item.gym}</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>this.openModal(item)}
-                                                          style={{
-                                                              borderWidth:1,
-                                                              borderColor:"#AED803",
-                                                              alignItems:'center',
-                                                              justifyContent:'center',
-                                                              width:25,
-                                                              height:25,
-                                                              backgroundColor:'#fff',
-                                                              borderRadius:50,
-                                                          }}>
-
-                                            <Text style={{color:"#AED803"}}>i</Text>
+                                        <View >
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    const routeParams =
+                                                    this.props.route.params &&
+                                                    this.props.route.params.userType === "DIETITIAN"
+                                                        ? {
+                                                            hideSettingsIcon: true,
+                                                            participantsParam: {dietitianUserId: item.id}
+                                                        }
+                                                        : {
+                                                            hideSettingsIcon: true,
+                                                            participantsParam: {trainerUserId: item.id}
+                                                        };
+                                                    console.log("ROUTE PARAMS");
+                                                    console.log(routeParams);
+                                                    this.props.navigation.navigate(
+                                                    "AllPatientsPage",
+                                                    routeParams
+                                                    );
+                                                }}
+                                            >
+                                                <Text style={styles.nameTxt}>{item.value}</Text>
+                                                <View style={styles.locationContainer}>
+                                                    {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"} />}
+                                                    <Text style={styles.gymTxt}>{item.gym}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
+                                            <Text style={styles.infoTxt}>i</Text>
                                         </TouchableOpacity>
                                     </View>
-                                </View>
                             </View>
                         </ScrollView>
                     )}
                 />
                 </View>
-                <Modal propagateSwipe={true} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={()=>this.closeModal()} onSwipeComplete={()=>this.closeModal()} isVisible={this.state.isModalVisible}>
-                    <View style={{ flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'}}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: '90%',
-                            height: '30%',
-                            borderRadius:'19'}}>
-                            <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>this.closeModal()}>
+                <Modal 
+                    propagateSwipe={true} 
+                    animationIn="slideInUp" 
+                    animationOut="slideOutDown" 
+                    onBackdropPress={()=>this.closeModal()} 
+                    onSwipeComplete={()=>this.closeModal()} 
+                    isVisible={this.state.isModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalStyle}>
+                            <TouchableOpacity style={styles.close} onPress={()=>this.closeModal()}>
                                 <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                             </TouchableOpacity>
                             <View style={{flex: 1}}>
                                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                    <View style={{marginLeft:40, borderBottomWidth:1, borderBottomColor: "#E4E4E4", paddingBottom:10, width:'75%'}}>
-                                        <Text style={{fontSize: 19, color: '#AED803'}} >Trainer Information</Text>
+                                    <View style={styles.modalHeaderContainer}>
+                                        <ModalHeader title = "Trainer Information"/>
                                     </View>
-                                    <View style={{padding:6}}></View>
-                                    <View style={{marginLeft:40, borderBottomColor: "#E4E4E4", paddingTop:10, paddingBottom:10, width:'75%'}}>
-                                        {[
-                                            {displayKey: 'Name:', displayValue: this.state.selectedTrainer.value},
-                                            {displayKey: 'Affiliate Location:', displayValue: this.state.selectedTrainer.gym},
-                                            {displayKey: 'Phone Number:', displayValue: this.state.selectedTrainer.phoneNumber},
-                                            {displayKey: 'Email', displayValue: this.state.selectedTrainer.email}
-                                        ].map((row, i) => 
-                                            <ModalRow 
-                                            key={i}
-                                            displayKey={row.displayKey}
-                                            displayValue={row.displayValue}/>
-                                        
-                                        )}
+                                    <View style={styles.modalInformationContainer}>
+                                        <InformationRow title = "Name: " value = {this.state.selectedTrainer.value}/>
+                                        <InformationRow title = "Affiliate Location: " value = {this.state.selectedTrainer.gym}/>
+                                        <InformationRow title = "Phone Number: " value = {this.state.selectedTrainer.phoneNumber}/>
+                                        <InformationRow title = "Email: " value = {this.state.selectedTrainer.email}/>
                                     </View>
                                 </ScrollView>
                             </View>
@@ -177,61 +191,125 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         padding: 25,
         color: '#AED803',
+        fontWeight: '400',
     },
-
-    settings:{
-        color: '#E4E4E4',
-        marginTop: 50,
-        paddingHorizontal: 10,
-        paddingBottom: 0,
-        marginRight: 30,
+    container:{
+        flex: 1, 
+        backgroundColor:'#fff'
+    },
+    heading:{
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        paddingRight : 25,
+        borderColor: '#E4E4E4',
+        borderBottomWidth: 1
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center',
         borderColor: '#E6E6E6',
         backgroundColor: '#fff',
         borderBottomWidth: 0.25,
         borderTopWidth:0.25,
-        padding: 40,
-    },
-    pic: {
-        borderRadius: 30,
-        width: 60,
-        height: 60,
+        paddingTop: 35,
+        paddingBottom: 35,
+        width:"85%",
+        alignSelf:'center',
+        justifyContent: 'center', //Centered horizontally
+        alignItems: 'center', //Centered vertically
+        flex:1
     },
     nameContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 280,
+        justifyContent: 'space-between', //Centered horizontally
+        alignItems: 'center', //Centered vertically
+        flex:1,
+        width: "100%",
+        paddingLeft:10,
+        paddingRight:10
     },
     nameTxt: {
-        fontWeight: '600',
+        fontWeight: '400',
         color: '#3E3E3E',
-        fontSize: 20,
-        width:170,
+        fontSize: 18,
+        paddingBottom: 10,
+        paddingLeft:5
     },
     gymTxt: {
         color: '#cfcfcf',
         fontSize: 12,
-        width:170,
-    },
-    mblTxt: {
-        fontWeight: '200',
-        color: '#777',
-        fontSize: 13,
-    },
-    msgContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    msgTxt: {
-        fontWeight: '400',
-        color: '#008B8B',
-        fontSize: 12,
-        marginLeft: 15,
+        paddingLeft: 5
     },
     listContainer: {
         paddingBottom: '33%'
-    }
+    },
+    modalHeaderContainer:{
+        marginLeft:40, 
+        borderBottomWidth:1, 
+        borderBottomColor: "#E4E4E4", 
+        paddingBottom:20, 
+        width:'75%'
+    },
+    locationContainer:{
+        flexDirection: "row", 
+        justifyContent: "space-between",
+    },
+    modalContainer:{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalStyle:{
+        backgroundColor: "#fff",
+        width: '90%',
+        height: '40%',
+        borderRadius:19
+    },
+    modalInformationContainer:{
+        marginLeft:40, 
+        paddingTop:10, 
+        paddingBottom:10, 
+        width:'75%',
+    },
+    infoButton:{
+        borderWidth:1,
+        borderColor:"#AED803",
+        alignItems:'center',
+        justifyContent:'center',
+        width:25,
+        height:25,
+        backgroundColor:'#fff',
+        borderRadius:50,
+    },
+    infoTxt:{
+        color:"#AED803" 
+    },
+    close:{
+        paddingLeft:260, 
+        paddingTop:30
+    },
+    backHeading:{
+        flexDirection: "row", 
+    },
+    backHeadline: {
+        fontSize: 25,
+        marginTop: 50,
+        paddingTop: 25,
+        paddingBottom:25,
+        color: "#AED803",
+        fontWeight: "400",
+        textAlign:'left'
+    },
+    backButton:{
+        color: "#E4E4E4",
+        marginTop: 65,
+    },
+    settings: {
+        color: "#E4E4E4",
+        marginTop: 50,
+        paddingHorizontal: 10,
+        paddingBottom: 0,
+        marginRight: 30
+    },
 });

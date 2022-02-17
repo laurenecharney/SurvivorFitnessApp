@@ -10,12 +10,11 @@ import {
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { callUpdateSession } from './SessionLogger'
 
 
-export const Measurements = ({ onPress, title, measurementData, callUpdateSession, updateMeasurementData}) => {
+export const Measurements = ({ measurementData, updateMeasurementData}) => {
 
-    const [data, setData] = useState(measurementData ? measurementData : emptyMeasurementData);
+    const [data, setData] = useState(measurementData ? JSON.parse(JSON.stringify(measurementData)) : emptyMeasurementData);
 
     const [expanded_general, setExpanded_general] = useState("false");
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
@@ -54,7 +53,9 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     }    
 
     useEffect(() => {
-        setData(measurementData)
+        if (measurementData) {
+            setData(JSON.parse(JSON.stringify(measurementData)))
+        }
     }, [measurementData])
 
     const Measurement = ({measurement, id, measurementInfo, updateValue, postfix}) => {
@@ -76,8 +77,6 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                     value={value}
                     onChangeText={onChangeValue}
                     onEndEditing={() => updateValue(measurementInfo, value)}
-                    onFocus={() => console.log("focus")}
-                    // placeholder={"enter a value"}
                 ></TextInput>
                     <Text style = {[styles.measurementText, styles.postfix]}
                     onPress={() => editText()}
@@ -132,7 +131,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
 
     const updateValue = (measurementInfo, newValue) => {
         const measurementId = measurementInfo.id;
-        const temp = data
+        let temp = data
         for (let i = 0; i < data.length; ++i) {
             if (temp[i].id == measurementId) {
                 temp[i].value = newValue;
@@ -144,7 +143,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
     }
 
     return (
-        <KeyboardAwareScrollView style={styles.categoriesContainer}>
+        <View style={styles.categoriesContainer}>
                     <MeasurementCategory
                         category={"General Data"}
                         dataLabels={labels.generalData}
@@ -169,7 +168,7 @@ export const Measurements = ({ onPress, title, measurementData, callUpdateSessio
                         expanded={expanded_treadmill}
                         toggleExpand={toggleExpandTreadmill}
                     />
-            </KeyboardAwareScrollView>
+            </View>
 
     )
 }

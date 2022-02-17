@@ -3,6 +3,7 @@ import AdminParticipantPage from '../Pages/AdminClientPage.js';
 import AdminDieticianPage from '../Pages/AdminDieticianPage.js';
 import AdminLocationsPage from '../Pages/AdminLocationsPage.js';
 import AdminTrainerPage from '../Pages/AdminTrainerPage.js';
+import {SettingsStackNavigator, AdminLocationsStackNavigator, AdminTrainerStackNavigator, AdminDietitianStackNavigator}from "./AdminStackNav.js";
 import SettingsPage from '../Pages/SettingsPage.js';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,7 +20,7 @@ export default function SuperAdminNav() {
     barStyle={{ backgroundColor: 'white' }}
     shifting={false}
     >
-      <Tab.Screen name="Location" component={AdminLocationsPage}
+      <Tab.Screen name="Location" component={AdminLocationsStackNavigator}
            options={{
             tabBarLabel: 'Location',
             tabBarIcon: ({ color }) => (
@@ -33,7 +34,7 @@ export default function SuperAdminNav() {
               <Icon name="person" color={color} size={26} />
             ),
            }}/>
-      <Tab.Screen name="Trainers" component={AdminTrainerPage}
+      <Tab.Screen name="Trainers" component={AdminTrainerStackNavigator}
           // initialParams={{stackNavigation}}
           options={{
           tabBarLabel: 'Trainers',
@@ -41,14 +42,14 @@ export default function SuperAdminNav() {
             <MaterialCommunityIcon name="dumbbell" color={color} size={26} />
           ),
           }}/>
-      <Tab.Screen name="Dietitians" component={AdminDieticianPage}
+      <Tab.Screen name="Dietitians" component={AdminDietitianStackNavigator}
                 options={{
                   tabBarLabel: 'Dietitians',
                   tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcon name="food-apple" color={color} size={26} />
                   ),
                   }}/>
-      <Tab.Screen name="Settings" component={SettingsPage}
+      <Tab.Screen name="Settings" component={SettingsStackNavigator}
                       options={{
                         tabBarLabel: 'Settings',
                         tabBarIcon: ({ color }) => (

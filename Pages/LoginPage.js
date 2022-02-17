@@ -66,8 +66,7 @@ export default class LoginPage extends React.Component {
         try {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
-            await Promise.all[saveItem("id_token", res.jwt),
-            saveUserInfo(res.user)];
+            await Promise.all[(saveItem("id_token", res.jwt), saveUserInfo(res.user))];
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
@@ -80,6 +79,8 @@ export default class LoginPage extends React.Component {
 
             } else if (res.user.roles.includes('TRAINER')) {
                 await saveCurrentRole("TRAINER");
+                const role = await getCurrentRole();
+                console.log("role: ", role);
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
                 });
