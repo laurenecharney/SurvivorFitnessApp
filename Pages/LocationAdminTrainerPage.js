@@ -69,7 +69,6 @@ export default class LocationAdminTrainerPage extends Component {
           return newI;
         })
       });
-      console.log(arr)
     } catch (e) {
       console.log(e);
       alert("Could not fetch data.");
@@ -77,7 +76,6 @@ export default class LocationAdminTrainerPage extends Component {
   }
 
   openModal = item => {
-    console.log(item)
     this.setState({
       isModalVisible:true,
       selectedTrainer: item,
@@ -179,14 +177,13 @@ export default class LocationAdminTrainerPage extends Component {
                           this.props.route.params.userType === "DIETITIAN"
                             ? {
                                 hideSettingsIcon: true,
-                                participantsParam: {dietitianUserId: item.id}
+                              }
+                            : this.props.route.params.userType === "TRAINER" ? {
+                                hideSettingsIcon: true,
                               }
                             : {
-                                hideSettingsIcon: true,
-                                participantsParam: {trainerUserId: item.id}
-                              };
-                        console.log("ROUTE PARAMS");
-                        console.log(routeParams);
+                              
+                            }
                         this.props.navigation.navigate(
                           "AllPatientsPage",
                           routeParams

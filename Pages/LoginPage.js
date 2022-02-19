@@ -68,8 +68,9 @@ export default class LoginPage extends React.Component {
         if (res && res.jwt && res.user){
             await Promise.all[(saveItem("id_token", res.jwt), saveUserInfo(res.user))];
             if (res.user.roles.includes('SUPER_ADMIN')){
-                this.props.navigation.replace('SuperAdminPage');
+                this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
+                
             } else if (res.user.roles.includes('DIETITIAN')){
                 await saveCurrentRole("DIETITIAN");
                 this.props.navigation.replace('AllPatientsPage', {
@@ -141,8 +142,8 @@ export default class LoginPage extends React.Component {
                             name='email'
                             value={email}
                             style={styles.inputText}
-                            placeholder="email"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
@@ -152,8 +153,8 @@ export default class LoginPage extends React.Component {
                             value={password}
                             secureTextEntry={hidePass ? true : false}
                             style={styles.inputText}
-                            placeholder="password"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             returnKeyType='done'
                             onSubmitEditing={() => this.handleLoginPress()}
                             onChangeText={this.handlePasswordChange}/>

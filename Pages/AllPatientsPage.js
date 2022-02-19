@@ -12,10 +12,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import { getCurrentRole } from "../APIServices/deviceStorage";
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import { ParticipantsList } from "../Components/ParticipantsList";
-import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -62,6 +62,7 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
+      userType: "",
       currentRole: ""
     };
   }
@@ -87,9 +88,7 @@ export default class AllPatientsPage extends Component {
             newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
             return newI; 
            
-          }
-        )
-        
+           })        
         const currentRole = await getCurrentRole();
         console.log("currentRole", currentRole);
         this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
@@ -98,7 +97,6 @@ export default class AllPatientsPage extends Component {
        console.log(e);
        alert("Could not fetch participants data");
    }
-
 }
 
   getHideSettingsIcon() {

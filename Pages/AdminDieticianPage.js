@@ -44,7 +44,6 @@ export default class AdminDieticianPage extends Component {
 
     async componentDidMount(){
         await this.refreshDietitians();
-        console.log(await getCurrentRole());
     }
 
     async refreshDietitians(){
