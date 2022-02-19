@@ -15,6 +15,8 @@ import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
+import { ParticipantsList } from '../Components/ParticipantsList';
+import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -39,37 +41,53 @@ export default class LocationAdminTrainerPage extends Component {
       isGymModalVisible: false,
       isEditModalVisible: false,
       selectedUser: {},
-      calls: [
-      ]
+      specialists: [],
+      specialistType: "",
     };
   }
 
   async componentDidMount() {
     //TODO
-    await this.refreshList();
+    
+    const specialistTypeRes = JSON.parse(await getSpecialistType());
+    this.setState({specialistType: specialistTypeRes})
+    this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
+    await this.fetchInformation();
   }
 
-  async refreshList() {
+  async fetchInformation() {
+
+    
     try {
-      const locationId =
-        this.props.route.params && this.props.route.params.locationId
-          ? this.props.route.params.locationId
-          : null;
-      const arr =
-        this.props.route.params &&
-        this.props.route.params.userType === "DIETITIAN"
-          ? await getDietitians(locationId)
-          : await getTrainers(locationId);
+      const locationId = await getLocationId();
+
+      let rawTrainerInfo = {}
+      console.log("specialistType", this.state.specialistType)
+      if (this.state.specialistType === "DIETITIAN") {
+        console.log("get dietitians")
+        rawTrainerInfo = await getDietitians(locationId)
+      } else {
+        console.log("get Trainers")
+        console.log("locationId", locationId)
+        rawTrainerInfo = await getTrainers(locationId)
+      }
+
+          if (this.props.route.params) {
+              console.log(this.props.route.params.userType, "\nUSERTYPE^")
+          } else {
+            console.log("no params")
+          }
+          
       this.setState({
-        calls: arr.map(item => {
-          let newI = item;
-          newI.value = item.firstName + " " + item.lastName;
-          newI.id = parseInt(item.id);
-          newI.gym = item.locations[0] ? item.locations[0].name : "";
-          return newI;
+        specialists: rawTrainerInfo.map(rawTrainer => {
+          let formattedTrainer = JSON.parse(JSON.stringify(rawTrainer));
+          formattedTrainer.value = rawTrainer.firstName + " " + rawTrainer.lastName;
+          formattedTrainer.id = parseInt(rawTrainer.id);
+          formattedTrainer.key = parseInt(rawTrainer.id);
+          formattedTrainer.gym = rawTrainer.locations[0] ? rawTrainer.locations[0].name : "";
+          return formattedTrainer;
         })
       });
-      console.log(arr)
     } catch (e) {
       console.log(e);
       alert("Could not fetch data.");
@@ -131,44 +149,45 @@ export default class LocationAdminTrainerPage extends Component {
   };
 
   //returns either trainer, trainers, dietitian, dietitians depending on context of user + plural
-  getUserType(plural) {
-    if (plural) {
-      return this.props.route.params &&
-        this.props.route.params.userType === "DIETITIAN"
-        ? "Dietitians"
-        : "Trainers";
+  getUserType(plural, userType) {
+    let returnUserType = ""; 
+    if (userType === "DIETITIAN") {
+      returnUserType = "Dietitian";
+    } else if (userType === "TRAINER") {
+      returnUserType = "Trainer";
     } else {
-      return this.props.route.params &&
-        this.props.route.params.userType === "DIETITIAN"
-        ? "Dietitian"
-        : "Trainer";
+      returnUserType = "User";
     }
+    if (plural) {
+      returnUserType = returnUserType + "s";
+    }
+    return returnUserType;
   }
+
+  
 
   render() {
     return (
       <View style={styles.container} >
         <View style={styles.heading}>
-          <Text style={styles.headline}>{this.getUserType(true)} location admin</Text>
+          <Text style={styles.headline}>{this.state.pageTitle}</Text>
           <View style={styles.addButtonContainer} >
             <TouchableOpacity onPress={()=>this.openAddModal()}>
                 <Text style={styles.addButtonText}>+</Text>
             </TouchableOpacity>
            </View>
         </View>
-        <View style={styles.listContainer}>
-          { false ?
+        
+          { true ?
             <ParticipantsList
-                    participantsInfo={this.state.calls}
+                    participantsInfo={this.state.specialists}
                     openModal={item => this.openModal(item)}
-                    // showLocations={true}
-                    // showTrainer={true}
-                    showDietitian={true}
-                    listType="participants"
+                    listType={this.state.specialistType}
                 />   
           :
+          <View style={styles.listContainer}>
           <AlphabetList
-            data={this.state.calls}
+            data={this.state.specialists}
             indexLetterSize={46}
             indexLetterColor={"#AED803"}
             renderCustomSectionHeader={section => (
@@ -215,8 +234,9 @@ export default class LocationAdminTrainerPage extends Component {
               </View>
             )}
           />
+          </View>
                     }
-        </View>
+        
         <Modal 
           propagateSwipe={true} 
           animationIn="slideInUp" 

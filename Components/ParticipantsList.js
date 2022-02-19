@@ -39,14 +39,29 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
     }
 
     const navigate = ({item}) => {
+      console.log(listType, "\n^listType")
         if (listType === "participants") {
           const routeParams =
-                    {
-                        id: item.id,
-                        name: item.firstName + ' ' + item.lastName
-                    } ;
+                {
+                    id: item.id,
+                    name: item.firstName + ' ' + item.lastName
+                } ;
           navigation.navigate('ClientInformationPage', routeParams);
-        }
+        } else if (listType === "trainers") {
+          const routeParams =
+                {
+                    hideSettingsIcon: true,
+                    participantsParam: {trainerUserId: item.id}
+                };
+          navigation.navigate("AllPatientsPage", routeParams);
+        } else if (listType === "DIETITIAN") {
+          const routeParams =
+                {
+                    hideSettingsIcon: true,
+                    participantsParam: {dietitianUserId: item.id}
+                };
+          navigation.navigate("AllPatientsPage", routeParams);
+        }        
     }
 
     return (
@@ -58,7 +73,8 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
                 <View style={{ visibility: "hidden" }} />
             )}
             renderCustomItem={item => (
-                <View style={styles.row}>
+                <View style={styles.row}
+                  key={item.id}>
                   <View style={styles.nameContainer}>
                     <View>
                       <TouchableOpacity

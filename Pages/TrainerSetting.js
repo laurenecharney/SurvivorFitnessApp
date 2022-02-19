@@ -7,7 +7,8 @@ import {
   deleteJWT,
   deleteCurrentRole,
   deleteUserInfo,
-  saveCurrentRole
+  saveCurrentRole,
+  saveSpecialistType
 } from "../APIServices/deviceStorage";
 function getAdminRole(roles) {
   if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
@@ -92,6 +93,12 @@ export default class TrainerSettingsPage extends React.Component {
                   }
                 });
                 await saveCurrentRole("LOCATION_ADMINISTRATOR");
+                if (user.roles.includes("TRAINER")) {
+                    await saveSpecialistType("TRAINER");
+                } else if (user.roles.includes("DIETITIAN")) {
+                    await saveSpecialistType("DIETITIAN");
+                }
+                
               }}
             >
               <View style={styles.row}>
