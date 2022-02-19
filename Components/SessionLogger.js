@@ -69,32 +69,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
 
     //calls API utilities updateSession
     async function logSession() {
-        // ********** FIXME can delete with merge ***********************************
-        // if(trainerSessionSelected)
-        // {
-        //     // if (!isCheckpoint || !measurementData) {
-        //     //     const dateMilliseconds = sessionDate.getTime()
-        //     //     try {
-        //     //         let res = await logTrainerSession(initSessionData, dateMilliseconds)
-        //     //         setLogged(true);
-        //     //         showSessionInfo(res);
-        //     //         refreshSidebar();
-        //     //     } catch(e) {
-        //     //         console.log("session cannot be logged: ", e);
-        //     //     }
-        //     // } else {
-        //     //     const dateMilliseconds = sessionDate.getTime()
-        //     //     let tempSessionData = initSessionData;
-        //     //     tempSessionData.measurements = measurementData;
-        //     //     let res = await logTrainerSession(tempSessionData, dateMilliseconds)
-        //     //     setLogged(true);
-        //     //     showSessionInfo(res);
-        //     //     refreshSidebar();
-        //     // }
-        // }else{
-        //     console.log('Dietitian Logged')
-        //     const dateMilliseconds = sessionDate.getTime()
-        //     let tempSessionData = JSON.parse(JSON.stringify(initSessionData));
         let tempSessionData = JSON.parse(JSON.stringify(initSessionData));
         if (isCheckpoint && measurementData) {
             tempSessionData.measurements = measurementData;
@@ -183,10 +157,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // check if the new date is different from the previously logged date
         if (isSameDate(newSessionDate, initialLogDate)) {
             setLogged(true)
-            console.log("dates are equal")
         } else {
             setLogged(false)
-            console.log("dates are not equal")
         }
     }
 
