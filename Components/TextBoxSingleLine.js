@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextInput } from 'react-native';
 
 const TextBoxSingleLine = ({initValue, callback}) => {
-  const [value, onChangeText] = useState(initValue || ""); //not sure if this is nec. -ben
+  const [value, onChangeText] = useState(initValue || "");
 
 
   return (
@@ -16,8 +16,8 @@ const TextBoxSingleLine = ({initValue, callback}) => {
       borderRadius: 7,
       alignSelf:"center" }}
       //placeholder={value || ""}
-      //onChangeText={text => onChangeText(text)}
-      onEndEditing={text => callback(text)}
+      onChangeText={text => onChangeText(text)}
+      onEndEditing={() => callback(value)}
       defaultValue={initValue}
     />
   );

@@ -52,17 +52,17 @@ export default class AdminClientPage extends Component {
             calls: [],
             selectedParticipant: {},
             newParticipant: [
-                {id: "firstname: ", val: "",},
-                {id: "lastname: ", val: "",},
-                {id: "age: ", val: "",},
-                {id: "email: ", val: "",},
-                {id: "phoneNumber: ", val: "",},
-                {id: "gym: ", val: "",},
-                {id: "dieticianOffice: ", val: "",},
-                {id: "startDate: ", val: "",}, //probs want another datepicker
-                {id: "goals: ", val: "",},
-                {id: "numberOfTrainings: ", val: 24,},
-                {id: "numberOFAppointments: ", val: 3}],
+                {id: "firstname", val: "",},
+                {id: "lastname", val: "",},
+                {id: "age", val: "",},
+                {id: "email", val: "",},
+                {id: "phoneNumber", val: "",},
+                {id: "gym", val: "",},
+                {id: "dieticianOffice", val: "",},
+                {id: "startDate", val: "",}, //probs want another datepicker
+                {id: "goals", val: "",},
+                {id: "numberOfTrainings", val: 24,},
+                {id: "numberOFAppointments", val: 3}],
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
@@ -157,9 +157,8 @@ export default class AdminClientPage extends Component {
     }
 
     setNPVal = (key, value) => {
-        let temp = this.state.newParticipant.map(row => {
-            row.id==key ? {id: row.id, val: value} : row
-        })
+        let temp = this.state.newParticipant.map(row => 
+            ({id: row.id, val: row.id===key ? value : row.val}));
         this.setState({
             newParticipant: temp
         })
@@ -170,8 +169,6 @@ export default class AdminClientPage extends Component {
         for (const row of this.state.newParticipant) {
             participant[row.id] = row.val;
         }
-
-        console.log(participant);
         addParticipant(participant);
     }
 
@@ -263,7 +260,7 @@ export default class AdminClientPage extends Component {
                                                 <EditInformationRow
                                                     key = {key}
                                                     title={categories[key]}
-                                                    callback={console.log("clicked on edit "+key)}
+                                                    callback={() => console.log("clicked on edit "+key)}
                                                     />
                                                 ))
                                             }
@@ -302,7 +299,7 @@ export default class AdminClientPage extends Component {
                                         <EditInformationRow
                                             key = {key}
                                             title={categories[key]}
-                                            callback={value => setNPVal(key, value)}
+                                            callback={value => this.setNPVal(key, value)}
                                             />
                                         /** TODO
                                          * test add participant form - use console.log
@@ -313,7 +310,10 @@ export default class AdminClientPage extends Component {
                                     <View style={{marginTop: 20}}>
                                         <AppButton 
                                             title = {"Add"}
-                                            onPress = {() => createNewParticipant()}/>
+                                            onPress = {() => {
+                                                this.createNewParticipant();
+                                                this.closeAddModal();
+                                                }}/>
                                     </View>
                                 </ScrollView>
                             </View>

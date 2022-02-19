@@ -18,7 +18,7 @@ export default  EditInformationRow = ({title, defaultVal, callback}) => {
         <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
           initValue = {defaultVal}
-          callback = {() => callback()}/>
+          callback = {value => callback(value)}/>
       </View>
   );
 }

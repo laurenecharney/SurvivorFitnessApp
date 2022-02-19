@@ -194,6 +194,5 @@ export async function addParticipant(participantInfo) {
     }
   })
     .then(response => response.json());
-  console.log(res);
   return res;
 }
