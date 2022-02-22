@@ -62,21 +62,13 @@ export default class LocationAdminTrainerPage extends Component {
       const locationId = await getLocationId();
 
       let rawTrainerInfo = {}
-      console.log("specialistType", this.state.specialistType)
       if (this.state.specialistType === "DIETITIAN") {
         console.log("get dietitians")
         rawTrainerInfo = await getDietitians(locationId)
       } else {
         console.log("get Trainers")
-        console.log("locationId", locationId)
         rawTrainerInfo = await getTrainers(locationId)
       }
-
-          if (this.props.route.params) {
-              console.log(this.props.route.params.userType, "\nUSERTYPE^")
-          } else {
-            console.log("no params")
-          }
           
       this.setState({
         specialists: rawTrainerInfo.map(rawTrainer => {
@@ -214,8 +206,6 @@ export default class LocationAdminTrainerPage extends Component {
                                 hideSettingsIcon: true,
                                 participantsParam: {trainerUserId: item.id}
                               };
-                        console.log("ROUTE PARAMS");
-                        console.log(routeParams);
                         this.props.navigation.navigate(
                           "AllPatientsPage",
                           routeParams

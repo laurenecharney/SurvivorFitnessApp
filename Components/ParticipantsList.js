@@ -39,29 +39,34 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
     }
 
     const navigate = ({item}) => {
-      console.log(listType, "\n^listType")
+      let routeParams;
+      let pageName;
         if (listType === "participants") {
-          const routeParams =
-                {
-                    id: item.id,
-                    name: item.firstName + ' ' + item.lastName
-                } ;
-          navigation.navigate('ClientInformationPage', routeParams);
-        } else if (listType === "trainers") {
-          const routeParams =
-                {
-                    hideSettingsIcon: true,
-                    participantsParam: {trainerUserId: item.id}
-                };
-          navigation.navigate("AllPatientsPage", routeParams);
+            routeParams =
+                  {
+                      id: item.id,
+                      name: item.firstName + ' ' + item.lastName
+                  } ;
+            pageName = 'ClientInformationPage'
+          // navigation.navigate('ClientInformationPage', routeParams);
+        } else if (listType === "TRAINER") {
+            routeParams =
+                  {
+                      hideSettingsIcon: true,
+                      participantsParam: {trainerUserId: item.id}
+                  };
+            pageName = 'AllPatientsPage'
+          // navigation.navigate("AllPatientsPage", routeParams);
         } else if (listType === "DIETITIAN") {
-          const routeParams =
+            routeParams =
                 {
                     hideSettingsIcon: true,
                     participantsParam: {dietitianUserId: item.id}
                 };
-          navigation.navigate("AllPatientsPage", routeParams);
-        }        
+            pageName = 'AllPatientsPage'
+          // navigation.navigate("AllPatientsPage", routeParams);
+        }   
+        navigation.navigate(pageName, routeParams);     
     }
 
     return (

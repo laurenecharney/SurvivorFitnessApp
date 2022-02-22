@@ -74,7 +74,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   async refreshParticipants() {
-    console.log("refresh participants - locationAdminClientPage")
     try {
       const locationId = this.props.route.params
         ? this.props.route.params.locationId

@@ -134,7 +134,7 @@ export async function getLocations() {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
-  console.log(res);
+  // console.log(res);
   return res && res.locations ? res.locations : [];
 }
 
@@ -149,7 +149,7 @@ export async function getLocationByID(id) {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
-  console.log(res);
+  // console.log(res);
   return res && res.location ? res.location : [];
 }
 

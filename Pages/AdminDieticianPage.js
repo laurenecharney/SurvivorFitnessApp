@@ -44,7 +44,6 @@ export default class AdminDieticianPage extends Component {
 
     async componentDidMount(){
         await this.refreshDietitians();
-        console.log(await getCurrentRole());
     }
 
     async refreshDietitians(){
@@ -134,8 +133,6 @@ export default class AdminDieticianPage extends Component {
                                                         hideSettingsIcon: true,
                                                         participantsParam: {dietitianUserId: item.id}
                                                     };
-                                                console.log("ROUTE PARAMS");
-                                                console.log(routeParams);
                                                 this.props.navigation.navigate(
                                                 "AllPatientsPage",
                                                 routeParams
