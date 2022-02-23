@@ -3,10 +3,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import {
   getUser,
+  saveUserInfo,
   deleteJWT,
   deleteCurrentRole,
   deleteUserInfo,
-  saveCurrentRole
+  saveCurrentRole,
+  saveSpecialistType
 } from "../APIServices/deviceStorage";
 function getAdminRole(roles) {
   if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
@@ -17,14 +19,6 @@ function getAdminRole(roles) {
     return false;
   }
 }
-
-const categories = {
-  value: "Name: ",
-  gym: "Affiliate Location: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: "
-};
-
 export default class TrainerSettingsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -99,6 +93,12 @@ export default class TrainerSettingsPage extends React.Component {
                   }
                 });
                 await saveCurrentRole("LOCATION_ADMINISTRATOR");
+                if (user.roles.includes("TRAINER")) {
+                    await saveSpecialistType("TRAINER");
+                } else if (user.roles.includes("DIETITIAN")) {
+                    await saveSpecialistType("DIETITIAN");
+                }
+                
               }}
             >
               <View style={styles.row}>
