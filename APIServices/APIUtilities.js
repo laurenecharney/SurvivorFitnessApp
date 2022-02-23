@@ -95,7 +95,6 @@ export async function getParticipantByID(id) {
 export async function getParticipantSessions(id) {
   const jwt = await getItem();
   
-  console.log("endpoint: ", ENDPOINT + "/api/v1/participants/" + id + "/all-notes")
   const res = await fetch(ENDPOINT + "/api/v1/participants/" + id + "/all-notes", {
     method: "GET",
     headers: {
@@ -135,7 +134,7 @@ export async function getLocations() {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
-  console.log(res);
+  // console.log(res);
   return res && res.locations ? res.locations : [];
 }
 
@@ -150,7 +149,7 @@ export async function getLocationByID(id) {
       "Content-Type": "application/json" // I added this line
     }
   }).then(response => response.json());
-  console.log(res);
+  // console.log(res);
   return res && res.location ? res.location : [];
 }
 
@@ -177,7 +176,6 @@ export async function authenticate(_username, _password) {
     username: _username,
     password: _password
   };
-  console.log("ENDPOINT:", ENDPOINT);
   const res = await fetch(ENDPOINT + "/api/v1/authenticate", {
     method: "POST",
     body: JSON.stringify(_body),

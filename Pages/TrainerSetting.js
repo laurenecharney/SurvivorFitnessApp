@@ -3,7 +3,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import {
   getUser,
-  saveUserInfo,
   deleteJWT,
   deleteCurrentRole,
   deleteUserInfo,
@@ -18,6 +17,14 @@ function getAdminRole(roles) {
     return false;
   }
 }
+
+const categories = {
+  value: "Name: ",
+  gym: "Affiliate Location: ",
+  phoneNumber: "Phone Number: ",
+  email: "Email: "
+};
+
 export default class TrainerSettingsPage extends React.Component {
   constructor(props) {
     super(props);
