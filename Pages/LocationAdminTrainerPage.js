@@ -65,9 +65,12 @@ export default class LocationAdminTrainerPage extends Component {
       if (this.state.specialistType === "DIETITIAN") {
         console.log("get dietitians")
         rawTrainerInfo = await getDietitians(locationId)
-      } else {
+      } else if (this.state.specialistType === "TRAINER") {
         console.log("get Trainers")
         rawTrainerInfo = await getTrainers(locationId)
+      } else {
+        rawTrainerInfo = "specialistType not set";  
+        console.log("specialistType: ", specialistType)
       }
           
       this.setState({
@@ -170,62 +173,11 @@ export default class LocationAdminTrainerPage extends Component {
            </View>
         </View>
         
-          { true ?
             <ParticipantsList
                     participantsInfo={this.state.specialists}
                     openModal={item => this.openModal(item)}
                     listType={this.state.specialistType}
                 />   
-          :
-          <View style={styles.listContainer}>
-          <AlphabetList
-            data={this.state.specialists}
-            indexLetterSize={46}
-            indexLetterColor={"#AED803"}
-            renderCustomSectionHeader={section => (
-              <View style={{ visibility: "hidden" }} />
-              // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-              // <View style={styles.sectionHeaderContainer}>
-              //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-              // </View>
-            )}
-            renderCustomItem={item => (
-              <View style={styles.row}>
-                <View>
-                  <View style={styles.nameContainer}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        const routeParams =
-                          this.props.route.params &&
-                          this.props.route.params.userType === "DIETITIAN"
-                            ? {
-                                hideSettingsIcon: true,
-                                participantsParam: {dietitianUserId: item.id}
-                              }
-                            : {
-                                hideSettingsIcon: true,
-                                participantsParam: {trainerUserId: item.id}
-                              };
-                        this.props.navigation.navigate(
-                          "AllPatientsPage",
-                          routeParams
-                        );
-                      }}
-                    >
-                      <View style={styles.locationContainer}>
-                        <Text style={styles.nameTxt}>{item.value}</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
-                      <Text style={styles.infoTxt}>i</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            )}
-          />
-          </View>
-                    }
         
         <Modal 
           propagateSwipe={true} 

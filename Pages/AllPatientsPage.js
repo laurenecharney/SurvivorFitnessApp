@@ -15,7 +15,7 @@ import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities
 import InformationRow from "../Components/ModalComponents/InformationRow";
 import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import { ParticipantsList } from "../Components/ParticipantsList";
-import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
+import { getUser, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -62,7 +62,8 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
-      currentRole: ""
+      currentRole: "",
+      specialistType: "",
     };
   }
 
@@ -91,7 +92,14 @@ export default class AllPatientsPage extends Component {
         )
         
         const currentRole = await getCurrentRole();
-        this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
+        const specialistTypeRes = JSON.parse(await getSpecialistType());
+        this.setState({
+            calls: temp, 
+            currentRole: JSON.parse(currentRole),
+            specialistType: specialistTypeRes
+          });
+        
+
       
    } catch (e){
        console.log(e);
@@ -160,11 +168,10 @@ export default class AllPatientsPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.calls}
             openModal={item => this.openModal(item)}
-            showTrainer={this.state.currentRole === "TRAINER"}
-            showDietitian={this.state.currentRole === "DIETITIAN"}
+            showTrainer={this.state.specialistType === "TRAINER" || this.state.currentRole === "SUPER_ADMIN"}
+            showDietitian={this.state.specialistType === "DIETITIAN" || this.state.currentRole === "SUPER_ADMIN"}
             listType="participants"
-            // showLocations={true}
-            // showDietitian={true}
+            showLocations={this.state.currentRole === "SUPER_ADMIN"}
         />        
         <Modal
           propagateSwipe={true}

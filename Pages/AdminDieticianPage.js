@@ -17,9 +17,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
 import { getDietitians } from '../APIServices/APIUtilities';
+import { getSpecialistType } from '../APIServices/deviceStorage';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import Icon4 from "react-native-vector-icons/MaterialIcons";
+import { ParticipantsList } from '../Components/ParticipantsList';
 import {
     deleteJWT,
     getUser,
@@ -38,11 +40,15 @@ export default class AdminDieticianPage extends Component {
         this.state = {
             isModalVisible: false,
             calls: [],
-            selectedDietician: {}
+            selectedDietician: {},
+            specialistType: "",
         };
     }
 
     async componentDidMount(){
+        const specialistTypeRes = JSON.parse(await getSpecialistType());
+        console.log("specialistTypeRes: ", specialistTypeRes);
+        this.setState({specialistType: specialistTypeRes})
         await this.refreshDietitians();
     }
 
@@ -104,58 +110,13 @@ export default class AdminDieticianPage extends Component {
                         </View>
                     )}
                 </View>
-                <View style={styles.listContainer}>
-                <AlphabetList
-                    data={this.state.calls}
-                    indexLetterColor={'#AED803'}
-                    renderCustomSectionHeader={(section) => (
-                        <View style={{visibility: 'hidden'}}/>
-                        // IF WE WANT SECTION HEADERS FOR EACH LETTER COMMENT THE ABOVE LINE UNCOMMENT THIS:
-                        // <View style={styles.sectionHeaderContainer}>
-                        //     <Text style={styles.sectionHeaderLabel}>{section.title}</Text>
-                        // </View>
-                    )}
-                    renderCustomItem={(item) => (
-                        <ScrollView>
-                            <View style={styles.row}>
-                                    <View style={styles.nameContainer}>
-                                    <View>
-                                    <TouchableOpacity
-                                            onPress={() => {
-                                                const routeParams =
-                                                this.props.route.params &&
-                                                this.props.route.params.userType === "DIETITIAN"
-                                                    ? {
-                                                        hideSettingsIcon: true,
-                                                        participantsParam: {dietitianUserId: item.id}
-                                                    }
-                                                    : {
-                                                        hideSettingsIcon: true,
-                                                        participantsParam: {dietitianUserId: item.id}
-                                                    };
-                                                this.props.navigation.navigate(
-                                                "AllPatientsPage",
-                                                routeParams
-                                                );
-                                            }}
-                                        >
-                                            <Text style={styles.nameTxt}>{item.value}</Text>
-                                            <View style={styles.locationContainer}>
-                                                {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"}/>}
-                                                <Text style={styles.gymTxt}>{item.gym}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        </View>
-                                        <TouchableOpacity onPress={()=>this.openModal(item)} style={styles.infoButton}>
-                                            <Text style={styles.infoTxt}>i</Text>
-                                        </TouchableOpacity>
-                                        
-                                    </View>
-                            </View>
-                        </ScrollView>
-                    )}
-                />
-                </View>
+                <ParticipantsList
+                                    participantsInfo={this.state.calls}
+                                    openModal={item => this.openModal(item)}
+                                    listType={this.state.specialistType}
+                                    showSpecialistLocations={true}
+                                />   
+                
                 <Modal 
                     propagateSwipe={true} 
                     animationIn="slideInUp" 
