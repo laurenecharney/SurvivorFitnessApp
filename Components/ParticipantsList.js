@@ -108,6 +108,14 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
             pageName = 'AllPatientsPage'
           // navigation.navigate("AllPatientsPage", routeParams);
         }   
+        else if (listType === "locations") {
+          routeParams =
+              {
+                locationId: item.id,
+                showBackButton: true
+              };
+              pageName = item && item.type === 'TRAINER_GYM' ? 'AdminTrainerPage' : 'AdminDieticianPage';
+          }
         navigation.navigate(pageName, routeParams);     
     }
 
