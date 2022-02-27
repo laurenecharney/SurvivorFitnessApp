@@ -19,7 +19,7 @@ import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../AP
 import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
-import { logTrainerSession } from '../APIServices/APIUtilities';
+import { logTrainerSession, logDietitianSession } from '../APIServices/APIUtilities';
 import NotesSection from './NoteSection';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -37,13 +37,13 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const ConfirmButton = ({ onPress, title, logged }) => (
-    <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
+const ConfirmButton = ({ onPress, title, logged, disabled}) => (
+    <TouchableOpacity disabled={disabled} onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, showLoggedSessionInSidebar}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -83,6 +83,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             setLogged(true);
             showSessionInfo(res);
             showLoggedSessionInSidebar(initSessionData.sessionIndexNumber, previouslyHadLogDate)
+            // refreshSidebar(); // this is redundant, with slightly different logic 
         } catch(e) {
             console.log("session cannot be logged: ", e);
         }
@@ -156,10 +157,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // check if the new date is different from the previously logged date
         if (isSameDate(newSessionDate, initialLogDate)) {
             setLogged(true)
-            console.log("dates are equal")
         } else {
             setLogged(false)
-            console.log("dates are not equal")
         }
     }
 
@@ -292,6 +291,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     onPress={() => {
                         logSession(newSessionDate);
                     }}
+                    disabled={isDisabled}
                     logged={logged}
                 />
             </View>

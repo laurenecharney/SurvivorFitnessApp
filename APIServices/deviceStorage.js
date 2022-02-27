@@ -28,7 +28,7 @@ export async function deleteUserInfo(){
 export async function getCurrentRole(){
   try {
     const res = await AsyncStorage.getItem("role");
-    return res;
+    return res
   } catch (error){
     console.log("AsyncStorage Error in getCurrentRole: " + error.message);
   }

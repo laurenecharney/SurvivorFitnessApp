@@ -8,7 +8,7 @@ export const Sidebar = ({updateSession, sessionsArray, addSessionArray, fetchSes
 
     alertItemName = (item) => {
         updateSession(item)
-
+        
     }
     alertAddSession = (item) => {
         Alert.alert('Add Another Session?', '',

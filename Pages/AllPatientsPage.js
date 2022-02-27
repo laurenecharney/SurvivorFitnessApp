@@ -6,9 +6,15 @@ import {
 } from "react-native";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import { ParticipantsList } from "../Components/ParticipantsList";
-import { getUser, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
+import { getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { Heading } from '../Components/Heading';
 import { DisplayModal } from "../Components/ModalComponents/DisplayModal";
+
+export const AppButton = ({ onPress, title }) => (
+  <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+    <Text style={styles.appButtonText}>{title}</Text>
+  </TouchableOpacity>
+);
 
 export const showAlert = () =>
   Alert.alert(
@@ -73,6 +79,8 @@ export default class AllPatientsPage extends Component {
       selectedParticipant: {},
       currentRole: "",
       specialistType: "",
+      userType: "",
+      currentRole: ""
     };
   }
 
@@ -97,9 +105,7 @@ export default class AllPatientsPage extends Component {
             newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
             return newI; 
            
-          }
-        )
-        
+           })        
         const currentRole = await getCurrentRole();
         const specialistTypeRes = JSON.parse(await getSpecialistType());
         this.setState({
