@@ -57,5 +57,13 @@ const LocationTrainerStackNavigator = () => {
       </Stack.Navigator>
     );
   }
+
+  const AdminParticipantStackNavigator = () => {
+    return (
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="AdminParticipantPage" component={AdminParticipantPage} />
+      </Stack.Navigator>
+    );
+  }
   
-export { LocationTrainerStackNavigator, SettingsStackNavigator, AdminLocationsStackNavigator, AdminTrainerStackNavigator, AdminDietitianStackNavigator };
+export { LocationTrainerStackNavigator, SettingsStackNavigator, AdminLocationsStackNavigator, AdminTrainerStackNavigator, AdminDietitianStackNavigator, AdminParticipantStackNavigator};
