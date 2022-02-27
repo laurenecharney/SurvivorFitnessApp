@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextInput } from 'react-native';
 
-const TextBoxSingleLine = (props) => {
-  const [value, onChangeText] = React.useState(props.content);
+const TextBoxSingleLine = ({initValue, callback}) => {
+  const [value, onChangeText] = useState(initValue || "");
+
 
   return (
     <TextInput
@@ -14,9 +15,10 @@ const TextBoxSingleLine = (props) => {
       width:'100%',
       borderRadius: 7,
       alignSelf:"center" }}
-      placeholder={props.content}
+      //placeholder={value || ""}
       onChangeText={text => onChangeText(text)}
-      value={value}
+      onEndEditing={() => callback(value)}
+      defaultValue={initValue}
     />
   );
 }

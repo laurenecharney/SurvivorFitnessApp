@@ -36,6 +36,7 @@ export default class AdminLocationsPage extends Component {
             isGymModalVisible: false,
             isDieticianModalVisible: false,
             name:"",
+            address:"",
             location:"",
             admin:"",
             calls: [
@@ -171,6 +172,16 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
+    generateNewLocation = locType => {
+        let loc = {
+            address: this.state.address,
+            administrator: this.state.admin,
+            name: this.state.name,
+            type: locType
+        };
+        console.log(JSON.stringify(loc));
+    }
+
 
     render() {
         return(
@@ -271,9 +282,18 @@ export default class AdminLocationsPage extends Component {
                                             <ModalHeader title = "Edit Location"/>
                                         </View>
                                         <View style={styles.modalInformationContainer}>
-                                            <EditInformationRow title = "Name: " value = {this.state.name} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Address: " value = {this.state.location} edit = {this.state.edit}/>
-                                            <EditInformationRow title = "Admin: " value = {this.state.admin} edit = {this.state.edit}/>
+                                            <EditInformationRow 
+                                                title = "Name: " 
+                                                value = {this.state.name} 
+                                                edit = {this.state.edit}/>
+                                            <EditInformationRow 
+                                                title = "Address: " 
+                                                value = {this.state.location} 
+                                                edit = {this.state.edit}/>
+                                            <EditInformationRow 
+                                                title = "Administrator: " 
+                                                value = {this.state.admin} 
+                                                edit = {this.state.edit}/>
                                             <RemoveButton/>
                                             <AppButton
                                                 title={this.state.edit ? "SAVE" : "EDIT"}
@@ -332,13 +352,28 @@ export default class AdminLocationsPage extends Component {
                                             <Text style={styles.modalText} >Add Gym</Text>
                                         </View>
                                         <View>
-                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
-                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
-                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
+                                            <EditInformationRow 
+                                                title = "Name: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({name: value})}/>
+                                            <EditInformationRow 
+                                                title = "Address: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({address: value})}/>
+                                            <EditInformationRow 
+                                                title = "Administrator: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({admin: value})}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
-                                                title = {"Add"}/>
+                                                title = {"Add"}
+                                                onPress={() => {
+                                                    this.generateNewLocation('TRAINER_GYM')
+                                                    this.closeGymModal()}}/>
                                         </View>
                                         
                                     </ScrollView>
@@ -366,13 +401,28 @@ export default class AdminLocationsPage extends Component {
                                             <Text style={styles.modalText} >Add Dietitian Office</Text>
                                         </View>
                                         <View>
-                                            <EditInformationRow title = "Name: " value = "" edit = {true}/>
-                                            <EditInformationRow title = "Address: " value = "" edit = {true}/>
-                                            <EditInformationRow title = "Admin: " value = "" edit = {true}/>
+                                            <EditInformationRow 
+                                                title = "Name: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({name: value})}/>
+                                            <EditInformationRow 
+                                                title = "Address: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({address: value})}/>
+                                            <EditInformationRow 
+                                                title = "Administrator: " 
+                                                value = "" 
+                                                edit = {true}
+                                                callback={value => this.setState({admin: value})}/>
                                         </View>
                                         <View style={{marginTop: 20}}>
                                             <AppButton
-                                                title = {"Add"}/>
+                                                title = {"Add"}
+                                                onPress={() => {
+                                                    this.generateNewLocation('DIETICIAN_OFFICE')
+                                                    this.closeDieticianModal()}}/>
                                         </View>
                                     </ScrollView>
                                 </View>
@@ -533,7 +583,7 @@ const styles = StyleSheet.create({
     modalStyle:{
         backgroundColor: "#fff",
         width: '90%',
-        height: '40%',
+        height: '45%',
         borderRadius:19
     },
     close:{
