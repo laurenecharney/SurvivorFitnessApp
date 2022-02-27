@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { getTrainers, getDietitians } from "../APIServices/APIUtilities";
 import { ParticipantsList } from '../Components/ParticipantsList';
-import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
@@ -17,6 +16,12 @@ const categories = {
   phoneNumber: "Phone Number: ",
   email: "Email: "
 };
+import { AlphabetList } from "react-native-section-alphabet-list";
+import ModalHeader from "../Components/ModalComponents/ModalHeader";
+import InformationRow from "../Components/ModalComponents/InformationRow";
+import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
+import RemoveButton from '../Components/ModalComponents/RemoveButton';
+import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -125,6 +130,8 @@ export default class LocationAdminTrainerPage extends Component {
     }
     return returnUserType;
   }
+
+  
 
   render() {
     return (

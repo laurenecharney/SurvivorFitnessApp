@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
 import { ParticipantsList } from "../Components/ParticipantsList";
-import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
+import { getUser, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { Heading } from '../Components/Heading';
 import { DisplayModal } from "../Components/ModalComponents/DisplayModal";
 
@@ -71,7 +71,8 @@ export default class AllPatientsPage extends Component {
       goals:"",
       calls: [],
       selectedParticipant: {},
-      currentRole: ""
+      currentRole: "",
+      specialistType: "",
     };
   }
 
@@ -100,8 +101,14 @@ export default class AllPatientsPage extends Component {
         )
         
         const currentRole = await getCurrentRole();
-        console.log("currentRole", currentRole);
-        this.setState({calls: temp, currentRole: JSON.parse(currentRole)});
+        const specialistTypeRes = JSON.parse(await getSpecialistType());
+        this.setState({
+            calls: temp, 
+            currentRole: JSON.parse(currentRole),
+            specialistType: specialistTypeRes
+          });
+        
+
       
     } catch (e){
         console.log(e);
@@ -155,10 +162,11 @@ export default class AllPatientsPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.calls}
             openModal={item => this.openModal(item)}
-            showLocations={true}
-            showTrainer={true}
-            showDietitian={true}
-            listType="participants"/>     
+            showTrainer={this.state.specialistType === "TRAINER" || this.state.currentRole === "SUPER_ADMIN"}
+            showDietitian={this.state.specialistType === "DIETITIAN" || this.state.currentRole === "SUPER_ADMIN"}
+            listType="participants"
+            showLocations={this.state.currentRole === "SUPER_ADMIN"}
+        />      
         <DisplayModal 
             categories = {categories} 
             information = {this.state.selectedParticipant}

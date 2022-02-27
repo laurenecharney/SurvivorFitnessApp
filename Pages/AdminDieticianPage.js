@@ -15,6 +15,17 @@ const categories = {
     phoneNumber: "Phone Number: ",
     email: "Email: "
 };
+import ModalHeader from '../Components/ModalComponents/ModalHeader';
+import InformationRow from '../Components/ModalComponents/InformationRow';
+import Icon4 from "react-native-vector-icons/MaterialIcons";
+import {
+    deleteJWT,
+    getUser,
+    saveCurrentRole,
+    deleteCurrentRole,
+    deleteUserInfo,
+    getCurrentRole
+  } from "../APIServices/deviceStorage";
 
 export default class AdminDieticianPage extends Component {
     state = {

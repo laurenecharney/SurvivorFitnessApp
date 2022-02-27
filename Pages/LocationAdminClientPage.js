@@ -65,7 +65,6 @@ export default class LocationAdminClientPage extends Component {
     //TODO
     await this.refreshParticipants();
     const currentRole = await getCurrentRole();
-    console.log("My role is:\n", currentRole);
   }
 
   isDietitian() {
@@ -76,7 +75,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   async refreshParticipants() {
-    console.log("refresh participants - locationAdminClientPage")
     try {
       const locationId = this.props.route.params
         ? this.props.route.params.locationId
@@ -101,7 +99,6 @@ export default class LocationAdminClientPage extends Component {
           return newI;
         })
       });
-      console.log(res)
     } catch (e) {
       console.log("Error fetching participants", e);
       alert("Could not fetch participants data");

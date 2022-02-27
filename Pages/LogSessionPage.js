@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.js';
-// import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
