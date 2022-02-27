@@ -42,23 +42,23 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                             <View style={{paddingBottom:10, width:'100%'}}>
                                 <Text style={styles.modalText} >{title}</Text>
                             </View>
-                            {isAdd && 
+                            {isAdd ?
                                     Object.keys(categories).map(key => (
-                                        <EditInformationRow title={categories[key]} value=""/>
+                                        <EditInformationRow title={categories[key]} value="" key={key}/>
                                     ))
-                                }
-                                {!isAdd && (
+                                :
+                                (
                                     Object.keys(categories).map(key => (
-                                        <EditInformationRow title={categories[key]} value={information[key]}/>
+                                        <EditInformationRow title={categories[key]} value={information[key]} key={key}/>
                                     ))
                                 )}
                             <View>
-                                {isAdd && 
+                                {isAdd ?
                                     <View style={{marginTop: 20}}>
                                         <AppButton title = {"Add"}/>
                                     </View>
-                                }
-                                {!isAdd && (
+                                :
+                                isAdd && (
                                     <View>
                                         <RemoveButton/>
                                         <AppButton

@@ -69,7 +69,7 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                             
                             {
                                 Object.keys(categories).map(key => (
-                                    <InformationRow title={categories[key]} value={information[key]}/>
+                                    <InformationRow title={categories[key]} value={information[key]} key={key}/>
                                 ))
                             }
                         </ScrollView>
