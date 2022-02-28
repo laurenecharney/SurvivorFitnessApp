@@ -30,9 +30,9 @@ export default class ProfilePage extends React.Component {
       new_password_again: "New Password Again",
       edit: false
     };
-    if (Platform.OS === "android") {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
+    // if (Platform.OS === "android") {
+    //   UIManager.setLayoutAnimationEnabledExperimental(true);
+    // }
   }
 
   toggleExpandInfo = () => {

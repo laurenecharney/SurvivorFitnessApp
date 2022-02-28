@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: 'white',
-        fontFamily: "Helvetica Neue",
         fontSize: 21
     },
     logo: {
