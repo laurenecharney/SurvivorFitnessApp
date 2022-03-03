@@ -183,10 +183,47 @@ export async function authenticate(_username, _password) {
 }
 
 export async function addParticipant(participantInfo) {
+  //temporary until required fields are decided
+  let temp = participantInfo;
+  temp["startDate"] = Date.now();
+  temp["typeOfCancer"] = "unspecified";
+  temp["formsOfTreatment"] = "unspecified";
+  temp["surgeries"] = "unspecified";
+  temp["physicianNotes"] = "";
+  temp["trainerLocation"] = {id: 16};
+  temp["dietitianLocation"] = {id: 18};
+
+  let _body = {
+    "participant": temp,
+    "numberOfTrainerSessions": 24,
+    "numberOfDietitianSessions": 3,
+    "sessionsIndicesWhenMeasurementsAreTaken": [1, 12, 24],
+    "measurements": [
+      {
+        "name": "Weight",
+        "category": "General Data",
+        "unit": "lbs"
+      },
+      {
+        "name": "Height",
+        "category": "General Data",
+        "unit": "inch"
+      },
+      {
+        "name": "BMI",
+        "category": "General Data",
+        "unit": "kg/m^2"
+      }
+    ]
+  };
+  
+  console.log(JSON.stringify(_body));
+  console.log(ENDPOINT + "/api/v1/participants");
+  
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/participants", {
     method: "POST",
-    body: JSON.stringify(participantInfo),
+    body: JSON.stringify(_body),
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
@@ -194,5 +231,8 @@ export async function addParticipant(participantInfo) {
     }
   })
     .then(response => response.json());
+
+  console.log(res);
+
   return res;
 }

@@ -26,13 +26,13 @@ export const AppButton = ({ onPress, title }) => (
 );
 
 const categories = {
-    firstname: "First Name: ",
-    lastname: "Last Name: ",
+    firstName: "First Name: ",
+    lastName: "Last Name: ",
     age: "Age: ",
     email: "Email: ",
     phoneNumber: "Phone Number: ",
     gym: "Gym: ",
-    dieticianOffice: "Dietician Office: ",
+    dietitianOffice: "Dietician Office: ",
     startDate: "Start Date: ",
     goals: "Goal(s): ",
     // numberOfTrainings: "Number of Trainings: ",
@@ -52,17 +52,19 @@ export default class AdminClientPage extends Component {
             calls: [],
             selectedParticipant: {},
             newParticipant: [
-                {id: "firstname", val: "",},
-                {id: "lastname", val: "",},
-                {id: "age", val: "",},
+                {id: "firstName", val: "",},
+                {id: "lastName", val: "",},
+                {id: "age", val: 0,},
                 {id: "email", val: "",},
                 {id: "phoneNumber", val: "",},
-                {id: "gym", val: "",},
-                {id: "dieticianOffice", val: "",},
-                {id: "startDate", val: "",}, //probs want another datepicker
+                //{id: "startDate", val: "",}, //probs want another datepicker
                 {id: "goals", val: "",},
-                {id: "numberOfTrainings", val: 24,},
-                {id: "numberOFAppointments", val: 3}],
+                //{id: "gym", val: "",},
+                //{id: "dieticianOffice", val: "",},
+                
+                //{id: "numberOfTrainings", val: 24,},
+                //{id: "numberOFAppointments", val: 3}
+            ],
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
@@ -73,11 +75,15 @@ export default class AdminClientPage extends Component {
 
 
     async componentDidMount(){
+        this.resetPartipantList();
+   }
+
+    resetPartipantList = async () => {
         try {
             const res = await getParticipants(null,null);
-           this.setState({calls: res
-               .map(
-               item => {
+        this.setState({calls: res
+            .map(
+            item => {
                 let newI = item;
                 newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
                 newI.key = parseInt(item.id);
@@ -86,15 +92,14 @@ export default class AdminClientPage extends Component {
                 newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
                 newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
                 return newI; 
-               
-               })})
-          
-       } catch (e){
-           console.log(e);
-           alert("Could not fetch participants data");
-       }
+            
+            })})    
+        } catch (e){
+            console.log(e);
+            alert("Could not fetch participants data");
+        }
+    }
 
-   }
    openModal = async (participant) =>{
        this.setState({
            isModalVisible:true,
@@ -164,12 +169,13 @@ export default class AdminClientPage extends Component {
         })
     }
 
-    createNewParticipant = () => {
+    createNewParticipant = async () => {
         let participant = {};
         for (const row of this.state.newParticipant) {
             participant[row.id] = row.val;
         }
-        addParticipant(participant);
+        await addParticipant(participant);
+        this.resetPartipantList();
     }
 
     render() {
