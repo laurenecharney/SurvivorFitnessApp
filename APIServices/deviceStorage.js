@@ -64,7 +64,7 @@ export async function getItem() {
   try {
     // const res = await AsyncStorage.getItem('id_token');
     const res = await SecureStore.getItemAsync("id_token");
-    console.log(res)
+    //console.log(res)
     return res;
   } catch (error) {
     console.log("SecureStore Error in getItem: " + error.message);
@@ -73,7 +73,7 @@ export async function getItem() {
 export async function deleteJWT() {
   try {
     // await AsyncStorage.removeItem('id_token');
-    await SecureStorage.deleteItemAsync("id_token");
+    await SecureStore.deleteItemAsync("id_token");
   } catch (error) {
     console.log("Secure Store Error in deleteJWT: " + error.message);
   }
