@@ -116,8 +116,7 @@ export default class AdminLocationsPage extends Component {
                 <ParticipantsList
                     participantsInfo={this.state.calls}
                     openModal={item => this.openModal(item)}
-                    listType="locations"
-                    showSpecialistLocations={false}/>   
+                    listType="locations"/>   
                 <DisplayModal 
                     categories = {categories} 
                     information = {this.state.selectedLocation}

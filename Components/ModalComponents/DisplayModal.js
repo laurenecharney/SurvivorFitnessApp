@@ -46,18 +46,19 @@ export const DisplayModal = ({categories, visible, callback, title, information,
         animationOut="slideOutDown" 
         onBackdropPress={()=>callback()} 
         onSwipeComplete={()=>callback()} 
+        
         transparent={true} 
         visible={visible}
         >
+       
             <View style={styles.modalStyle}>
-                <View style={styles.modalView}>
-                    <TouchableOpacity style={{paddingLeft:260, paddingTop:30}} onPress={()=>callback()}>
+                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
                         <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                     </TouchableOpacity>
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 1, width: "75%"}}>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                            <View style={styles.modalHeaderContainer}>
-                                <ModalHeader title = {title}/>
+                            <View style={{paddingBottom:20, width:'100%'}}>
+                                <Text style={styles.modalText} >{title}</Text>
                             </View>
                             {canEdit && 
                                 <View  style={{justifyContent: 'space-between'}}>
@@ -74,7 +75,7 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                             }
                         </ScrollView>
                     </View>
-                </View>
+           
             </View>
             <AddEditModal 
                 categories = {categories}
@@ -83,7 +84,9 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                 title = {"Edit " + title}
                 visible = {edit_modal} 
                 callback = {closeEditModal}/>
+      
         </Modal>
+        
     )
 }
 
@@ -96,9 +99,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: "#fff",
         width: '100%',
-        paddingTop:30
-    },
-    modalView:{
+
     },
     modalText:{
         fontSize: 18,
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         alignSelf: 'flex-end',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        paddingRight: 0
     },
 });

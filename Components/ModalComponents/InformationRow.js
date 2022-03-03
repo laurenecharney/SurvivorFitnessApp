@@ -29,14 +29,17 @@ const styles = StyleSheet.create({
     flexDirection:"row", 
     paddingBottom:25, 
     flexWrap: 'wrap',
+    width:"100%"
   },
   participantInfoTitle:{
     fontSize: 15, 
     color: '#AED803', 
+
   },
   text:{
     alignItems: 'flex-start',
     color: '#797979',
     flexWrap: 'wrap',
+
   }
 });
