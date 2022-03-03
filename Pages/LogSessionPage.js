@@ -116,7 +116,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         }
     
         if(!this.state.sessionData[sessionType]) {
-            console.log("Error: sessionData.trainerSessions does not exist.")
+            console.log("Error: sessionData for trainers or dietitians does not exist.")
+            console.log(this.state.sessionData[sessionType], "\n^sessionData")
             return [];
         } else if (this.state.sessionData[sessionType][num - 1]) {
             return this.state.sessionData[sessionType][num - 1];
@@ -225,6 +226,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     async fetchSessions() {
         try {
             let res = await getParticipantSessions(this.props.route.params.id);
+            if (res["trainerSessions"]) {
+                console.log("trainer sessionsData exists")
+            } else {
+                console.log("trainersession data does not exist")
+            }
             this.setState({sessionData: res});
             return res;
         } catch (e) {
@@ -247,6 +253,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         }
 
         const rawSessions = await this.fetchSessions();
+        // console.log(rawSessions, "\n^rawSessions");
         this.formatSessions(rawSessions);
     }
 

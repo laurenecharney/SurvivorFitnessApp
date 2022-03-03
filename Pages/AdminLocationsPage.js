@@ -37,9 +37,9 @@ export default class AdminLocationsPage extends Component {
             ],
             selectedLocation: {}
         }
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+        // if (Platform.OS === 'android') {
+        //     UIManager.setLayoutAnimationEnabledExperimental(true);
+        // }
     }
     async componentDidMount(){
         await this.refreshLocations();

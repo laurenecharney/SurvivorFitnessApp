@@ -57,9 +57,9 @@ export default class AdminClientPage extends Component {
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+        // if (Platform.OS === 'android') {
+        //     UIManager.setLayoutAnimationEnabledExperimental(true);
+        // }
     }
 
     async componentDidMount(){
