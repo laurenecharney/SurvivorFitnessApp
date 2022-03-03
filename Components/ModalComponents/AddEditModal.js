@@ -34,7 +34,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                 visible={visible}
                 >
                 <View style={styles.modalStyle}>
-                    <TouchableOpacity style={{paddingLeft:260, paddingTop:50}} onPress={()=>callback()}>
+                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
                         <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                     </TouchableOpacity>
                     <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
