@@ -10,7 +10,7 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
-import {getParticipants, getParticipantByID, addParticipant} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant, getLocations} from '../APIServices/APIUtilities';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
@@ -72,11 +72,28 @@ export default class AdminClientPage extends Component {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
+    /** TODO: 
+     * dropdown menus for location - getLocations endpoint returns array, 
+     * find eligible locations and populate dropdown with those values
+     * 
+     */
+
+    async populateLocations() {
+        try {
+            let locs = await getLocations();
+
+            //...
+            
+        } catch (e) {
+            console.log("Couldn't get locations:")
+            console.log(e);
+        }
+    }
 
 
     async componentDidMount(){
         this.resetPartipantList();
-   }
+    }
 
     resetPartipantList = async () => {
         try {
