@@ -14,11 +14,13 @@ import TextBoxSingleLine from "../TextBoxSingleLine";
 export default  EditInformationRow = ({title, defaultVal, callback}) => {
 
   return (
-      <View style={{paddingBottom: 20}}>
+      <View style={{paddingBottom: 10, paddingTop: 10, width:"100%"}}>
         <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
           initValue = {defaultVal}
-          callback = {value => callback(value)}/>
+          callback = {value => callback(value)}
+          // content = {this.props.value}
+          />
       </View>
   );
 }
@@ -36,7 +38,5 @@ const styles = StyleSheet.create({
         borderColor: "#E7E7E7",
         width:'100%',
         borderRadius: 5,
-        alignSelf:"center"
-
     },
 });

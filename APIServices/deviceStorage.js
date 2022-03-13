@@ -28,9 +28,59 @@ export async function deleteUserInfo(){
 export async function getCurrentRole(){
   try {
     const res = await AsyncStorage.getItem("role");
-    return res;
+    return res
   } catch (error){
     console.log("AsyncStorage Error in getCurrentRole: " + error.message);
+  }
+}
+
+export async function saveSpecialistType(specialistType){
+  try {
+    await AsyncStorage.setItem("specialistType", JSON.stringify(specialistType));
+  } catch (error){
+    console.log("AsyncStorage Error in saveSpecialistType: " + error.message);
+  }
+}
+
+export async function deleteSpecialistType(){
+  try {
+    await AsyncStorage.removeItem("specialistType");
+  } catch (error){
+    console.log("AsyncStorage Error in deleteSpecialistType: " + error.message);
+  }
+}
+
+export async function getSpecialistType(){
+  try {
+    const res = await AsyncStorage.getItem("specialistType");
+    return res;
+  } catch (error){
+    console.log("AsyncStorage Error in getSpecialistType: " + error.message);
+  }
+}
+
+export async function saveLocationId(id){
+  try {
+    await AsyncStorage.setItem("locationId", JSON.stringify(id));
+  } catch (error){
+    console.log("AsyncStorage Error in saveLocationId: " + error.message);
+  }
+}
+
+export async function deleteLocationdId(){
+  try {
+    await AsyncStorage.removeItem("locationId");
+  } catch (error){
+    console.log("AsyncStorage Error in deleteLocationId: " + error.message);
+  }
+}
+
+export async function getLocationId(){
+  try {
+    const res = await AsyncStorage.getItem("locationId");
+    return res;
+  } catch (error){
+    console.log("AsyncStorage Error in getLocationId: " + error.message);
   }
 }
 
@@ -64,7 +114,6 @@ export async function getItem() {
   try {
     // const res = await AsyncStorage.getItem('id_token');
     const res = await SecureStore.getItemAsync("id_token");
-    //console.log(res)
     return res;
   } catch (error) {
     console.log("SecureStore Error in getItem: " + error.message);

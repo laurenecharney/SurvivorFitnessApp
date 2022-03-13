@@ -19,7 +19,7 @@ import { getAllSessionNotesByParticipantID, getParticipantSessions } from "../AP
 import { getUser } from "../APIServices/deviceStorage";
 import { updateSession } from '../APIServices/APIUtilities';
 import { Measurements } from "./Measurements";
-import { logTrainerSession } from '../APIServices/APIUtilities';
+import { logTrainerSession, logDietitianSession } from '../APIServices/APIUtilities';
 import NotesSection from './NoteSection';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -37,13 +37,13 @@ const SmallAppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-const ConfirmButton = ({ onPress, title, logged }) => (
-    <TouchableOpacity onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
+const ConfirmButton = ({ onPress, title, logged, disabled}) => (
+    <TouchableOpacity disabled={disabled} onPress={onPress} style={!logged ? styles.confirmButton : styles.confirmButtonGrayed}>
         <Text style={!logged ? styles.appButtonText : styles.loggedText}>{title}</Text>
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, showLoggedSessionInSidebar}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -55,17 +55,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
     const [loading, setLoading] = useState(true);
-
-    //called by Measurements component when a measurement is updated
-    //will be called on unmount if not already logged
-    const callUpdateSession = (updatedMeasurements) => {
-        // setMeasurementsChanged(true);
-        // let temp = initSessionData;
-        // if (temp != null) {
-        //     temp.session.measurements = updatedMeasurements;
-        //     setSessionData(temp);
-        // }
-    }
 
     //calls API utilities updateSession
     async function logSession() {
@@ -83,6 +72,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
             setLogged(true);
             showSessionInfo(res);
             showLoggedSessionInSidebar(initSessionData.sessionIndexNumber, previouslyHadLogDate)
+            // refreshSidebar(); // this is redundant, with slightly different logic 
         } catch(e) {
             console.log("session cannot be logged: ", e);
         }
@@ -158,10 +148,25 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // check if the new date is different from the previously logged date
         if (isSameDate(newSessionDate, initialLogDate)) {
             setLogged(true)
-            console.log("dates are equal")
         } else {
             setLogged(false)
-            console.log("dates are not equal")
+        }
+    }
+
+    // same as above, but slightly different semantics because the datepicker acts
+    // differently on Android
+    const confirmDateAndroid = (event, enteredDate) => {
+        setIsDateConfirmModalVisible(false)
+        setSessionDate(enteredDate || sessionDate);
+
+        const dateVal = parseInt(initSessionData['initialLogDate']);
+        const initialLogDate = new Date(dateVal)
+
+        // check if the new date is different from the previously logged date
+        if (isSameDate(enteredDate, initialLogDate)) {
+            setLogged(true)
+        } else {
+            setLogged(false)
         }
     }
 
@@ -214,10 +219,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                 </Text>
                             }
                         </View>
-                        
-                        
-                
-                
+   
                     <TouchableOpacity
                         style={styles.dateBar}
                         onPress={() => {setIsDateConfirmModalVisible(true);}}
@@ -240,6 +242,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         noteData={initSessionData.specialistNotes}
                         callback={updateNote}
                         />
+                        {
+                            Platform.OS === "ios" ?
                     <Modal
                         propagateSwipe={true}
                         animationIn="slideInUp"
@@ -253,7 +257,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         isVisible={isDateConfirmModalVisible}
                     >
                         <View style={{flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                            <View style={{backgroundColor: "#fff", width: "90%", height: 350, borderRadius: "19", alignItems: "center", justifyContent: 'space-around'}}>
+                            <View style={{backgroundColor: "#fff", width: "90%", height: 350, borderRadius: 19, alignItems: "center", justifyContent: 'space-around'}}>
                                 <View style={{flex: 1, width: '100%'}}>
                                     <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: "center" }}>
                                         <Text style={styles.heading}> {"Select Date"} </Text>
@@ -263,7 +267,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                                 mode="date"
                                                 display="spinner"
                                                 onChange={(event, enteredDate) => {
-                                                    setNewSessionDate(enteredDate)
+                                                    setNewSessionDate(enteredDate);
                                                 }}
                                                 />
                                         <View style={styles.datePickerModalButtonContainer}>
@@ -286,6 +290,21 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                             </View>
                         </View>
                     </Modal>
+                    :
+                    
+                        isDateConfirmModalVisible &&
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        value={sessionDate}
+                        mode={"date"}
+                        // is24Hour={true}
+                        display="default"
+                        onChange={confirmDateAndroid}
+                     />
+
+                    
+                    
+                                            }
                     
             </KeyboardAwareScrollView>
             <View style={{marginBottom: 20, marginLeft: 20, marginTop: 5, width: '84%', justifyContent: "center", paddingBottom: 35}}>
@@ -294,6 +313,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     onPress={() => {
                         logSession(newSessionDate);
                     }}
+                    disabled={isDisabled}
                     logged={logged}
                 />
             </View>
@@ -462,14 +482,6 @@ const styles = StyleSheet.create({
 
         // position: 'absolute'
     },
-    sessionNumber:{
-       fontSize: 17,
-        textAlign: 'center',
-        fontFamily: 'Helvetica',
-        color: '#838383',
-        fontWeight: 'bold',
-        paddingBottom: 20,
-    },
     appButtonContainer: {
         elevation: 8,
         backgroundColor: '#AED804',
@@ -527,24 +539,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: '90%',
         justifyContent: "space-around"
-    },
-    sessionNumberContainer: {
-        elevation: 8,
-        backgroundColor:'#AED804',
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 12,
-        // width: '90%',
-        height: '7%',
-        alignSelf: "center",
-        margin: 20,
-        justifyContent: "center",
-    },
-    sessionNumberText: {
-        fontSize: 15,
-        color: "#fff",
-        fontWeight: "bold",
-        alignSelf: "center",
     },
     scrollContentContainer: {
         paddingBottom: 75,

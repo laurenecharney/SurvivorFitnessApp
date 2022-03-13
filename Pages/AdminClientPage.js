@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TouchableOpacity,
-    ScrollView,
-    TextInput
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,15 +13,31 @@ import EditInformationRow from '../Components/ModalComponents/EditInformationRow
 import AddInformationRow from '../Components/ModalComponents/AddInformationRow';
 import RemoveButton from '../Components/ModalComponents/RemoveButton';
 import { ParticipantsList } from '../Components/ParticipantsList';
-
-
-export const AppButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
-        <Text style={styles.appButtonText}>{title}</Text>
-    </TouchableOpacity>
-);
+import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
+import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
+import { Heading } from '../Components/Heading';
 
 const categories = {
+    firstName: "First Name: ",
+    lastName: "Last Name: ",
+    phoneNumber: "Phone Number: ",
+    email: "Email: ",
+    //age: "Age: ",
+    typeOfCancer: "Type of Cancer: ",
+    treatmentFacility: "Treatment Facility: ",
+    surgeries: "Surgeries: ",
+    formsOfTreatment: "Forms of Treatment: ",
+    physicianNotes: "Physician Notes: ",
+    trainer: "Trainer: ",
+    gym: "Gym: ",
+    nutritionist: "Dietitian: ",
+    dieticianOffice: "Dietitian Office: ",
+    //startDate: "Start Date: ",
+    goals: "Goal(s): ",
+
+};
+
+const categoriesOld = {
     firstName: "First Name: ",
     lastName: "Last Name: ",
     age: "Age: ",
@@ -41,8 +53,9 @@ const categories = {
 
 export default class AdminClientPage extends Component {
     state = {
-        isModalVisible:false
+        isModalVisible:false,
     }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -54,25 +67,22 @@ export default class AdminClientPage extends Component {
             newParticipant: [
                 {id: "firstName", val: "",},
                 {id: "lastName", val: "",},
-                {id: "age", val: 0,},
+                {id: "age", val: "",},
                 {id: "email", val: "",},
                 {id: "phoneNumber", val: "",},
-                //{id: "startDate", val: "",}, //probs want another datepicker
+                {id: "gym", val: "",},
+                {id: "dieticianOffice", val: "",},
+                {id: "startDate", val: "",}, //probs want another datepicker
                 {id: "goals", val: "",},
-                //{id: "gym", val: "",},
-                //{id: "dieticianOffice", val: "",},
-                
-                //{id: "numberOfTrainings", val: 24,},
-                //{id: "numberOFAppointments", val: 3}
-            ],
+                {id: "numberOfTrainings", val: 24,},
+                {id: "numberOFAppointments", val: 3}],
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+        // if (Platform.OS === 'android') {
+        //     UIManager.setLayoutAnimationEnabledExperimental(true);
+        // }
     }
-
 
     async componentDidMount(){
         this.resetPartipantList();
@@ -103,7 +113,7 @@ export default class AdminClientPage extends Component {
    openModal = async (participant) =>{
        this.setState({
            isModalVisible:true,
-           selectedParticipant: participant
+           selectedParticipant: participant,
        });
        try {
         const res = await getParticipantByID(participant.id);
@@ -113,57 +123,37 @@ export default class AdminClientPage extends Component {
             console.log(e);
             alert("Could not fetch participants data");
         }
-   }
-    toggleModal = () =>{
-        this.setState({
-            isModalVisible:!this.state.isModalVisible
-        })
     }
+
     closeModal = () =>{
         this.setState({
             isModalVisible:false
         })
     }
-    openEditModal = () =>{
-        this.setState({
-            isEditModalVisible:true,
-            edit: true
-        })
-    }
 
-    toggleEditModal = () =>{
-        this.setState({
-            isEditModalVisible:!this.state.isEditModalVisible
-        })
-    }
-    closeEditModal = () =>{
-        this.setState({
-            isEditModalVisible:false,
-            edit: false
-        })
-    }
     openAddModal = () =>{
         this.setState({
             isAddModalVisible:true
         })
     }
-    toggleAddModal = () =>{
-        this.setState({
-            isAddModalVisible:!this.state.isModalVisible
-        })
-    }
+
     closeAddModal = () =>{
         this.setState({
-            isAddModalVisible:false
+            isAddModalVisible:false,
         })
-    }
-    renderModalSection = () => {
-
     }
 
     setNPVal = (key, value) => {
-        let temp = this.state.newParticipant.map(row => 
-            ({id: row.id, val: row.id===key ? value : row.val}));
+        console.log(key, value)
+        let temp = JSON.parse(JSON.stringify(this.state.newParticipant));
+        for (let i = 0; i < this.state.newParticipant.length; i++){
+            if (this.state.newParticipant[i].id === key){
+                temp[i].val = value;
+            }
+        }
+        // let temp = this.state.newParticipant.map(row => 
+        //     ({id: row.id, val: row.id===key ? value : row.val}));
+            console.log(temp)
         this.setState({
             newParticipant: temp
         })
@@ -172,6 +162,7 @@ export default class AdminClientPage extends Component {
     createNewParticipant = async () => {
         let participant = {};
         for (const row of this.state.newParticipant) {
+            console.log(row.id, row.val);
             participant[row.id] = row.val;
         }
         await addParticipant(participant);
@@ -180,25 +171,25 @@ export default class AdminClientPage extends Component {
 
     render() {
         return(
-            <View style={styles.container} >
-                <View style={styles.pageContainer}>
-                    <Text style={styles.headline}>Participants</Text>
-                    <View style={styles.addButtonContainer} >
-                        <TouchableOpacity onPress={()=>this.openAddModal()}>
-                            <Text style={styles.addButtonText}>+</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {/* <View style={styles.listContainer}> */}
+            <View style={styles.container}>
+                <Heading 
+                    title = "Participants"
+                    titleOnly = {false}
+                    displayAddButton = {true}
+                    displayBackButton = {false}
+                    displaySettingsButton = {false}
+                    callback = {this.openAddModal}/>
                 <ParticipantsList
                     participantsInfo={this.state.calls}
                     openModal={item => this.openModal(item)}
                     showLocations={true}
                     showTrainer={true}
                     showDietitian={true}
-                />   
+                    listType="participants"
+                />  
+                  
                 {/* </View> */}
-                <Modal 
+                {/* <Modal 
                     propagateSwipe={true} 
                     animationIn="slideInUp" 
                     animationOut="slideOutDown" 
@@ -282,8 +273,8 @@ export default class AdminClientPage extends Component {
                             </View>
                         </View>  
                     </Modal>
-                </Modal>
-                <Modal 
+                </Modal> */}
+                {/* <Modal 
                     propagateSwipe={true} 
                     animationIn="slideInUp" 
                     animationOut="slideOutDown" 
@@ -307,11 +298,11 @@ export default class AdminClientPage extends Component {
                                             title={categories[key]}
                                             callback={value => this.setNPVal(key, value)}
                                             />
-                                        /** TODO
-                                         * test add participant form - use console.log
-                                         * api call? 
-                                         * after merge, create default vals for number of sessions
-                                         */
+                                        // TODO
+                                         // test add participant form - use console.log
+                                         // api call? 
+                                         // after merge, create default vals for number of sessions
+                                         //
                                     ))}
                                     <View style={{marginTop: 20}}>
                                         <AppButton 
@@ -325,145 +316,37 @@ export default class AdminClientPage extends Component {
                             </View>
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
+ 
+                <DisplayModal 
+                    categories = {categories} 
+                    information = {this.state.selectedParticipant}
+                    canEdit = {true}
+                    content = "Participants" 
+                    title = "Participant Information" 
+                    visible = {this.state.isModalVisible} 
+                    callback = {this.closeModal}/>
+                <AddEditModal 
+                    categories = {categories} 
+                    isAdd = {true}
+                    title = "Add Participant" 
+                    visible = {this.state.isAddModalVisible} 
+                    information = {this.state.selectedParticipant}
+                    closeModal = {this.closeAddModal}
+                    createParticipant = {() => {
+                        console.log("create participant");
+                        this.createNewParticipant();
+                        this.closeAddModal();
+                    }}
+                    setValue={this.setNPVal}/>
             </View>
         );
     }
 }
-
-//diff sections of the modal for attributes to display. 
-//Each one contains a prop name + key 
 
 const styles = StyleSheet.create({
     container:{
         flex: 1, 
         backgroundColor:'#fff'
     },
-    pageContainer:{
-        flexDirection: "row", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        paddingRight : 25
-    },
-    participantOverviewRow:{
-        flexDirection: "row", 
-        justifyContent: "space-between"
-    },
-    headline: {
-        fontSize: 25,
-        marginTop: 50,
-        marginLeft: 10,
-        padding: 25,
-        color: '#AED803',
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderColor: '#E6E6E6',
-        backgroundColor: '#fff',
-        borderBottomWidth: 0.25,
-        borderTopWidth:0.25,
-        padding: 40,
-    },
-    nameContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 280,
-    },
-    nameTxt: {
-        fontWeight: '600',
-        color: '#3E3E3E',
-        fontSize: 20,
-        width:170,
-    },
-    editStyle: {
-        fontSize: 14,
-        color: "#AED803",
-        alignSelf: "center",
-        alignSelf: 'flex-end'
-    },
-    addButtonContainer: {
-        backgroundColor:'#AED804',
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        width: 48,
-        alignSelf: "center",
-        margin: 5,
-        marginTop: 50
-    },
-    addButtonText: {
-        fontSize: 18,
-        color: "#fff",
-        fontWeight: "bold",
-        alignSelf: "center",
-        textTransform: "uppercase"
-    },
-    modalText:{
-        fontSize: 18,
-        paddingTop: 20,
-        alignSelf: "center",
-        fontWeight: "bold",
-        color: "#AED803",
-    },
-    appButtonContainer: {
-        backgroundColor:'#AED804',
-        borderRadius: 10,
-        paddingVertical: 15,
-        paddingHorizontal: 12,
-        width: 150,
-        alignSelf: "center",
-        margin: 10
-    },
-    appButtonText: {
-        fontSize: 18,
-        color: "#fff",
-        alignSelf: "center",
-    },
-    gymTxt: {
-        color: '#cfcfcf',
-        fontSize: 12,
-        width:170,
-        paddingLeft: 10,
-    },
-    listContainer:{
-        paddingBottom: '33%'
-    },
-    modalHeaderContainer:{
-        marginLeft:40, 
-        borderBottomWidth:1, 
-        borderBottomColor: "#E4E4E4", 
-        paddingBottom:20, 
-        width:'75%'},
-    modalInformationContainer:{
-        marginLeft:40, 
-        borderBottomWidth:1, 
-        borderBottomColor: "#E4E4E4", 
-        paddingTop:10, 
-        paddingBottom:10, 
-        width:'75%'
-    },
-    infoModalIcon:{
-        borderWidth:1,
-        borderColor:"#AED803",
-        alignItems:'center',
-        justifyContent:'center',
-        width:25,
-        height:25,
-        backgroundColor:'#fff',
-        borderRadius:50,
-    },
-    modalStyle:{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    modalView:{
-        backgroundColor: "#fff",
-        width: '95%',
-        height: '90%',
-        borderRadius:19
-        
-    }
 });
