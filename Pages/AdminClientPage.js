@@ -10,7 +10,11 @@ import {
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AlphabetList} from "react-native-section-alphabet-list";
-import {getParticipants, getParticipantByID, addParticipant, getLocations} from '../APIServices/APIUtilities';
+import {getParticipants, 
+        getParticipantByID, 
+        addParticipant, 
+        getLocations, 
+        getLocationByID} from '../APIServices/APIUtilities';
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
@@ -51,6 +55,7 @@ export default class AdminClientPage extends Component {
             isEditModalVisible: false,
             calls: [],
             selectedParticipant: {},
+            locations: [],
             newParticipant: [
                 {id: "firstName", val: "",},
                 {id: "lastName", val: "",},
@@ -80,9 +85,15 @@ export default class AdminClientPage extends Component {
 
     async populateLocations() {
         try {
-            let locs = await getLocations();
-
-            //...
+            let locIDs = await getLocations();
+            let temp = locIDs.map(idnumber => {
+                let res = await getLocationByID(idnumber);
+                return {
+                    id: idnumber,
+                    name: res.name,
+                }
+            });
+            this.setState({locations : temp});
             
         } catch (e) {
             console.log("Couldn't get locations:")
