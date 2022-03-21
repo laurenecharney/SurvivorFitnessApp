@@ -4,16 +4,16 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
+import {getLocations, getLocationByID, createLocation} from '../APIServices/APIUtilities';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
 const categories = {
-    name: "Name: ",
-    address: "Address: ",
-    admin: "Administrator: ",
+    name: "",
+    address: "",
+    administrator: "",
 };
 
 export default class AdminLocationsPage extends Component {
@@ -104,47 +104,18 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
-    generateNewLocation = locType => {
+    generateNewLocation = locInfo => {
+        //preprocessing of input data. currently reorders fields
         let loc = {
-            address: this.state.address,
-            administrator: this.state.admin,
-            name: this.state.name,
-            type: locType
+            address: locInfo.address,
+            administrator: locInfo.admin,
+            name: locInfo.name,
+            type: locInfo.type,
         };
         console.log(JSON.stringify(loc));
+        createLocation(loc);
     }
 
-/*
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={{paddingBottom:10, width:'100%'}}>
-            <Text style={styles.modalText} >Add Dietitian Office</Text>
-        </View>
-        <View>
-            <EditInformationRow 
-                title = "Name: " 
-                value = "" 
-                edit = {true}
-                callback={value => this.setState({name: value})}/>
-            <EditInformationRow 
-                title = "Address: " 
-                value = "" 
-                edit = {true}
-                callback={value => this.setState({address: value})}/>
-            <EditInformationRow 
-                title = "Administrator: " 
-                value = "" 
-                edit = {true}
-                callback={value => this.setState({admin: value})}/>
-        </View>
-        <View style={{marginTop: 20}}>
-            <AppButton
-                title = {"Add"}
-                onPress={() => {
-                    this.generateNewLocation('DIETICIAN_OFFICE')
-                    this.closeDieticianModal()}}/>
-        </View>
-    </ScrollView>
-*/
     render() {
         return(
             <View style={styles.container} >
@@ -168,12 +139,16 @@ export default class AdminLocationsPage extends Component {
                     canEdit = {true}
                     callback = {this.closeModal}/>
                 <AddEditModal 
-                    categories = {categories} 
-                    content = ""
+                    fields = {categories}   //might be able to use keys from information instead
                     isAdd = {true}
-                    title = "Add Locations" 
+                    isLocation = {true}
+                    title = "Add Location" 
                     visible = {this.state.isAddModalVisible} 
-                    callback = {this.closeAddModal}/>
+                    information = {this.state.selectedLocation} 
+                    callback = {input => {
+                        this.closeAddModal(); 
+                        if(input) this.generateNewLocation(input);}
+                    }/>
             </View>
         );
     }
