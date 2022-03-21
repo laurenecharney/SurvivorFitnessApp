@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate} from '../APIServices/APIUtilities';
-import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole, saveSpecialistType, saveLocationId} from '../APIServices/deviceStorage';
 
 
 const credentials = {
@@ -67,25 +67,32 @@ export default class LoginPage extends React.Component {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
             await Promise.all[(saveItem("id_token", res.jwt), saveUserInfo(res.user))];
+            // console.log("user: ", res.user, "\n^user")
             if (res.user.roles.includes('SUPER_ADMIN')){
-                this.props.navigation.replace('SuperAdminPage');
+                this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
+                
             } else if (res.user.roles.includes('DIETITIAN')){
                 await saveCurrentRole("DIETITIAN");
+                await saveSpecialistType("DIETITIAN");
+                await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {dietitianUserId: res.user.id}
                 });
 
             } else if (res.user.roles.includes('TRAINER')) {
                 await saveCurrentRole("TRAINER");
+                await saveSpecialistType("TRAINER");
+                await saveLocationId(res.user.locations[0].id);
                 const role = await getCurrentRole();
-                console.log("role: ", role);
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
                 });
 
             } else {
                 const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
+                
+                await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: "Participants",
                     params: {
@@ -96,7 +103,6 @@ export default class LoginPage extends React.Component {
                   await saveCurrentRole("LOCATION_ADMINISTRATOR");
             } 
 
-            // alert(res.user.roles.length)
         }
         else if (res && res.status === 403){
             this.alertInvalidLoginCredentials();
@@ -141,8 +147,8 @@ export default class LoginPage extends React.Component {
                             name='email'
                             value={email}
                             style={styles.inputText}
-                            placeholder="email"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
@@ -152,8 +158,8 @@ export default class LoginPage extends React.Component {
                             value={password}
                             secureTextEntry={hidePass ? true : false}
                             style={styles.inputText}
-                            placeholder="password"
-                            placeholderTextColor="#AAAAAA"
+                            placeholder=""
+                            placeholderTextColor="#003f5c"
                             returnKeyType='done'
                             onSubmitEditing={() => this.handleLoginPress()}
                             onChangeText={this.handlePasswordChange}/>
@@ -278,7 +284,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: 'white',
-        fontFamily: "Helvetica Neue",
         fontSize: 21
     },
     logo: {

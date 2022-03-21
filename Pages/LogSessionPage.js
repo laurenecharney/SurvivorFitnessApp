@@ -2,13 +2,13 @@
 
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.js';
-// import TrainerSession from './TrainerSession.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
 // import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
+import { getCurrentRole } from '../APIServices/deviceStorage.js';
 
 // LogSessionPage
     // sideBarComponent
@@ -16,10 +16,12 @@ import { getParticipantSessions } from "../APIServices/APIUtilities";
     // LogSessionComponent
 
 export default class TrainerDieticianSessionWithSidebarPage extends Component{
+
     constructor(props){
         super(props);
         this.state={
-            dietician: false,
+            user: "",
+            currentView: "",
             numTrainerSessions: 24,
             trainerSessionsArray:  [
             ],
@@ -37,47 +39,51 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             sessionData: {"trainerSessions": [], "dietitianSessions": []},
             refreshFlag: false
         }
-        // for (let i = 1; i <= this.state.numTrainerSessions; ++i){
-        //     this.state.trainerSessionsArray.push({id: i, name: i.toString()})
-        // }
-        for (let i = 1; i <= this.state.numDieticianSessions; ++i){
-            this.state.dieticianSessionsArray.push({id: i, name: i.toString()})
-        }
+        this.refreshSidebar = this.refreshSidebar.bind(this);
         this.showLoggedSessionInSidebar = this.showLoggedSessionInSidebar.bind(this);
     }
 
-    pressTrainer = ()=>{
-        this.setState({dietician: false});
-    }
-    pressDietician = ()=>{
-        this.setState({dietician: true});
+    changeView = (sessionType) => {
+        // console.log("user: " + this.state.user + "\nsessionType (to change to): " + sessionType);
+        if(this.state.user !== sessionType && (this.state.user !== "SUPER_ADMIN"))
+        {
+            Alert.alert(
+                "View Only Permission",
+                ("Please log in using a trainer account to edit this information."),
+            );
+        }
+        this.refreshSidebar();
+        this.setState({currentView: sessionType})
+
     }
 
     resetRefreshFlag() {
         this.setState({refreshFlag: false});
     }
 
-    // gets called when the user presses a session number on the sidebar
-     updateSessionTrainer(newSessionTrainer){
-        let mostRecentLogged = this.state.trainerSessionsArray.findIndex(i => i.logged === false);
-        // 
-        if(!(newSessionTrainer.logged || (newSessionTrainer.name == (mostRecentLogged + 1)))){
+     updateSession(newSession){
+        let mostRecentLogged = this.findMostRecentLoggedSession();
+
+        // let mostRecentLogged = this.state.dietician ? this.state.dieticianSessionsArray.findIndex(i => i.logged === false) : this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+        if(!(newSession.logged || (newSession.name == (mostRecentLogged + 1)))){
             Alert.alert(
-                "Session " + newSessionTrainer.name + " Has Not Been Logged",
+                "Session " + newSession.name + " Has Not Been Logged",
                 ("Please Select Session " + (mostRecentLogged + 1)  + " to log a new session"),
             );
         }else{
-            // sessionTrainer is the session number reflected in the sessionLogger
-            this.setState({sessionTrainer:newSessionTrainer.name})// or with es6 this.setState({name})
-            let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
-            this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
-            this.state.trainerSessionsArray[newSessionTrainer.name - 1].highlighted = true;
+            if (this.state.currentView === "DIETITIAN"){
+                this.setState({sessionDietician:newSession.name})// or with es6 this.setState({name})
+                let indexPrevHighlight = this.state.dieticianSessionsArray.findIndex(i => i.highlighted === true);
+                this.state.dieticianSessionsArray[indexPrevHighlight].highlighted = false;
+                this.state.dieticianSessionsArray[newSession.name - 1].highlighted = true;
+            } else if (this.state.currentView === "TRAINER"){
+                this.setState({sessionTrainer:newSession.name})// or with es6 this.setState({name})
+                let indexPrevHighlight = this.state.trainerSessionsArray.findIndex(i => i.highlighted === true);
+                this.state.trainerSessionsArray[indexPrevHighlight].highlighted = false;
+                this.state.trainerSessionsArray[newSession.name - 1].highlighted = true;
+            }
         }
      }
-
-    updateSessionDietician(sessionDietician){
-        this.setState({sessionDietician: sessionDietician})// or with es6 this.setState({name})
-    }
 
     addSessionDietician(){
         this.setState({numDieticianSessions: this.state.numDieticianSessions + 1})
@@ -95,52 +101,108 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         return sessionNum == 1 || sessionNum == 12 || sessionNum == 24;
     }
 
-    getDataBySessionNumber = (num) => {
-        let currentSessionData = []
-        if(!this.state.sessionData.trainerSessions) {
-            console.log("Error: sessionData.trainerSessions does not exist.")
+    getDataBySessionNumber = () => {
+        let sessionType;
+        let num;
+        if (this.state.currentView === "DIETITIAN") {
+            sessionType = "dietitianSessions";
+            num = this.state.sessionDietician;
+        } else if (this.state.currentView === "TRAINER") {
+            sessionType = "trainerSessions";
+            num = this.state.sessionTrainer;
+        } else {
+            sessionType = "";
+            num = -1;
+        }
+    
+        if(!this.state.sessionData[sessionType]) {
+            console.log("Error: sessionData for trainers or dietitians does not exist.")
+            console.log(this.state.sessionData[sessionType], "\n^sessionData")
+            return [];
+        } else if (this.state.sessionData[sessionType][num - 1]) {
+            return this.state.sessionData[sessionType][num - 1];
+        } else {
+            console.log("Couldn't find measurements for session with index " + num.toString());
             return [];
         }
-        for(let i = 0; i < this.state.sessionData.trainerSessions.length; ++i) {
-            if(this.isCheckpoint(num) && 
-                    num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
-                    this.state.sessionData.trainerSessions[i]) {
-            
-                return this.state.sessionData.trainerSessions[i];
-            } else if (
-                num == this.state.sessionData.trainerSessions[i].sessionIndexNumber && 
-                this.state.sessionData.trainerSessions[i])
-                {
-                    return this.state.sessionData.trainerSessions[i];
-            }
-        }
-        console.log("Couldn't find measurements for session with index " + num.toString());
-        return [];
     }
 
-    // formats the sidebar
+    findMostRecentLoggedSession = () => {
+        if (this.state.currentView == "DIETITIAN") {
+            return this.state.dieticianSessionsArray.findIndex(i => i.logged === false);
+        } else if (this.state.currentView == "TRAINER") {
+            return this.state.trainerSessionsArray.findIndex(i => i.logged === false);
+        } else {
+            return -1;
+        }
+    }
+
+    // fill out <specialist>SessionsArray based on raw data from backend
     formatSessions(rawSessionsArray){
         let nextToLog = -1;
-        let numSessions = rawSessionsArray['trainerSessions'].length;
-        for(let i = 0; i < numSessions; i++){    // for each session
-            let isHighlighted = false;
-            let hasLogDate = (rawSessionsArray['trainerSessions'][i]['initialLogDate']) != null;
+        let sessionType = "";
+        if (this.state.currentView == "DIETITIAN") {
+            sessionType = "dietitianSessions";
+            
+        } else if (this.state.currentView == "TRAINER") {
+            sessionType = "trainerSessions";
+        }
 
-            // if the session is not logged and there are unlogged sessions, highlight it
+        let numSessions = rawSessionsArray[sessionType].length;
+        for(let i = 0; i < numSessions; i++){
+            let isHighlighted = false;
+            let hasLogDate = (rawSessionsArray[sessionType][i]['initialLogDate']) != null;
+
+            // find the next session to log
             if (!hasLogDate && nextToLog == -1){
                 isHighlighted = true
+                if(this.state.currentView === "DIETITIAN"){
+                    this.setState({sessionDietician: i + 1 })
+                }else if (this.state.currentView === "TRAINER"){
+                    this.setState({sessionTrainer: i + 1 })
+                } else {
+                    console.log("Error: currentView is neither dietician nor trainer.")
+                }
                 nextToLog = i + 1;
-                // dictates what session the sessionLogger will start at
-                this.setState({sessionTrainer: i + 1 })
-            } else if (hasLogDate && i === numSessions - 1) {
-                isHighlighted = true;   // if all sessions are logged, show the last one
-                this.setState({ sessionTrainer: i + 1})
             }
+
             
-           let sessionId = rawSessionsArray['trainerSessions'][i]['sessionIndexNumber']; 
-           this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+            // add new session object to <specialist>SessionsArray 
+            let sessionId = rawSessionsArray[sessionType][i]['sessionIndexNumber'];
+            if (this.state.currentView === "DIETITIAN") {
+                this.setState({ dieticianSessionsArray: [...this.state.dieticianSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+                if (i == numSessions - 1 && nextToLog == -1) {
+                    // if all sessions have been logged, highlight the first session
+                    let tempSessionsArray = JSON.parse(JSON.stringify(this.state.dieticianSessionsArray));
+                    tempSessionsArray[0].highlighted = true;
+                    this.setState({ dieticianSessionsArray: tempSessionsArray });
+                }
+                
+            } else if (this.state.currentView === "TRAINER") {
+                this.setState({ trainerSessionsArray: [...this.state.trainerSessionsArray, {id: sessionId, name: sessionId.toString(), logged: hasLogDate, highlighted: isHighlighted}] });
+                // if all sessions have been logged, highlight the first session
+                if (i == numSessions - 1 && nextToLog == -1) {
+                    let tempSessionsArray = JSON.parse(JSON.stringify(this.state.trainerSessionsArray));
+                    tempSessionsArray[0].highlighted = true;                    
+                    this.setState({ trainerSessionsArray: tempSessionsArray });
+                }
+            }    
+
        }
     }
+
+    // can we combine these next two ??????
+    async refreshSidebar() {
+        const rawSessions = await this.fetchSessions();
+        if (this.state.currentView === "DIETITIAN") {
+            this.setState({dieticianSessionsArray: []})
+        } else if (this.state.currentView === "TRAINER") {
+            this.setState({trainerSessionsArray: []})
+        }
+        this.formatSessions(rawSessions);
+
+    }
+
 
     // called after a session is logged or updated
     showLoggedSessionInSidebar(sessionNum, previouslyLogged){
@@ -148,9 +210,15 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
         // of the logSessionPage
         this.fetchSessions();
         if (!previouslyLogged) {
-            let temp = this.state.trainerSessionsArray;
-            temp[sessionNum - 1] = {id: sessionNum, name: sessionNum.toString(), logged: true, highlighted: true};
-            this.setState({trainerSessionsArray: temp})
+            if (this.state.currentView === "DIETITIAN") {
+                let temp = this.state.dieticianSessionsArray;
+                temp[sessionNum - 1].logged =  {id: sessionNum, name: sessionNum.toString(), logged: true, highlighted: true};
+                this.setState({dieticianSessionsArray: temp})
+            } else if (this.state.currentView === "TRAINER") {
+                let temp = this.state.trainerSessionsArray;
+                temp[sessionNum - 1] = {id: sessionNum, name: sessionNum.toString(), logged: true, highlighted: true};
+                this.setState({trainerSessionsArray: temp})
+            }
         } // else, if the session was previously logged, the sidebar remains the exact same
         
     }
@@ -158,6 +226,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     async fetchSessions() {
         try {
             let res = await getParticipantSessions(this.props.route.params.id);
+            if (res["trainerSessions"]) {
+                console.log("trainer sessionsData exists")
+            } else {
+                console.log("trainersession data does not exist")
+            }
             this.setState({sessionData: res});
             return res;
         } catch (e) {
@@ -166,8 +239,26 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     async componentDidMount() {
+        const role = JSON.parse(await getCurrentRole());
+        this.setState({user: role});
+
+        if (role == "SUPER_ADMIN") {
+            this.setState({currentView: "DIETITIAN"});
+        } else if(role === "TRAINER" || role === "DIETITIAN") {
+            this.setState({currentView: role});
+            console.log("role is " + role)
+        } else {
+            this.setState({currentView: ""});
+            console.log("Error: role is neither dietitian nor trainer nor super-admin.")
+        }
+
         const rawSessions = await this.fetchSessions();
+        // console.log(rawSessions, "\n^rawSessions");
         this.formatSessions(rawSessions);
+    }
+
+    shouldBeDisabled() {
+        return (this.state.user != this.state.currentView) 
     }
 
     render(){
@@ -181,9 +272,9 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                 </View>
                 <View>
                     <TrainerDieticianNavBar
-                        pressTrainer = {()=>this.pressTrainer()}
-                        pressDietician = {()=>this.pressDietician()}
-                        dietician={this.state.dietician}
+                        pressTrainer = {()=>this.changeView("TRAINER")}
+                        pressDietician = {()=>this.changeView("DIETITIAN")}
+                        dietician={this.state.currentView === "DIETITIAN"}
                         />
                 </View>
                 <View style={{
@@ -191,17 +282,22 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     flexDirection: 'row',
                 }}>
                     <View style={{ width: '15%' }}>
-                    {this.state.dietician ? 
+                    {this.state.currentView === "DIETITIAN" ? 
                         <Sidebar
-                            updateSession = {newSession => this.updateSessionDietician(newSession)}
+                            updateSession = {newSession => this.updateSession(newSession)}
                             sessionsArray = {this.state.dieticianSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionDietician()}
+                            fetchSessions = {() =>this.fetchSessions()}
+                            test = {this.state.test}
+                            refreshFlag = {this.state.refreshFlag}
+                            resetRefreshFlag = {()=>this.setState({refreshFlag: false})}
+
                         />
                         :
 
                         <Sidebar
-                            updateSession={newSession=>this.updateSessionTrainer(newSession)}
+                            updateSession={newSession => this.updateSession(newSession)}
                             sessionsArray = {this.state.trainerSessionsArray}
                             addSessionArray = {this.state.addSessionArray}
                             addSession = {()=>this.addSessionTrainer()}
@@ -214,8 +310,10 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                     </View>
                         <SessionLogger 
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
-                            initSessionData = {this.getDataBySessionNumber(this.state.sessionTrainer)}
-                            trainerSessionSelected={!this.state.dietician}
+                            initSessionData = {this.getDataBySessionNumber()}
+                            trainerSessionSelected={this.state.currentSession !== "DIETITIAN"}
+                            // refreshSidebar={this.refreshSidebar}
+                            isDisabled={this.shouldBeDisabled()}
                             showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
                         /> 
                 </View>

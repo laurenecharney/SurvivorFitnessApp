@@ -21,6 +21,14 @@ export default  EditInformationRow = ({title, defaultVal, callback}) => {
           callback = {value => {console.log(value+"Hello");callback(value)}}/>
       </View>
   );
+  // render() {
+  //   return ( 
+  //       <View style={{paddingBottom: 10, paddingTop: 10, width:"100%"}}>
+  //       <Text style={styles.participantInfo} >{this.props.title}</Text>
+  //       <TextBoxSingleLine content = {this.props.value}/>
+  //       </View>
+  //   );
+  // }
 }
 
 const styles = StyleSheet.create({
@@ -36,7 +44,5 @@ const styles = StyleSheet.create({
         borderColor: "#E7E7E7",
         width:'100%',
         borderRadius: 5,
-        alignSelf:"center"
-
     },
 });
