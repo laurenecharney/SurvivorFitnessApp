@@ -154,8 +154,9 @@ export default class AdminClientPage extends Component {
                     visible = {this.state.isModalVisible} 
                     callback = {this.closeModal}/>
                 <AddEditModal 
-                    categories = {categories} 
+                    fields = {categories} 
                     isAdd = {true}
+                    isLocation = {false}
                     title = "Add Participant" 
                     visible = {this.state.isAddModalVisible} 
                     information = {this.state.selectedParticipant}
