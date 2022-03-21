@@ -18,7 +18,7 @@ export default  EditInformationRow = ({title, defaultVal, callback}) => {
         <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
           initValue = {defaultVal}
-          callback = {value => {console.log(value+"Hello");callback(value)}}/>
+          callback = {value => callback(value)}/>
       </View>
   );
   // render() {
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     participantInfo:{
         fontSize: 15, 
         color: '#AED803', 
-        paddingBottom: 10
+        paddingBottom: 10,
+        fontWeight: "bold",
     },
     child:{
         backgroundColor: 'white',
