@@ -22,7 +22,7 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, isChange}) => {
     return(
              <Modal 
                 propagateSwipe={true} 
@@ -58,14 +58,20 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                         <AppButton title = {"Add"}/>
                                     </View>
                                 :
-                                isAdd && (
+                                !isAdd && !isChange && (
                                     <View>
                                         <RemoveButton/>
                                         <AppButton
                                             title={"EDIT"}
-                                            onPress={()=>callback()}
-                                            />
+                                            //Send to backend with callback
+                                        />
                                     </View>
+                                )}
+                                {isChange && (
+                                    <AppButton
+                                    title={"EDIT"}
+                                    //Send to backend with callback
+                                />
                                 )}
                             </View>
                         </ScrollView>
