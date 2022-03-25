@@ -14,7 +14,6 @@ import AdminTrainerPage from "../Pages/AdminTrainerPage.js";
 
 import AdminDieticianPage from "../Pages/AdminDieticianPage.js";
 import SettingsPage from "../Pages/SettingsPage.js";
-import TrainerSettingsPage from "../Pages/TrainerSetting.js"
 
 
 const Stack = createStackNavigator()
@@ -24,7 +23,6 @@ function MainStackNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name='LoginPage' headerMode="none" component={LoginPage} />
-        <Stack.Screen name='TrainerSettingsPage'  component={TrainerSettingsPage} />
         <Stack.Screen name='AllPatientsPage' headerMode="none" component={AllPatientsPage} />
         <Stack.Screen name='ClientInformationPage'  component={ClientInformationPage} />
         <Stack.Screen name='SuperAdminPage' component={SuperAdminNav}/>
