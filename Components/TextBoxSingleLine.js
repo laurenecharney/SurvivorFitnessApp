@@ -4,6 +4,14 @@ import { TextInput } from 'react-native';
 const TextBoxSingleLine = (props) => {
   const [value, onChangeText] = React.useState(props.content);
 
+  const updateInput = (text) => {
+    onChangeText(text);
+
+    if(props.updateInputText){
+      props.updateInputText(text);
+    }
+  }
+
   return (
     <TextInput
       style={{ backgroundColor: 'white',
@@ -15,7 +23,7 @@ const TextBoxSingleLine = (props) => {
       borderRadius: 7,
       alignSelf:"center" }}
       placeholder={props.content}
-      onChangeText={text => onChangeText(text)}
+      onChangeText={text => updateInput(text)}
       value={value}
     />
   );

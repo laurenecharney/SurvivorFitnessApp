@@ -79,6 +79,7 @@ export default class LocationAdminClientPage extends Component {
       const locationId = this.props.route.params
         ? this.props.route.params.locationId
         : null;
+
       const res =  
       this.isDietitian() ? await getParticipants("dietitianOfficeId", locationId) : await getParticipants("gymId", locationId);
       this.setState({

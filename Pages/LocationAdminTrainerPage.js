@@ -12,7 +12,8 @@ import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
 const categories = {
-  value: "Name: ",
+  firstName: "First name: ",
+  lastName: "Last name: ",
   phoneNumber: "Phone Number: ",
   email: "Email: "
 };
@@ -54,7 +55,7 @@ export default class LocationAdminTrainerPage extends Component {
   async componentDidMount() {
     const specialistTypeRes = JSON.parse(await getSpecialistType());
     this.setState({specialistType: specialistTypeRes})
-    this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
+    this.setState({pageTitle: "hello" + this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
   }
 
@@ -160,7 +161,7 @@ export default class LocationAdminTrainerPage extends Component {
             isAdd = {true}
             title = "Add Trainer" 
             visible = {this.state.isAddModalVisible} 
-            information = {this.state.selectedUser}
+            information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
             callback = {this.closeAddModal}/>
       </View>
     );

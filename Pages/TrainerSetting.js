@@ -62,7 +62,7 @@ export default class TrainerSettingsPage extends React.Component {
                   color={"#E4E4E4"}
                 />
               </TouchableOpacity>
-              <Text style={styles.workHeadline}>Settings</Text>
+              <Text style={styles.workHeadline}>Settings trainer</Text>
             </View>
         <View style={{ flexDirection: "column", width: "100%" }}>
           <TouchableOpacity

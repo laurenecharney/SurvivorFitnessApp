@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import {
   BackHandler,
+  Picker,
   StyleSheet,
   Text,
   View,
@@ -13,7 +14,10 @@ import {
 import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RemoveButton from "./RemoveButton";
-import InformationRow from "./InformationRow";
+import { createUser } from "../../APIServices/APIUtilities";
+import { getUser } from "../../APIServices/deviceStorage";
+import RNPickerSelect from 'react-native-picker-select';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export const AppButton = ({ onPress, title }) => (
@@ -23,6 +27,63 @@ export const AppButton = ({ onPress, title }) => (
 );
 
 export const AddEditModal = ({categories, isAdd, title, visible, callback,  information}) => {
+    const [newInformation, setNewInformation] = useState({information, location : ""});
+    const [trainerLocations, setLocations] = useState([]);
+    const [showPicker, setShowPicker] = useState(false);
+
+    const updateInputText = (key, text) => {
+        let updatedState = {...newInformation, [key] : text};
+        setNewInformation(updatedState);
+    }
+
+    const uploadUser = () => {
+        callback();
+        if((newInformation.value != "") && (newInformation.phoneNumber != "") && (newInformation.email != "")){
+            user = {
+                user: {
+                    firstName: newInformation.firstName,
+                    lastName: newInformation.lastName,
+                    email: newInformation.email,
+                    phoneNumber: newInformation.phoneNumber,
+                    isSuperAdmin: "false"
+                },
+                locationAssignments: [
+                    {
+                        locationId: newInformation.location,
+                        userRoleType: "TRAINER"
+                    },
+                ]
+            }
+             createUser(user);
+        }
+    }
+    const placeholder = {
+        label: 'Select a location...',
+        value: null,
+        color: '#9EA0A4',
+    };
+
+    useEffect(() => {
+
+        async function getLocation(){
+            let userLocations = JSON.parse(await getUser()).locations;
+            setLocations(
+                userLocations.map((location) => ({
+                    label: location.name, value: location.id
+            })
+            ));
+        }
+
+        getLocation();
+    }, [])
+
+
+    useEffect(() => {
+        if(trainerLocations.length > 0){
+            setShowPicker(true);
+        }
+    }, [trainerLocations])
+
     return(
              <Modal 
                 propagateSwipe={true} 
@@ -44,21 +105,48 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                             </View>
                             {isAdd ?
                                     Object.keys(categories).map(key => (
-                                        <EditInformationRow title={categories[key]} value="" key={key}/>
+                                        <EditInformationRow updateInputText={text => updateInputText(key, text)} title={categories[key]} value="" key={key}/>
                                     ))
                                 :
                                 (
                                     Object.keys(categories).map(key => (
                                         <EditInformationRow title={categories[key]} value={information[key]} key={key}/>
                                     ))
-                                )}
+                            )}
+                            {showPicker &&
+                            <View>
+                                <Text style={styles.participantInfo} >Location</Text>
+                                <View style={[styles.dropDownContainer]}>
+                                <RNPickerSelect
+                                    placeholder={placeholder}
+                                    items={trainerLocations}
+                                    style={{
+                                    ...pickerSelectStyles,
+                                    iconContainer: {
+                                        top: 10,
+                                        right: 12,
+                                    },
+                                    }}
+                                    onValueChange={value => updateInputText("location", value)}
+                                    useNativeAndroidPickerStyle={false}
+                                    textInputProps={{ underlineColor: 'yellow' }}
+                                    Icon={() => {
+                                    return <Ionicons name="caret-down-outline" size={24} color="gray" />;
+                                    }}
+                                />
+                                </View>
+                            </View>
+                            }
                             <View>
                                 {isAdd ?
                                     <View style={{marginTop: 20}}>
-                                        <AppButton title = {"Add"}/>
+                                        <AppButton 
+                                            title = {"Add"}
+                                            onPress={()=>uploadUser()}
+                                            />
                                     </View>
                                 :
-                                isAdd && (
+                                 (
                                     <View>
                                         <RemoveButton/>
                                         <AppButton
@@ -72,10 +160,15 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                     </View>
                 </View>
             </Modal>
-    )
-}
+        )
+    }
 
 const styles = StyleSheet.create({
+    participantInfo:{
+        fontSize: 15, 
+        color: '#AED803', 
+        textAlign: "left"
+    },
     modalStyle:{
         flex: 1,
         flexDirection: 'column',
@@ -112,5 +205,33 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    dropDownContainer: {
+        flex: 1,
+        paddingTop: 20,
+        alignItems: "center",
+    }
     
 });
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'lightgray',
+      borderRadius: 4,
+      color: 'lightgray',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'lightgray',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+  });

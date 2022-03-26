@@ -20,7 +20,7 @@ export default class EditInformationRow extends Component {
     return ( 
         <View style={{paddingBottom: 20}}>
         <Text style={styles.participantInfo} >{this.props.title}</Text>
-        <TextBoxSingleLine content = {this.props.value}/>
+        <TextBoxSingleLine updateInputText = {this.props.updateInputText} content = {this.props.value}/>
         </View>
     );
   }
