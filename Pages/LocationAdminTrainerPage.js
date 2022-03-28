@@ -55,7 +55,7 @@ export default class LocationAdminTrainerPage extends Component {
   async componentDidMount() {
     const specialistTypeRes = JSON.parse(await getSpecialistType());
     this.setState({specialistType: specialistTypeRes})
-    this.setState({pageTitle: "hello" + this.getUserType(true, specialistTypeRes)})
+    this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
   }
 
