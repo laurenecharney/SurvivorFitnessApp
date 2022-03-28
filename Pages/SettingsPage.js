@@ -8,6 +8,7 @@ import {
   deleteCurrentRole,
   deleteUserInfo
 } from "../APIServices/deviceStorage";
+import { Heading } from "../Components/Heading";
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
@@ -24,18 +25,13 @@ export default class SettingsPage extends React.Component {
     const { user } = this.state;
     return (
       <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            borderBottomColor:"#E4E4E4",
-            borderBottomWidth:1,
-            width:"100%"
-          }}
-        >
-          <Text style={styles.workHeadline}>Settings</Text>
-        </View>
-        <View style={{ flexDirection: "column", width:"100%" }}>
+         <Heading 
+            title = "Settings"
+            titleOnly = {true}
+            displayAddButton = {false}
+            displayBackButton = {false}
+            displaySettingsButton = {false}/>
+          <View style={{ flexDirection: "column", width:"100%" }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("ProfilePage")}
             hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}
@@ -87,8 +83,7 @@ export default class SettingsPage extends React.Component {
                   index: 0,
                   routes: [{ name: "LoginPage" }]
                 });
-              }}
-            >
+              }}>
               <Text style={styles.loginText}>Log Out</Text>
             </TouchableOpacity>
           </View>
@@ -100,9 +95,8 @@ export default class SettingsPage extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start"
+    flex: 1, 
+    backgroundColor:'#fff'
   },
   headline: {
     fontWeight: "bold",

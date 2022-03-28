@@ -28,8 +28,9 @@ export default class ModalHeader extends Component {
 }
 const styles = StyleSheet.create({
   title: {
-    fontSize: 19, 
+    fontSize: 25, 
     color: '#AED803', 
-    fontWeight: "500"
+    fontWeight: "500",
+    textAlign:"center"
   }
 });

@@ -19,37 +19,58 @@ export const Heading = ({title, displayBackButton, displaySettingsButton, displa
         <View>
             <View>
             {displayBackButton && 
-                <View style={styles.backHeading}>
-                <TouchableOpacity style={styles.backButton} onPress={()=>callback()}>
-                    <Icon3 name={"keyboard-arrow-left"} size={50} color={"#BEBEBE"}  />
-                </TouchableOpacity>
-                <Text style={styles.backHeadline}>{title}</Text>
-                </View>
-            }
-            {displaySettingsButton && (
-                <View style={styles.settingsHeading}>
-                <Text style={styles.headline}>{title}</Text>
-                <TouchableOpacity
-                    style={{ paddingLeft: 125 }}
-                    onPress={()=>callback()}>
-                    <Icon2 style={styles.settings} size={30} name={"settings"} />
-                    {/* <Image source={require('../assets/Group -1.png')} style={styles.logo} /> */}
-                </TouchableOpacity>
-                </View>
-            )}
-            {displayAddButton && 
-                <View style={styles.heading}>
-                <Text style={styles.headline}>{title}</Text>
-                <View style={styles.addButtonContainer} >
-                    <TouchableOpacity onPress={()=>callback()}>
-                        <Text style={styles.addButtonText}>+</Text>
+            <View style = {styles.row}>
+                <View style = {styles.left}>
+                    <TouchableOpacity style={styles.backButton} onPress={()=>callback()}>
+                        <Icon3 name={"keyboard-arrow-left"} size={42} color={'#E4E4E4'}  />
                     </TouchableOpacity>
                 </View>
-            </View>
+                <View style = {styles.center}>
+                    <Text style={styles.headline}>{title}</Text>
+                </View>
+                    <View style = {styles.right}>
+                </View>
+            </View> 
+            }
+            {displaySettingsButton && (
+                <View style = {styles.row2}>
+                    <View style = {styles.left}>
+                    </View>
+                    <View style = {styles.center}>
+                        <Text style={styles.headline}>{title}</Text>
+                    </View>
+                    <View style = {styles.right}>
+                        <TouchableOpacity onPress={()=>callback()}>
+                            <Icon2 style={styles.settings} size={30} name={"settings"} />
+                        </TouchableOpacity>
+                    </View>
+                </View> 
+            )}
+            {displayAddButton && 
+                <View style = {styles.row}>
+                    <View style = {styles.left}>
+                    </View>
+                    <View style = {styles.center}>
+                        <Text style={styles.headline}>{title}</Text>
+                    </View>
+                    <View style = {styles.right}>
+                        <View style={styles.addButtonContainer} >
+                            <TouchableOpacity onPress={()=>callback()}>
+                                <Text style={styles.addButtonText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
             }
             {titleOnly && 
-                <View style={styles.heading}>
-                    <Text style={styles.backHeadline}>{title}</Text>
+                <View style = {styles.row2}>
+                    <View style = {styles.left}>
+                    </View>
+                    <View style = {styles.center}>
+                        <Text style={styles.headline}>{title}</Text>
+                    </View>
+                    <View style = {styles.right}>
+                    </View>
                 </View>
             }
             </View>
@@ -58,52 +79,43 @@ export const Heading = ({title, displayBackButton, displaySettingsButton, displa
 }
 
 const styles = StyleSheet.create({
-    backHeading:{
-        flexDirection: "row", 
-      },
-      backHeadline: {
-          fontSize: 25,
-          marginTop: 50,
-          paddingTop: 25,
-          paddingBottom:25,
-          color: "#AED803",
-          fontWeight: "400",
-          textAlign:'left'
-      },
-    settingsHeading:{
-        flexDirection: "row", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        paddingRight : 25,
+    row:{
+        flexDirection: "row",
+        alignContent: "space-between",
+        marginTop: 60,
         borderColor: '#E4E4E4',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        paddingBottom:25
     },
-    heading:{
-        flexDirection: "row", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        paddingRight : 25,
+    row2:{
+        flexDirection: "row",
+        marginTop: 60,
         borderColor: '#E4E4E4',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        paddingBottom:30
     },
+    left:{
+        flexGrow: 0,
+        flexShrink: 1,
+        flexBasis: 75,
+    },
+    center:{
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: "auto",
+    },
+    right:{
+        flexGrow: 0,
+        flexShrink: 1,
+        flexBasis: 75,
+    },
+
     headline: {
-      fontSize: 25,
-      marginTop: 50,
-      marginLeft: 10,
-      padding: 25,
-      color: '#AED803',
-      fontWeight: '400',
-    },
-    backButton:{
-        color: "#E4E4E4",
-        marginTop: 65,
-    },
-    settings: {
-      color: "#E4E4E4",
-      marginTop: 50,
-      paddingHorizontal: 10,
-      paddingBottom: 0,
-      marginRight: 30
+        fontSize: 25,
+        paddingTop: 7,
+        color: '#AED803',
+        fontWeight: '400',
+        textAlign: 'center'
     },
     addButtonContainer: {
         backgroundColor:'#AED804',
@@ -111,9 +123,16 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10,
         width: 48,
-        alignSelf: "center",
-        margin: 5,
-        marginTop: 50
+    },
+    
+    backButton:{
+        color: '#E4E4E4',
+    },
+    settings: {
+      color: "#E4E4E4",
+      paddingHorizontal: 10,
+      paddingTop:7,
+      marginRight: 30
     },
     addButtonText: {
         fontSize: 18,
