@@ -28,7 +28,6 @@ const categories = {
   dieticianOffice: "Dietitian Office: ",
   //startDate: "Start Date: ",
   goals: "Goal(s): ",
-
 };
 
 export default class LocationAdminClientPage extends Component {
@@ -82,6 +81,7 @@ export default class LocationAdminClientPage extends Component {
 
       const res =  
       this.isDietitian() ? await getParticipants("dietitianOfficeId", locationId) : await getParticipants("gymId", locationId);
+      console.log(res, "res^")
       this.setState({
         participants: res.map(item => {
           let newI = item;

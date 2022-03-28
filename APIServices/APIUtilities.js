@@ -81,6 +81,7 @@ export async function getParticipants(paramName, paramValue) {
   const query =
     paramName && paramValue ? "?" + paramName + "=" + paramValue : "";
 
+    console.log(ENDPOINT + "/api/v1/participants" + query)
   const res = await fetch(ENDPOINT + "/api/v1/participants" + query, {
     method: "GET",
     headers: {

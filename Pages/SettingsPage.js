@@ -2,25 +2,120 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
-  deleteJWT,
   getUser,
-  saveCurrentRole,
+  saveUserInfo,
+  deleteJWT,
   deleteCurrentRole,
-  deleteUserInfo
+  deleteUserInfo,
+  saveCurrentRole,
+  saveSpecialistType, 
+  getCurrentRole
 } from "../APIServices/deviceStorage";
 import { Heading } from "../Components/Heading";
+import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
+import { Logout } from "../Components/SettingsComponents/Logout"
+
+function getAdminRole(roles) {
+  if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
+    return "LOCATION_ADMINISTRATOR";
+  } else if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
+    return "SUPER_ADMIN";
+  } else {
+    return false;
+  }
+}
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
     super(props);
+    this.navigateProfile = this.navigateProfile.bind(this);
+    this.switchToTrainerAccount = this.switchToTrainerAccount.bind(this);
+    this.switchToDieticianAccount = this.switchToDieticianAccount.bind(this);
+    this.switchToLocationAdmin = this.switchToLocationAdmin.bind(this);
+    this.switchToSuperAdmin = this.switchToSuperAdmin.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this.logout = this.logout.bind(this);
+    this.downloadData = this.downloadData.bind(this);
     this.state = {
-      user: {}
+      user: {},
+      adminRole: "",
+      currentRole: "",
     };
   }
+
   async componentDidMount() {
-    const res = await getUser();
-    this.setState({ user: JSON.parse(res) });
+    const __user = JSON.parse(await getUser());
+    const currentRole = await getCurrentRole();
+    this.setState({
+      user: __user,
+      currentRole: JSON.parse(currentRole),
+      adminRole: getAdminRole(__user.roles)
+    });
+
+    console.log("show switch to trainer: ", __user.roles && __user.roles.includes("TRAINER") && currentRole !== "TRAINER")
+
+
+    console.log("currentRole: ", currentRole)
   }
+
+  async switchToLocationAdmin(user){
+    await saveCurrentRole("LOCATION_ADMINISTRATOR");
+    this.props.navigation.pop();
+    this.props.navigation.replace("LocationAdminPage", {
+      screen: "Participants",
+      params: {
+        userType: user.roles.includes("TRAINER")
+          ? "TRAINER"
+          : "DIETITIAN",
+        locationId: 28//user.locations ? user.locations[0].id : null
+      }
+    });
+    await saveCurrentRole("LOCATION_ADMINISTRATOR");
+    if (user.roles.includes("TRAINER")) {
+        await saveSpecialistType("TRAINER");
+    } else if (user.roles.includes("DIETITIAN")) {
+        await saveSpecialistType("DIETITIAN");
+    }
+  }
+
+  async switchToSuperAdmin(){
+    await saveCurrentRole("SUPER_ADMIN");
+    this.props.navigation.pop();
+    this.props.navigation.replace("SuperAdminPage");
+  }
+
+  async switchToTrainerAccount(){
+    await saveCurrentRole("TRAINER");
+    this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId:28}});
+  }
+
+  async switchToDieticianAccount(){
+    await saveCurrentRole("DIETITIAN");
+    this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:31}});
+  }
+
+  goBack() {
+    this.props.navigation.navigate("AllPatientsPage")
+  }
+  
+  navigateProfile() {
+    this.props.navigation.navigate("ProfilePage")
+  }
+
+  downloadData() {
+    console.log("Download Data Eventually!")
+  }
+
+  logout(){
+    deleteJWT();
+    deleteCurrentRole();
+    deleteUserInfo();
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{ name: "LoginPage" }]
+    });
+  }
+
   render() {
     const { user } = this.state;
     return (
@@ -31,63 +126,47 @@ export default class SettingsPage extends React.Component {
             displayAddButton = {false}
             displayBackButton = {false}
             displaySettingsButton = {false}/>
-          <View style={{ flexDirection: "column", width:"100%" }}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("ProfilePage")}
-            hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}
-          >
-            <View style={styles.row}>
-              <Text style={styles.text}>Profile</Text>
-              <Icon name={'keyboard-arrow-right'} size={40} color={'#E4E4E4'}/>
-            </View>
-          </TouchableOpacity>
-          {user.roles && user.roles.includes("TRAINER") && (
-            <TouchableOpacity
-              onPress={async () => {
-                await saveCurrentRole("TRAINER");
-                this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId:user.id}});
-              }}
-            >
-              <View style={styles.row}>
-                <Text style={styles.text}>Switch to Trainer Account</Text>
-                <Icon name={'keyboard-arrow-right'} size={40} color={'#E4E4E4'}/>
-              </View>
-            </TouchableOpacity>
-          )}
-          {user.roles && user.roles.includes("DIETITIAN") && (
-            <TouchableOpacity
-              onPress={async () => {
-                await saveCurrentRole("DIETITIAN");
-                this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:user.id}});
-              }}
-            >
-              <View style={styles.row}>
-                <Text style={styles.text}>Switch to Dietitian Account</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity>
-            <View style={styles.row}>
-              <Text style={styles.text}>Download Data</Text>
-              <Icon name={'get-app'} size={40} color={'#E4E4E4'}/>
-            </View>
-          </TouchableOpacity>
-          <View style={{ alignItems: "center", paddingTop:100,paddingBottom:300 }}>
-            <TouchableOpacity
-              style={styles.loginBtn}
-              onPress={() => {
-                deleteJWT();
-                deleteCurrentRole();
-                deleteUserInfo();
-                this.props.navigation.reset({
-                  index: 0,
-                  routes: [{ name: "LoginPage" }]
-                });
-              }}>
-              <Text style={styles.loginText}>Log Out</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <SettingsRow 
+            title = "Profile"
+            iconName = 'keyboard-arrow-right'
+            user = {user}
+            callback = {this.navigateProfile}/>
+        {user.roles && user.roles.includes("TRAINER") && this.state.currentRole !== "TRAINER" && (
+          <SettingsRow 
+            title = "Switch to Trainer Account"
+            iconName = 'keyboard-arrow-right'
+            user = {user}
+            callback = {this.switchToTrainerAccount}/>
+        )}
+        {user.roles && user.roles.includes("DIETITIAN") && this.state.currentRole !== "DIETITIAN"  && (
+          <SettingsRow 
+            title = "Switch to Dietitian Account"
+            iconName = 'keyboard-arrow-right'
+            user = {user}
+            callback = {this.switchToDieticianAccount}/>
+        )}
+        {this.state.adminRole === "LOCATION_ADMINISTRATOR" && this.state.currentRole !== "LOCATION_ADMINISTRATOR" && (
+          <SettingsRow 
+            title = "Switch to Location Admin Account"
+            iconName = 'keyboard-arrow-right'
+            user = {user}
+            callback = {this.switchToLocationAdmin}/>
+        )}
+        {this.state.adminRole === "SUPER_ADMIN" && this.state.currentRole !== "SUPER_ADMIN" && (
+          <SettingsRow 
+            title = "Switch to Super Admin Account"
+            iconName = 'keyboard-arrow-right'
+            user = {user}
+            callback = {this.switchToSuperAdmin}/>
+        )}
+        {this.state.currentRole !== "TRAINER" && (
+          <SettingsRow 
+          title = "Download Data"
+          iconName = 'get-app'
+          callback = {this.downloadData}/>
+          )
+        }
+        <Logout callback = {this.logout}/>
       </View>
     );
   }
@@ -98,59 +177,4 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor:'#fff'
   },
-  headline: {
-    fontWeight: "bold",
-    fontSize: 25,
-    position: "absolute",
-    marginTop: 45,
-    marginLeft: 0,
-    color: "#3E3E3E",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    flex: 1,
-    opacity: 1,
-    zIndex: 15,
-    borderBottomWidth:1,
-    borderBottomColor:"#E4E4E4"
-  },
-  workHeadline: {
-    fontSize: 25,
-    marginTop: 50,
-    marginLeft: 120,
-    padding: 30,
-    fontWeight:"500",
-    color: "#3E3E3E",
-    alignContent:"center"
-  },
-  loginBtn: {
-    width: "60%",
-    backgroundColor: "#A1C703",
-    borderRadius: 10,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 10
-  },
-  loginText: {
-    color: "white"
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#E6E6E6",
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    padding: 35,
-    justifyContent: "space-between",
-    width:"100%"
-  },
-
-  text: {
-    fontSize: 18,
-    color: "#3E3E3E",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    textAlign: "left"
-  }
 });

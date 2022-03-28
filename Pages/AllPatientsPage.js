@@ -80,7 +80,6 @@ export default class AllPatientsPage extends Component {
       currentRole: "",
       specialistType: "",
       userType: "",
-      currentRole: ""
     };
   }
 
@@ -131,7 +130,7 @@ export default class AllPatientsPage extends Component {
       this.props.navigation.goBack()
     }
     else{
-      this.props.navigation.navigate("TrainerSettingsPage")
+      this.props.navigation.navigate("SettingsPage")
     }
   }
 

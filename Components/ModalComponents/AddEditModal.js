@@ -26,7 +26,7 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, isChange}) => {
     const [newInformation, setNewInformation] = useState({information, location : ""});
     const [trainerLocations, setLocations] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
@@ -146,14 +146,20 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                             />
                                     </View>
                                 :
-                                 (
+                                !isAdd && !isChange && (
                                     <View>
                                         <RemoveButton/>
                                         <AppButton
                                             title={"EDIT"}
-                                            onPress={()=>callback()}
-                                            />
+                                            //Send to backend with callback
+                                        />
                                     </View>
+                                )}
+                                {isChange && (
+                                    <AppButton
+                                    title={"EDIT"}
+                                    //Send to backend with callback
+                                />
                                 )}
                             </View>
                         </ScrollView>
