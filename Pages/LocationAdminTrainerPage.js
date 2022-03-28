@@ -12,7 +12,8 @@ import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
 const categories = {
-  value: "Name: ",
+  firstName: "First name: ",
+  lastName: "Last name: ",
   phoneNumber: "Phone Number: ",
   email: "Email: "
 };
@@ -64,10 +65,8 @@ export default class LocationAdminTrainerPage extends Component {
       const locationId = await getLocationId();
       let rawTrainerInfo = {}
       if (this.state.specialistType === "DIETITIAN") {
-        console.log("get dietitians")
         rawTrainerInfo = await getDietitians(locationId)
       } else if (this.state.specialistType === "TRAINER") {
-        console.log("get Trainers")
         rawTrainerInfo = await getTrainers(locationId)
       } else {
         rawTrainerInfo = "specialistType not set";  
@@ -160,7 +159,7 @@ export default class LocationAdminTrainerPage extends Component {
             isAdd = {true}
             title = "Add Trainer" 
             visible = {this.state.isAddModalVisible} 
-            information = {this.state.selectedUser}
+            information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
             callback = {this.closeAddModal}/>
       </View>
     );

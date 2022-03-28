@@ -114,7 +114,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             sessionType = "";
             num = -1;
         }
-    
+        
         if(!this.state.sessionData[sessionType]) {
             console.log("Error: sessionData for trainers or dietitians does not exist.")
             console.log(this.state.sessionData[sessionType], "\n^sessionData")
@@ -226,9 +226,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     async fetchSessions() {
         try {
             let res = await getParticipantSessions(this.props.route.params.id);
-            if (res["trainerSessions"]) {
-                console.log("trainer sessionsData exists")
-            } else {
+            if (!res["trainerSessions"]) {
                 console.log("trainersession data does not exist")
             }
             this.setState({sessionData: res});
@@ -246,7 +244,8 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             this.setState({currentView: "DIETITIAN"});
         } else if(role === "TRAINER" || role === "DIETITIAN") {
             this.setState({currentView: role});
-            console.log("role is " + role)
+        } else if (role === "LOCATION_ADMINISTRATOR") {
+            this.setState({currentView: "TRAINER"});
         } else {
             this.setState({currentView: ""});
             console.log("Error: role is neither dietitian nor trainer nor super-admin.")

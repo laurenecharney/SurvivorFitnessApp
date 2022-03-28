@@ -28,6 +28,22 @@ export async function getMeasurements(participantID, sessionID) {
   return {};
 }
 
+export async function createUser(user){
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/", {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
+
+
 export async function logTrainerSession(curSessionInfo, date) {
   // console.log("old participantid", curSessionInfo)
   const newSessionInfo = {
