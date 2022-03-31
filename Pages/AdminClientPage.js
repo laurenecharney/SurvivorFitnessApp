@@ -77,29 +77,6 @@ export default class AdminClientPage extends Component {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
-    /** TODO: 
-     * dropdown menus for location - getLocations endpoint returns array, 
-     * find eligible locations and populate dropdown with those values
-     * 
-     */
-
-    async populateLocations() {
-        try {
-            let locIDs = await getLocations();
-            let temp = locIDs.map(idnumber => {
-                let res = await getLocationByID(idnumber);
-                return {
-                    id: idnumber,
-                    name: res.name,
-                }
-            });
-            this.setState({locations : temp});
-            
-        } catch (e) {
-            console.log("Couldn't get locations:")
-            console.log(e);
-        }
-    }
 
 
     async componentDidMount(){
