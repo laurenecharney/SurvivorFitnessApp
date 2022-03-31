@@ -60,6 +60,21 @@ const res = await updateSession(newSessionInfo.id, newSessionInfo);
 return res;
 }
 
+export async function updateSingleMeasurement(measurementInfo) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/measurements/" + measurementInfo.id, {
+    method: "PUT",
+    body: JSON.stringify(measurementInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" 
+    }
+  })
+    .then(response => response.json());
+    return res
+}
+
 async function updateSession(sessionID, sessionInfo) {
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/sessions/"+sessionID, {
@@ -68,7 +83,7 @@ async function updateSession(sessionID, sessionInfo) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
@@ -81,7 +96,6 @@ export async function getParticipants(paramName, paramValue) {
   const query =
     paramName && paramValue ? "?" + paramName + "=" + paramValue : "";
 
-    console.log(ENDPOINT + "/api/v1/participants" + query)
   const res = await fetch(ENDPOINT + "/api/v1/participants" + query, {
     method: "GET",
     headers: {

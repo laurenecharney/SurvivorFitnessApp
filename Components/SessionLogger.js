@@ -43,7 +43,7 @@ const ConfirmButton = ({ onPress, title, logged, disabled}) => (
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar, currentView, refreshMeasurements}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -55,6 +55,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
     // const [sessionData, setSessionData] = useState([])
     const [measurementsChanged, setMeasurementsChanged] = useState(false)
     const [loading, setLoading] = useState(true);
+    const [showMeasurements, setShowMeasurements] = useState(false);
 
     //calls API utilities updateSession
     async function logSession() {
@@ -76,11 +77,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         } catch(e) {
             console.log("session cannot be logged: ", e);
         }
-    }
-
-    async function fetchUser() {
-        const res = await getUser()
-        setUser(JSON.parse(res))
     }
 
     const showSessionInfo = (newSessionData = null) => {
@@ -184,6 +180,7 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         if (!Array.isArray(initSessionData)) { 
             setLoading(false)
             showSessionInfo()
+            setMeasurementData(initSessionData.measurements)
         }
 
         // ****** initSessionData always holds the data which is stored in the backend for the particular session.
@@ -192,6 +189,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         // When a session is logged, it makes a call to the backend, and initSessionData
         // again takes the data returned from the backend.
     }, [initSessionData]);
+
+    useEffect(() => {
+        setShowMeasurements(currentView === "TRAINER" && isCheckpoint)
+    }, [isCheckpoint, currentView])
 
     return(
         <View style={styles.container}>
@@ -210,7 +211,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                 {"Session "+initSessionData.sessionIndexNumber}
                             </Text>
                             {
-                            (trainerSessionSelected && isCheckpoint) &&
+                            // (trainerSessionSelected && isCheckpoint) &&
+                            showMeasurements &&
                                 <Text style={styles.sessionSubheaderText}>
                                     It's measurement day! Record your participant's measurements before
                                     logging the session.
@@ -232,8 +234,10 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                         </View>
                     </TouchableOpacity>
                     {
-                    (trainerSessionSelected && isCheckpoint) &&
-                        <Measurements measurementData={initSessionData.measurements}
+                    showMeasurements &&
+                        // <Measurements measurementData={initSessionData.measurements}
+                        <Measurements measurementData={measurementData}
+                        refreshMeasurements={refreshMeasurements}
                         updateMeasurementData={updateMeasurementData}/>
                     }
                     <NotesSection 

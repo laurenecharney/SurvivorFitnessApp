@@ -40,11 +40,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             refreshFlag: false
         }
         this.refreshSidebar = this.refreshSidebar.bind(this);
+        this.fetchSessions = this.fetchSessions.bind(this);
         this.showLoggedSessionInSidebar = this.showLoggedSessionInSidebar.bind(this);
     }
 
     changeView = (sessionType) => {
-        // console.log("user: " + this.state.user + "\nsessionType (to change to): " + sessionType);
         if(this.state.user !== sessionType && (this.state.user !== "SUPER_ADMIN"))
         {
             Alert.alert(
@@ -310,10 +310,11 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                         <SessionLogger 
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                             initSessionData = {this.getDataBySessionNumber()}
+                            currentView = {this.state.currentView}
                             trainerSessionSelected={this.state.currentSession !== "DIETITIAN"}
-                            // refreshSidebar={this.refreshSidebar}
                             isDisabled={this.shouldBeDisabled()}
                             showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
+                            refreshMeasurements={this.fetchSessions}
                         /> 
                 </View>
             </View>

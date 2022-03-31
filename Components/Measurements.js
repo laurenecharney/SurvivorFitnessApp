@@ -9,12 +9,14 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { updateSingleMeasurement } from '../APIServices/APIUtilities';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
-export const Measurements = ({ measurementData, updateMeasurementData}) => {
+export const Measurements = ({ measurementData, updateMeasurementData, refreshMeasurements}) => {
 
-    const [data, setData] = useState(measurementData ? JSON.parse(JSON.stringify(measurementData)) : emptyMeasurementData);
+    const [data, setData] = useState(emptyMeasurementData);
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     const [expanded_general, setExpanded_general] = useState("false");
     const [expanded_skin_fold, setExpanded_skin_fold] = useState("false");
@@ -53,8 +55,9 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
     }    
 
     useEffect(() => {
-        if (measurementData) {
+        if (!dataLoaded && measurementData) {
             setData(JSON.parse(JSON.stringify(measurementData)))
+            setDataLoaded(true)
         }
     }, [measurementData])
 
@@ -129,17 +132,25 @@ export const Measurements = ({ measurementData, updateMeasurementData}) => {
         )
     }
 
-    const updateValue = (measurementInfo, newValue) => {
+    async function updateValue(measurementInfo, newValue) {
         const measurementId = measurementInfo.id;
-        let temp = data
+        let tempMeasurements = JSON.parse(JSON.stringify(data));
+        let singleUpdatedMeasurement = {}
         for (let i = 0; i < data.length; ++i) {
-            if (temp[i].id == measurementId) {
-                temp[i].value = newValue;
+            if (tempMeasurements[i].id == measurementId) {
+                tempMeasurements[i].value = newValue;
+                singleUpdatedMeasurement = tempMeasurements[i]
                 break;
             }
         }
-        setData(temp);
-        updateMeasurementData(temp);
+        
+        // each time we edit a measurement, we send it to the backend and refresh the data.
+        try {
+            let res = await updateSingleMeasurement(singleUpdatedMeasurement);
+        } catch(e) {
+            console.log("Error updating measurements: " + e);
+        }
+        refreshMeasurements(); 
     }
 
     return (
