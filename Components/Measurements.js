@@ -55,7 +55,8 @@ export const Measurements = ({ measurementData, updateMeasurementData, refreshMe
     }    
 
     useEffect(() => {
-        if (!dataLoaded && measurementData) {
+        if (measurementData) {
+            console.log("measurementData: ", measurementData[0]);
             setData(JSON.parse(JSON.stringify(measurementData)))
             setDataLoaded(true)
         }
