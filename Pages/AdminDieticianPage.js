@@ -44,7 +44,6 @@ export default class AdminDieticianPage extends Component {
 
     async componentDidMount(){
         const specialistTypeRes = JSON.parse(await getSpecialistType());
-        console.log("specialistTypeRes: ", specialistTypeRes);
         this.setState({specialistType: specialistTypeRes})
         await this.refreshDietitians();
     }
@@ -86,7 +85,6 @@ export default class AdminDieticianPage extends Component {
     }
     
     getShowBackButton() {
-        console.log(this.props.route.params && this.props.route.params.showBackButton)
         return this.props.route.params && this.props.route.params.showBackButton;
 
     }

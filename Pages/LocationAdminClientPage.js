@@ -63,7 +63,6 @@ export default class LocationAdminClientPage extends Component {
   async componentDidMount() {
     //TODO
     await this.refreshParticipants();
-    const currentRole = await getCurrentRole();
   }
 
   isDietitian() {

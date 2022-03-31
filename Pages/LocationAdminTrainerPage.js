@@ -70,7 +70,6 @@ export default class LocationAdminTrainerPage extends Component {
         rawTrainerInfo = await getTrainers(locationId)
       } else {
         rawTrainerInfo = "specialistType not set";  
-        console.log("specialistType: ", specialistType)
       }
       this.setState({
         specialists: rawTrainerInfo.map(rawTrainer => {
@@ -157,10 +156,11 @@ export default class LocationAdminTrainerPage extends Component {
         <AddEditModal 
             categories = {categories} 
             isAdd = {true}
-            title = "Add Trainer" 
+            title = {this.state.specialistType == "DIETITIAN" ? "Add Dietitian" : "Add Trainer"} 
             visible = {this.state.isAddModalVisible} 
             information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
-            callback = {this.closeAddModal}/>
+            callback = {this.closeAddModal}
+            userType = {this.state.specialistType}/>
       </View>
     );
   }
