@@ -79,11 +79,6 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
         }
     }
 
-    async function fetchUser() {
-        const res = await getUser()
-        setUser(JSON.parse(res))
-    }
-
     const showSessionInfo = (newSessionData = null) => {
         if (newSessionData == null) {
             newSessionData = JSON.parse(JSON.stringify(initSessionData));

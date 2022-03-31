@@ -45,7 +45,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     changeView = (sessionType) => {
-        // console.log("user: " + this.state.user + "\nsessionType (to change to): " + sessionType);
         if(this.state.user !== sessionType && (this.state.user !== "SUPER_ADMIN"))
         {
             Alert.alert(
@@ -54,7 +53,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
             );
         }
         this.refreshSidebar();
-        console.log("sessionType: " + sessionType);
         this.setState({currentView: sessionType})
 
     }
@@ -314,7 +312,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             initSessionData = {this.getDataBySessionNumber()}
                             currentView = {this.state.currentView}
                             trainerSessionSelected={this.state.currentSession !== "DIETITIAN"}
-                            // refreshSidebar={this.refreshSidebar}
                             isDisabled={this.shouldBeDisabled()}
                             showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
                             refreshMeasurements={this.fetchSessions}

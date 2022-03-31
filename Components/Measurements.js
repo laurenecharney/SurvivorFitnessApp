@@ -58,7 +58,6 @@ export const Measurements = ({ measurementData, updateMeasurementData, refreshMe
         if (!dataLoaded && measurementData) {
             setData(JSON.parse(JSON.stringify(measurementData)))
             setDataLoaded(true)
-            console.log("data loaded")
         }
     }, [measurementData])
 
@@ -68,14 +67,6 @@ export const Measurements = ({ measurementData, updateMeasurementData, refreshMe
         const editText = useCallback(() => {
             inputRef.current.focus();
         });
-
-        useEffect(() => {
-            // console.log(measurement + ": " + value);
-            if (measurementInfo.id === 1598) {
-                // console.log(measurementInfo, "**********************info useeffect^")
-            }
-            
-        }, [measurementInfo])
 
         return(
             <View style={[styles.measurement, {}]}>
@@ -152,23 +143,14 @@ export const Measurements = ({ measurementData, updateMeasurementData, refreshMe
                 break;
             }
         }
-        // FIXME: may not need this anymore
-        // setData(tempMeasurements);
-        // updateMeasurementData(tempMeasurements);
         
-        // each time we edit a measurement, we send it to the backend.
+        // each time we edit a measurement, we send it to the backend and refresh the data.
         try {
             let res = await updateSingleMeasurement(singleUpdatedMeasurement);
-            console.log("updated single measurement: ", res);
         } catch(e) {
             console.log("Error updating measurements: " + e);
         }
-        refreshMeasurements();
-
-        
-
-        
-        
+        refreshMeasurements(); 
     }
 
     return (
