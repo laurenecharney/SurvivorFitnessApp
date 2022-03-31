@@ -108,7 +108,7 @@ export default class AdminLocationsPage extends Component {
         //preprocessing of input data. currently reorders fields
         let loc = {
             address: locInfo.address,
-            administrator: locInfo.admin,
+            administrator: locInfo.administrator, //needs to be object
             name: locInfo.name,
             type: locInfo.type,
         };

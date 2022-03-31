@@ -14,7 +14,37 @@ import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RemoveButton from "./RemoveButton";
 import InformationRow from "./InformationRow";
+import RNPickerSelect from 'react-native-picker-select';
 
+// get request to .../users
+
+<RNPickerSelect
+    onValueChange={value => setAdmin(value)}
+    placeholder={"Select Administrator"}
+    items={[
+        { label: 'Football', value: 'football' },
+        { label: 'Baseball', value: 'baseball' },
+        { label: 'Hockey', value: 'hockey' },
+    ]}
+/>
+
+/** TODO
+ * install picker
+ * set up and build out picker
+ * fix add Participants merge
+ * populate picker with users (awaiting new endpoint from ilya)
+ * 
+ */
+
+
+let dummyList = [
+    "Ben Gant",
+    "Lauren Charney",
+    "Ethan Shifrin",
+    "Charles Wang",
+    "Adam Hollander",
+    "Ilya Ermakov",
+]
 
 export const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -25,21 +55,30 @@ export const AppButton = ({ onPress, title }) => (
 export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callback,  information}) => {
     const [input, setInput] = useState(fields);
     const [isGym, setIsGym] = useState(true);
+    const [usersList, setUsersList] = useState(getUsers());
 
     useEffect(() => {
         let temp = JSON.parse(JSON.stringify(input));
-        temp["type"] = "TRAINER_GYM";
+        temp.type = "TRAINER_GYM";
         setInput(temp);
     }, []);
 
     useEffect(() => {
-        setIsGym(input["type"] == "TRAINER_GYM");
+        setIsGym(input.type == "TRAINER_GYM");
     }, [input]);
 
     const saveInput = (field, value) => {
         let temp = JSON.parse(JSON.stringify(input));
         temp[field] = value;
         setInput(temp);
+    }
+
+    const getUsers = () => {
+        
+    }
+
+    const setAdmin = value => {
+        //cycle through adminList, get id# of one that matches string input
     }
 
     return(
@@ -78,40 +117,22 @@ export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callbac
                                 </View>
                             </View>
                         }
-                        {isAdd ?
-                                Object.keys(fields).map(key => (
-                                    <EditInformationRow 
-                                        title={key[0].toUpperCase()+key.substring(1)+":"} 
-                                        intValue={""} 
-                                        key={key}
-                                        callback={val => saveInput(key, val)}/>
-                                ))
-                            :
-                            (
-                                Object.keys(fields).map(key => (
-                                    <EditInformationRow 
-                                        title={key[0].toUpperCase()+key.substring(1)+":"} 
-                                        intiValue={information[key]} 
-                                        key={key}
-                                        callback={val => saveInput(key, val)}/>
-                                ))
-                            )}
+                        {fields && Object.keys(fields).map(key => {
+                            return key == "administrator" ? 
+                            (<RNPickerSelect />) :
+                            (<EditInformationRow 
+                                    title={key[0].toUpperCase()+key.substring(1)+":"} 
+                                    intValue={isAdd ? "" : information[key]} 
+                                    key={key}
+                                    callback={val => saveInput(key, val)}/>)
+                        })}
                         <View>
-                            {isAdd ?
-                                <View style={{marginTop: 20}}>
-                                    <AppButton 
-                                        title = {"Add"}
-                                        onPress={()=>callback(input)}/>
-                                </View>
-                            :
-                            isAdd && (
-                                <View>
-                                    <RemoveButton/>
-                                    <AppButton
-                                        title={"EDIT"}
-                                        onPress={()=>callback(input)}/>
-                                </View>
-                            )}
+                            <View style={{marginTop: 20}}>
+                                {!isAdd && <RemoveButton/>}
+                                <AppButton 
+                                    title = {isAdd ? "Add" : "Confirm Edits"}
+                                    onPress={()=>callback(input)}/>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
