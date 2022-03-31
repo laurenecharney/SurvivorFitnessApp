@@ -15,9 +15,10 @@ import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RemoveButton from "./RemoveButton";
 import { createUser } from "../../APIServices/APIUtilities";
-import { getUser } from "../../APIServices/deviceStorage";
+import { getCurrentRole, getUser } from "../../APIServices/deviceStorage";
 import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
+import { getCombinedStyles } from "react-native-paper";
 
 
 export const AppButton = ({ onPress, title }) => (
@@ -26,9 +27,9 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType}) => {
     const [newInformation, setNewInformation] = useState({information, location : ""});
-    const [trainerLocations, setLocations] = useState([]);
+    const [adminLocations, setLocations] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
 
     const updateInputText = (key, text) => {
@@ -50,7 +51,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                 locationAssignments: [
                     {
                         locationId: newInformation.location,
-                        userRoleType: "TRAINER"
+                        userRoleType: userType
                     },
                 ]
             }
@@ -79,10 +80,10 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
 
 
     useEffect(() => {
-        if(trainerLocations.length > 0){
+        if(adminLocations.length > 0){
             setShowPicker(true);
         }
-    }, [trainerLocations])
+    }, [adminLocations])
 
     return(
              <Modal 
@@ -119,7 +120,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                 <View style={[styles.dropDownContainer]}>
                                 <RNPickerSelect
                                     placeholder={placeholder}
-                                    items={trainerLocations}
+                                    items={adminLocations}
                                     style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {

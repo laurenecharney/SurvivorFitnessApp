@@ -38,7 +38,6 @@ export default class AdminTrainerPage extends Component {
 
     async componentDidMount(){
         const specialistTypeRes = JSON.parse(await getSpecialistType());
-        console.log("specialistTypeRes: ", specialistTypeRes);
         this.setState({specialistType: specialistTypeRes})
         await this.refreshTrainers();
     }

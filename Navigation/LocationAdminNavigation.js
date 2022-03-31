@@ -14,7 +14,6 @@ export function LocationAdminPage() {
     async function fetchUser() {
       const res = await getUser();
       setUser(JSON.parse(res));
-      console.log(JSON.parse(res).locations[0].id)
     }
 
     fetchUser();

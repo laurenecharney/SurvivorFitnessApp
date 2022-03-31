@@ -55,7 +55,7 @@ export default class LocationAdminTrainerPage extends Component {
   async componentDidMount() {
     const specialistTypeRes = JSON.parse(await getSpecialistType());
     this.setState({specialistType: specialistTypeRes})
-    this.setState({pageTitle: "hello" + this.getUserType(true, specialistTypeRes)})
+    this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
   }
 
@@ -65,14 +65,11 @@ export default class LocationAdminTrainerPage extends Component {
       const locationId = await getLocationId();
       let rawTrainerInfo = {}
       if (this.state.specialistType === "DIETITIAN") {
-        console.log("get dietitians")
         rawTrainerInfo = await getDietitians(locationId)
       } else if (this.state.specialistType === "TRAINER") {
-        console.log("get Trainers")
         rawTrainerInfo = await getTrainers(locationId)
       } else {
         rawTrainerInfo = "specialistType not set";  
-        console.log("specialistType: ", specialistType)
       }
       this.setState({
         specialists: rawTrainerInfo.map(rawTrainer => {
@@ -159,10 +156,11 @@ export default class LocationAdminTrainerPage extends Component {
         <AddEditModal 
             categories = {categories} 
             isAdd = {true}
-            title = "Add Trainer" 
+            title = {this.state.specialistType == "DIETITIAN" ? "Add Dietitian" : "Add Trainer"} 
             visible = {this.state.isAddModalVisible} 
             information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
-            callback = {this.closeAddModal}/>
+            callback = {this.closeAddModal}
+            userType = {this.state.specialistType}/>
       </View>
     );
   }

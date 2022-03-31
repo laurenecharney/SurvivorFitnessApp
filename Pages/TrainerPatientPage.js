@@ -32,7 +32,6 @@ export default class TrainerPatientsPage extends Component {
         participants = await getParticipants("trainerUserId",this.props.route.params.trainerUserId);
       } else if (this.props.route.params && this.props.route.params['dietitianUserId']){
         participants = await getParticipants("dietitianUserId",this.props.route.params.dietitianUserId);
-        console.log(this.props.route.params);
       } else {
         participants = await getParticipants(null,null);
       }
