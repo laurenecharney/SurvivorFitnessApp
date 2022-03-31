@@ -37,9 +37,9 @@ export default class AdminLocationsPage extends Component {
             ],
             selectedLocation: {}
         }
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+        // if (Platform.OS === 'android') {
+        //     UIManager.setLayoutAnimationEnabledExperimental(true);
+        // }
     }
     async componentDidMount(){
         await this.refreshLocations();
@@ -116,8 +116,7 @@ export default class AdminLocationsPage extends Component {
                 <ParticipantsList
                     participantsInfo={this.state.calls}
                     openModal={item => this.openModal(item)}
-                    listType="locations"
-                    showSpecialistLocations={false}/>   
+                    listType="locations"/>   
                 <DisplayModal 
                     categories = {categories} 
                     information = {this.state.selectedLocation}

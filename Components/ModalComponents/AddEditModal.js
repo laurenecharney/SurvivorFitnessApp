@@ -27,7 +27,7 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange}) => {
     const [newInformation, setNewInformation] = useState({information, location : ""});
     const [adminLocations, setLocations] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
@@ -96,7 +96,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                 visible={visible}
                 >
                 <View style={styles.modalStyle}>
-                    <TouchableOpacity style={{paddingLeft:260, paddingTop:50}} onPress={()=>callback()}>
+                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
                         <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                     </TouchableOpacity>
                     <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
@@ -147,14 +147,20 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                             />
                                     </View>
                                 :
-                                 (
+                                !isAdd && !isChange && (
                                     <View>
                                         <RemoveButton/>
                                         <AppButton
                                             title={"EDIT"}
-                                            onPress={()=>callback()}
-                                            />
+                                            //Send to backend with callback
+                                        />
                                     </View>
+                                )}
+                                {isChange && (
+                                    <AppButton
+                                    title={"EDIT"}
+                                    //Send to backend with callback
+                                />
                                 )}
                             </View>
                         </ScrollView>

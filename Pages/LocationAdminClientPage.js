@@ -28,7 +28,6 @@ const categories = {
   dieticianOffice: "Dietitian Office: ",
   //startDate: "Start Date: ",
   goals: "Goal(s): ",
-
 };
 
 export default class LocationAdminClientPage extends Component {

@@ -1,5 +1,8 @@
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Heading } from "../Components/Heading";
+import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
+import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
 import {
   StyleSheet,
   View,
@@ -10,6 +13,15 @@ import {
   ScrollView
 } from "react-native";
 
+const contactCategories = {
+  phoneNumber: "Phone Number: ",
+  email: "Email: ",
+};
+
+const contactPasswordCategories = {
+  password: "Password: ",
+};
+
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
@@ -19,20 +31,22 @@ export const AppButton = ({ onPress, title }) => (
 export default class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
-
+    this.goBack = this.goBack.bind(this);
     this.state = {
       expanded_info: false,
       expanded_password: false,
       phone_number: "Phone Number",
       email: "Email",
+      isContactModalVisible: false,
+      isChangePasswordVisible: false,
       current_password: "Current Password",
       new_password: "New Password",
       new_password_again: "New Password Again",
       edit: false
     };
-    if (Platform.OS === "android") {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
+    // if (Platform.OS === "android") {
+    //   UIManager.setLayoutAnimationEnabledExperimental(true);
+    // }
   }
 
   toggleExpandInfo = () => {
@@ -44,233 +58,66 @@ export default class ProfilePage extends React.Component {
     this.setState({ expanded_password: !this.state.expanded_password });
   };
 
+  openContactModal = () => {
+    this.setState({
+      isContactModalVisible:true,
+    });
+  };
+
+  closeContactModal = () => {
+    this.setState({
+      isContactModalVisible: false
+    });
+  };
+
+  openChangePasswordModal = () => {
+    this.setState({
+      isChangePasswordVisible:true,
+    });
+  };
+
+  closeChangePasswordModal = () => {
+    this.setState({
+      isChangePasswordVisible: false
+    });
+  };
+
+  goBack() {
+    this.props.navigation.goBack()
+  }
+
   render() {
     return (
-      <View>
-        <ScrollView>
-          <View style={styles.container}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderBottomColor:"#E4E4E4",
-                borderBottomWidth:1,
-                width:"100%"
-
-              }}
-            >
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => this.props.navigation.goBack()}
-                hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-              >
-                <Icon
-                  name={"keyboard-arrow-left"}
-                  size={50}
-                  color={"#E4E4E4"}
-                />
-              </TouchableOpacity>
-              <Text style={styles.workHeadline}>Profile</Text>
-            </View>
-
-            <View
-              style={{ flexDirection: "column", paddingTop: 10, width: "100%" }}
-            >
-              <View>
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => this.toggleExpandInfo()}
-                >
-                  <Text style={styles.categoryText}>Contact Information</Text>
-                  <Icon
-                    name={
-                      this.state.expanded_info
-                        ? "keyboard-arrow-up"
-                        : "keyboard-arrow-down"
-                    }
-                    size={40}
-                    color={"#E4E4E4"}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.parentHr} />
-              {this.state.expanded_info && (
-                <View>
-                  <Text style={styles.childText}>Phone Number</Text>
-                </View>
-              )}
-              {this.state.expanded_info && (
-                <View style={styles.child}>
-                  <TextInput
-                    style={styles.input}
-                    ref={input => {
-                      this.secondTextInput = input;
-                    }}
-                    underlineColorAndroid="transparent"
-                    placeholder={
-                      this.state.phone_number
-                        ? this.state.phone_number
-                        : "Phone Number"
-                    }
-                    defaultValue={
-                      this.state.phone_number == "Phone Number"
-                        ? null
-                        : this.state.phone_number
-                    }
-                    placeholderTextColor="#D5D5D5"
-                    color="black"
-                    autoCapitalize="sentences"
-                    onChangeText={newPhoneNumber =>
-                      this.setState({ phone_number: newPhoneNumber })
-                    }
-                  />
-                </View>
-              )}
-              {this.state.expanded_info && (
-                <View>
-                  <Text style={styles.childText}>Email</Text>
-                </View>
-              )}
-              {this.state.expanded_info && (
-                <View style={styles.child}>
-                  <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder={this.state.email ? this.state.email : "Email"}
-                    defaultValue={
-                      this.state.email == "Email" ? null : this.state.email
-                    }
-                    placeholderTextColor="#D5D5D5"
-                    color="black"
-                    autoCapitalize="sentences"
-                    onChangeText={newEmail =>
-                      this.setState({ email: newEmail })
-                    }
-                    keyboardType={"numeric"}
-                  />
-                </View>
-              )}
-              {this.state.expanded_info && (
-                <View>
-                  <AppButton
-                    title={this.state.edit ? "SAVE" : "EDIT"}
-                    onPress={() => this.setState({ edit: !this.state.edit })}
-                  />
-                </View>
-              )}
-              <TouchableOpacity
-                style={styles.row}
-                onPress={() => this.toggleExpandPassword()}
-              >
-                <Text style={styles.categoryText}>Change Password</Text>
-                <Icon
-                  name={
-                    this.state.expanded_password
-                      ? "keyboard-arrow-up"
-                      : "keyboard-arrow-down"
-                  }
-                  size={40}
-                  color={"#E4E4E4"}
-                />
-              </TouchableOpacity>
-              <View style={styles.parentHr} />
-              {this.state.expanded_password && (
-                <View>
-                  <Text style={styles.childText}>Enter Current Password</Text>
-                </View>
-              )}
-              {this.state.expanded_password && (
-                <View style={styles.child}>
-                  <TextInput
-                    style={styles.input}
-                    ref={input => {
-                      this.secondTextInput = input;
-                    }}
-                    underlineColorAndroid="transparent"
-                    placeholder={
-                      this.state.current_password
-                        ? this.state.current_password
-                        : "Current Password"
-                    }
-                    defaultValue={
-                      this.state.current_password == "Current Password"
-                        ? null
-                        : this.state.current_password
-                    }
-                    placeholderTextColor="#D5D5D5"
-                    color="black"
-                    autoCapitalize="sentences"
-                    onChangeText={newCurrentPassword =>
-                      this.setState({ current_password: newCurrentPassword })
-                    }
-                  />
-                </View>
-              )}
-              {this.state.expanded_password && (
-                <View>
-                  <Text style={styles.childText}>Enter New Password</Text>
-                </View>
-              )}
-              {this.state.expanded_password && (
-                <View style={styles.child}>
-                  <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder={
-                      this.state.new_password
-                        ? this.state.new_password
-                        : "New Password"
-                    }
-                    defaultValue={
-                      this.state.new_password == "New Password"
-                        ? null
-                        : this.state.new_password
-                    }
-                    placeholderTextColor="#D5D5D5"
-                    color="black"
-                    autoCapitalize="sentences"
-                    onChangeText={newNewPassword =>
-                      this.setState({ new_password: newNewPassword })
-                    }
-                  />
-                </View>
-              )}
-              {this.state.expanded_password && (
-                <View style={styles.child}>
-                  <TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder={
-                      this.state.new_password_again
-                        ? this.state.new_password_again
-                        : "New Password Again"
-                    }
-                    defaultValue={
-                      this.state.new_password_again == "New Password Again"
-                        ? null
-                        : this.state.new_password_again
-                    }
-                    placeholderTextColor="#D5D5D5"
-                    color="black"
-                    autoCapitalize="sentences"
-                    onChangeText={newNewPasswordAgain =>
-                      this.setState({ new_password_again: newNewPasswordAgain })
-                    }
-                  />
-                </View>
-              )}
-              {this.state.expanded_password && (
-                <View>
-                  <AppButton
-                    title={this.state.edit ? "SAVE" : "EDIT"}
-                    onPress={() => this.setState({ edit: !this.state.edit })}
-                  />
-                </View>
-              )}
-            </View>
-          </View>
-        </ScrollView>
+      <View style={styles.container}>
+        <Heading 
+          title = "Profile"
+          titleOnly = {false}
+          displayAddButton = {false}
+          displayBackButton = {true}
+          displaySettingsButton = {false}
+          callback = {this.goBack}/>
+        <SettingsRow 
+          title = "Contact Information"
+          iconName = ''
+          callback = {this.openContactModal}/>
+        <SettingsRow 
+          title = "Password Information"
+          iconName = ''
+          callback = {this.openChangePasswordModal}/>
+        <AddEditModal 
+          categories = {contactCategories}
+          information = {""}
+          isChange = {true}
+          title = {"Edit Contact Information"}
+          visible = {this.state.isContactModalVisible} 
+          callback = {this.closeContactModal}/>
+         <AddEditModal 
+          categories = {contactPasswordCategories}
+          information = {""}
+          isChange = {true}
+          title = {"Edit Password"}
+          visible = {this.state.isChangePasswordVisible} 
+          callback = {this.closeChangePasswordModal}/>
       </View>
     );
   }
@@ -278,101 +125,7 @@ export default class ProfilePage extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start"
+    flex: 1, 
+    backgroundColor:'#fff'
   },
-  workHeadline: {
-    fontSize: 25,
-    marginTop: 50,
-    padding: 30,
-    color: "#3E3E3E",
-    paddingRight: 160,
-    fontWeight:"500",
-  },
-  backButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 50,
-    paddingLeft: 10
-  },
-
-  headline: {
-    fontWeight: "bold",
-    fontSize: 25,
-    position: "absolute",
-    marginTop: 45,
-    color: "#3E3E3E",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    flex: 1,
-    opacity: 1,
-    borderBottomColor: "#BEBEBE",
-    borderBottomWidth: 1
-  },
-
-  parentHr: {
-    height: 1,
-    color: "white",
-    width: "60%",
-    alignSelf: "center"
-  },
-  child: {
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#D5D5D5",
-    borderRadius: 10,
-    marginBottom: 10,
-    alignSelf: "center",
-    width: "60%"
-  },
-  appButtonContainer: {
-    elevation: 8,
-    backgroundColor: "#AED804",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    width: 150,
-    alignSelf: "center",
-    margin: 20
-  },
-  appButtonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#E6E6E6",
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    padding: 25,
-    justifyContent: "space-between"
-  },
-
-  categoryText: {
-    fontSize: 18,
-    color: "#3E3E3E",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    textAlign: "left",
-    fontWeight: "500"
-  },
-  childText: {
-    paddingTop: 16,
-    paddingLeft: 75,
-    paddingBottom: 8,
-    color: "#A1C703",
-    fontSize: 17,
-    justifyContent: "flex-start"
-  },
-  input: {
-    height: 40,
-    justifyContent: "flex-start",
-    padding: 10
-  }
 });

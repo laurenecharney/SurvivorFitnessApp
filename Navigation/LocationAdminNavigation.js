@@ -19,6 +19,7 @@ export function LocationAdminPage() {
     fetchUser();
   }, []);
 
+  //create function that returns the user type and then set initialRouteName to the output
   return (
     <Tab.Navigator
       initialRouteName="Participants"
