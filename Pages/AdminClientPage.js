@@ -9,19 +9,17 @@ import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
-const categories = {
-    firstname: "First Name: ",
-    lastname: "Last Name: ",
-    age: "Age: ",
-    email: "Email: ",
-    phoneNumber: "Phone Number: ",
-    gym: "Gym: ",
-    dieticianOffice: "Dietician Office: ",
-    startDate: "Start Date: ",
-    goals: "Goal(s): ",
-    // numberOfTrainings: "Number of Trainings: ",
-    // numberOFAppointments: "Number of Appointments: ",
-};
+const categories = [
+    {firstname: "First Name: ", type: "text",},
+    {lastname: "Last Name: ", type: "text",},
+    {age: "Age: ", type: "text",},
+    {email: "Email: ", type: "text",},
+    {phoneNumber: "Phone Number: ", type: "text",},
+    {gym: "Gym: ", type: "text",},
+    {dieticianOffice: "Dietician Office: ", type: "text",},
+    {startDate: "Start Date: ", type: "text",},
+    {goals: "Goal(s): ", type: "text",},
+];
 
 export default class AdminClientPage extends Component {
     state = {
@@ -146,7 +144,7 @@ export default class AdminClientPage extends Component {
                     showDietitian={true}
                     listType="participants"/>   
                 <DisplayModal 
-                    categories = {categories} 
+                    fields = {categories} 
                     information = {this.state.selectedParticipant}
                     canEdit = {true}
                     content = "Participants" 

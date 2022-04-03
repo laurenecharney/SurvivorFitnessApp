@@ -52,6 +52,28 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
+export const BinaryToggle = ({label, option1, option2, callback, defaultVal}) => {
+    const [isOptionOne, toggle] = useState(defaultVal || option1);
+    
+    return(
+        <View style={{marginBottom: 15}}>
+            <Text style={styles.inputFieldLabel}>{label}</Text>
+            <View style={{flexDirection:"row", justifyContent:"center", width: "95%", alignSelf: "center"}}>
+                <TouchableOpacity 
+                    style={[styles.selectableBox, styles.leftSelectableBox, isGym ? styles.selected : styles.unselected]}
+                    onPress={() => {toggle(true); callback(option1);}}>
+                        <Text style={isGym ? styles.selectedText : styles.unselectedText}>{option1}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={[styles.selectableBox, styles.rightSelectableBox, !isGym ? styles.selected : styles.unselected]}
+                    onPress={() => {toggle(false); callback(option2);}}>
+                        <Text style={!isGym ? styles.selectedText : styles.unselectedText}>{option2}</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
+
 export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callback,  information}) => {
     const [input, setInput] = useState(fields);
     const [isGym, setIsGym] = useState(true);
@@ -100,31 +122,18 @@ export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callbac
                         <View style={{paddingBottom:20, width:'100%'}}>
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
-                        {isAdd && isLocation &&
-                            <View style={{marginBottom: 15}}>
-                                <Text style={styles.inputFieldLabel}>Select Location Type:</Text>
-                                <View style={{flexDirection:"row", justifyContent:"center", width: "95%", alignSelf: "center"}}>
-                                    <TouchableOpacity 
-                                        style={[styles.selectableBox, styles.leftSelectableBox, isGym ? styles.selected : styles.unselected]}
-                                        onPress={() => saveInput("type", "TRAINER_GYM")}>
-                                            <Text style={isGym ? styles.selectedText : styles.unselectedText}>Gym</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity 
-                                        style={[styles.selectableBox, styles.rightSelectableBox, !isGym ? styles.selected : styles.unselected]}
-                                        onPress={() => saveInput("type", "DIETITIAN_OFFICE")}>
-                                            <Text style={!isGym ? styles.selectedText : styles.unselectedText}>Dietitian Office</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        }
-                        {fields && Object.keys(fields).map(key => {
-                            return key == "administrator" ? 
-                            (<RNPickerSelect />) :
+                        {fields && fields.map(field => {
+                            return field.input == "administrator" ? 
+                            (<RNPickerSelect 
+                                placeholder={}
+                                items=
+                            />) : field.input == "text" ?
                             (<EditInformationRow 
-                                    title={key[0].toUpperCase()+key.substring(1)+":"} 
-                                    intValue={isAdd ? "" : information[key]} 
-                                    key={key}
-                                    callback={val => saveInput(key, val)}/>)
+                                title={key[0].toUpperCase()+key.substring(1)+":"} 
+                                intValue={isAdd ? "" : information[key]} 
+                                key={key}
+                                callback={val => saveInput(field[key], val)}
+                            />) : (<View />);
                         })}
                         <View>
                             <View style={{marginTop: 20}}>

@@ -10,11 +10,6 @@ import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
-const categories = {
-    name: "",
-    address: "",
-    administrator: "",
-};
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -42,6 +37,14 @@ export default class AdminLocationsPage extends Component {
         //     UIManager.setLayoutAnimationEnabledExperimental(true);
         // }
     }
+
+    categories = [
+        {key: "type", input: "toggle", label: "Select Location Type: ", option1: "Gym", option2: "Dietitian Office",},
+        {key: "name", input: "text", label: "Location Name: ",},
+        {key: "address", input: "text", label: "Address: ",},
+        {key: "administrator", input: "picker", label: "Administrator: ", options: getUsers()},
+    ];
+
     async componentDidMount(){
         await this.refreshLocations();
     }
