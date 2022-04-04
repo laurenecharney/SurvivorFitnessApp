@@ -190,8 +190,8 @@ export async function addParticipant(participantInfo) {
   temp["formsOfTreatment"] = "unspecified";
   temp["surgeries"] = "unspecified";
   temp["physicianNotes"] = "";
-  temp["trainerLocation"] = {id: 16};
-  temp["dietitianLocation"] = {id: 18};
+  temp["trainerLocation"] = {id: 28};
+  temp["dietitianLocation"] = {id: 30};
 
   let _body = {
     "participant": temp,
@@ -203,17 +203,127 @@ export async function addParticipant(participantInfo) {
         "name": "Weight",
         "category": "General Data",
         "unit": "lbs"
-      },
-      {
-        "name": "Height",
-        "category": "General Data",
-        "unit": "inch"
-      },
-      {
+    },
+    {
         "name": "BMI",
         "category": "General Data",
         "unit": "kg/m^2"
-      }
+    },
+    {
+        "name": "Body Fat Percentage",
+        "category": "General Data",
+        "unit": "%"
+    },
+    {
+        "name": "Lean Mass",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "name": "Blood Pressure",
+        "category": "General Data",
+        "unit": "mm Hg"
+    },
+    {
+        "name": "Range of Motion",
+        "category": "General Data",
+        "unit": "degree"
+    },
+    {
+        "name": "Abdominal Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Midaxillary",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Subscapular",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Supraillac",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Tricep",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Abdominal Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Bicep Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Calf Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Hip Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Waist Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Total Inches Lost",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Distance",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Speed",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "HR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "BR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    }
     ]
   };
   
