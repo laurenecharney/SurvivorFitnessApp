@@ -186,10 +186,6 @@ export async function addParticipant(participantInfo) {
   //temporary until required fields are decided
   let temp = participantInfo;
   temp["startDate"] = Date.now();
-  temp["typeOfCancer"] = "unspecified";
-  temp["formsOfTreatment"] = "unspecified";
-  temp["surgeries"] = "unspecified";
-  temp["physicianNotes"] = "";
   temp["trainerLocation"] = {id: 28};
   temp["dietitianLocation"] = {id: 30};
 

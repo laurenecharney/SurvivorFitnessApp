@@ -37,8 +37,13 @@ const categories = {
     phoneNumber: "Phone Number: ",
     gym: "Gym: ",
     dietitianOffice: "Dietician Office: ",
-    startDate: "Start Date: ",
+    // startDate: "Start Date: ",   // we use the current date as the start date
     goals: "Goal(s): ",
+    typeOfCancer: "Type of Cancer: ",
+    treatmentFacility: "Treatment Facility: ",
+    formsOfTreatment: "Forms of Treatment: ",
+    surgeries: "Surgeries: ",
+    physicianNotes: "Physician Notes: ",
     // numberOfTrainings: "Number of Trainings: ",
     // numberOFAppointments: "Number of Appointments: ",
 };
@@ -56,20 +61,7 @@ export default class AdminClientPage extends Component {
             calls: [],
             selectedParticipant: {},
             locations: [],
-            newParticipant: [
-                {id: "firstName", val: "",},
-                {id: "lastName", val: "",},
-                {id: "age", val: 0,},
-                {id: "email", val: "",},
-                {id: "phoneNumber", val: "",},
-                //{id: "startDate", val: "",}, //probs want another datepicker
-                {id: "goals", val: "",},
-                //{id: "gym", val: "",},
-                //{id: "dieticianOffice", val: "",},
-                
-                //{id: "numberOfTrainings", val: 24,},
-                //{id: "numberOFAppointments", val: 3}
-            ],
+            newParticipant: [],
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
@@ -78,8 +70,19 @@ export default class AdminClientPage extends Component {
         }
     }
 
+    setBlankNewParticipant = () => {
+        let tempNewParticipant = []
+        const ids = Object.keys(categories)
+        for(let i = 0; i < ids.length; i++) {
+            tempNewParticipant.push({id: ids[i], val: ""})
+        }
+        this.setState({newParticipant: tempNewParticipant})
+        // console.log("newParticipant:", tempNewParticipant)
+    }
+
 
     async componentDidMount(){
+        this.setBlankNewParticipant();
         this.resetPartipantList();
     }
 
