@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  Alert
 } from "react-native";
 import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,15 +28,15 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange, changePassword}) => {
     const [newInformation, setNewInformation] = useState({information, location : ""});
     const [adminLocations, setLocations] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
-
     const updateInputText = (key, text) => {
         let updatedState = {...newInformation, [key] : text};
         setNewInformation(updatedState);
     }
+
 
     const uploadUser = () => {
         callback();
@@ -80,10 +81,29 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
 
 
     useEffect(() => {
-        if(adminLocations.length > 0){
+        if(adminLocations.length > 0 && !isChange){
             setShowPicker(true);
         }
+        else{
+            setShowPicker(false);
+        }
     }, [adminLocations])
+
+    //Confirm User Wishes to signout
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+    "Confirm Change",
+    "You will not be able to undo this action",
+    [
+        {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+        },
+        { text: "Confirm", onPress: () => changePassword(newInformation) }
+    ]
+    
+    );
 
     return(
              <Modal 
@@ -104,7 +124,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                             <View style={{paddingBottom:10, width:'100%'}}>
                                 <Text style={styles.modalText} >{title}</Text>
                             </View>
-                            {isAdd ?
+                            {isAdd || isChange ?
                                     Object.keys(categories).map(key => (
                                         <EditInformationRow updateInputText={text => updateInputText(key, text)} title={categories[key]} value="" key={key}/>
                                     ))
@@ -143,7 +163,6 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                     <View style={{marginTop: 20}}>
                                         <AppButton 
                                             title = {"Add"}
-                                            onPress={()=>uploadUser()}
                                             />
                                     </View>
                                 :
@@ -158,8 +177,8 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                 )}
                                 {isChange && (
                                     <AppButton
-                                    title={"EDIT"}
-                                    //Send to backend with callback
+                                    title={"Change"}
+                                    onPress={createTwoButtonAlert}
                                 />
                                 )}
                             </View>

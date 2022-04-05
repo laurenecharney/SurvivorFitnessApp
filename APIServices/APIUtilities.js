@@ -43,6 +43,25 @@ export async function createUser(user){
   return res;
 }
 
+//change password functionality (response will be success or error)
+export async function changePassword(id, currentPassword, newPassword){
+  const passwordInfo = {
+    "currentPassword": currentPassword,
+    "newPassword": newPassword
+  }
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id + "/change_password", {
+    method: "POST",
+    body: JSON.stringify(passwordInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+  return res;
+}
+
 
 export async function logTrainerSession(curSessionInfo, date) {
   // console.log("old participantid", curSessionInfo)

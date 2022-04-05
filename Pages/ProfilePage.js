@@ -3,6 +3,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Heading } from "../Components/Heading";
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
+import { changePassword } from "../APIServices/APIUtilities";
+import { getUser } from "../APIServices/deviceStorage";
 import {
   StyleSheet,
   View,
@@ -10,8 +12,10 @@ import {
   LayoutAnimation,
   Text,
   TextInput,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
+import { concat } from "react-native-reanimated";
 
 const contactCategories = {
   phoneNumber: "Phone Number: ",
@@ -19,7 +23,9 @@ const contactCategories = {
 };
 
 const contactPasswordCategories = {
-  password: "Password: ",
+  currentPassword: "Current Password: ",
+  newPassword: "New Password: ",
+  confirmPassword: "Confirm New Password: "
 };
 
 export const AppButton = ({ onPress, title }) => (
@@ -39,15 +45,25 @@ export default class ProfilePage extends React.Component {
       email: "Email",
       isContactModalVisible: false,
       isChangePasswordVisible: false,
-      current_password: "Current Password",
-      new_password: "New Password",
-      new_password_again: "New Password Again",
-      edit: false
+      edit: false,
+      user:{},
+      userId: "",
+      passwordInformation:{
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+      }
     };
-    // if (Platform.OS === "android") {
-    //   UIManager.setLayoutAnimationEnabledExperimental(true);
-    // }
   }
+
+  async componentDidMount() {
+    const __user = JSON.parse(await getUser());
+    this.setState({
+      user: __user,
+      userId: __user.id
+    });
+  }
+
 
   toggleExpandInfo = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -82,9 +98,56 @@ export default class ProfilePage extends React.Component {
     });
   };
 
-  goBack() {
+  goBack = () => {
     this.props.navigation.goBack()
   }
+
+  changePassword = async (newInformation) => {
+    console.log(newInformation)
+    if((newInformation.currentPassword != "") && (newInformation.newPassword != "") && (newInformation.newPassword == newInformation.confirmPassword)){
+      try {
+        const res = await changePassword(this.state.userId, newInformation.currentPassword, newInformation.newPassword)
+        if(res.status == 403){
+          Alert.alert(
+            "Unable to Change Password",
+            "The old password does not match the one currently saved in the database!",
+            [
+              { text: "OK" }
+            ]
+          )
+          }
+          else if(res.status == 200){
+            Alert.alert(
+              "Password Changed",
+              "Password has been successfully changed!",
+              [
+                { text: "OK" }
+              ]
+            )
+          }
+          else{
+            Alert.alert(
+              "Unable to Change Password",
+              "Unknown reason, try again!",
+              [
+                { text: "OK" }
+              ]
+            )
+          }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    else{Alert.alert(
+      "Unable to Change Password",
+      "The new passwords are not valid",
+      [
+        { text: "OK" }
+      ]
+    )
+    }
+  }
+
 
   render() {
     return (
@@ -113,10 +176,11 @@ export default class ProfilePage extends React.Component {
           callback = {this.closeContactModal}/>
          <AddEditModal 
           categories = {contactPasswordCategories}
-          information = {""}
+          information = {this.state.passwordInformation.currentPassword, this.state.passwordInformation.newPassword}
           isChange = {true}
-          title = {"Edit Password"}
+          title = {"Change Password"}
           visible = {this.state.isChangePasswordVisible} 
+          changePassword = {this.changePassword}
           callback = {this.closeChangePasswordModal}/>
       </View>
     );

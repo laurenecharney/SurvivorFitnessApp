@@ -136,6 +136,7 @@ export default class LoginPage extends React.Component {
 
     render() {
         const {email, password, hidePass} = this.state
+
         return (
             <View style={styles.container}>
                 <Image source={require('../assets/logo.png')} style={styles.logo}/>
