@@ -28,7 +28,7 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange, changePassword}) => {
+export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange, changeInformation}) => {
     const [newInformation, setNewInformation] = useState({information, location : ""});
     const [adminLocations, setLocations] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
@@ -75,7 +75,6 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
             })
             ));
         }
-
         getLocation();
     }, [])
 
@@ -92,7 +91,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
     //Confirm User Wishes to signout
     const createTwoButtonAlert = () =>
     Alert.alert(
-    "Confirm Change",
+    "Confirm",
     "You will not be able to undo this action",
     [
         {
@@ -100,7 +99,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
         onPress: () => console.log("Cancel Pressed"),
         style: "cancel"
         },
-        { text: "Confirm", onPress: () => changePassword(newInformation) }
+        { text: "Confirm", onPress: () => changeInformation(newInformation) }
     ]
     
     );
@@ -177,7 +176,7 @@ export const AddEditModal = ({categories, isAdd, title, visible, callback,  info
                                 )}
                                 {isChange && (
                                     <AppButton
-                                    title={"Change"}
+                                    title={"Confirm"}
                                     onPress={createTwoButtonAlert}
                                 />
                                 )}

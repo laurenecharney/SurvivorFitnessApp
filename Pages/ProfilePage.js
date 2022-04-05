@@ -180,7 +180,7 @@ export default class ProfilePage extends React.Component {
           isChange = {true}
           title = {"Change Password"}
           visible = {this.state.isChangePasswordVisible} 
-          changePassword = {this.changePassword}
+          changeInformation = {this.changePassword}
           callback = {this.closeChangePasswordModal}/>
       </View>
     );

@@ -59,6 +59,21 @@ export async function changePassword(id, currentPassword, newPassword){
       "Content-Type": "application/json" // I added this line
     }
   })
+  //.then(response => response.json());
+  return res;
+}
+
+export async function resetPassword(_email) {
+  const jwt = await getItem();
+  const url = ENDPOINT + "/api/v1/users/reset_password?email=" + _email;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+   // .then(response => response.json());
   return res;
 }
 

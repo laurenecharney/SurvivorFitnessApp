@@ -3,9 +3,9 @@ import {StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
-import {authenticate} from '../APIServices/APIUtilities';
+import {authenticate, resetPassword} from '../APIServices/APIUtilities';
 import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole, saveSpecialistType, saveLocationId} from '../APIServices/deviceStorage';
-
+import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 
 const credentials = {
     "Super Admin": {
@@ -41,6 +41,8 @@ export default class LoginPage extends React.Component {
         password: "",
         hidePass: true,
         developer: false,
+        isForgotPasswordVisible: false,
+        forgotEmail: ""
     }
 
     clearProfile = () => {
@@ -53,6 +55,54 @@ export default class LoginPage extends React.Component {
     handlePasswordChange = password => {
         this.setState({password})
     }
+
+    openForgotPasswordModal = () => {
+        this.setState({
+            isForgotPasswordVisible:true,
+        });
+    };
+
+    closeForgotPasswordModal = () => {
+        this.setState({
+            isForgotPasswordVisible: false
+        });
+    };
+
+    fogotPassword = async (newInformation) => {
+        console.log(newInformation.email)
+        try {
+            const res = await resetPassword(newInformation.email)
+            if(res.status == 403){
+                Alert.alert(
+                  "Unable to Reset Password",
+                  "Please try again",
+                  [
+                    { text: "OK" }
+                  ]
+                )
+            }
+            else if(res.status == 400){
+                Alert.alert(
+                "Unable to Reset Password",
+                "The email is not in our database ",
+                [
+                    { text: "OK" }
+                ]
+                )
+            }
+            else if(res.status == 200){
+                Alert.alert(
+                "Password Successfully Changed",
+                "Please check email for new password.",
+                [
+                    { text: "OK" }
+                ]
+                )
+            }
+        } catch (error) {
+            console.log(error)
+        }
+      }
 
     handleDeveloperPress = async (keyword) => {
         if (keyword === 'Developer') {
@@ -174,7 +224,7 @@ export default class LoginPage extends React.Component {
                     </View>
 
                     
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.openForgotPasswordModal()} >
                         <Text style={styles.forgot}>Forgot Password?</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ marginVertical: 10}} onPress={() => this.handleDeveloperPress('Developer')}>
@@ -215,6 +265,14 @@ export default class LoginPage extends React.Component {
                     </TouchableOpacity>
 
                 </View>
+                <AddEditModal 
+                    categories = {{email: "Enter Email: ",}}
+                    information = {this.state.forgotEmail}
+                    isChange = {true}
+                    title = {"Reset Password"}
+                    visible = {this.state.isForgotPasswordVisible} 
+                    changeInformation = {this.fogotPassword}
+                    callback = {this.closeForgotPasswordModal}/>
             </View>
         );
     }
