@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Alert} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   getUser,
@@ -13,7 +13,8 @@ import {
 } from "../APIServices/deviceStorage";
 import { Heading } from "../Components/Heading";
 import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
-import { Logout } from "../Components/SettingsComponents/Logout"
+import { Logout } from "../Components/SettingsComponents/Logout";
+import { exportData } from "../APIServices/APIUtilities";
 
 function getAdminRole(roles) {
   if (roles && roles.includes("LOCATION_ADMINISTRATOR")) {
@@ -52,10 +53,10 @@ export default class SettingsPage extends React.Component {
       adminRole: getAdminRole(__user.roles)
     });
 
-    console.log("show switch to trainer: ", __user.roles && __user.roles.includes("TRAINER") && currentRole !== "TRAINER")
+    //console.log("show switch to trainer: ", __user.roles && __user.roles.includes("TRAINER") && currentRole !== "TRAINER")
 
 
-    console.log("currentRole: ", currentRole)
+    //console.log("currentRole: ", currentRole)
   }
 
   async switchToLocationAdmin(user){
@@ -102,8 +103,39 @@ export default class SettingsPage extends React.Component {
     this.props.navigation.navigate("ProfilePage")
   }
 
-  downloadData() {
-    console.log("Download Data Eventually!")
+  downloadData = async () => {
+    try {
+      const res = await exportData()
+      if(res.status == 403){
+        Alert.alert(
+          "Unable to Export Data",
+          "Please try again",
+          [
+            { text: "OK" }
+          ]
+        )
+      }
+      else if(res.status == 400){
+        Alert.alert(
+        "Unable to Export Data",
+        "Please try again",
+        [
+            { text: "OK" }
+        ]
+        )
+      }
+      else if(res.status == 200){
+        Alert.alert(
+        "Data Exported Successfully",
+        "Data will be sent to email once completed",
+        [
+            { text: "OK" }
+        ]
+        )
+      }
+    } catch (error) {
+      console.log("Export Error", error)
+    }
   }
 
   logout(){

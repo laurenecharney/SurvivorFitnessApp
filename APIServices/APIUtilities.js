@@ -22,7 +22,7 @@ export async function getMeasurements(participantID, sessionID) {
   }
 
   //for debugging
-  console.log(ret);
+  //console.log(ret);
   return ret;
 
   return {};
@@ -76,6 +76,22 @@ export async function resetPassword(_email) {
    // .then(response => response.json());
   return res;
 }
+
+//gets participants with optional query params passed in
+export async function exportData() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/export-data", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    //.then(res => res.json());
+  return res
+} // ,
+
 
 
 export async function logTrainerSession(curSessionInfo, date) {

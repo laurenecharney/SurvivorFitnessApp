@@ -69,7 +69,7 @@ export default class LoginPage extends React.Component {
     };
 
     fogotPassword = async (newInformation) => {
-        console.log(newInformation.email)
+        //console.log(newInformation.email)
         try {
             const res = await resetPassword(newInformation.email)
             if(res.status == 403){

@@ -103,7 +103,7 @@ export default class ProfilePage extends React.Component {
   }
 
   changePassword = async (newInformation) => {
-    console.log(newInformation)
+    //console.log(newInformation)
     if((newInformation.currentPassword != "") && (newInformation.newPassword != "") && (newInformation.newPassword == newInformation.confirmPassword)){
       try {
         const res = await changePassword(this.state.userId, newInformation.currentPassword, newInformation.newPassword)
