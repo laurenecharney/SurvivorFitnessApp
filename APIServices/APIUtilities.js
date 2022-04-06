@@ -212,3 +212,17 @@ export async function createLocation(locationInfo) {
   console.log(JSON.stringify(res));
   return res;
 }
+
+export async function getAllSpecialists() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
