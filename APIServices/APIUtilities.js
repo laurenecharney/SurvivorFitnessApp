@@ -184,6 +184,23 @@ export async function getLocationByID(id) {
   return res && res.location ? res.location : [];
 }
 
+export async function getSpecialists(_locationId, _specialistType) {
+  const jwt = await getItem();
+  const query = _locationId ? "?locationId=" + _locationId : "";
+  const url = ENDPOINT + "/api/v1/" + _specialistType + query;
+  console.log("url", url);
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res.specialists || {};
+}
+
 //gets dietitians
 export async function getDietitians(_locationId) {
   const jwt = await getItem();
