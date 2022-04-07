@@ -152,12 +152,40 @@ export default class SettingsPage extends React.Component {
     const { user } = this.state;
     return (
       <View style={styles.container}>
+        {this.state.currentRole === "TRAINER" && (
+          <Heading 
+          title = "Settings"
+          titleOnly = {false}
+          displayAddButton = {false}
+          displayBackButton = {true}
+          displaySettingsButton = {false}
+          callback = {this.goBack}/>
+        )}
+        {this.state.currentRole === "DIETITIAN" && (
+          <Heading 
+          title = "Settings"
+          titleOnly = {false}
+          displayAddButton = {false}
+          displayBackButton = {true}
+          displaySettingsButton = {false}
+          callback = {this.goBack}/>
+        )}
+        {this.state.currentRole === "LOCATION_ADMINISTRATOR" && (    
          <Heading 
-            title = "Settings"
-            titleOnly = {true}
-            displayAddButton = {false}
-            displayBackButton = {false}
-            displaySettingsButton = {false}/>
+          title = "Settings"
+          titleOnly = {true}
+          displayAddButton = {false}
+          displayBackButton = {false}
+          displaySettingsButton = {false}/>
+        )}
+        {this.state.currentRole === "SUPER_ADMIN" && (    
+         <Heading 
+          title = "Settings"
+          titleOnly = {true}
+          displayAddButton = {false}
+          displayBackButton = {false}
+          displaySettingsButton = {false}/>
+        )}
         <SettingsRow 
             title = "Profile"
             iconName = 'keyboard-arrow-right'
