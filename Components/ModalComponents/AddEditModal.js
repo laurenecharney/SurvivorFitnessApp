@@ -15,35 +15,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RemoveButton from "./RemoveButton";
 import InformationRow from "./InformationRow";
 import RNPickerSelect from 'react-native-picker-select';
-
-// get request to .../users
-
-<RNPickerSelect
-    onValueChange={value => setAdmin(value)}
-    placeholder={"Select Administrator"}
-    items={[
-        { label: 'Football', value: 'football' },
-        { label: 'Baseball', value: 'baseball' },
-        { label: 'Hockey', value: 'hockey' },
-    ]}
-/>
-
-/** TODO
- * install picker
- * set up and build out picker
- * fix add Participants merge
- * populate picker with users (awaiting new endpoint from ilya)
- * 
- */
-
+import { Ionicons } from '@expo/vector-icons';
 
 let dummyList = [
-    "Ben Gant",
-    "Lauren Charney",
-    "Ethan Shifrin",
-    "Charles Wang",
-    "Adam Hollander",
-    "Ilya Ermakov",
+    {label: "Ben Gant", value: 1},
+    {label: "Lauren Charney", value: 4},
+    {label: "Ethan Shifrin", value: 6},
+    {label: "Charles Wang", value: 9},
+    {label: "Adam Hollander", value: 11},
+    {label: "Ilya Ermakov", value: 13},
 ]
 
 export const AppButton = ({ onPress, title }) => (
@@ -52,42 +32,60 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const BinaryToggle = ({label, option1, option2, callback, defaultVal}) => {
-    const [isOptionOne, toggle] = useState(defaultVal || option1);
+export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) => {
+    const [isOptionOne, toggleSelection] = useState(defaultVal || option1);
     
     return(
         <View style={{marginBottom: 15}}>
             <Text style={styles.inputFieldLabel}>{label}</Text>
             <View style={{flexDirection:"row", justifyContent:"center", width: "95%", alignSelf: "center"}}>
                 <TouchableOpacity 
-                    style={[styles.selectableBox, styles.leftSelectableBox, isGym ? styles.selected : styles.unselected]}
-                    onPress={() => {toggle(true); callback(option1);}}>
-                        <Text style={isGym ? styles.selectedText : styles.unselectedText}>{option1}</Text>
+                    style={[styles.selectableBox, styles.leftSelectableBox, isOptionOne ? styles.selected : styles.unselected]}
+                    onPress={() => {toggleSelection(true); callback(option1);}}>
+                        <Text style={isOptionOne ? styles.selectedText : styles.unselectedText}>{option1}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                    style={[styles.selectableBox, styles.rightSelectableBox, !isGym ? styles.selected : styles.unselected]}
-                    onPress={() => {toggle(false); callback(option2);}}>
-                        <Text style={!isGym ? styles.selectedText : styles.unselectedText}>{option2}</Text>
+                    style={[styles.selectableBox, styles.rightSelectableBox, !isOptionOne ? styles.selected : styles.unselected]}
+                    onPress={() => {toggleSelection(false); callback(option2);}}>
+                        <Text style={!isOptionOne ? styles.selectedText : styles.unselectedText}>{option2}</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 };
 
-export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callback,  information}) => {
-    const [input, setInput] = useState(fields);
-    const [isGym, setIsGym] = useState(true);
-    const [usersList, setUsersList] = useState(getUsers());
+export const LabeledPicker = ({ label, items, callback }) => {
+    useEffect(() => {
+        console.log("options: ", items)
+        // console.log("logging options....")
+        // console.log(options);
+    },[])
+
+    return (
+    <View style={{marginBottom: 15}}>
+        <Text style={styles.inputFieldLabel}>{label}</Text>
+        <RNPickerSelect
+            placeholder={{label: "Select admin...", value: "0", color: '#9ea0a4'}}
+            items={items} //options param not working????
+            style={{
+                ...pickerSelectStyles,
+                iconContainer: {top: 10, right: 12,},
+            }}
+            onValueChange={value => callback(value)}
+            Icon={() => (<Ionicons name="caret-down-outline" size={24} color="gray" />)}
+        />
+    </View>);
+    
+};
+
+
+
+export const AddEditModal = ({fields, isAdd, title, visible, callback,  information}) => {
+    const [input, setInput] = useState({});
 
     useEffect(() => {
-        let temp = JSON.parse(JSON.stringify(input));
-        temp.type = "TRAINER_GYM";
-        setInput(temp);
-    }, []);
-
-    useEffect(() => {
-        setIsGym(input.type == "TRAINER_GYM");
-    }, [input]);
+        if(!visible) setInput({});
+    }, [visible])
 
     const saveInput = (field, value) => {
         let temp = JSON.parse(JSON.stringify(input));
@@ -95,12 +93,11 @@ export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callbac
         setInput(temp);
     }
 
-    const getUsers = () => {
-        
-    }
+    const submit = () => {
+        //for testing to make sure all fields are filled out
 
-    const setAdmin = value => {
-        //cycle through adminList, get id# of one that matches string input
+
+        callback(input);
     }
 
     return(
@@ -122,25 +119,55 @@ export const AddEditModal = ({fields, isAdd, isLocation, title, visible, callbac
                         <View style={{paddingBottom:20, width:'100%'}}>
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
-                        {fields && fields.map(field => {
-                            return field.input == "administrator" ? 
-                            (<RNPickerSelect 
-                                placeholder={}
-                                items=
-                            />) : field.input == "text" ?
-                            (<EditInformationRow 
-                                title={key[0].toUpperCase()+key.substring(1)+":"} 
-                                intValue={isAdd ? "" : information[key]} 
-                                key={key}
-                                callback={val => saveInput(field[key], val)}
-                            />) : (<View />);
+                        {fields.map(field => {
+                            
+                            if (field.input == "picker") {
+                                console.log("field options: ", field.options)
+                                //console.log(">>>>>>>>>> my picker field's options:")
+                                //console.log(field.options.slice(0, 3));
+                                return (
+                                    <LabeledPicker
+                                        key={field.key}
+                                        label = {field.label}
+                                        items = {field.options}
+                                            // (() => {
+                                            // let arr = JSON.parse(JSON.stringify(field.options));
+                                            // console.log("my param");
+                                            // console.log(arr.slice(0,4));
+                                            // return arr;
+                                            // })()
+                                        //
+                                        callback = {val => saveInput(field.key, val)}
+                                    />
+                                )
+                            } else if (field.input == "toggle") {
+                                return (
+                                    <BinaryToggle
+                                        key={field.key}
+                                        label={field.label}
+                                        option1={field.options[0]}
+                                        option2={field.options[1]}
+                                        callback={val => saveInput(field.key, val)}
+                                        defaultVal={isAdd ? field.options[0] : information[key]}
+                                    />
+                                )
+                            } else if (field.input == "text") {
+                                return (
+                                    <EditInformationRow 
+                                        title={field.label} 
+                                        initValue={isAdd ? "" : information[key]} 
+                                        key={field.key}
+                                        callback={val => saveInput(field.key, val)}
+                                    />
+                                )
+                            } else return (<View />)
                         })}
                         <View>
                             <View style={{marginTop: 20}}>
                                 {!isAdd && <RemoveButton/>}
                                 <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
-                                    onPress={()=>callback(input)}/>
+                                    onPress={()=>{console.log("input when sent:");console.log(input); submit()}}/>
                             </View>
                         </View>
                     </ScrollView>
@@ -222,3 +249,26 @@ const styles = StyleSheet.create({
     },
     
 });
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'lightgray',
+      borderRadius: 4,
+      color: 'lightgray',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'lightgray',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+  });

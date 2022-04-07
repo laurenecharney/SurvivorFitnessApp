@@ -4,12 +4,21 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getLocations, getLocationByID, createLocation} from '../APIServices/APIUtilities';
+import { getLocations, 
+         getLocationByID, 
+         createLocation,
+         getAllSpecialists } from '../APIServices/APIUtilities';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
+const categoriesTemplate = [
+    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"]},
+    {key: "name", input: "text", label: "Location Name: ", options: []},
+    {key: "address", input: "text", label: "Address: ", options: []},
+    {key: "administrator", input: "picker", label: "Administrator: ", options: []} //options populate by getUsers on mount
+];
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -31,22 +40,23 @@ export default class AdminLocationsPage extends Component {
             calls: [
          
             ],
+            categories: categoriesTemplate,
             selectedLocation: {}
+
         }
         // if (Platform.OS === 'android') {
         //     UIManager.setLayoutAnimationEnabledExperimental(true);
         // }
     }
 
-    categories = [
-        {key: "type", input: "toggle", label: "Select Location Type: ", option1: "Gym", option2: "Dietitian Office",},
-        {key: "name", input: "text", label: "Location Name: ",},
-        {key: "address", input: "text", label: "Address: ",},
-        {key: "administrator", input: "picker", label: "Administrator: ", options: getUsers()},
-    ];
-
     async componentDidMount(){
         await this.refreshLocations();
+        let tempCategories = JSON.parse(JSON.stringify(this.state.categories))
+        for (field of tempCategories) {
+            if(field.key == "administrator") field.options = await this.getUsers();
+        }
+        this.setState({categories: tempCategories})
+
     }
 
     async refreshLocations(){
@@ -64,10 +74,29 @@ export default class AdminLocationsPage extends Component {
                     return newI;
                 }
            )});
-            } catch (e){
-                console.log(e);
-                alert("Could not fetch locations.");
-            }
+        } catch (e){
+            console.log(e);
+            alert("Could not fetch locations.");
+        }
+    }
+
+    async getUsers() {
+        let res;
+        try {
+            res = await getAllSpecialists();
+            console.log("i got the users")
+        } catch (e){
+            alert("Could not retrieve list of specialists")
+        }
+        let users = res.specialists.map(item => ({
+            label: item.firstName + " " + item.lastName,
+            value: item.id,
+            key: item.id,
+        }))
+
+        console.log("user: ", users[0])
+
+        return users;
     }
 
     openModal = async (item) =>{
@@ -107,16 +136,18 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
-    generateNewLocation = locInfo => {
+    generateNewLocation = async (locInfo) => {
         //preprocessing of input data. currently reorders fields
         let loc = {
             address: locInfo.address,
-            administrator: locInfo.administrator, //needs to be object
+            administrator: {id: locInfo.administrator},
             name: locInfo.name,
-            type: locInfo.type,
+            type: locInfo.type=="Gym" ? "TRAINER_GYM" : "DIETICIAN_OFFICE",
         };
+        console.log("to be sent to createLocation: ");
         console.log(JSON.stringify(loc));
-        createLocation(loc);
+        await createLocation(loc);
+        await this.refreshLocations();
     }
 
     render() {
@@ -134,7 +165,7 @@ export default class AdminLocationsPage extends Component {
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 
-                    categories = {categories} 
+                    categories = {this.state.categories} 
                     information = {this.state.selectedLocation}
                     content = "Location" 
                     title = "Location Information" 
@@ -142,10 +173,10 @@ export default class AdminLocationsPage extends Component {
                     canEdit = {true}
                     callback = {this.closeModal}/>
                 <AddEditModal 
-                    fields = {categories}   //might be able to use keys from information instead
+                    fields = {this.state.categories}   //might be able to use keys from information instead
                     isAdd = {true}
                     isLocation = {true}
-                    title = "Add Location" 
+                    title = {"Add Location"}
                     visible = {this.state.isAddModalVisible} 
                     information = {this.state.selectedLocation} 
                     callback = {input => {

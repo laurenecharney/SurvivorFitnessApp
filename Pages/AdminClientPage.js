@@ -10,16 +10,26 @@ import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
 const categories = [
-    {firstname: "First Name: ", type: "text",},
-    {lastname: "Last Name: ", type: "text",},
-    {age: "Age: ", type: "text",},
-    {email: "Email: ", type: "text",},
-    {phoneNumber: "Phone Number: ", type: "text",},
-    {gym: "Gym: ", type: "text",},
-    {dieticianOffice: "Dietician Office: ", type: "text",},
-    {startDate: "Start Date: ", type: "text",},
-    {goals: "Goal(s): ", type: "text",},
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
+    {key: "age",                input: "text",      label: "Age: ",                         options: []},
+    {key: "email",              input: "text",      label: "Email: ",                       options: []},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
+    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
+    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+    // {key: "numberOfTrainerSessions", input: "text", label: "Number of Trainer Sessions: ", options: []},
+    // {key: "numberOfDietitianSessions", input: "text", label: "Number of Dietitian Sessions: ", options: []},
+    // startDate -- datePicker??
+    // sessions where measurements are taken
+    // measurements -- these two need to be multiselects
 ];
+
+
 
 export default class AdminClientPage extends Component {
     state = {
@@ -45,7 +55,7 @@ export default class AdminClientPage extends Component {
                 {id: "startDate", val: "",}, //probs want another datepicker
                 {id: "goals", val: "",},
                 {id: "numberOfTrainings", val: 24,},
-                {id: "numberOFAppointments", val: 3}],
+                {id: "numberOFAppointments", val: 3}]
             //a way to implement editing a participant is preloading values on edit modal open,
             //then changing as the user changes values, then sending to endpoint
         }
@@ -118,12 +128,26 @@ export default class AdminClientPage extends Component {
         })
     }
 
-    createNewParticipant = () => {
-        let participant = {};
-        for (const row of this.state.newParticipant) {
-            participant[row.id] = row.val;
-        }
-        addParticipant(participant);
+    createNewParticipant = input => {
+        console.log("in create new participant: ");
+        if(input.dietitianLocation) 
+            input.dietitianLocation = {id: input.dietitianLocation}
+        if(input.trainerLocation) 
+            input.trainerLocation = {id: input.trainerLocation}
+        if(input.age) 
+            input.age = parseInt(input.age);
+        let body = {};
+        body.participant = input;
+
+
+
+
+        console.log(body);
+        // let participant = {};
+        // for (const row of this.state.newParticipant) {
+        //     participant[row.id] = row.val;
+        // }
+        // addParticipant(participant);
     }
 
     render() {
@@ -144,7 +168,7 @@ export default class AdminClientPage extends Component {
                     showDietitian={true}
                     listType="participants"/>   
                 <DisplayModal 
-                    fields = {categories} 
+                    categories = {categories} 
                     information = {this.state.selectedParticipant}
                     canEdit = {true}
                     content = "Participants" 
@@ -158,7 +182,10 @@ export default class AdminClientPage extends Component {
                     title = "Add Participant" 
                     visible = {this.state.isAddModalVisible} 
                     information = {this.state.selectedParticipant}
-                    callback = {this.closeAddModal}/>
+                    callback = {input => {
+                        this.closeAddModal(); 
+                        if(input) this.createNewParticipant(input);}
+                    }/>
             </View>
         );
     }
