@@ -129,7 +129,6 @@ export default class AdminClientPage extends Component {
     }
 
     createNewParticipant = input => {
-        console.log("in create new participant: ");
         if(input.dietitianLocation) 
             input.dietitianLocation = {id: input.dietitianLocation}
         if(input.trainerLocation) 
@@ -139,15 +138,9 @@ export default class AdminClientPage extends Component {
         let body = {};
         body.participant = input;
 
+        console.log("new participant: body: ", body);
 
-
-
-        console.log(body);
-        // let participant = {};
-        // for (const row of this.state.newParticipant) {
-        //     participant[row.id] = row.val;
-        // }
-        // addParticipant(participant);
+        // addParticipant(body);
     }
 
     render() {
@@ -178,7 +171,6 @@ export default class AdminClientPage extends Component {
                 <AddEditModal 
                     fields = {categories} 
                     isAdd = {true}
-                    isLocation = {false}
                     title = "Add Participant" 
                     visible = {this.state.isAddModalVisible} 
                     information = {this.state.selectedParticipant}
