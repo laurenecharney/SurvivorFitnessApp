@@ -20,6 +20,12 @@ const categoriesTemplate = [
     {key: "administrator", input: "picker", label: "Administrator: ", options: []} //options populate by getUsers on mount
 ];
 
+const displayCategories = {
+    name: "Location Name: ",
+    address: "Address: ",
+    administrator: "Administrator: ",
+};
+
 export default class AdminLocationsPage extends Component {
     state = {
         isModalVisible:false
@@ -41,7 +47,11 @@ export default class AdminLocationsPage extends Component {
          
             ],
             categories: categoriesTemplate,
-            selectedLocation: {}
+            selectedLocation: {
+                name:"",
+                address:"",
+                administrator:""
+            }
 
         }
         // if (Platform.OS === 'android') {
@@ -103,11 +113,13 @@ export default class AdminLocationsPage extends Component {
         try {
             const res = await getLocationByID(item.id);
             this.setState({
-                selectedLocation: res,
-                name: res.name,
-                location: res.address,
-                admin: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                selectedLocation: {
+                    name: res.name,
+                    address: res.address,
+                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                }
             })
+            //console.log(this.state.selectedLocation)
         } catch (e){
             alert("Could not retrieve location information")
         }
@@ -159,13 +171,14 @@ export default class AdminLocationsPage extends Component {
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 
-                    categories = {this.state.categories} 
+                    categories = {displayCategories} 
+                    fields = {this.state.categories}
                     information = {this.state.selectedLocation}
+                    canEdit = {true}
                     content = "Location" 
                     title = "Location Information" 
                     visible = {this.state.isModalVisible} 
-                    canEdit = {true}
-                    callback = {this.closeModal}/>
+                    callback = {this.closeModal}/> 
                 <AddEditModal 
                     fields = {this.state.categories}   //might be able to use keys from information instead
                     isAdd = {true}
