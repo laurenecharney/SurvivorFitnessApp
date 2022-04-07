@@ -25,7 +25,7 @@ export const AppButton = ({ onPress, title }) => (
 
 
 
-export const DisplayModal = ({categories, visible, callback, title, information, canEdit}) => {
+export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
 
     console.log(information)
@@ -78,7 +78,7 @@ export const DisplayModal = ({categories, visible, callback, title, information,
            
             </View>
             <AddEditModal 
-                categories = {categories}
+                fields = {fields}
                 information = {information}
                 isAdd = {false} 
                 title = {"Edit " + title}

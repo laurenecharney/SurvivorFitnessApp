@@ -133,6 +133,8 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
                         {fields.map(field => {
+                            // <Text>field.</Text>
+                            // return <View key={field.key}/>
                             
                             if (field.input == "picker") {
                                 console.log("field options: ", field.options)
@@ -161,14 +163,14 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                         option1={field.options[0]}
                                         option2={field.options[1]}
                                         callback={val => saveInput(field.key, val)}
-                                        defaultVal={isAdd ? field.options[0] : information[key]}
+                                        defaultVal={isAdd ? field.options[0] : information[field.key]}
                                     />
                                 )
                             } else if (field.input == "text") {
                                 return (
                                     <EditInformationRow 
                                         title={field.label} 
-                                        initValue={isAdd ? "" : information[key]} 
+                                        initValue={isAdd ? "" : information[field.key]} 
                                         key={field.key}
                                         callback={val => saveInput(field.key, val)}
                                     />

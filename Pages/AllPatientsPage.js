@@ -30,7 +30,7 @@ export const showAlert = () =>
     ]
   );
 
-  const categories = {
+  const displayCategories = {
     firstName: "First Name: ",
     lastName: "Last Name: ",
     phoneNumber: "Phone Number: ",
@@ -47,9 +47,22 @@ export const showAlert = () =>
     dieticianOffice: "Dietitian Office: ",
     //startDate: "Start Date: ",
     goals: "Goal(s): ",
-
 };
 
+const templateCategories = [
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
+    {key: "age",                input: "text",      label: "Age: ",                         options: []},
+    {key: "email",              input: "text",      label: "Email: ",                       options: []},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
+    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
+    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+]
 
 export default class AllPatientsPage extends Component {
   state = {
@@ -80,6 +93,8 @@ export default class AllPatientsPage extends Component {
       currentRole: "",
       specialistType: "",
       userType: "",
+      categories: templateCategories,
+
     };
   }
 
@@ -135,6 +150,7 @@ export default class AllPatientsPage extends Component {
   }
 
   openModal = async (participant) =>{
+    // console.lo
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant
@@ -173,7 +189,8 @@ export default class AllPatientsPage extends Component {
             showLocations={this.state.currentRole === "SUPER_ADMIN"}
         />      
         <DisplayModal 
-            categories = {categories} 
+            categories = {displayCategories} 
+            fields = {this.state.categories}
             information = {this.state.selectedParticipant}
             canEdit = {false}
             content = "Participants" 
