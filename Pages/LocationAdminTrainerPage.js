@@ -92,7 +92,6 @@ export default class LocationAdminTrainerPage extends Component {
       
     }
 
-    console.log(rawSpecialists, "rawSpecialists")
     return rawSpecialists
 }
 
@@ -176,7 +175,6 @@ export default class LocationAdminTrainerPage extends Component {
   }
 
   uploadUser = async newInformation => {
-    console.log("newInfo:", newInformation);
     if((newInformation.value != "") && 
         (newInformation.phoneNumber != "") && 
         (newInformation.email != "")) {
@@ -195,7 +193,6 @@ export default class LocationAdminTrainerPage extends Component {
           },
         ]
       }
-      console.log("user about to be APIed", user);
       await createUser(user);
       this.fetchInformation();
     }

@@ -85,15 +85,9 @@ export default class LocationAdminClientPage extends Component {
   }
 
   isDietitian = async () =>{
-    console.log("params: ", this.props.route.params)
     const specialistType = JSON.parse(await getSpecialistType())
     const isDietitian = specialistType == "DIETITIAN"
-    console.log("isDietitian: ", isDietitian)
     return isDietitian;
-    // return (
-    //   this.props.route.params &&
-    //   this.props.route.params.userType === "DIETITIAN"
-    // );
   }
 
   assignValue = (item) => {
@@ -128,16 +122,12 @@ export default class LocationAdminClientPage extends Component {
   getParticipantsByLocationList = async (locationIds, locationType) => {
       let rawParticipants = [];
 
-      console.log("locationType: ", locationType)
-
       for (let i = 0; i < locationIds.length; i++) {
 
         // for each location id, get participants at that location, add to a list
         let res = await getParticipants(locationType, locationIds[i]);
-        console.log(res, "locationAdminClient res")
         rawParticipants.push(...res);
       }
-      console.log(rawParticipants, "rawParticipants^")
       return rawParticipants 
   }
 
@@ -167,7 +157,6 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: true,
       selectedParticipant: participant
     });
-    console.log("participant: ", participant)
     try {
       const res = await getParticipantByID(participant.id);
       this.setState({
