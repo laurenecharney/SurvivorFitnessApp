@@ -4,16 +4,26 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getLocations, getLocationByID} from '../APIServices/APIUtilities';
+import { getLocations, 
+         getLocationByID, 
+         createLocation,
+         getAllSpecialists } from '../APIServices/APIUtilities';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
-const categories = {
-    name: "Name: ",
+const categoriesTemplate = [
+    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"]},
+    {key: "name", input: "text", label: "Location Name: ", options: []},
+    {key: "address", input: "text", label: "Address: ", options: []},
+    {key: "administrator", input: "picker", label: "Administrator: ", options: []} //options populate by getUsers on mount
+];
+
+const displayCategories = {
+    name: "Location Name: ",
     address: "Address: ",
-    admin: "Administrator: ",
+    administrator: "Administrator: ",
 };
 
 export default class AdminLocationsPage extends Component {
@@ -30,19 +40,33 @@ export default class AdminLocationsPage extends Component {
             isGymModalVisible: false,
             isDieticianModalVisible: false,
             name:"",
+            address:"",
             location:"",
             admin:"",
             calls: [
          
             ],
-            selectedLocation: {}
+            categories: categoriesTemplate,
+            selectedLocation: {
+                name:"",
+                address:"",
+                administrator:""
+            }
+
         }
         // if (Platform.OS === 'android') {
         //     UIManager.setLayoutAnimationEnabledExperimental(true);
         // }
     }
+
     async componentDidMount(){
         await this.refreshLocations();
+        let tempCategories = JSON.parse(JSON.stringify(this.state.categories))
+        for (field of tempCategories) {
+            if(field.key == "administrator") field.options = await this.getUsers();
+        }
+        this.setState({categories: tempCategories})
+
     }
 
     async refreshLocations(){
@@ -60,10 +84,25 @@ export default class AdminLocationsPage extends Component {
                     return newI;
                 }
            )});
-            } catch (e){
-                console.log(e);
-                alert("Could not fetch locations.");
-            }
+        } catch (e){
+            console.log(e);
+            alert("Could not fetch locations.");
+        }
+    }
+
+    async getUsers() {
+        let res;
+        try {
+            res = await getAllSpecialists();
+        } catch (e){
+            alert("Could not retrieve list of specialists")
+        }
+        let users = res.specialists.map(item => ({
+            label: item.firstName + " " + item.lastName,
+            value: item.id,
+            key: item.id,
+        }))
+        return users;
     }
 
     openModal = async (item) =>{
@@ -74,11 +113,13 @@ export default class AdminLocationsPage extends Component {
         try {
             const res = await getLocationByID(item.id);
             this.setState({
-                selectedLocation: res,
-                name: res.name,
-                location: res.address,
-                admin: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                selectedLocation: {
+                    name: res.name,
+                    address: res.address,
+                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                }
             })
+            //console.log(this.state.selectedLocation)
         } catch (e){
             alert("Could not retrieve location information")
         }
@@ -103,6 +144,18 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
+    generateNewLocation = async (locInfo) => {
+        //preprocessing of input data. currently reorders fields
+        let loc = {
+            address: locInfo.address,
+            administrator: {id: locInfo.administrator},
+            name: locInfo.name,
+            type: locInfo.type=="Gym" ? "TRAINER_GYM" : "DIETICIAN_OFFICE",
+        };
+        await createLocation(loc);
+        await this.refreshLocations();
+    }
+
     render() {
         return(
             <View style={styles.container} >
@@ -118,20 +171,25 @@ export default class AdminLocationsPage extends Component {
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 
-                    categories = {categories} 
+                    categories = {displayCategories} 
+                    fields = {this.state.categories}
                     information = {this.state.selectedLocation}
+                    canEdit = {true}
                     content = "Location" 
                     title = "Location Information" 
                     visible = {this.state.isModalVisible} 
-                    canEdit = {true}
-                    callback = {this.closeModal}/>
+                    callback = {this.closeModal}/> 
                 <AddEditModal 
-                    categories = {categories} 
-                    content = ""
+                    fields = {this.state.categories}   //might be able to use keys from information instead
                     isAdd = {true}
-                    title = "Add Locations" 
+                    isLocation = {true}
+                    title = {"Add Location"}
                     visible = {this.state.isAddModalVisible} 
-                    callback = {this.closeAddModal}/>
+                    information = {this.state.selectedLocation} 
+                    callback = {input => {
+                        this.closeAddModal(); 
+                        if(input) this.generateNewLocation(input);}
+                    }/>
             </View>
         );
     }

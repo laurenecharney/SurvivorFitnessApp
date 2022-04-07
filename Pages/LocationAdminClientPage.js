@@ -11,7 +11,7 @@ import { getUser, getCurrentRole } from "../APIServices/deviceStorage";
 import { Heading } from '../Components/Heading';
 import { DisplayModal } from "../Components/ModalComponents/DisplayModal";
 
-const categories = {
+const displayCategories = {
   firstName: "First Name: ",
   lastName: "Last Name: ",
   phoneNumber: "Phone Number: ",
@@ -29,6 +29,21 @@ const categories = {
   //startDate: "Start Date: ",
   goals: "Goal(s): ",
 };
+
+const templateCategories = [
+  {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
+  {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
+  {key: "age",                input: "text",      label: "Age: ",                         options: []},
+  {key: "email",              input: "text",      label: "Email: ",                       options: []},
+  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
+  {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
+  {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
+  {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
+  {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
+  {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
+  {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
+  {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+]
 
 export default class LocationAdminClientPage extends Component {
   state = {
@@ -109,6 +124,7 @@ export default class LocationAdminClientPage extends Component {
       isModalVisible: true,
       selectedParticipant: participant
     });
+    console.log("participant: ", participant)
     try {
       const res = await getParticipantByID(participant.id);
       this.setState({
@@ -141,7 +157,8 @@ export default class LocationAdminClientPage extends Component {
             showDietitian={this.isDietitian()}
             listType="participants"/>
         <DisplayModal 
-            categories = {categories} 
+            categories = {displayCategories} 
+            fields = {templateCategories}
             information = {this.state.selectedParticipant}
             canEdit = {false}
             content = "Participants" 

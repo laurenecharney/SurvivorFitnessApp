@@ -11,25 +11,23 @@ import {
 } from "react-native";
 import TextBoxSingleLine from "../TextBoxSingleLine";
 
-export default class EditInformationRow extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return ( 
-        <View style={{paddingBottom: 10, paddingTop: 10, width:"100%"}}>
-        <Text style={styles.participantInfo} >{this.props.title}</Text>
-        <TextBoxSingleLine updateInputText = {this.props.updateInputText} content = {this.props.value}/>
-        </View>
-    );
-  }
+export default  EditInformationRow = ({title, initValue, updateInputText}) => {
+  return (
+      <View style={{paddingBottom: 20}}>
+        <Text style={styles.participantInfo} >{title}</Text>
+        <TextBoxSingleLine 
+          initValue = {initValue}
+          updateInputText = {value => updateInputText(value)}/>
+      </View>
+  );
 }
+
 const styles = StyleSheet.create({
     participantInfo:{
         fontSize: 15, 
         color: '#AED803', 
-        paddingBottom: 10
+        paddingBottom: 10,
+        fontWeight: "bold",
     },
     child:{
         backgroundColor: 'white',

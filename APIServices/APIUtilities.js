@@ -20,12 +20,7 @@ export async function getMeasurements(participantID, sessionID) {
     }
     ++i;
   }
-
-  //for debugging
-  console.log(ret);
   return ret;
-
-  return {};
 }
 
 export async function createUser(user){
@@ -43,9 +38,58 @@ export async function createUser(user){
   return res;
 }
 
+//change password functionality (response will be success or error)
+export async function changePassword(id, currentPassword, newPassword){
+  const passwordInfo = {
+    "currentPassword": currentPassword,
+    "newPassword": newPassword
+  }
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id + "/change_password", {
+    method: "POST",
+    body: JSON.stringify(passwordInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+  //.then(response => response.json());
+  return res;
+}
+
+export async function resetPassword(_email) {
+  const jwt = await getItem();
+  const url = ENDPOINT + "/api/v1/users/request_password_reset?email=" + _email;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+   // .then(response => response.json());
+  return res;
+}
+
+//gets participants with optional query params passed in
+export async function exportData() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/export-data", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    //.then(res => res.json());
+  return res
+} // ,
+
+
 
 export async function logTrainerSession(curSessionInfo, date) {
-  // console.log("old participantid", curSessionInfo)
   const newSessionInfo = {
     "id": curSessionInfo.id,
     "initialLogDate": date,
@@ -213,6 +257,192 @@ export async function authenticate(_username, _password) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
+
+export async function addParticipant(participantInfo) {
+  let temp = participantInfo;
+  temp["startDate"] = Date.now();
+
+  let _body = {
+    "participant": temp,
+    "numberOfTrainerSessions": 24,
+    "numberOfDietitianSessions": 3,
+    "sessionsIndicesWhenMeasurementsAreTaken": [1, 12, 24],
+    "measurements": [
+      {
+        "name": "Weight",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "name": "BMI",
+        "category": "General Data",
+        "unit": "kg/m^2"
+    },
+    {
+        "name": "Body Fat Percentage",
+        "category": "General Data",
+        "unit": "%"
+    },
+    {
+        "name": "Lean Mass",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "name": "Blood Pressure",
+        "category": "General Data",
+        "unit": "mm Hg"
+    },
+    {
+        "name": "Range of Motion",
+        "category": "General Data",
+        "unit": "degree"
+    },
+    {
+        "name": "Abdominal Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Midaxillary",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Subscapular",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Supraillac",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Tricep",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Abdominal Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Bicep Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Calf Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Hip Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Waist Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Total Inches Lost",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Distance",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Speed",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "HR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "BR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    }
+    ]
+  };
+  
+  console.log(JSON.stringify(_body));
+  console.log(ENDPOINT + "/api/v1/participants");
+  
+
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/participants", {
+    method: "POST",
+    body: JSON.stringify(_body),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
+
+export async function createLocation(locationInfo) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/locations", {
+    method: "POST",
+    body: JSON.stringify(locationInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  console.log(JSON.stringify(res));
+  return res;
+}
+
+export async function getAllSpecialists() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
