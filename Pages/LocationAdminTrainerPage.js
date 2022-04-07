@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { getTrainers, getDietitians } from "../APIServices/APIUtilities";
+import { getTrainers, getDietitians, createUser} from "../APIServices/APIUtilities";
+import { getUser } from "../APIServices/deviceStorage";
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
@@ -51,6 +52,8 @@ export default class LocationAdminTrainerPage extends Component {
       selectedUser: {},
       specialists: [],
       specialistType: "",
+      categories: defaultCategories,
+      adminLocations: [],
     };
   }
 
@@ -59,8 +62,19 @@ export default class LocationAdminTrainerPage extends Component {
     this.setState({specialistType: specialistTypeRes})
     this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
-  }
 
+    let userLocations = JSON.parse(await getUser()).locations;
+    let temp = userLocations.map(location => ({
+      label: location.name, value: location.id
+    }));
+    this.setState({adminLocations: temp})
+
+    let tempCat = JSON.parse(JSON.stringify(this.state.categories));
+    for (field of tempCat) {
+      if(field.key == "locations") field.options = this.state.adminLocations;
+    }
+    this.setState({categories: tempCat})
+  }
 
   async fetchInformation() {
     try {
@@ -131,11 +145,12 @@ export default class LocationAdminTrainerPage extends Component {
     return returnUserType;
   }
 
-  uploadUser = newInformation => {
+  uploadUser = async newInformation => {
+    console.log("newInfo:", newInformation);
     if((newInformation.value != "") && 
         (newInformation.phoneNumber != "") && 
         (newInformation.email != "")) {
-      user = {
+      let user = {
         user: {
           firstName: newInformation.firstName,
           lastName: newInformation.lastName,
@@ -145,12 +160,14 @@ export default class LocationAdminTrainerPage extends Component {
         },
         locationAssignments: [
           {
-            locationId: newInformation.location,
-            userRoleType: userType
+            locationId: newInformation.locations,
+            userRoleType: this.state.specialistType
           },
         ]
       }
-      createUser(user);
+      console.log("user about to be APIed", user);
+      await createUser(user);
+      this.fetchInformation();
     }
   }
 
@@ -169,7 +186,7 @@ export default class LocationAdminTrainerPage extends Component {
           openModal={item => this.openModal(item)}
           listType={this.state.specialistType}/>   
         <DisplayModal 
-            categories = {categories} 
+            categories = {this.state.categories} 
             information = {this.state.selectedUser}
             canEdit = {true}
             content = "Trainers" 
@@ -177,13 +194,13 @@ export default class LocationAdminTrainerPage extends Component {
             visible = {this.state.isModalVisible} 
             callback = {this.closeModal}/>
         <AddEditModal 
-            categories = {categories} 
+            fields = {this.state.categories} 
             isAdd = {true}
             title = {this.state.specialistType == "DIETITIAN" ? "Add Dietitian" : "Add Trainer"} 
             visible = {this.state.isAddModalVisible} 
             information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
             callback = {info => {
-              this.closeAddModal;
+              this.closeAddModal();
               if(info) this.uploadUser(info);
             }}/>
       </View>
