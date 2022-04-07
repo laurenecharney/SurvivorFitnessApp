@@ -8,13 +8,6 @@ import { getSpecialistType } from '../APIServices/deviceStorage';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
-
-const categories = {
-    value: "Name: ",
-    gym: "Affiliate Location: ",
-    phoneNumber: "Phone Number: ",
-    email: "Email: "
-};
 import ModalHeader from '../Components/ModalComponents/ModalHeader';
 import InformationRow from '../Components/ModalComponents/InformationRow';
 import Icon4 from "react-native-vector-icons/MaterialIcons";
@@ -26,6 +19,20 @@ import {
     deleteUserInfo,
     getCurrentRole
   } from "../APIServices/deviceStorage";
+
+const categoriesTemplate = [
+    {key: "name", input: "text", label: "Name: ", options: []},
+    {key: "gym", input: "text", label: "Location: ", options: []}, //Needs to be picker
+    {key: "phoneNumber", input: "text", label: "Phone Number: ", options: []},
+    {key: "email", input: "text", label: "Administrator: ", options: []} 
+];
+
+const displayCategories = {
+    value: "Name: ",
+    gym: "Affiliate Location: ",
+    phoneNumber: "Phone Number: ",
+    email: "Email: "
+};
 
 export default class AdminDieticianPage extends Component {
     state = {
@@ -39,6 +46,7 @@ export default class AdminDieticianPage extends Component {
             calls: [],
             selectedDietician: {},
             specialistType: "",
+            categories: categoriesTemplate,
         };
     }
 
@@ -63,7 +71,7 @@ export default class AdminDieticianPage extends Component {
                     return newI;
                 }
            )})
-                
+            
            ;
             } catch (e){
                 alert("Could not fetch dietitians.");
@@ -109,13 +117,14 @@ export default class AdminDieticianPage extends Component {
                     listType={this.state.specialistType}
                     showSpecialistLocations={true}/>   
                 <DisplayModal 
-                    categories = {categories} 
+                    categories = {displayCategories} 
+                    fields = {this.state.categories}
                     information = {this.state.selectedDietician}
-                    content = "Dieticians" 
+                    canEdit = {false}
+                    content = "Dietician" 
                     title = "Dietician Information" 
                     visible = {this.state.isModalVisible} 
-                    canEdit = {false}
-                    callback = {this.closeModal}/>
+                    callback = {this.closeModal}/> 
             </View>
         );
     }
