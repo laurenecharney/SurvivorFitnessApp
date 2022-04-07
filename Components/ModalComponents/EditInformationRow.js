@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import TextBoxSingleLine from "../TextBoxSingleLine";
 
-export default  EditInformationRow = ({title, defaultVal, callback}) => {
+export default  EditInformationRow = ({title, initValue, callback}) => {
   return (
       <View style={{paddingBottom: 20}}>
         <Text style={styles.participantInfo} >{title}</Text>
         <TextBoxSingleLine 
-          initValue = {defaultVal}
-          callback = {value => callback(value)}/>
+          initValue = {initValue}
+          updateInputText = {value => updateInputText(value)}/>
       </View>
   );
 }

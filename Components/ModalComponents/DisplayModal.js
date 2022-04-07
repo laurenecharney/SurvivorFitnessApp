@@ -28,7 +28,8 @@ export const AppButton = ({ onPress, title }) => (
 export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
 
-    console.log(information)
+    // console.log(information, "information")
+    console.log()
 
     const openEditModal = () =>{
         set_edit_modal(true)
@@ -69,15 +70,17 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                             }
                             
                             {
-                                Object.keys(categories).map(key => (
-                                    <InformationRow title={categories[key]} value={information[key]} key={key}/>
-                                ))
+                                Object.keys(categories).map(key => {
+                                    // console.log("key: ", key)
+                                    return (<InformationRow title={categories[key]} value={information[key]} key={key}/>)
+                                })
                             }
                         </ScrollView>
                     </View>
            
             </View>
             <AddEditModal 
+                categories = {categories}
                 fields = {fields}
                 information = {information}
                 isAdd = {false} 

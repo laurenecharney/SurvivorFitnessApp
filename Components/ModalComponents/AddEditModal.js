@@ -137,7 +137,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                             // return <View key={field.key}/>
                             
                             if (field.input == "picker") {
-                                console.log("field options: ", field.options)
+                                // console.log("field options: ", field.options)
                                 //console.log(">>>>>>>>>> my picker field's options:")
                                 //console.log(field.options.slice(0, 3));
                                 return (
