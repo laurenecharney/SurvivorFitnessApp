@@ -78,6 +78,7 @@ export default class LocationAdminTrainerPage extends Component {
       if(field.key == "locations") field.options = this.state.adminLocations;
     }
     this.setState({categories: tempCat})
+    console.log(this.state.categories)
   }
 
   // given a list of location ids and a location type (gymId or dietitianOfficeId), returns a participant list

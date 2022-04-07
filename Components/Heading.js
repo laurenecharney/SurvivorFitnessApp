@@ -21,7 +21,7 @@ export const Heading = ({title, displayBackButton, displaySettingsButton, displa
             {displayBackButton && 
             <View style = {styles.row}>
                 <View style = {styles.left}>
-                    <TouchableOpacity style={styles.backButton} onPress={()=>callback()}>
+                    <TouchableOpacity style={styles.backButton} onPress={()=>callback("back")}>
                         <Icon3 name={"keyboard-arrow-left"} size={42} color={'#E4E4E4'}  />
                     </TouchableOpacity>
                 </View>
@@ -55,7 +55,7 @@ export const Heading = ({title, displayBackButton, displaySettingsButton, displa
                     </View>
                     <View style = {styles.right}>
                         <View style={styles.addButtonContainer} >
-                            <TouchableOpacity onPress={()=>callback()}>
+                            <TouchableOpacity onPress={()=>callback("add")}>
                                 <Text style={styles.addButtonText}>+</Text>
                             </TouchableOpacity>
                         </View>

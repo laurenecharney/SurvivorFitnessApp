@@ -212,7 +212,7 @@ export async function getTrainers(_locationId) {
   return res && res.specialists ? res.specialists : [];
 }
 
-//gets all available locations
+//gets all available 
 export async function getLocations() {
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/locations/", {
