@@ -122,7 +122,20 @@ export default class LoginPage extends React.Component {
                 this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
                 
-            } else if (res.user.roles.includes('DIETITIAN')){
+            } 
+            else if(res.user.roles.includes('LOCATION_ADMINISTRATOR')){
+                const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
+                await saveLocationId(res.user.locations[0].id);
+                this.props.navigation.replace("LocationAdminPage", {
+                    screen: res.user.roles.includes("TRAINER") ? "Trainers" : "Dietitians",
+                    params: {
+                      userType: res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN",
+                      locationId: res.user.locations ? res.user.locations[0].id : null
+                    }
+                  });
+                  await saveCurrentRole("LOCATION_ADMINISTRATOR");
+            }
+            else if (res.user.roles.includes('DIETITIAN')){
                 await saveCurrentRole("DIETITIAN");
                 await saveSpecialistType("DIETITIAN");
                 await saveLocationId(res.user.locations[0].id);
@@ -141,7 +154,6 @@ export default class LoginPage extends React.Component {
 
             } else {
                 const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
-                
                 await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: "Participants",
@@ -162,7 +174,6 @@ export default class LoginPage extends React.Component {
         } catch (e){
             console.log("Error logging in:\n", e);
         }
-
     }
 
 

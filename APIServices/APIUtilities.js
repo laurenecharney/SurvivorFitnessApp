@@ -92,7 +92,21 @@ export async function exportData() {
   return res
 } // ,
 
-
+//Update profile information
+export async function updateProfile(_user, id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id, {
+    method: "PUT",
+    body: JSON.stringify(_user),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" 
+    }
+  })
+    .then(response => response.json());
+    return res
+}
 
 export async function logTrainerSession(curSessionInfo, date) {
   // console.log("old participantid", curSessionInfo)

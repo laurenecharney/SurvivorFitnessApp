@@ -22,7 +22,7 @@ export function LocationAdminPage() {
   //create function that returns the user type and then set initialRouteName to the output
   return (
     <Tab.Navigator
-      initialRouteName="Participants"
+      initialRouteName= "Participants"
       activeColor="#A0C700"
       inactiveColor="#AFAFAF"
       barStyle={{ backgroundColor: "white" }}
