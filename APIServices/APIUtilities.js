@@ -20,12 +20,7 @@ export async function getMeasurements(participantID, sessionID) {
     }
     ++i;
   }
-
-  //for debugging
-  console.log(ret);
   return ret;
-
-  return {};
 }
 
 export async function createUser(user){
@@ -45,7 +40,6 @@ export async function createUser(user){
 
 
 export async function logTrainerSession(curSessionInfo, date) {
-  // console.log("old participantid", curSessionInfo)
   const newSessionInfo = {
     "id": curSessionInfo.id,
     "initialLogDate": date,
@@ -213,6 +207,51 @@ export async function authenticate(_username, _password) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
+
+export async function addParticipant(participantInfo) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/participants", {
+    method: "POST",
+    body: JSON.stringify(participantInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res;
+}
+
+export async function createLocation(locationInfo) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/locations", {
+    method: "POST",
+    body: JSON.stringify(locationInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  console.log(JSON.stringify(res));
+  return res;
+}
+
+export async function getAllSpecialists() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
