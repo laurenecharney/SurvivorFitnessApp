@@ -214,10 +214,151 @@ export async function authenticate(_username, _password) {
 }
 
 export async function addParticipant(participantInfo) {
+  let temp = participantInfo;
+  temp["startDate"] = Date.now();
+
+  let _body = {
+    "participant": temp,
+    "numberOfTrainerSessions": 24,
+    "numberOfDietitianSessions": 3,
+    "sessionsIndicesWhenMeasurementsAreTaken": [1, 12, 24],
+    "measurements": [
+      {
+        "name": "Weight",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "name": "BMI",
+        "category": "General Data",
+        "unit": "kg/m^2"
+    },
+    {
+        "name": "Body Fat Percentage",
+        "category": "General Data",
+        "unit": "%"
+    },
+    {
+        "name": "Lean Mass",
+        "category": "General Data",
+        "unit": "lbs"
+    },
+    {
+        "name": "Blood Pressure",
+        "category": "General Data",
+        "unit": "mm Hg"
+    },
+    {
+        "name": "Range of Motion",
+        "category": "General Data",
+        "unit": "degree"
+    },
+    {
+        "name": "Abdominal Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Skin Fold",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Midaxillary",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Subscapular",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Supraillac",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Tricep",
+        "category": "Skin Fold Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Abdominal Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Bicep Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Calf Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Chest Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Hip Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Thigh Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Waist Girth",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Total Inches Lost",
+        "category": "Girth Measurements",
+        "unit": "unit"
+    },
+    {
+        "name": "Distance",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "Speed",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "HR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    },
+    {
+        "name": "BR",
+        "category": "Treadmill Tests",
+        "unit": "unit"
+    }
+    ]
+  };
+  
+  console.log(JSON.stringify(_body));
+  console.log(ENDPOINT + "/api/v1/participants");
+  
+
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/participants", {
     method: "POST",
-    body: JSON.stringify(participantInfo),
+    body: JSON.stringify(_body),
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,

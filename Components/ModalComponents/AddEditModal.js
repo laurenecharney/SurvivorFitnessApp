@@ -24,37 +24,6 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-
-    // const uploadUser = () => {
-    //     callback();
-    //     if((newInformation.value != "") && (newInformation.phoneNumber != "") && (newInformation.email != "")){
-    //         user = {
-    //             user: {
-    //                 firstName: newInformation.firstName,
-    //                 lastName: newInformation.lastName,
-    //                 email: newInformation.email,
-    //                 phoneNumber: newInformation.phoneNumber,
-    //                 isSuperAdmin: "false"
-    //             },
-    //             locationAssignments: [
-    //                 {
-    //                     locationId: newInformation.location,
-    //                     userRoleType: userType
-    //                 },
-    //             ]
-    //         }
-    //          createUser(user);
-    //     }
-    // }
-
-        // async function getLocation(){
-        //     let userLocations = JSON.parse(await getUser()).locations;
-        //     setLocations(
-        //         userLocations.map((location) => ({
-        //             label: location.name, value: location.id
-        //     })
-        //     ));
-        // }
 export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) => {
     const [isOptionOne, toggleSelection] = useState(defaultVal || option1);
     
@@ -83,8 +52,8 @@ export const LabeledPicker = ({ label, items, callback }) => {
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>
         <RNPickerSelect
-            placeholder={{label: "Select admin...", value: "0", color: '#9ea0a4'}}
-            items={items} //options param not working????
+            placeholder={{label: "Select...", value: "0", color: '#9ea0a4'}}
+            items={items}
             style={{
                 ...pickerSelectStyles,
                 iconContainer: {top: 10, right: 12,},
@@ -133,23 +102,12 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
                         {fields.map(field => {
-                            
                             if (field.input == "picker") {
-                                console.log("field options: ", field.options)
-                                //console.log(">>>>>>>>>> my picker field's options:")
-                                //console.log(field.options.slice(0, 3));
                                 return (
                                     <LabeledPicker
                                         key={field.key}
                                         label = {field.label}
                                         items = {field.options}
-                                            // (() => {
-                                            // let arr = JSON.parse(JSON.stringify(field.options));
-                                            // console.log("my param");
-                                            // console.log(arr.slice(0,4));
-                                            // return arr;
-                                            // })()
-                                        //
                                         callback = {val => saveInput(field.key, val)}
                                     />
                                 )
@@ -180,7 +138,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                 {!isAdd && <RemoveButton/>}
                                 <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
-                                    onPress={()=>{console.log("input when sent:");console.log(input); submit()}}/>
+                                    onPress={submit}/>
                             </View>
                         </View>
                     </ScrollView>
