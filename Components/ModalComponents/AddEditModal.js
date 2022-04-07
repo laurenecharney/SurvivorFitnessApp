@@ -14,11 +14,8 @@ import {
 import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RemoveButton from "./RemoveButton";
-import { createUser } from "../../APIServices/APIUtilities";
-import { getCurrentRole, getUser } from "../../APIServices/deviceStorage";
 import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
-import { getCombinedStyles } from "react-native-paper";
 
 
 export const AppButton = ({ onPress, title }) => (
@@ -27,154 +24,207 @@ export const AppButton = ({ onPress, title }) => (
     </TouchableOpacity>
 );
 
-export const AddEditModal = ({categories, isAdd, title, visible, callback,  information, userType, isChange}) => {
-    const [newInformation, setNewInformation] = useState({information, location : ""});
-    const [adminLocations, setLocations] = useState([]);
-    const [showPicker, setShowPicker] = useState(false);
 
-    const updateInputText = (key, text) => {
-        let updatedState = {...newInformation, [key] : text};
-        setNewInformation(updatedState);
-    }
+    // const uploadUser = () => {
+    //     callback();
+    //     if((newInformation.value != "") && (newInformation.phoneNumber != "") && (newInformation.email != "")){
+    //         user = {
+    //             user: {
+    //                 firstName: newInformation.firstName,
+    //                 lastName: newInformation.lastName,
+    //                 email: newInformation.email,
+    //                 phoneNumber: newInformation.phoneNumber,
+    //                 isSuperAdmin: "false"
+    //             },
+    //             locationAssignments: [
+    //                 {
+    //                     locationId: newInformation.location,
+    //                     userRoleType: userType
+    //                 },
+    //             ]
+    //         }
+    //          createUser(user);
+    //     }
+    // }
 
-    const uploadUser = () => {
-        callback();
-        if((newInformation.value != "") && (newInformation.phoneNumber != "") && (newInformation.email != "")){
-            user = {
-                user: {
-                    firstName: newInformation.firstName,
-                    lastName: newInformation.lastName,
-                    email: newInformation.email,
-                    phoneNumber: newInformation.phoneNumber,
-                    isSuperAdmin: "false"
-                },
-                locationAssignments: [
-                    {
-                        locationId: newInformation.location,
-                        userRoleType: userType
-                    },
-                ]
-            }
-             createUser(user);
-        }
-    }
-    const placeholder = {
-        label: 'Select a location...',
-        value: null,
-        color: '#9EA0A4',
-    };
+        // async function getLocation(){
+        //     let userLocations = JSON.parse(await getUser()).locations;
+        //     setLocations(
+        //         userLocations.map((location) => ({
+        //             label: location.name, value: location.id
+        //     })
+        //     ));
+        // }
+export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) => {
+    const [isOptionOne, toggleSelection] = useState(defaultVal || option1);
+    
+    return(
+        <View style={{marginBottom: 15}}>
+            <Text style={styles.inputFieldLabel}>{label}</Text>
+            <View style={{flexDirection:"row", justifyContent:"center", width: "95%", alignSelf: "center"}}>
+                <TouchableOpacity 
+                    style={[styles.selectableBox, styles.leftSelectableBox, isOptionOne ? styles.selected : styles.unselected]}
+                    onPress={() => {toggleSelection(true); callback(option1);}}>
+                        <Text style={isOptionOne ? styles.selectedText : styles.unselectedText}>{option1}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={[styles.selectableBox, styles.rightSelectableBox, !isOptionOne ? styles.selected : styles.unselected]}
+                    onPress={() => {toggleSelection(false); callback(option2);}}>
+                        <Text style={!isOptionOne ? styles.selectedText : styles.unselectedText}>{option2}</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
+
+export const LabeledPicker = ({ label, items, callback }) => {
+
+    return (
+    <View style={{marginBottom: 15}}>
+        <Text style={styles.inputFieldLabel}>{label}</Text>
+        <RNPickerSelect
+            placeholder={{label: "Select admin...", value: "0", color: '#9ea0a4'}}
+            items={items} //options param not working????
+            style={{
+                ...pickerSelectStyles,
+                iconContainer: {top: 10, right: 12,},
+            }}
+            onValueChange={value => callback(value)}
+            Icon={() => (<Ionicons name="caret-down-outline" size={24} color="gray" />)}
+        />
+    </View>);
+    
+};
+
+export const AddEditModal = ({fields, isAdd, title, visible, callback,  information}) => {
+    const [input, setInput] = useState({});
 
     useEffect(() => {
+        if(!visible) setInput({});
+    }, [visible])
 
-        async function getLocation(){
-            let userLocations = JSON.parse(await getUser()).locations;
-            setLocations(
-                userLocations.map((location) => ({
-                    label: location.name, value: location.id
-            })
-            ));
-        }
+    const saveInput = (field, value) => {
+        let temp = JSON.parse(JSON.stringify(input));
+        temp[field] = value;
+        setInput(temp);
+    }
 
-        getLocation();
-    }, [])
+    const submit = () => {
+        //for testing to make sure all fields are filled out
 
-
-    useEffect(() => {
-        if(adminLocations.length > 0){
-            setShowPicker(true);
-        }
-    }, [adminLocations])
+        callback(input);
+    }
 
     return(
-             <Modal 
-                propagateSwipe={true} 
-                animationIn="slideInUp" 
-                animationOut="slideOutDown" 
-                onBackdropPress={()=>callback()} 
-                onSwipeComplete={()=>callback()} 
-                transparent={true} 
-                visible={visible}
-                >
-                <View style={styles.modalStyle}>
-                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
-                        <Icon name={'close'} color={'#E4E4E4'} size={32}/>
-                    </TouchableOpacity>
-                    <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                            <View style={{paddingBottom:10, width:'100%'}}>
-                                <Text style={styles.modalText} >{title}</Text>
+        <Modal 
+        propagateSwipe={true} 
+        animationIn="slideInUp" 
+        animationOut="slideOutDown" 
+        onBackdropPress={()=>callback()} 
+        onSwipeComplete={()=>callback()} 
+        transparent={true} 
+        visible={visible}
+        >
+            <View style={styles.modalStyle}>
+                <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
+                    <Icon name={'close'} color={'#E4E4E4'} size={32}/>
+                </TouchableOpacity>
+                <View style={{flex: 1, width: '75%', alignSelf: 'center'}}>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <View style={{paddingBottom:20, width:'100%'}}>
+                            <Text style={styles.modalText} >{title}</Text>
+                        </View>
+                        {fields.map(field => {
+                            
+                            if (field.input == "picker") {
+                                console.log("field options: ", field.options)
+                                //console.log(">>>>>>>>>> my picker field's options:")
+                                //console.log(field.options.slice(0, 3));
+                                return (
+                                    <LabeledPicker
+                                        key={field.key}
+                                        label = {field.label}
+                                        items = {field.options}
+                                            // (() => {
+                                            // let arr = JSON.parse(JSON.stringify(field.options));
+                                            // console.log("my param");
+                                            // console.log(arr.slice(0,4));
+                                            // return arr;
+                                            // })()
+                                        //
+                                        callback = {val => saveInput(field.key, val)}
+                                    />
+                                )
+                            } else if (field.input == "toggle") {
+                                return (
+                                    <BinaryToggle
+                                        key={field.key}
+                                        label={field.label}
+                                        option1={field.options[0]}
+                                        option2={field.options[1]}
+                                        callback={val => saveInput(field.key, val)}
+                                        defaultVal={isAdd ? field.options[0] : information[key]}
+                                    />
+                                )
+                            } else if (field.input == "text") {
+                                return (
+                                    <EditInformationRow 
+                                        title={field.label} 
+                                        initValue={isAdd ? "" : information[key]} 
+                                        key={field.key}
+                                        callback={val => saveInput(field.key, val)}
+                                    />
+                                )
+                            } else return (<View />)
+                        })}
+                        <View>
+                            <View style={{marginTop: 20}}>
+                                {!isAdd && <RemoveButton/>}
+                                <AppButton 
+                                    title = {isAdd ? "Add" : "Confirm Edits"}
+                                    onPress={()=>{console.log("input when sent:");console.log(input); submit()}}/>
                             </View>
-                            {isAdd ?
-                                    Object.keys(categories).map(key => (
-                                        <EditInformationRow updateInputText={text => updateInputText(key, text)} title={categories[key]} value="" key={key}/>
-                                    ))
-                                :
-                                (
-                                    Object.keys(categories).map(key => (
-                                        <EditInformationRow title={categories[key]} value={information[key]} key={key}/>
-                                    ))
-                            )}
-                            {showPicker &&
-                            <View>
-                                <Text style={styles.participantInfo} >Location</Text>
-                                <View style={[styles.dropDownContainer]}>
-                                <RNPickerSelect
-                                    placeholder={placeholder}
-                                    items={adminLocations}
-                                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                    }}
-                                    onValueChange={value => updateInputText("location", value)}
-                                    useNativeAndroidPickerStyle={false}
-                                    textInputProps={{ underlineColor: 'yellow' }}
-                                    Icon={() => {
-                                    return <Ionicons name="caret-down-outline" size={24} color="gray" />;
-                                    }}
-                                />
-                                </View>
-                            </View>
-                            }
-                            <View>
-                                {isAdd ?
-                                    <View style={{marginTop: 20}}>
-                                        <AppButton 
-                                            title = {"Add"}
-                                            onPress={()=>uploadUser()}
-                                            />
-                                    </View>
-                                :
-                                !isAdd && !isChange && (
-                                    <View>
-                                        <RemoveButton/>
-                                        <AppButton
-                                            title={"EDIT"}
-                                            //Send to backend with callback
-                                        />
-                                    </View>
-                                )}
-                                {isChange && (
-                                    <AppButton
-                                    title={"EDIT"}
-                                    //Send to backend with callback
-                                />
-                                )}
-                            </View>
-                        </ScrollView>
-                    </View>
+                        </View>
+                    </ScrollView>
                 </View>
-            </Modal>
-        )
-    }
+            </View>
+        </Modal>
+    )
+}
 
 const styles = StyleSheet.create({
-    participantInfo:{
+    selectableBox:{
+        paddingVertical: 15,
+        paddingHorizontal: 12,
+        flex: 1,
+        alignItems: "center",
+    },
+    leftSelectableBox:{
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+    },
+    rightSelectableBox:{
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+    },
+    selected:{
+        backgroundColor:'#AED804',
+    },
+    unselected:{
+        backgroundColor:'#E7E7E7',
+    },
+    selectedText:{
+        color: "#fff",
+        fontWeight: "bold",
+    },
+    unselectedText:{
+        color: "#b8b8b8"
+    },
+    inputFieldLabel:{
         fontSize: 15, 
         color: '#AED803', 
-        textAlign: "left"
+        fontWeight: "bold", 
+        marginBottom: 10,
     },
     modalStyle:{
         flex: 1,
@@ -241,4 +291,4 @@ const pickerSelectStyles = StyleSheet.create({
       color: 'lightgray',
       paddingRight: 30, // to ensure the text is never behind the icon
     },
-  });
+});

@@ -11,12 +11,14 @@ import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
-const categories = {
-  firstName: "First name: ",
-  lastName: "Last name: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: "
-};
+const defaultCategories = [
+  {key: "firstName",          input: "text",      label: "First Name: ",          options: []},
+  {key: "lastName",           input: "text",      label: "Last Name: ",           options: []},
+  {key: "email",              input: "text",      label: "Email: ",               options: []},
+  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: []},
+  {key: "locations",          input: "picker",    label: "Choose Location: ",     options: []},
+];
+
 import { AlphabetList } from "react-native-section-alphabet-list";
 import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import InformationRow from "../Components/ModalComponents/InformationRow";
@@ -129,7 +131,28 @@ export default class LocationAdminTrainerPage extends Component {
     return returnUserType;
   }
 
-  
+  uploadUser = newInformation => {
+    if((newInformation.value != "") && 
+        (newInformation.phoneNumber != "") && 
+        (newInformation.email != "")) {
+      user = {
+        user: {
+          firstName: newInformation.firstName,
+          lastName: newInformation.lastName,
+          email: newInformation.email,
+          phoneNumber: newInformation.phoneNumber,
+          isSuperAdmin: "false"
+        },
+        locationAssignments: [
+          {
+            locationId: newInformation.location,
+            userRoleType: userType
+          },
+        ]
+      }
+      createUser(user);
+    }
+  }
 
   render() {
     return (
@@ -159,8 +182,10 @@ export default class LocationAdminTrainerPage extends Component {
             title = {this.state.specialistType == "DIETITIAN" ? "Add Dietitian" : "Add Trainer"} 
             visible = {this.state.isAddModalVisible} 
             information = {{firstName: "", lastName: "", phoneNumber: "", email: "", }}
-            callback = {this.closeAddModal}
-            userType = {this.state.specialistType}/>
+            callback = {info => {
+              this.closeAddModal;
+              if(info) this.uploadUser(info);
+            }}/>
       </View>
     );
   }
