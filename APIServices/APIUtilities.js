@@ -65,7 +65,7 @@ export async function changePassword(id, currentPassword, newPassword){
 
 export async function resetPassword(_email) {
   const jwt = await getItem();
-  const url = ENDPOINT + "/api/v1/users/reset_password?email=" + _email;
+  const url = ENDPOINT + "/api/v1/users/request_password_reset?email=" + _email;
   const res = await fetch(url, {
     method: "GET",
     headers: {
