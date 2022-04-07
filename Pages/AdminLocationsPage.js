@@ -84,7 +84,6 @@ export default class AdminLocationsPage extends Component {
         let res;
         try {
             res = await getAllSpecialists();
-            console.log("i got the users")
         } catch (e){
             alert("Could not retrieve list of specialists")
         }
@@ -93,9 +92,6 @@ export default class AdminLocationsPage extends Component {
             value: item.id,
             key: item.id,
         }))
-
-        console.log("user: ", users[0])
-
         return users;
     }
 
@@ -144,8 +140,6 @@ export default class AdminLocationsPage extends Component {
             name: locInfo.name,
             type: locInfo.type=="Gym" ? "TRAINER_GYM" : "DIETICIAN_OFFICE",
         };
-        console.log("to be sent to createLocation: ");
-        console.log(JSON.stringify(loc));
         await createLocation(loc);
         await this.refreshLocations();
     }
