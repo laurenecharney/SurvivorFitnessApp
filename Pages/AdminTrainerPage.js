@@ -28,6 +28,20 @@ const displayCategories = {
     email: "Email: "
 };
 
+const profileFields = [
+    {key: "firstName",           input: "text",      label: "First Name: ",                    options: []},
+    {key: "lastName",            input: "text",      label: "Last Name: ",                     options: []},
+    {key: "email",               input: "text",      label: "Email: ",                         options: []},
+    {key: "phoneNumber",         input: "text",      label: "Phone Number: ",                  options: []}
+]
+
+const profileCategories = {
+  firstName: "First Name: ",
+  lastName: "Last Name",
+  email: "Email: ",
+  phoneNumber: "Phone Number: "
+};
+
 
 export default class AdminTrainerPage extends Component {
     state = {
