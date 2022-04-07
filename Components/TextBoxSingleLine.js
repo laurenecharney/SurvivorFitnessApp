@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 
-const TextBoxSingleLine = ({initValue, callback}) => {
+const TextBoxSingleLine = ({initValue, updateInputText}) => {
   const [value, changeValue] = useState(initValue || "");
 
   return (
@@ -16,7 +16,7 @@ const TextBoxSingleLine = ({initValue, callback}) => {
       alignSelf:"center" }}
       value={value}
       onChangeText={text => {
-        changeValue(text); callback(text);
+        changeValue(text); updateInputText(text);
       }}
       defaultValue={initValue}
     />

@@ -8,16 +8,23 @@ import { getSpecialistType } from '../APIServices/deviceStorage';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
+import ModalHeader from '../Components/ModalComponents/ModalHeader';
+import InformationRow from '../Components/ModalComponents/InformationRow';
+import Icon4 from "react-native-vector-icons/MaterialIcons";
 
-const categories = {
+const categoriesTemplate = [
+    {key: "name", input: "text", label: "Name: ", options: []},
+    {key: "gym", input: "text", label: "Location: ", options: []}, //Needs to be picker
+    {key: "phoneNumber", input: "text", label: "Phone Number: ", options: []},
+    {key: "email", input: "text", label: "Administrator: ", options: []} 
+];
+
+const displayCategories = {
     value: "Name: ",
     gym: "Affiliate Location: ",
     phoneNumber: "Phone Number: ",
     email: "Email: "
 };
-import ModalHeader from '../Components/ModalComponents/ModalHeader';
-import InformationRow from '../Components/ModalComponents/InformationRow';
-import Icon4 from "react-native-vector-icons/MaterialIcons";
 
 
 export default class AdminTrainerPage extends Component {
@@ -33,6 +40,7 @@ export default class AdminTrainerPage extends Component {
             ],
             selectedTrainer: [],
             specialistType: "",
+            categories: categoriesTemplate,
         };
     }
 
@@ -102,14 +110,15 @@ export default class AdminTrainerPage extends Component {
                     openModal={item => this.openModal(item)}
                     listType={this.state.specialistType}
                     showSpecialistLocations={true}/> 
-                <DisplayModal 
-                    categories = {categories} 
+               <DisplayModal 
+                    categories = {displayCategories} 
+                    fields = {this.state.categories}
                     information = {this.state.selectedTrainer}
-                    content = "Trainers" 
+                    canEdit = {false}
+                    content = "Trainer" 
                     title = "Trainer Information" 
                     visible = {this.state.isModalVisible} 
-                    canEdit = {false}
-                    callback = {this.closeModal}/>
+                    callback = {this.closeModal}/> 
             </View>
         );
     }

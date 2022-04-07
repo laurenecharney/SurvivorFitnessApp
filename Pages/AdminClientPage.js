@@ -9,6 +9,25 @@ import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
+const displayCategories = {
+    firstName: "First Name: ",
+    lastName: "Last Name: ",
+    phoneNumber: "Phone Number: ",
+    email: "Email: ",
+    //age: "Age: ",
+    typeOfCancer: "Type of Cancer: ",
+    treatmentFacility: "Treatment Facility: ",
+    surgeries: "Surgeries: ",
+    formsOfTreatment: "Forms of Treatment: ",
+    physicianNotes: "Physician Notes: ",
+    trainer: "Trainer: ",
+    gym: "Gym: ",
+    nutritionist: "Dietitian: ",
+    dieticianOffice: "Dietitian Office: ",
+    //startDate: "Start Date: ",
+    goals: "Goal(s): ",
+};
+
 const defaultCategories = [
     {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
     {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
@@ -42,6 +61,7 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             isEditModalVisible: false,
+            // categories: displayCategories,
             calls: [],
             selectedParticipant: {},
             categories: defaultCategories,
@@ -189,13 +209,15 @@ export default class AdminClientPage extends Component {
                     showDietitian={true}
                     listType="participants"/>   
                 <DisplayModal 
-                    categories = {this.state.categories} //NEEDS TO BE THIS.STATE.CATEGORIES
+                    // categories = {this.state.categories} //NEEDS TO BE THIS.STATE.CATEGORIES
+                    categories = {displayCategories} 
+                    fields = {this.state.categories}
                     information = {this.state.selectedParticipant}
                     canEdit = {true}
                     content = "Participants" 
                     title = "Participant Information" 
                     visible = {this.state.isModalVisible} 
-                    callback = {this.closeModal}/>
+                    callback = {this.closeModal}/>   
                 <AddEditModal 
                     fields = {this.state.categories} 
                     isAdd = {true}

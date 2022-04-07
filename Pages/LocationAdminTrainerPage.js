@@ -20,6 +20,15 @@ const defaultCategories = [
   {key: "locations",          input: "picker",    label: "Choose Location: ",     options: []},
 ];
 
+const displayCategories = {
+  firstName: "First name: ",
+  lastName: "Last name: ",
+  phoneNumber: "Phone Number: ",
+  email: "Email: "
+};
+
+
+
 import { AlphabetList } from "react-native-section-alphabet-list";
 import ModalHeader from "../Components/ModalComponents/ModalHeader";
 import InformationRow from "../Components/ModalComponents/InformationRow";
@@ -186,7 +195,8 @@ export default class LocationAdminTrainerPage extends Component {
           openModal={item => this.openModal(item)}
           listType={this.state.specialistType}/>   
         <DisplayModal 
-            categories = {this.state.categories} 
+            categories = {displayCategories} 
+            fields = {this.state.categories}
             information = {this.state.selectedUser}
             canEdit = {true}
             content = "Trainers" 
