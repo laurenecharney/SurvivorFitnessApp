@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  Alert
 } from "react-native";
 import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -65,7 +66,7 @@ export const LabeledPicker = ({ label, items, callback }) => {
     
 };
 
-export const AddEditModal = ({fields, isAdd, title, visible, callback,  information}) => {
+export const AddEditModal = ({fields, isAdd, title, visible, callback,  information, isChange, changeInformation}) => {
     const [input, setInput] = useState({});
 
     useEffect(() => {
@@ -83,6 +84,22 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
 
         callback(input);
     }
+
+    //Confirm User Wishes to signout
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+    "Confirm",
+    "You will not be able to undo this action",
+    [
+        {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+        },
+        { text: "Confirm", onPress: () => changeInformation(input) }
+    ]
+    
+    );
 
     return(
         <Modal 
@@ -135,10 +152,25 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                         })}
                         <View>
                             <View style={{marginTop: 20}}>
-                                {!isAdd && <RemoveButton/>}
-                                <AppButton 
+                                {!isAdd && !isChange && <RemoveButton/>}
+                                {!isChange && <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
-                                    onPress={submit}/>
+                                    onPress={submit}/> }
+                                    {/* !isAdd && !isChange && (
+                                    <View>
+                                        <RemoveButton/>
+                                        <AppButton
+                                            title={"EDIT"}
+                                            //Send to backend with callback
+                                        />
+                                    </View>
+                                )} */}
+                                     {isChange && (
+                                    <AppButton
+                                    title={"Confirm"}
+                                    onPress={createTwoButtonAlert}
+                                />
+                                )}
                             </View>
                         </View>
                     </ScrollView>

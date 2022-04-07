@@ -38,6 +38,56 @@ export async function createUser(user){
   return res;
 }
 
+//change password functionality (response will be success or error)
+export async function changePassword(id, currentPassword, newPassword){
+  const passwordInfo = {
+    "currentPassword": currentPassword,
+    "newPassword": newPassword
+  }
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id + "/change_password", {
+    method: "POST",
+    body: JSON.stringify(passwordInfo),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+  //.then(response => response.json());
+  return res;
+}
+
+export async function resetPassword(_email) {
+  const jwt = await getItem();
+  const url = ENDPOINT + "/api/v1/users/request_password_reset?email=" + _email;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+   // .then(response => response.json());
+  return res;
+}
+
+//gets participants with optional query params passed in
+export async function exportData() {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/export-data", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    //.then(res => res.json());
+  return res
+} // ,
+
+
 
 export async function logTrainerSession(curSessionInfo, date) {
   const newSessionInfo = {

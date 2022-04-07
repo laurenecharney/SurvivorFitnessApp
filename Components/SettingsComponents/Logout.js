@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
@@ -16,11 +17,27 @@ import Icon3 from "react-native-vector-icons/MaterialIcons";
 
 
 export const Logout = ({callback}) => {
+
+      //Confirm User Wishes to signout
+      const createTwoButtonAlert = () =>
+      Alert.alert(
+      "Confirm Logout",
+      "You will not be able to undo this action",
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "Logout", onPress: () => callback() }
+      ]
+      );
+
     return(
         <View style={{ alignItems: "center", paddingTop:100,paddingBottom:300 }}>
             <TouchableOpacity
               style={styles.loginBtn}
-              onPress={()=>callback()}>
+              onPress={createTwoButtonAlert}>
               <Text style={styles.loginText}>Log Out</Text>
             </TouchableOpacity>
           </View>
