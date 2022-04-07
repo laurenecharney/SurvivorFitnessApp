@@ -5,12 +5,14 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { getTrainers, getDietitians, createUser} from "../APIServices/APIUtilities";
+import { getTrainers, getDietitians, createUser, getSpecialists} from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
+// import { getTrainers, getDietitians, getSpecialists } from "../APIServices/APIUtilities";
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
+import { getLocationIds } from "../APIServices/deviceStorage";
 
 const defaultCategories = [
   {key: "firstName",          input: "text",      label: "First Name: ",          options: []},
@@ -27,13 +29,6 @@ const displayCategories = {
   email: "Email: "
 };
 
-
-
-import { AlphabetList } from "react-native-section-alphabet-list";
-import ModalHeader from "../Components/ModalComponents/ModalHeader";
-import InformationRow from "../Components/ModalComponents/InformationRow";
-import EditInformationRow from '../Components/ModalComponents/EditInformationRow';
-import RemoveButton from '../Components/ModalComponents/RemoveButton';
 import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 
 export const AppButton = ({ onPress, title }) => (
@@ -85,17 +80,38 @@ export default class LocationAdminTrainerPage extends Component {
     this.setState({categories: tempCat})
   }
 
+  // given a list of location ids and a location type (gymId or dietitianOfficeId), returns a participant list
+  getSpecialistsByLocationList = async (locationIds, specialistTypeParam) => {
+    let rawSpecialists = [];
+
+    for (let i = 0; i < 1; i++) {
+
+      // for each location id, get participants at that location, add to a list
+      let res = await getSpecialists(locationIds[i], specialistTypeParam);
+      rawSpecialists.push(...res);
+      
+    }
+
+    return rawSpecialists
+}
+
+
   async fetchInformation() {
     try {
-      const locationId = await getLocationId();
+      const locationIds = await getLocationIds();
+      console.log("locationIds: ", locationIds);
+      let specialistUrlParam = "";
+
       let rawTrainerInfo = {}
       if (this.state.specialistType === "DIETITIAN") {
-        rawTrainerInfo = await getDietitians(locationId)
+        specialistUrlParam = "dietitians"
       } else if (this.state.specialistType === "TRAINER") {
-        rawTrainerInfo = await getTrainers(locationId)
+        specialistUrlParam = "trainers"
       } else {
         rawTrainerInfo = "specialistType not set";  
       }
+      rawTrainerInfo = await this.getSpecialistsByLocationList(locationIds, specialistUrlParam)
+
       this.setState({
         specialists: rawTrainerInfo.map(rawTrainer => {
           let formattedTrainer = JSON.parse(JSON.stringify(rawTrainer));
@@ -110,6 +126,10 @@ export default class LocationAdminTrainerPage extends Component {
       console.log(e);
       alert("Could not fetch data.");
     }
+  }
+
+  getDummyLocationIds() {
+    
   }
 
   openModal = item => {
@@ -155,7 +175,6 @@ export default class LocationAdminTrainerPage extends Component {
   }
 
   uploadUser = async newInformation => {
-    console.log("newInfo:", newInformation);
     if((newInformation.value != "") && 
         (newInformation.phoneNumber != "") && 
         (newInformation.email != "")) {
@@ -174,7 +193,6 @@ export default class LocationAdminTrainerPage extends Component {
           },
         ]
       }
-      console.log("user about to be APIed", user);
       await createUser(user);
       this.fetchInformation();
     }

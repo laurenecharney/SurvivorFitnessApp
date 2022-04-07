@@ -159,7 +159,7 @@ export async function getParticipants(paramName, paramValue) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(res => res.json());
@@ -174,7 +174,7 @@ export async function getParticipantByID(id) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
@@ -205,7 +205,7 @@ export async function getTrainers(_locationId) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
@@ -220,10 +220,9 @@ export async function getLocations() {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   }).then(response => response.json());
-  // console.log(res);
   return res && res.locations ? res.locations : [];
 }
 
@@ -235,11 +234,26 @@ export async function getLocationByID(id) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   }).then(response => response.json());
-  // console.log(res);
   return res && res.location ? res.location : [];
+}
+
+export async function getSpecialists(_locationId, _specialistType) {
+  const jwt = await getItem();
+  const query = _locationId ? "?locationId=" + _locationId : "";
+  const url = ENDPOINT + "/api/v1/" + _specialistType + query;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res.specialists || {};
 }
 
 //gets dietitians
@@ -252,7 +266,7 @@ export async function getDietitians(_locationId) {
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + jwt,
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
@@ -270,7 +284,7 @@ export async function authenticate(_username, _password) {
     body: JSON.stringify(_body),
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json" // I added this line
+      "Content-Type": "application/json"
     }
   })
     .then(response => response.json());
@@ -414,10 +428,6 @@ export async function addParticipant(participantInfo) {
     }
     ]
   };
-  
-  console.log(JSON.stringify(_body));
-  console.log(ENDPOINT + "/api/v1/participants");
-  
 
   const jwt = await getItem();
   const res = await fetch(ENDPOINT + "/api/v1/participants", {
@@ -445,7 +455,6 @@ export async function createLocation(locationInfo) {
     }
   })
     .then(response => response.json());
-  console.log(JSON.stringify(res));
   return res;
 }
 

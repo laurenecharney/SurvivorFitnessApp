@@ -59,29 +59,14 @@ export async function getSpecialistType(){
   }
 }
 
-export async function saveLocationId(id){
-  try {
-    await AsyncStorage.setItem("locationId", JSON.stringify(id));
-  } catch (error){
-    console.log("AsyncStorage Error in saveLocationId: " + error.message);
-  }
-}
-
-export async function deleteLocationdId(){
-  try {
-    await AsyncStorage.removeItem("locationId");
-  } catch (error){
-    console.log("AsyncStorage Error in deleteLocationId: " + error.message);
-  }
-}
-
-export async function getLocationId(){
-  try {
-    const res = await AsyncStorage.getItem("locationId");
-    return res;
-  } catch (error){
-    console.log("AsyncStorage Error in getLocationId: " + error.message);
-  }
+// extract location ids from user info stored in device storage,
+export async function getLocationIds() {
+  let locationObjects = JSON.parse(await getUser()).locations;
+  let locationIds = locationObjects.map(location => {
+    return location.id;
+  })
+  console.log("locationIds: ", locationIds)
+  return locationIds
 }
 
 export async function saveCurrentRole(newRole){
