@@ -120,8 +120,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
         propagateSwipe={true} 
         animationIn="slideInUp" 
         animationOut="slideOutDown" 
-        onBackdropPress={()=>callback()} 
-        onSwipeComplete={()=>callback()} 
         transparent={true} 
         visible={visible}
         >
