@@ -68,7 +68,6 @@ export default class SettingsPage extends React.Component {
         userType: user.roles.includes("TRAINER")
           ? "TRAINER"
           : "DIETITIAN",
-        locationId: 28//user.locations ? user.locations[0].id : null
       }
     });
     await saveCurrentRole("LOCATION_ADMINISTRATOR");
@@ -87,12 +86,12 @@ export default class SettingsPage extends React.Component {
 
   async switchToTrainerAccount(){
     await saveCurrentRole("TRAINER");
-    this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId:28}});
+    this.props.navigation.replace("AllPatientsPage", {participantsParam: {trainerUserId: this.state.user.id}});
   }
 
   async switchToDieticianAccount(){
     await saveCurrentRole("DIETITIAN");
-    this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:31}});
+    this.props.navigation.replace("AllPatientsPage", {participantsParam: {dietitianUserId:  this.state.user.id}});
   }
 
   goBack() {

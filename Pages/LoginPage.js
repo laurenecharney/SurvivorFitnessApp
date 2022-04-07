@@ -4,7 +4,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native'
 import {authenticate, resetPassword} from '../APIServices/APIUtilities';
-import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole, saveSpecialistType, saveLocationId} from '../APIServices/deviceStorage';
+import {saveItem, saveUserInfo, saveCurrentRole, getUser, getCurrentRole, saveSpecialistType} from '../APIServices/deviceStorage';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 
 const credentials = {
@@ -117,15 +117,21 @@ export default class LoginPage extends React.Component {
         const res = await authenticate(this.state.email, this.state.password);
         if (res && res.jwt && res.user){
             await Promise.all[(saveItem("id_token", res.jwt), saveUserInfo(res.user))];
-            // console.log("user: ", res.user, "\n^user")
+
             if (res.user.roles.includes('SUPER_ADMIN')){
                 this.props.navigation.replace('SuperAdminPage')
                 await saveCurrentRole('SUPER_ADMIN');
                 
             } 
             else if(res.user.roles.includes('LOCATION_ADMINISTRATOR')){
+                if (res.user.roles.includes('TRAINER')){
+                    await saveSpecialistType("TRAINER");
+                    console.log("trainer")
+                } else {
+                    await saveSpecialistType("DIETITIAN");
+                }
+                console.log("is trainer?: ", res.user.roles.includes("TRAINER"))
                 const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
-                await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: res.user.roles.includes("TRAINER") ? "Trainers" : "Dietitians",
                     params: {
@@ -138,7 +144,6 @@ export default class LoginPage extends React.Component {
             else if (res.user.roles.includes('DIETITIAN')){
                 await saveCurrentRole("DIETITIAN");
                 await saveSpecialistType("DIETITIAN");
-                await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {dietitianUserId: res.user.id}
                 });
@@ -146,7 +151,6 @@ export default class LoginPage extends React.Component {
             } else if (res.user.roles.includes('TRAINER')) {
                 await saveCurrentRole("TRAINER");
                 await saveSpecialistType("TRAINER");
-                await saveLocationId(res.user.locations[0].id);
                 const role = await getCurrentRole();
                 this.props.navigation.replace('AllPatientsPage', {
                     participantsParam: {trainerUserId: res.user.id}
@@ -154,7 +158,6 @@ export default class LoginPage extends React.Component {
 
             } else {
                 const role = res.user.roles.includes("TRAINER") ? "TRAINER" : "DIETITIAN"
-                await saveLocationId(res.user.locations[0].id);
                 this.props.navigation.replace("LocationAdminPage", {
                     screen: "Participants",
                     params: {

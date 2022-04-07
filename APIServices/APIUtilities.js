@@ -154,6 +154,8 @@ export async function getParticipants(paramName, paramValue) {
   const query =
     paramName && paramValue ? "?" + paramName + "=" + paramValue : "";
 
+    console.log(ENDPOINT + "/api/v1/participants" + query)
+
   const res = await fetch(ENDPOINT + "/api/v1/participants" + query, {
     method: "GET",
     headers: {
@@ -240,6 +242,23 @@ export async function getLocationByID(id) {
   }).then(response => response.json());
   // console.log(res);
   return res && res.location ? res.location : [];
+}
+
+export async function getSpecialists(_locationId, _specialistType) {
+  const jwt = await getItem();
+  const query = _locationId ? "?locationId=" + _locationId : "";
+  const url = ENDPOINT + "/api/v1/" + _specialistType + query;
+  console.log("url", url);
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" // I added this line
+    }
+  })
+    .then(response => response.json());
+  return res.specialists || {};
 }
 
 //gets dietitians
