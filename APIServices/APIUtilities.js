@@ -181,6 +181,21 @@ export async function getParticipantByID(id) {
   return res.participant;
 }
 
+export async function updateParticipant(__participant, id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id, {
+    method: "PUT",
+    body: JSON.stringify(__participant),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res.session;
+}
+
 export async function getParticipantSessions(id) {
   const jwt = await getItem();
   
@@ -224,6 +239,22 @@ export async function getLocations() {
     }
   }).then(response => response.json());
   return res && res.locations ? res.locations : [];
+}
+
+//Update profile information
+export async function updateLocation(_location, id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/locations/" + id, {
+    method: "PUT",
+    body: JSON.stringify(_location),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" 
+    }
+  })
+    .then(response => response.json());
+    return res
 }
 
 //retrieve specific location info

@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getParticipants, getParticipantByID, addParticipant, getLocations} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant} from '../APIServices/APIUtilities';
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
@@ -14,7 +14,7 @@ const displayCategories = {
     lastName: "Last Name: ",
     phoneNumber: "Phone Number: ",
     email: "Email: ",
-    //age: "Age: ",
+    age: "Age: ",
     typeOfCancer: "Type of Cancer: ",
     treatmentFacility: "Treatment Facility: ",
     surgeries: "Surgeries: ",
@@ -41,11 +41,6 @@ const defaultCategories = [
     {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
     {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
     {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
-    // {key: "numberOfTrainerSessions", input: "text", label: "Number of Trainer Sessions: ", options: []},
-    // {key: "numberOfDietitianSessions", input: "text", label: "Number of Dietitian Sessions: ", options: []},
-    // startDate -- datePicker??
-    // sessions where measurements are taken
-    // measurements -- these two need to be multiselects
 ];
 
 
@@ -57,40 +52,48 @@ export default class AdminClientPage extends Component {
 
     constructor(props) {
         super(props);
+        this.callbackAction = this.callbackAction.bind(this)
         this.state = {
             isModalVisible: false,
             isAddModalVisible: false,
             isEditModalVisible: false,
-            // categories: displayCategories,
             calls: [],
             selectedParticipant: {},
             categories: defaultCategories,
-            // newParticipant: [
-            //     {id: "firstname", val: "",},
-            //     {id: "lastname", val: "",},
-            //     {id: "age", val: "",},
-            //     {id: "email", val: "",},
-            //     {id: "phoneNumber", val: "",},
-            //     {id: "gym", val: "",},
-            //     {id: "dieticianOffice", val: "",},
-            //     {id: "startDate", val: "",}, //probs want another datepicker
-            //     {id: "goals", val: "",},
-            //     {id: "numberOfTrainings", val: 24,},
-            //     {id: "numberOFAppointments", val: 3}]
-            //a way to implement editing a participant is preloading values on edit modal open,
-            //then changing as the user changes values, then sending to endpoint
+            updateUser:{
+                id: "",
+                firstName: "",
+                lastName: "",
+                age: "",
+                email: "",
+                phoneNumber: "",
+                startDate: "",
+                goals: "",
+                typeOfCancer: "",
+                formsOfTreatment: "",
+                surgeries: "",
+                physicianNotes: "",
+                dietitian: {
+                    
+                },
+                dietitianLocation: {
+                   
+                },
+                trainer: {
+                    
+                },
+                trainerLocation: {
+                    
+                },
+                treatmentProgramStatus: ""
+            },
         }
-        // if (Platform.OS === 'android') {
-        //     UIManager.setLayoutAnimationEnabledExperimental(true);
-        // }
     }
 
     async componentDidMount(){
         await this.refreshParticipants();
-
         try {
             const res = await getLocations();
-            console.log(">>>>LOCATIONS: ", res);
             let gyms = [], dOffices = [];
             for(const loc of res) {
                 if(loc.type == "TRAINER_GYM")
@@ -124,7 +127,6 @@ export default class AdminClientPage extends Component {
                 newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
                 return newI; 
             })})
-        
     } catch (e){
         console.log(e);
         alert("Could not fetch participants data");
@@ -132,14 +134,36 @@ export default class AdminClientPage extends Component {
 }
 
    openModal = async (participant) =>{
+       console.log("Selected Participant", participant)
        this.setState({
            isModalVisible:true,
            selectedParticipant: participant,
+           updateUser: {
+            id: participant.id,
+            firstName: participant.firstName,
+            lastName: participant.lastName,
+            age: participant.age,
+            email: participant.email,
+            phoneNumber: participant.phoneNumber,
+            startDate: participant.startDate,
+            goals: participant.goals,
+            typeOfCancer: participant.typeOfCancer,
+            formsOfTreatment: participant.formsOfTreatment,
+            surgeries: participant.surgeries,
+            physicianNotes: participant.physicianNotes,
+            dietitian: participant.dietitian,
+            dietitianLocation: {
+                id: participant.dietitianLocation.id
+            },
+            trainer: participant.trainer,
+            trainerLocation: {
+                id: participant.trainerLocation.id
+            },
+            treatmentProgramStatus: participant.treatmentProgramStatus
+           }
        });
        try {
         const res = await getParticipantByID(participant.id);
-        this.setState({
-        })
         } catch (e){
             console.log(e);
             alert("Could not fetch participants data");
@@ -164,13 +188,33 @@ export default class AdminClientPage extends Component {
         })
     }
 
-    // setNPVal = (key, value) => {
-    //     let temp = this.state.newParticipant.map(row => 
-    //         ({id: row.id, val: row.id===key ? value : row.val}));
-    //     this.setState({
-    //         newParticipant: temp
-    //     })
-    // }
+    openEditModal = () => {
+        this.setState({
+          isModalVisible: false,
+          isEditModalVisible: true,
+        });
+    };
+    
+    closeEditModal = async () => {
+        this.setState({
+            isEditModalVisible: false
+        });
+    };
+
+    callbackAction(action){
+        if(action == "back"){
+            this.props.navigation.goBack()
+        }
+        else if(action == "add"){
+            this.openAddModal()
+        }
+        else if(action == "close"){
+            this.closeModal()
+        }
+        else if(action == "edit"){
+            this.openEditModal()
+        }
+    }
 
     createNewParticipant = async input => {
         if(input.dietitianLocation) 
@@ -182,13 +226,56 @@ export default class AdminClientPage extends Component {
 
         try{
             let res = await addParticipant(input);
-            console.log("res", JSON.stringify(res));
         } catch(e) {
             console.log(e);
             alert("Could not add new participant");
         }
-        
         await this.refreshParticipants();
+    }
+
+    updateInfo = async (newInformation) => {
+        if(newInformation.age){
+            this.state.updateUser.age = newInformation.age
+        }
+        if(newInformation.dietitianLocation){
+            this.state.updateUser.dietitianLocation = {id: newInformation.dietitianLocation}
+        }
+        if(newInformation.email){
+            this.state.updateUser.email = newInformation.email
+        }
+        if(newInformation.firstName){
+            this.state.updateUser.firstName = newInformation.firstName
+        }
+        if(newInformation.formsOfTreatment){
+            this.state.updateUser.formsOfTreatment = newInformation.formsOfTreatment
+        }
+        if(newInformation.goals){
+            this.state.updateUser.goals = newInformation.goals
+        }
+        if(newInformation.lastName){
+            this.state.updateUser.lastName = newInformation.lastName
+        }
+        if(newInformation.phoneNumber){
+            this.state.updateUser.phoneNumber = newInformation.phoneNumber
+        }
+        if(newInformation.physicianNotes){
+            this.state.updateUser.physicianNotes = newInformation.physicianNotes
+        }
+        if(newInformation.surgeries){
+            this.state.updateUser.surgeries = newInformation.surgeries
+        }
+        if(newInformation.trainerLocation){
+            this.state.updateUser.trainerLocation = {id: newInformation.trainerLocation}
+        }
+        if(newInformation.typeOfCancer){
+            this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
+        }
+        console.log("Client Obj",this.state.updateUser)
+        //console.log("Client ID", this.state.updateUser.id)
+        // const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
+        // console.log("RES", res)
+        // this.state.selectedUser = res
+        // await this.refreshParticipants()
     }
 
     render() {
@@ -209,7 +296,6 @@ export default class AdminClientPage extends Component {
                     showDietitian={true}
                     listType="participants"/>   
                 <DisplayModal 
-                    // categories = {this.state.categories} //NEEDS TO BE THIS.STATE.CATEGORIES
                     categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedParticipant}
@@ -217,7 +303,7 @@ export default class AdminClientPage extends Component {
                     content = "Participants" 
                     title = "Participant Information" 
                     visible = {this.state.isModalVisible} 
-                    callback = {this.closeModal}/>   
+                    callback = {this.callbackAction}/>   
                 <AddEditModal 
                     fields = {this.state.categories} 
                     isAdd = {true}
@@ -228,6 +314,15 @@ export default class AdminClientPage extends Component {
                         this.closeAddModal(); 
                         if(input) this.createNewParticipant(input);}
                     }/>
+                <AddEditModal 
+                    fields = {this.state.categories} 
+                    isAdd = {false}
+                    title = {"Edit Trainer"} 
+                    visible = {this.state.isEditModalVisible} 
+                    information = {this.state.selectedParticipant}
+                    callback = {info => {
+                        if(info) this.updateInfo(info);
+                        this.closeEditModal();}}/>
             </View>
         );
     }

@@ -4,7 +4,7 @@ import { Heading } from "../Components/Heading";
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
 import { changePassword, updateProfile } from "../APIServices/APIUtilities";
-import { getUser,  getCurrentRole } from "../APIServices/deviceStorage";
+import { getUser,  getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import {
   StyleSheet,
   View,
@@ -76,24 +76,45 @@ export default class ProfilePage extends React.Component {
       },
       updateUser:{
         user: {
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          isSuperAdmin: "false"
-        },
-        locationAssignments: [],
+            firstName: "",
+            lastName: "",
+            email: "",
+            id: "",
+            phoneNumber: "",
+            isSuperAdmin: "false"
+            },
+            locationAssignments: [
+            {
+                locationId: "",
+                userRoleType: "TRAINER"
+            },
+            ]
       }
     };
   }
 
   async componentDidMount() {
+    //get user
     const __user = JSON.parse(await getUser());
-    let admin = true
+    let admin = false
+    let role = "TRAINER"
+    console.log(__user)
+    //get admin satus
     if(__user.roles.includes("SUPER_ADMIN")){
       admin = true
     }
-    console.log(__user)
+    else if(__user.roles.includes("DIETICIAN")){
+      role = "DIETICIAN"
+    }
+    
+    //maps locations
+    //get list of GYM locations 
+    let locations = __user.locations
+    let temp = locations.map(location => (
+        {locationId: location.id, 
+         userRoleType: role}
+    ));
+    
     this.setState({
       user: __user,
       userId: __user.id,
@@ -112,9 +133,10 @@ export default class ProfilePage extends React.Component {
           isSuperAdmin: admin,
           id: __user.id
         },
-        locationAssignments: __user.locations
+        locationAssignments: temp
       }
     });
+    console.log(this.state.updateUser)
   }
 
 
@@ -156,12 +178,8 @@ export default class ProfilePage extends React.Component {
   }
 
   changePassword = async (newInformation) => {
-    //console.log(newInformation)
     if((newInformation.currentPassword != "") && (newInformation.newPassword != "") && (newInformation.newPassword == newInformation.confirmPassword)){
       try {
-        console.log("userId: " + this.state.userId)
-        console.log("currentPassword: " + newInformation.currentPassword)
-        console.log("newPassword: " + newInformation.newPassword)
         const res = await changePassword(this.state.userId, newInformation.currentPassword, newInformation.newPassword)
         if(res.status == 403){
           Alert.alert(
@@ -182,7 +200,6 @@ export default class ProfilePage extends React.Component {
             )
           }
           else{
-            console.log(res.status)
             Alert.alert(
               "Unable to Change Password",
               "Unknown reason, try again!",
@@ -218,12 +235,18 @@ export default class ProfilePage extends React.Component {
     if(newInformation.phoneNumber){
       this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
-    console.log(this.state.updateUser)
-    const res = await updateProfile(this.state.updateUser, this.state.userId)
-    this.state.contactInformation.firstName = res.user.firstName,
-    this.state.contactInformation.lastName = res.user.lastName,
-    this.state.contactInformation.email = res.user.email,
-    this.state.contactInformation.phoneNumber = res.user.phoneNumber,
+    try {
+      console.log(this.state.updateUser)
+      const res = await updateProfile(this.state.updateUser, this.state.userId)
+      console.log(res)
+      // this.state.contactInformation.firstName = res.user.firstName,
+      // this.state.contactInformation.lastName = res.user.lastName,
+      // this.state.contactInformation.email = res.user.email,
+      // this.state.contactInformation.phoneNumber = res.user.phoneNumber
+    } catch (error) {
+      console.log(error)
+    }
+    
     this.closeContactModal()
   }
 
