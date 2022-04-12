@@ -181,7 +181,7 @@ export default class AdminTrainerPage extends Component {
         }
         if(newInformation.locations){
             let selectedLocation = await getLocationByID(newInformation.locations);
-            let location = [{locationId:selectedLocation.id, userRoleType:"TRAINER"}]
+            let location = [{locationId:selectedLocation.id, userRoleType:this.state.specialistType}]
             this.state.updateUser.locationAssignments = location
         }
         console.log(this.state.updateUser)
@@ -217,26 +217,44 @@ export default class AdminTrainerPage extends Component {
 
 
     uploadUser = async newInformation => {
-        if((newInformation.value != "") && 
-            (newInformation.phoneNumber != "") && 
-            (newInformation.email != "")) {
-        let user = {
-            user: {
-            firstName: newInformation.firstName,
-            lastName: newInformation.lastName,
-            email: newInformation.email,
-            phoneNumber: newInformation.phoneNumber,
-            isSuperAdmin: "false"
-            },
-            locationAssignments: [
-            {
-                locationId: newInformation.locations,
-                userRoleType: this.state.specialistType
-            },
-            ]
-        }
-        const res = await createUser(user);
-        this.refreshTrainers();
+        if((newInformation.firstName) && (newInformation.lastName) &&
+            (newInformation.phoneNumber) && 
+            (newInformation.email) && (newInformation.locations)) {
+                let user = {
+                    user: {
+                    firstName: newInformation.firstName,
+                    lastName: newInformation.lastName,
+                    email: newInformation.email,
+                    phoneNumber: newInformation.phoneNumber,
+                    isSuperAdmin: "false"
+                    },
+                    locationAssignments: [
+                    {
+                        locationId: newInformation.locations,
+                        userRoleType: this.state.specialistType
+                    },
+                    ]
+                }
+                const res = await createUser(user);
+                console.log("ASSIGNED TRAINER USER", res)
+                this.refreshTrainers();
+            }
+            else if((newInformation.firstName) && (newInformation.lastName) &&
+                (newInformation.phoneNumber) && 
+                (newInformation.email)){
+                    let user = {
+                        user: {
+                        firstName: newInformation.firstName,
+                        lastName: newInformation.lastName,
+                        email: newInformation.email,
+                        phoneNumber: newInformation.phoneNumber,
+                        isSuperAdmin: "false"
+                        },
+                        locationAssignments: []
+                    }
+                    console.log("BLANK USER: ", user)
+                    const res = await createUser(user);
+                    this.refreshTrainers();
         }
     }
 

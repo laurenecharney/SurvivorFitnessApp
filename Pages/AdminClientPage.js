@@ -151,11 +151,11 @@ export default class AdminClientPage extends Component {
             formsOfTreatment: participant.formsOfTreatment,
             surgeries: participant.surgeries,
             physicianNotes: participant.physicianNotes,
-            dietitian: participant.dietitian,
+            dietitian: {id: participant.dietitian.id},
             dietitianLocation: {
                 id: participant.dietitianLocation.id
             },
-            trainer: participant.trainer,
+            trainer: {id: participant.trainer.id},
             trainerLocation: {
                 id: participant.trainerLocation.id
             },
@@ -271,11 +271,11 @@ export default class AdminClientPage extends Component {
             this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
         }
         console.log("Client Obj",this.state.updateUser)
-        //console.log("Client ID", this.state.updateUser.id)
-        // const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
-        // console.log("RES", res)
-        // this.state.selectedUser = res
-        // await this.refreshParticipants()
+        console.log("Client ID", this.state.updateUser.id)
+        const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
+        console.log("RES", res)
+        this.state.selectedUser = res
+        await this.refreshParticipants()
     }
 
     render() {
@@ -317,7 +317,7 @@ export default class AdminClientPage extends Component {
                 <AddEditModal 
                     fields = {this.state.categories} 
                     isAdd = {false}
-                    title = {"Edit Trainer"} 
+                    title = {"Edit Participant"} 
                     visible = {this.state.isEditModalVisible} 
                     information = {this.state.selectedParticipant}
                     callback = {info => {

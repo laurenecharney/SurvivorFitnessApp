@@ -18,7 +18,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const callsString = ' [{"id":1476,"firstName":"Punita","lastName":"Septus","age":33,"email":"Punita.Septus@website.com","phoneNumber":"123 456 7890","startDate":1640116118038,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Punita Septus","key":1476,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"},{"id":1580,"firstName":"Celestino","lastName":"Maureen","age":34,"email":"Celestino.Maureen@website.com","phoneNumber":"123 456 7890","startDate":1640116118039,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Celestino Maureen","key":1580,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"}] ';
 const info = JSON.parse(callsString)
 
-export const ParticipantsList = ({participantsInfo, openModal, showTrainer, showDietitian, showLocations, showSpecialistLocations, listType}) => {
+export const ParticipantsList = ({participantsInfo, openModal, showTrainer, showDietitian, showLocations, isName, showSpecialistLocations, showIcon, listType}) => {
     const navigation = useNavigation();
 
     const TrainerText = ({item}) => {
@@ -44,8 +44,8 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
       let trainer = item.trainer;
       return (
         <View style={styles.locationContainer}>
-        {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"} />}
-        <Text style={styles.gymTxt}>{item.gym}</Text>
+          {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"} />}
+          <Text style={styles.gymTxt}>{item.gym}</Text>
        </View>
       )
     }
@@ -137,18 +137,53 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
                             navigate({item})
                           }}
                       >
-                          <Text style={styles.nameTxt}>{item.value}</Text>
                           {
-                            showTrainer &&
-                            <TrainerText item={item}/>
+                            showIcon &&
+                            <View style={{flexDirection: "row", justifyContent: "center", alignItems:"center", alignContent:"center"}}>
+                              <View style={{backgroundColor:"#F8F8F8", borderRadius:6, marginRight: 5}}>
+                                <Icon name={item.icon} style={styles.icon} size={25}/>
+                              </View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                            </View>
                           }
                           {
-                            showDietitian &&
-                            <DietitianText item={item}/>
+                            showTrainer && !showDietitian &&
+                            <View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                              <TrainerText item={item}/>
+                            </View>
                           }
+                          {
+                            showDietitian && !showTrainer &&
+                            <View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                              <DietitianText item={item}/>
+                            </View>
+                            
+                          }
+{
+                            showDietitian && showTrainer &&
+                            <View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                              <TrainerText item={item}/>
+                              <DietitianText item={item}/>
+                            </View>
+                          }
+
                           { 
                             showSpecialistLocations &&
-                            <SpecialistPageLocationText item={item}/>
+                            <View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                              <SpecialistPageLocationText item={item}/>
+                            </View>
+                            
+                          }
+                          { 
+                            isName &&
+                            <View>
+                              <Text style={styles.nameTxt}>{item.value}</Text>
+                            </View>
+                            
                           }
                       </TouchableOpacity>
                     </View>
@@ -200,7 +235,6 @@ const styles = StyleSheet.create({
           fontWeight: '400',
           color: '#3E3E3E',
           fontSize: 18,
-          paddingBottom: 10,
           
       },
       infoButton:{
@@ -224,6 +258,7 @@ const styles = StyleSheet.create({
     subTextContainer: {
       flexDirection: "row",
       flex: 1,
+      paddingTop: 10,
     },
     gymTxt: {
       color: '#cfcfcf',
@@ -232,7 +267,12 @@ const styles = StyleSheet.create({
     },
     locationContainer:{
       flexDirection: "row", 
-      justifyContent: "space-between",
+
+      paddingTop: 10,
   },
+  icon:{
+    color: '#E4E4E4',
+    padding:4
+},
 
 });

@@ -3,8 +3,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Heading } from "../Components/Heading";
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { SettingsRow } from "../Components/SettingsComponents/SettingsRow";
-import { changePassword, updateProfile } from "../APIServices/APIUtilities";
-import { getUser,  getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
+import { changePassword, updateProfile, getLocationByID} from "../APIServices/APIUtilities";
+import { getUser,  getCurrentRole, getSpecialistType, } from "../APIServices/deviceStorage";
 import {
   StyleSheet,
   View,
@@ -98,22 +98,26 @@ export default class ProfilePage extends React.Component {
     const __user = JSON.parse(await getUser());
     let admin = false
     let role = "TRAINER"
-    console.log(__user)
+    let temp = [[]]
     //get admin satus
     if(__user.roles.includes("SUPER_ADMIN")){
       admin = true
     }
-    else if(__user.roles.includes("DIETICIAN")){
-      role = "DIETICIAN"
+    else{
+      //maps locations & roles
+      //get list of GYM locations 
+      let locations = __user.locations
+      let roles = __user.roles
+      temp = locations.map(location => (
+        roles.map(role =>({
+          locationId: location.id, 
+          userRoleType: role}))
+      ));
+
+      console.log("TEMP ARRAY CREATED", temp)
     }
     
-    //maps locations
-    //get list of GYM locations 
-    let locations = __user.locations
-    let temp = locations.map(location => (
-        {locationId: location.id, 
-         userRoleType: role}
-    ));
+
     
     this.setState({
       user: __user,
@@ -133,10 +137,9 @@ export default class ProfilePage extends React.Component {
           isSuperAdmin: admin,
           id: __user.id
         },
-        locationAssignments: temp
+        locationAssignments: temp[0]
       }
     });
-    console.log(this.state.updateUser)
   }
 
 
@@ -236,18 +239,18 @@ export default class ProfilePage extends React.Component {
       this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
     try {
-      console.log(this.state.updateUser)
+      console.log("UPDATED USER",this.state.updateUser)
       const res = await updateProfile(this.state.updateUser, this.state.userId)
-      console.log(res)
-      // this.state.contactInformation.firstName = res.user.firstName,
-      // this.state.contactInformation.lastName = res.user.lastName,
-      // this.state.contactInformation.email = res.user.email,
-      // this.state.contactInformation.phoneNumber = res.user.phoneNumber
+      console.log("UPDATE USER RES", res)
+      this.state.contactInformation.firstName = res.user.firstName
+      this.state.contactInformation.lastName = res.user.lastName
+      this.state.contactInformation.email = res.user.email
+      this.state.contactInformation.phoneNumber = res.user.phoneNumber
+      this.closeContactModal()
     } catch (error) {
       console.log(error)
     }
     
-    this.closeContactModal()
   }
 
   render() {

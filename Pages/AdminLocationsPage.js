@@ -8,11 +8,14 @@ import { getLocations,
          getLocationByID, 
          createLocation,
          getAllSpecialists,
-         updateLocation} from '../APIServices/APIUtilities';
+         updateLocation,
+         getSpecificUser,
+        updateProfile} from '../APIServices/APIUtilities';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
+import { getUser } from '../APIServices/deviceStorage';
 
 const categoriesTemplate = [
     {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"]},
@@ -101,7 +104,7 @@ export default class AdminLocationsPage extends Component {
         }
         let users = res.specialists.map(item => ({
             label: item.firstName + " " + item.lastName,
-            key: item.id,
+            value: item.id,
         }))
         return users;
     }
@@ -182,6 +185,7 @@ export default class AdminLocationsPage extends Component {
     }
 
     generateNewLocation = async (locInfo) => {
+        console.log("LOCINFO: ", locInfo)
         //preprocessing of input data. currently reorders fields
         let loc = {
             address: locInfo.address,
@@ -189,7 +193,42 @@ export default class AdminLocationsPage extends Component {
             name: locInfo.name,
             type: locInfo.type=="Dietitian Office" ? "DIETICIAN_OFFICE" : "TRAINER_GYM",
         };
-        await createLocation(loc);
+        const res = await createLocation(loc);
+        const trainer = await getSpecificUser(locInfo.administrator)
+        console.log("trainer", trainer)
+        let locations = trainer.user.locations
+        let roles = trainer.user.roles
+        let temp = []
+        for (let i = 0; i < locations.length; i++) { 
+            for (let j = 0; i < roles.length; i++) { 
+                temp.push(
+                    {locationId: locations[i].id,
+                    userRoleType: roles[j]}
+                )
+              }
+          }
+        temp.push(
+            {
+                locationId: res.location.id,
+                userRoleType: locInfo.type=="Dietitian Office" ? "DIETITIAN" : "TRAINER",
+            },
+            {
+                locationId: res.location.id,
+                userRoleType: "LOCATION_ADMINISTRATOR"
+            })
+        const trainerUpdate = {
+            user: {
+                firstName: trainer.user.firstName,
+                lastName: trainer.user.lastName,
+                email: trainer.user.email,
+                phoneNumber: trainer.user.phoneNumber,
+                id: trainer.user.id,
+                isSuperAdmin: "false"
+                },
+            locationAssignments: temp
+        }
+        const trainerRes = await updateProfile(trainerUpdate, trainer.user.id)
+        console.log(trainerUpdate)
         await this.refreshLocations();
     }
 
@@ -228,6 +267,7 @@ export default class AdminLocationsPage extends Component {
                     displaySettingsButton = {false}
                     callback = {this.openAddModal}/>
                 <ParticipantsList
+                    showIcon = {true}
                     participantsInfo={this.state.calls}
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   

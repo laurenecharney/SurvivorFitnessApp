@@ -79,8 +79,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
     }
 
     const submit = () => {
-        //for testing to make sure all fields are filled out
-
         callback(input);
     }
 

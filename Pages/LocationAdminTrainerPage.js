@@ -76,7 +76,7 @@ export default class LocationAdminTrainerPage extends Component {
             locationAssignments: [
             {
                 locationId: "",
-                userRoleType: "TRAINER"
+                userRoleType: ""
             },
             ]
       }
@@ -145,21 +145,22 @@ export default class LocationAdminTrainerPage extends Component {
 
   openModal = item => {
     let admin = false
-        if(item.roles.includes("SUPER_ADMIN")){
-          admin = true
-        }
-        this.state.updateUser.user.firstName = item.firstName
-        this.state.updateUser.user.lastName = item.lastName
-        this.state.updateUser.user.email = item.email
-        this.state.updateUser.user.phoneNumber= item.phoneNumber
-        this.state.updateUser.user.isSuperAdmin = admin
-        this.state.updateUser.user.id = item.id
-        this.state.updateUser.locationAssignments[0].locationId = item.locations[0].id
-        this.setState({
-            isModalVisible:true,
-            selectedUser: item,
-        });
-        console.log(this.state.updateUser)
+    if(item.roles.includes("SUPER_ADMIN")){
+      admin = true
+    }
+    this.state.updateUser.user.firstName = item.firstName
+    this.state.updateUser.user.lastName = item.lastName
+    this.state.updateUser.user.email = item.email
+    this.state.updateUser.user.phoneNumber= item.phoneNumber
+    this.state.updateUser.user.isSuperAdmin = admin
+    this.state.updateUser.user.id = item.id
+    this.state.updateUser.locationAssignments[0].locationId = item.locations[0].id
+    this.state.updateUser.locationAssignments[0].userRoleType = this.state.specialistType
+    this.setState({
+        isModalVisible:true,
+        selectedUser: item,
+    });
+    console.log(this.state.updateUser)
   };
 
   closeModal = () => {
@@ -250,16 +251,16 @@ export default class LocationAdminTrainerPage extends Component {
 
   updateInfo = async (newInformation) => {
     if(newInformation.firstName){
-    this.state.updateUser.user.firstName = newInformation.firstName
+        this.state.updateUser.user.firstName = newInformation.firstName
     }
     if(newInformation.lastName){
-    this.state.updateUser.user.lastName = newInformation.lastName
+        this.state.updateUser.user.lastName = newInformation.lastName
     }
     if(newInformation.email){
-    this.state.updateUser.user.email = newInformation.email
+        this.state.updateUser.user.email = newInformation.email
     }
     if(newInformation.phoneNumber){
-    this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
+        this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
     if(newInformation.locations){
         let selectedLocation = await getLocationByID(newInformation.locations);
@@ -269,7 +270,7 @@ export default class LocationAdminTrainerPage extends Component {
     console.log(this.state.updateUser)
     const res = await updateProfile(this.state.updateUser, this.state.updateUser.user.id)
     console.log(res)
-    this.state.selectedUser = res
+    this.state.selectedTrainer = res
     await this.fetchInformation()
     // this.closeEditModal()
 }
@@ -285,6 +286,7 @@ export default class LocationAdminTrainerPage extends Component {
           displaySettingsButton = {false}
           callback = {this.openAddModal}/>
         <ParticipantsList
+          isName = {true}
           participantsInfo={this.state.specialists}
           openModal={item => this.openModal(item)}
           listType={this.state.specialistType}/>   

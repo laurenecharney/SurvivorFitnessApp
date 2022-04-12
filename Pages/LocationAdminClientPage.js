@@ -1,49 +1,48 @@
-import React, { Component } from "react";
+import React, { Component, } from 'react';
 import {
-  StyleSheet,
-  View,
-} from "react-native";
-//import AlphabetList from "react-native-flatlist-alphabet";
-
-import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
-import { ParticipantsList } from "../Components/ParticipantsList";
+    StyleSheet,
+    View,
+} from 'react-native';
+import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant} from '../APIServices/APIUtilities';
 import { getUser, getLocationIds, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
+import { ParticipantsList } from '../Components/ParticipantsList';
+import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
+import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
-import { DisplayModal } from "../Components/ModalComponents/DisplayModal";
 
 const displayCategories = {
-  firstName: "First Name: ",
-  lastName: "Last Name: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: ",
-  //age: "Age: ",
-  typeOfCancer: "Type of Cancer: ",
-  treatmentFacility: "Treatment Facility: ",
-  surgeries: "Surgeries: ",
-  formsOfTreatment: "Forms of Treatment: ",
-  physicianNotes: "Physician Notes: ",
-  trainer: "Trainer: ",
-  gym: "Gym: ",
-  nutritionist: "Dietitian: ",
-  dieticianOffice: "Dietitian Office: ",
-  //startDate: "Start Date: ",
-  goals: "Goal(s): ",
+    firstName: "First Name: ",
+    lastName: "Last Name: ",
+    phoneNumber: "Phone Number: ",
+    email: "Email: ",
+    age: "Age: ",
+    typeOfCancer: "Type of Cancer: ",
+    treatmentFacility: "Treatment Facility: ",
+    surgeries: "Surgeries: ",
+    formsOfTreatment: "Forms of Treatment: ",
+    physicianNotes: "Physician Notes: ",
+    trainer: "Trainer: ",
+    gym: "Gym: ",
+    nutritionist: "Dietitian: ",
+    dieticianOffice: "Dietitian Office: ",
+    //startDate: "Start Date: ",
+    goals: "Goal(s): ",
 };
 
 const templateCategories = [
-  {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
-  {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
-  {key: "age",                input: "text",      label: "Age: ",                         options: []},
-  {key: "email",              input: "text",      label: "Email: ",                       options: []},
-  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
-  {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
-  {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
-  {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
-  {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
-  {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
-  {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
-  {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
-]
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
+    {key: "age",                input: "text",      label: "Age: ",                         options: []},
+    {key: "email",              input: "text",      label: "Email: ",                       options: []},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
+    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
+    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+];
 
 export default class LocationAdminClientPage extends Component {
   state = {
@@ -52,9 +51,10 @@ export default class LocationAdminClientPage extends Component {
 
   constructor(props) {
     super(props);
+    this.callbackAction = this.callbackAction.bind(this)
     this.state = {
       isModalVisible: false,
-      isAddModalVisible: false,
+      isEditModalVisible: false,
       locations: [],
       isListOpen: false,
       name:"",
@@ -73,7 +73,35 @@ export default class LocationAdminClientPage extends Component {
       calls: [],
       selectedParticipant: {},
       participants: [],
-      specialistType: ""
+      specialistType: "",
+      categories: templateCategories,
+      updateUser:{
+          id: "",
+          firstName: "",
+          lastName: "",
+          age: "",
+          email: "",
+          phoneNumber: "",
+          startDate: "",
+          goals: "",
+          typeOfCancer: "",
+          formsOfTreatment: "",
+          surgeries: "",
+          physicianNotes: "",
+          dietitian: {
+              
+          },
+          dietitianLocation: {
+             
+          },
+          trainer: {
+              
+          },
+          trainerLocation: {
+              
+          },
+          treatmentProgramStatus: ""
+      },
     };
   }
 
@@ -152,26 +180,121 @@ export default class LocationAdminClientPage extends Component {
     }
   }
 
-  openModal = async (participant) => {
+  openModal = async (participant) =>{
+    console.log("Selected Participant", participant)
     this.setState({
-      isModalVisible: true,
-      selectedParticipant: participant
+        isModalVisible:true,
+        selectedParticipant: participant,
+        updateUser: {
+         id: participant.id,
+         firstName: participant.firstName,
+         lastName: participant.lastName,
+         age: participant.age,
+         email: participant.email,
+         phoneNumber: participant.phoneNumber,
+         startDate: participant.startDate,
+         goals: participant.goals,
+         typeOfCancer: participant.typeOfCancer,
+         formsOfTreatment: participant.formsOfTreatment,
+         surgeries: participant.surgeries,
+         physicianNotes: participant.physicianNotes,
+         dietitian: {id: participant.dietitian.id},
+         dietitianLocation: {
+             id: participant.dietitianLocation.id
+         },
+         trainer: {id: participant.trainer.id},
+         trainerLocation: {
+             id: participant.trainerLocation.id
+         },
+         treatmentProgramStatus: participant.treatmentProgramStatus
+        }
     });
     try {
-      const res = await getParticipantByID(participant.id);
-      this.setState({
-      })
-  } catch (e){
-      console.log(e);
-      alert("Could not fetch participants data");
-  }
-  };
+     const res = await getParticipantByID(participant.id);
+     } catch (e){
+         console.log(e);
+         alert("Could not fetch participants data");
+     }
+ }
 
   closeModal = () => {
     this.setState({
       isModalVisible: false
     });
   };
+
+  openEditModal = () => {
+    this.setState({
+      isModalVisible: false,
+      isEditModalVisible: true,
+    });
+  };
+
+  closeEditModal = async () => {
+      this.setState({
+          isEditModalVisible: false
+      });
+  };
+
+  callbackAction(action){
+    if(action == "back"){
+        this.props.navigation.goBack()
+    }
+    else if(action == "add"){
+        this.openAddModal()
+    }
+    else if(action == "close"){
+        this.closeModal()
+    }
+    else if(action == "edit"){
+        this.openEditModal()
+    }
+}
+
+  updateInfo = async (newInformation) => {
+    if(newInformation.age){
+        this.state.updateUser.age = newInformation.age
+    }
+    if(newInformation.dietitianLocation){
+        this.state.updateUser.dietitianLocation = {id: newInformation.dietitianLocation}
+    }
+    if(newInformation.email){
+        this.state.updateUser.email = newInformation.email
+    }
+    if(newInformation.firstName){
+        this.state.updateUser.firstName = newInformation.firstName
+    }
+    if(newInformation.formsOfTreatment){
+        this.state.updateUser.formsOfTreatment = newInformation.formsOfTreatment
+    }
+    if(newInformation.goals){
+        this.state.updateUser.goals = newInformation.goals
+    }
+    if(newInformation.lastName){
+        this.state.updateUser.lastName = newInformation.lastName
+    }
+    if(newInformation.phoneNumber){
+        this.state.updateUser.phoneNumber = newInformation.phoneNumber
+    }
+    if(newInformation.physicianNotes){
+        this.state.updateUser.physicianNotes = newInformation.physicianNotes
+    }
+    if(newInformation.surgeries){
+        this.state.updateUser.surgeries = newInformation.surgeries
+    }
+    if(newInformation.trainerLocation){
+        this.state.updateUser.trainerLocation = {id: newInformation.trainerLocation}
+    }
+    if(newInformation.typeOfCancer){
+        this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
+    }
+    console.log("Client Obj",this.state.updateUser)
+    console.log("Client ID", this.state.updateUser.id)
+    const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
+    console.log("RES", res)
+    this.state.selectedUser = res
+    await this.refreshParticipants()
+  }
 
   render() {
     return (
@@ -192,11 +315,20 @@ export default class LocationAdminClientPage extends Component {
             categories = {displayCategories} 
             fields = {templateCategories}
             information = {this.state.selectedParticipant}
-            canEdit = {false}
+            canEdit = {true}
             content = "Participants" 
             title = "Participant Information" 
             visible = {this.state.isModalVisible} 
-            callback = {this.closeModal}/>
+            callback = {this.callbackAction}/>
+         <AddEditModal 
+            fields = {this.state.categories} 
+            isAdd = {false}
+            title = {"Edit Participant"} 
+            visible = {this.state.isEditModalVisible} 
+            information = {this.state.selectedParticipant}
+            callback = {info => {
+                if(info) this.updateInfo(info);
+                this.closeEditModal();}}/>
       </View>
     );
   }

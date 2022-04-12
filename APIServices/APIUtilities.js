@@ -271,6 +271,20 @@ export async function getLocationByID(id) {
   return res && res.location ? res.location : [];
 }
 
+//retrieve specific location info
+export async function getSpecificUser(id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json());
+  return res;
+}
+
 export async function getSpecialists(_locationId, _specialistType) {
   const jwt = await getItem();
   const query = _locationId ? "?locationId=" + _locationId : "";
