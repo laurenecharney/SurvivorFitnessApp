@@ -48,7 +48,6 @@ export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) 
 };
 
 export const LabeledPicker = ({ label, items, callback }) => {
-
     return (
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>
@@ -80,8 +79,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
     }
 
     const submit = () => {
-        //for testing to make sure all fields are filled out
-
         callback(input);
     }
 

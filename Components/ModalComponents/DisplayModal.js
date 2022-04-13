@@ -10,10 +10,8 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-import EditInformationRow from "./EditInformationRow";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import InformationRow from "./InformationRow";
-import ModalHeader from "./ModalHeader";
 import { AddEditModal } from "./AddEditModal";
 
 
@@ -47,13 +45,11 @@ export const DisplayModal = ({categories, visible, callback, title, information,
         animationOut="slideOutDown" 
         onBackdropPress={()=>callback()} 
         onSwipeComplete={()=>callback()} 
-        
         transparent={true} 
         visible={visible}
         >
-       
             <View style={styles.modalStyle}>
-                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback()}>
+                    <TouchableOpacity style={{paddingLeft:300, paddingTop:50}} onPress={()=>callback("close")}>
                         <Icon name={'close'} color={'#E4E4E4'} size={32}/>
                     </TouchableOpacity>
                     <View style={{flex: 1, width: "75%"}}>
@@ -63,7 +59,7 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                             </View>
                             {canEdit && 
                                 <View  style={{justifyContent: 'space-between'}}>
-                                    <TouchableOpacity onPress={()=>openEditModal()}>
+                                    <TouchableOpacity onPress={()=>callback("edit")}>
                                         <Text style = {styles.editStyle}>edit</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -77,7 +73,6 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                             }
                         </ScrollView>
                     </View>
-           
             </View>
             <AddEditModal 
                 categories = {categories}

@@ -18,7 +18,6 @@ const TextBoxSingleLine = ({initValue, updateInputText}) => {
       onChangeText={text => {
         changeValue(text); updateInputText(text);
       }}
-      defaultValue={initValue}
     />
   );
 }
