@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant, formatParticipants} from '../APIServices/APIUtilities';
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
@@ -57,7 +57,7 @@ export default class AdminClientPage extends Component {
             isModalVisible: false,
             isAddModalVisible: false,
             isEditModalVisible: false,
-            calls: [],
+            participantsInfo: [],
             selectedParticipant: {},
             categories: defaultCategories,
             updateUser:{
@@ -116,17 +116,9 @@ export default class AdminClientPage extends Component {
     refreshParticipants = async () => {
     try {
         const res = await getParticipants(null,null);
-        this.setState({calls: res
-            .map(item => {
-                let newI = item;
-                newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-                newI.key = parseInt(item.id);
-                newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-                newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-                newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-                newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-                return newI; 
-            })})
+        let tempParticipants = formatParticipants(res)
+        this.setState({participantsInfo: tempParticipants})
+
     } catch (e){
         console.log(e);
         alert("Could not fetch participants data");
@@ -288,7 +280,7 @@ export default class AdminClientPage extends Component {
                     displaySettingsButton = {false}
                     callback = {this.openAddModal}/>
                 <ParticipantsList
-                    participantsInfo={this.state.calls}
+                    participantsInfo={this.state.participantsInfo}
                     openModal={item => this.openModal(item)}
                     showLocations={true}
                     showTrainer={true}

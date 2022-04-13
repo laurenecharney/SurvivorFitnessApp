@@ -4,7 +4,7 @@ import {
   View,
   Alert,
 } from "react-native";
-import { getParticipants, getParticipantByID } from "../APIServices/APIUtilities";
+import { getParticipants, getParticipantByID, formatParticipants } from "../APIServices/APIUtilities";
 import { ParticipantsList } from "../Components/ParticipantsList";
 import { getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { Heading } from '../Components/Heading';
@@ -108,18 +108,19 @@ export default class AllPatientsPage extends Component {
       ? this.props.route.params.participantsParam[paramKey]
       : null;
     const res = await getParticipants(paramKey, paramValue);
-        let temp = res.map(
-          item => {
-            let newI = item;
-            newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-            newI.key = parseInt(item.id);
-            newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-            newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-            newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-            newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-            return newI; 
+    let temp = formatParticipants(res)
+        // let temp = res.map(
+        //   item => {
+        //     let newI = item;
+        //     newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
+        //     newI.key = parseInt(item.id);
+        //     newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
+        //     newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+        //     newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
+        //     newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
+        //     return newI; 
            
-           })        
+        //    })        
         const currentRole = await getCurrentRole();
         const specialistTypeRes = JSON.parse(await getSpecialistType());
         this.setState({
@@ -174,7 +175,7 @@ export default class AllPatientsPage extends Component {
     return (
       <View style={styles.container}>
         <Heading 
-          title = "Participants"
+          title = "Participants all patients"
           titleOnly = {false}
           displayAddButton = {false}
           displayBackButton = {this.getHideSettingsIcon()}

@@ -3,7 +3,12 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant} from '../APIServices/APIUtilities';
+import {  
+  getParticipants, 
+  getParticipantByID, 
+  updateParticipant,
+  formatParticipants
+} from '../APIServices/APIUtilities';
 import { getUser, getLocationIds, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
@@ -118,33 +123,33 @@ export default class LocationAdminClientPage extends Component {
     return isDietitian;
   }
 
-  assignValue = (item) => {
-    if (item.firstName && item.lastName) {
-      item.value = item.firstName + " " + item.lastName;
-    } else {
-      item.value = ""
-    }
-    return item
-  }
+  // assignValue = (item) => {
+  //   if (item.firstName && item.lastName) {
+  //     item.value = item.firstName + " " + item.lastName;
+  //   } else {
+  //     item.value = ""
+  //   }
+  //   return item
+  // }
 
-  assignKey = (item) => {
-    item.key = parseInt(item.id);
-    return item
-  }
+  // assignKey = (item) => {
+  //   item.key = parseInt(item.id);
+  //   return item
+  // }
 
-  assignSpecialists = (item) => {
-    if (item.trainer) {
-      item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
-    } else {
-      item.trainer = "";
-    }
-    if (item.dietitian) {
-      item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
-    } else {
-      item.nutritionist = "";
-    }
-    return item
-  }
+  // assignSpecialists = (item) => {
+  //   if (item.trainer) {
+  //     item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
+  //   } else {
+  //     item.trainer = "";
+  //   }
+  //   if (item.dietitian) {
+  //     item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
+  //   } else {
+  //     item.nutritionist = "";
+  //   }
+  //   return item
+  // }
 
   // given a list of location ids and a location type (gymId or dietitianOfficeId), returns a participant list
   getParticipantsByLocationList = async (locationIds, locationType) => {
@@ -159,18 +164,29 @@ export default class LocationAdminClientPage extends Component {
       return rawParticipants 
   }
 
+  formatParticipants = (rawParticipants) => {
+    let formattedParticipants = rawParticipants.map(item => {
+      let tempItem = this.assignValue(item);
+      tempItem = this.assignKey(tempItem);
+      tempItem = this.assignSpecialists(tempItem);
+      return tempItem;
+    })
+    return formattedParticipants;
+  }
+
   async refreshParticipants(locations) {
     try {
       const locationIds = await getLocationIds();
       const locationType = await this.isDietitian() ? "dietitianOfficeId" : "gymId";
-      const res2 = await this.getParticipantsByLocationList(locationIds, locationType);
+      const res = await this.getParticipantsByLocationList(locationIds, locationType);
       
-      let tempParticipants = res2.map(item => {
-        let tempItem = this.assignValue(item);
-        tempItem = this.assignKey(tempItem);
-        tempItem = this.assignSpecialists(tempItem);
-        return tempItem;
-      })
+      // let tempParticipants = res2.map(item => {
+      //   let tempItem = this.assignValue(item);
+      //   tempItem = this.assignKey(tempItem);
+      //   tempItem = this.assignSpecialists(tempItem);
+      //   return tempItem;
+      // })
+      let tempParticipants = formatParticipants(res)
 
       this.setState({participants: tempParticipants})
 

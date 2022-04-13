@@ -166,6 +166,49 @@ export async function getParticipants(paramName, paramValue) {
   return res && res.participants ? res.participants : [];
 } // ,
 
+// transform back-end participant to front-end participant object
+export function formatParticipants(rawParticipants) {
+  let formattedParticipants = rawParticipants.map(item => {
+    let tempItem = assignValue(item);
+    tempItem = assignKey(tempItem);
+    tempItem = assignSpecialists(tempItem);
+    // newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+    return tempItem;
+  })
+  return formattedParticipants;
+}
+
+// helper method for transforming back-end object to front-end object
+export function assignValue(item) {
+  if (item.firstName && item.lastName) {
+    item.value = item.firstName + " " + item.lastName;
+  } else {
+    item.value = ""
+  }
+  return item
+}
+
+// helper method for transforming back-end object to front-end object
+export function assignKey(item) {
+  item.key = parseInt(item.id);
+  return item
+}
+
+// helper method for transforming back-end object to front-end object
+export function assignSpecialists(item) {
+  if (item.trainer) {
+    item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
+  } else {
+    item.trainer = "";
+  }
+  if (item.dietitian) {
+    item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
+  } else {
+    item.nutritionist = "";
+  }
+  return item
+}
+
 //gets participant by id
 export async function getParticipantByID(id) {
   const jwt = await getItem();
