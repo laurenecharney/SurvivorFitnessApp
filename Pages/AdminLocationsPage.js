@@ -44,9 +44,7 @@ export default class AdminLocationsPage extends Component {
             isEditModalVisible: false,
             isGymModalVisible: false,
             isDieticianModalVisible: false,
-            calls: [
-         
-            ],
+            locationsData: [],
             categories: categoriesTemplate,
             selectedLocation: {
                 name:"",
@@ -77,13 +75,14 @@ export default class AdminLocationsPage extends Component {
     async refreshLocations(){
         try {
             const arr = await getLocations();
+            let ids = []
             this.setState({
-               calls: arr.map(
+               locationsData: arr.map(
                 //item is a location object
                 item => {
                     let newI = item;                // set newItem to be identical to oldItem
                     newI.value = item.name          // set newItem.value to be the name of the location object
-                    newI.id = parseInt(item.id)
+                    newI.key = parseInt(item.id)
                     newI.type = item.type
                     newI.icon = item.type === "TRAINER_GYM" ? 'dumbbell' : 'food-apple'
                     return newI;
@@ -185,7 +184,7 @@ export default class AdminLocationsPage extends Component {
     }
 
     generateNewLocation = async (locInfo) => {
-        console.log("LOCINFO: ", locInfo)
+        // console.log("LOCINFO: ", locInfo)
         //preprocessing of input data. currently reorders fields
         let loc = {
             address: locInfo.address,
@@ -195,7 +194,7 @@ export default class AdminLocationsPage extends Component {
         };
         const res = await createLocation(loc);
         const trainer = await getSpecificUser(locInfo.administrator)
-        console.log("trainer", trainer)
+        // console.log("trainer", trainer)
         let locations = trainer.user.locations
         let roles = trainer.user.roles
         let temp = []
@@ -228,7 +227,7 @@ export default class AdminLocationsPage extends Component {
             locationAssignments: temp
         }
         const trainerRes = await updateProfile(trainerUpdate, trainer.user.id)
-        console.log(trainerUpdate)
+        // console.log(trainerUpdate)
         await this.refreshLocations();
     }
 
@@ -268,7 +267,7 @@ export default class AdminLocationsPage extends Component {
                     callback = {this.openAddModal}/>
                 <ParticipantsList
                     showIcon = {true}
-                    participantsInfo={this.state.calls}
+                    participantsInfo={this.state.locationsData}
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 

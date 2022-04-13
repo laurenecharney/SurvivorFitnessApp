@@ -181,7 +181,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   openModal = async (participant) =>{
-    console.log("Selected Participant", participant)
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant,

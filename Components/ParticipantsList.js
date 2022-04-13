@@ -10,9 +10,6 @@ import { useNavigation } from '@react-navigation/native'
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon3 from 'react-native-vector-icons/EvilIcons';
 import { AlphabetList } from "react-native-section-alphabet-list";
-// import Icon from "react-native-vector-icons/MaterialIcons";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { callUpdateSession } from './SessionLogger'
 
 
 const callsString = ' [{"id":1476,"firstName":"Punita","lastName":"Septus","age":33,"email":"Punita.Septus@website.com","phoneNumber":"123 456 7890","startDate":1640116118038,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Punita Septus","key":1476,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"},{"id":1580,"firstName":"Celestino","lastName":"Maureen","age":34,"email":"Celestino.Maureen@website.com","phoneNumber":"123 456 7890","startDate":1640116118039,"goals":"goals","typeOfCancer":"typeOfCancer","formsOfTreatment":"forms of treatment","surgeries":"surgeries","physicianNotes":"loremipsu","dietitian":{"id":6,"firstName":"Maple","lastName":"Tina","locations":[],"roles":[]},"dietitianLocation":{"id":19,"name":"Healthy Food Laboratory","type":"DIETICIAN_OFFICE"},"trainer":"Marciana Magne","trainerLocation":{"id":17,"name":"Life Fitness Academy","type":"TRAINER_GYM"},"treatmentProgramStatus":"IN_PROGRESS","value":"Celestino Maureen","key":1580,"gym":"Life Fitness Academy","dietician":"Healthy Food Laboratory","nutritionist":"Maple Tina"}] ';
@@ -128,8 +125,7 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
                 <View style={{ visibility: "hidden" }} />
             )}
             renderCustomItem={item => (
-                <View style={styles.row}
-                  key={item.id}>
+                <View style={styles.row}>
                   <View style={styles.nameContainer}>
                     <View>
                       <TouchableOpacity
