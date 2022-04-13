@@ -18,10 +18,10 @@ import { ParticipantsList } from '../Components/ParticipantsList';
 import { getUser } from '../APIServices/deviceStorage';
 
 const categoriesTemplate = [
-    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"]},
-    {key: "name", input: "text", label: "Location Name: ", options: []},
-    {key: "address", input: "text", label: "Address: ", options: []},
-    {key: "administrator", input: "picker", label: "Administrator: ", options: []} //options populate by getUsers on mount
+    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"], edit: true},
+    {key: "name", input: "text", label: "Location Name: ", options: [], edit: true},
+    {key: "address", input: "text", label: "Address: ", options: [], edit: true},
+    {key: "administrator", input: "picker", label: "Administrator: ", options: [], edit: true} //options populate by getUsers on mount
 ];
 
 const displayCategories = {

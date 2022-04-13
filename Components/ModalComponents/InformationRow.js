@@ -15,11 +15,15 @@ export default class InformationRow extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log("props value", this.props.value)
+  }
+
   render() {
     return ( 
         <View style={styles.row}>
             <Text style={styles.participantInfoTitle} >{this.props.title}</Text>
-            <Text style={styles.text}>{this.props.value}</Text>
+            <Text style={styles.text}>{this.props.value ? this.props.value : "no data"}</Text>
         </View>
     );
   }

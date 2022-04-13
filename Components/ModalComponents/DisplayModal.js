@@ -25,6 +25,7 @@ export const AppButton = ({ onPress, title }) => (
 
 export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
+    const [informationLoaded, setInformationLoaded] = useState(false);
 
     // console.log(information, "information")
     console.log()
@@ -36,6 +37,18 @@ export const DisplayModal = ({categories, visible, callback, title, information,
     const closeEditModal = () =>{
         set_edit_modal(false)
     }
+
+    useEffect(() => {
+        if (information) {
+            console.log(information, "information")
+            setInformationLoaded(true)
+        }
+        // console.log("fields", fields)
+        // fields.map(field => {
+        //     console.log("field", field)
+        //     return field
+        // })
+    }, [information])
 
     return(
         // <View style={styles.container}>
@@ -65,10 +78,23 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                                 </View>
                             }
                             
-                            {
+                            {/* {
+            
                                 Object.keys(categories).map(key => {
+                                    // console.log("information row info", categories[key], information[key], key)
                                     // console.log("key: ", key)
                                     return (<InformationRow title={categories[key]} value={information[key]} key={key}/>)
+                                })
+                            } */}
+                            {
+                                informationLoaded &&
+                                fields.map((field, i) => {
+                                    // console.log("field", field)
+                                    // console.log("second information row info", field.label, information[field.key], field.key)
+                                    // <Text key={field.key}>{field.label}</Text>
+                                    console.log("field key", field.key)
+                                    console.log(information[field.key])
+                                    return <InformationRow title={field.label} value={information[field.key]} key={field.key}/>
                                 })
                             }
                         </ScrollView>

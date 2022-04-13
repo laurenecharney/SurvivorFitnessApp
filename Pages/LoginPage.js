@@ -281,7 +281,7 @@ export default class LoginPage extends React.Component {
                 </View>
                 <AddEditModal 
                     categories = {{email: "Enter Email: ",}}
-                    fields = {[{key: "email",          input: "text",      label: "Enter Email: ",                  options: []}]}
+                    fields = {[{key: "email",          input: "text",      label: "Enter Email: ",                  options: [], edit: true}]}
                     information = {this.state.forgotEmail}
                     isChange = {true}
                     title = {"Reset Password"}

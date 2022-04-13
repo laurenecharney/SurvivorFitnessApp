@@ -11,11 +11,11 @@ import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
   const  defaultCategories  = [
-    {key: "firstName",          input: "text",      label: "First Name: ",          options: []},
-    {key: "lastName",           input: "text",      label: "Last Name: ",           options: []},
-    {key: "email",              input: "text",      label: "Email: ",               options: []},
-    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: []},
-    {key: "locations",          input: "picker",    label: "Choose Location: ",     options: []},
+    {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
+    {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
+    {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
+    {key: "locations",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
   ];
   
   const displayCategories = {

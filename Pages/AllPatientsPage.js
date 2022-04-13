@@ -50,18 +50,18 @@ export const showAlert = () =>
 };
 
 const templateCategories = [
-    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
-    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
-    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
-    {key: "email",              input: "text",      label: "Email: ",                       options: []},
-    {key: "age",                input: "text",      label: "Age: ",                         options: []},
-    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
-    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
-    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
-    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
-    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
-    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
-    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: [], edit: true},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: [], edit: true},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: [], edit: true},
+    {key: "email",              input: "text",      label: "Email: ",                       options: [], edit: true},
+    {key: "age",                input: "text",      label: "Age: ",                         options: [], edit: true},
+    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: [], edit: true},
+    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: [], edit: true},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: [], edit: true},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: [], edit: true},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: [], edit: true},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: [], edit: true},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: [], edit: true},
 ]
 
 export default class AllPatientsPage extends Component {

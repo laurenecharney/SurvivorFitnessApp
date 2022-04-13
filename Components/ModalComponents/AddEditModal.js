@@ -116,7 +116,9 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
                         {fields.map(field => {
-                            if (field.input == "picker") {
+                            if (!field.edit) {
+                                return null;
+                            } else if (field.input == "picker") {
                                 return (
                                     <LabeledPicker
                                         key={field.key}

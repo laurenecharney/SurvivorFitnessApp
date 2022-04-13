@@ -1,5 +1,6 @@
 import { getItem } from "./deviceStorage";
 import {ENDPOINT} from './developerEndpoint.js';
+import { InteractionManager } from "react-native";
 
 export async function getMeasurements(participantID, sessionID) {
   const jwt = await getItem();
@@ -168,13 +169,24 @@ export async function getParticipants(paramName, paramValue) {
 
 // transform back-end participant to front-end participant object
 export function formatParticipants(rawParticipants) {
+  let i = 0;
   let formattedParticipants = rawParticipants.map(item => {
+    
     let tempItem = assignValue(item);
     tempItem = assignKey(tempItem);
     tempItem = assignSpecialists(tempItem);
-    // newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+    tempItem.gym = item.trainerLocation.name ? item.trainerLocation.name : "unassigned";
+    tempItem.trainer = item.trainer ? item.trainer : "unassigned";
+    tempItem.nutritionist = item.nutritionist ? item.nutritionist : "unassigned";
+    tempItem.office = item.dietitianLocation.name ? item.dietitianLocation.name : "unassigned";
+    // tempItem.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+    if (i == 0) {
+      i++; 
+      console.log(tempItem)
+    }
     return tempItem;
   })
+  // console.log(formattedParticipants);
   return formattedParticipants;
 }
 
