@@ -19,15 +19,8 @@ const defaultCategories = [
   {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
   {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
   {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
-  {key: "locations",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
+  {key: "locationsString",    input: "picker",    label: "Location(s): ",            options: [], edit: true},
 ];
-
-const displayCategories = {
-  firstName: "First name: ",
-  lastName: "Last name: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: "
-};
 
 import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 
@@ -95,7 +88,7 @@ export default class LocationAdminTrainerPage extends Component {
     this.setState({adminLocations: temp})
     let tempCat = JSON.parse(JSON.stringify(this.state.categories));
     for (field of tempCat) {
-      if(field.key == "locations") field.options = this.state.adminLocations;
+      if(field.key == "locationsString") field.options = this.state.adminLocations;
     }
     this.setState({categories: tempCat})
   }
@@ -134,6 +127,12 @@ export default class LocationAdminTrainerPage extends Component {
           formattedTrainer.id = parseInt(rawTrainer.id);
           formattedTrainer.key = parseInt(rawTrainer.id);
           formattedTrainer.gym = rawTrainer.locations[0] ? rawTrainer.locations[0].name : "";
+          let tempLocationsString = rawTrainer.locations[0].name
+          for (let j = 1; j < rawTrainer.locations.length; j++) {
+            tempLocationsString += ", " + rawTrainer.locations[j].name;
+          }
+          formattedTrainer.locationsString = tempLocationsString;
+
           return formattedTrainer;
         })
       });
@@ -160,7 +159,7 @@ export default class LocationAdminTrainerPage extends Component {
         isModalVisible:true,
         selectedUser: item,
     });
-    console.log(this.state.updateUser)
+    // console.log(this.state.updateUser)
   };
 
   closeModal = () => {
@@ -291,7 +290,6 @@ export default class LocationAdminTrainerPage extends Component {
           openModal={item => this.openModal(item)}
           listType={this.state.specialistType}/>   
         <DisplayModal 
-            categories = {displayCategories} 
             fields = {this.state.categories}
             information = {this.state.selectedUser}
             canEdit = {true}
