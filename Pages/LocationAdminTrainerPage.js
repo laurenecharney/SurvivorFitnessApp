@@ -250,8 +250,8 @@ export default class LocationAdminTrainerPage extends Component {
     if(newInformation.phoneNumber){
         this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
-    if(newInformation.locations){
-        let selectedLocation = await getLocationByID(newInformation.locations);
+    if(newInformation.locationsString){
+        let selectedLocation = await getLocationByID(newInformation.locationsString);
         let location = [{locationId:selectedLocation.id, userRoleType:this.state.specialistType}]
         this.state.updateUser.locationAssignments = location
     }

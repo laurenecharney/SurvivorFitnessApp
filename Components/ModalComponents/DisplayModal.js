@@ -25,7 +25,6 @@ export const AppButton = ({ onPress, title }) => (
 
 export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
-    // const [informationLoaded, setInformationLoaded] = useState(false);
 
     const openEditModal = () =>{
         set_edit_modal(true)
@@ -35,16 +34,7 @@ export const DisplayModal = ({categories, visible, callback, title, information,
         set_edit_modal(false)
     }
 
-    useEffect(() => {
-        if (information) {
-            console.log(information, "information")
-            // console.log(information, "information")
-            // setInformationLoaded(true)
-        }
-    }, [information])
-
     return(
-        // <View style={styles.container}>
         <Modal 
         propagateSwipe={true} 
         animationIn="slideInUp" 
@@ -70,21 +60,8 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                                     </TouchableOpacity>
                                 </View>
                             }
-                            
-                            {/* {
-            
-                                Object.keys(categories).map(key => {
-                                    // console.log("information row info", categories[key], information[key], key)
-                                    // console.log("key: ", key)
-                                    return (<InformationRow title={categories[key]} value={information[key]} key={key}/>)
-                                })
-                            } */}
                             {
-                                // informationLoaded &&
-                                fields.map((field, i) => {
-                                    
-                                    console.log("value: ", information[field.key])
-                                    // return <Text>hey now</Text>
+                                fields.map((field) => {
                                     return <InformationRow title={field.label} value={information[field.key]} key={field.key}/>
                                 })
                             }

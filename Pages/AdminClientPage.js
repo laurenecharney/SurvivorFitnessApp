@@ -91,7 +91,7 @@ export default class AdminClientPage extends Component {
             this.setState({categories: temp});
         } catch (e) {
             console.log(e);
-            alert("Could not fetch locations data");
+            alert("Could not fetch locations data"); 
         }
     }
 
@@ -243,10 +243,7 @@ export default class AdminClientPage extends Component {
         if(newInformation.typeOfCancer){
             this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
         }
-        console.log("Client Obj",this.state.updateUser)
-        console.log("Client ID", this.state.updateUser.id)
         const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
-        console.log("RES", res)
         this.state.selectedUser = res
         await this.refreshParticipants()
     }

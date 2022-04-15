@@ -18,17 +18,11 @@ import { ParticipantsList } from '../Components/ParticipantsList';
 import { getUser } from '../APIServices/deviceStorage';
 
 const categoriesTemplate = [
-    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"], edit: true},
+    {key: "type", input: "toggle", label: "Location Type: ", options: ["Gym", "Dietitian Office"], edit: true},
     {key: "name", input: "text", label: "Location Name: ", options: [], edit: true},
     {key: "address", input: "text", label: "Address: ", options: [], edit: true},
     {key: "administrator", input: "picker", label: "Administrator: ", options: [], edit: true} //options populate by getUsers on mount
 ];
-
-const displayCategories = {
-    name: "Location Name: ",
-    address: "Address: ",
-    administrator: "Administrator: ",
-};
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -85,7 +79,7 @@ export default class AdminLocationsPage extends Component {
                     newI.key = parseInt(item.id)
                     newI.type = item.type
                     newI.icon = item.type === "TRAINER_GYM" ? 'dumbbell' : 'food-apple'
-                    return newI;
+                    return newI; 
                 }
            )});
         } catch (e){
@@ -111,15 +105,20 @@ export default class AdminLocationsPage extends Component {
     openModal = async (item) =>{
         this.setState({
             isModalVisible:true,
-            selectedLocation: item,
+            // selectedLocation: item,
         });
         try {
             const res = await getLocationByID(item.id);
+            let type;
+            if (res.type === "TRAINER_GYM") type = "Gym";
+            else if (res.type === "DIETICIAN_OFFICE") type = "Dietitian Office";
+            else type = res.type
             this.setState({
                 selectedLocation: {
                     name: res.name,
                     address: res.address,
-                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "",
+                    type: type
                 },
                 updateLocation:{
                     name: res.name,
@@ -227,6 +226,7 @@ export default class AdminLocationsPage extends Component {
             locationAssignments: temp
         }
         const trainerRes = await updateProfile(trainerUpdate, trainer.user.id)
+        console.log(trainerRes, "trainerRes")
         // console.log(trainerUpdate)
         await this.refreshLocations();
     }
@@ -271,7 +271,6 @@ export default class AdminLocationsPage extends Component {
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 
-                    categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedLocation}
                     canEdit = {true}

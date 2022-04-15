@@ -15,7 +15,6 @@ import {
   ScrollView,
   Alert
 } from "react-native";
-import { concat } from "react-native-reanimated";
 
 const profileFields = [
     {key: "firstName",           input: "text",      label: "First Name: ",                    options: [], edit: true},
@@ -24,24 +23,11 @@ const profileFields = [
     {key: "phoneNumber",         input: "text",      label: "Phone Number: ",                  options: [], edit: true}
 ]
 
-const profileCategories = {
-  firstName: "First Name: ",
-  lastName: "Last Name",
-  email: "Email: ",
-  phoneNumber: "Phone Number: "
-};
-
 const changePasswordFields = [
     {key: "currentPassword",      input: "text",      label: "Current Password: ",              options: [], edit: true},
     {key: "newPassword",          input: "text",      label: "New Password: ",                  options: [], edit: true},
     {key: "confirmPassword",      input: "text",      label: "Confirm New Password: ",          options: [], edit: true}
   ]
-
-const changePasswordCategories = {
-  currentPassword: "Current Password: ",
-  newPassword: "New Password: ",
-  confirmPassword: "Confirm New Password: "
-};
 
 export const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -272,7 +258,6 @@ export default class ProfilePage extends React.Component {
           iconName = ''
           callback = {this.openChangePasswordModal}/>
         <AddEditModal 
-          categories = {profileCategories}
           fields = {profileFields}
           information = {this.state.contactInformation}
           isChange = {true}
@@ -281,7 +266,6 @@ export default class ProfilePage extends React.Component {
           changeInformation = {this.updateUser}
           callback = {this.closeContactModal}/>
          <AddEditModal 
-          categories = {changePasswordCategories}
           fields = {changePasswordFields}
           information = {[this.state.passwordInformation.currentPassword, this.state.passwordInformation.newPassword]}
           isChange = {true}

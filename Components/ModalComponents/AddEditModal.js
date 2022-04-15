@@ -139,6 +139,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                     />
                                 )
                             } else if (field.input == "text") {
+
                                 return (
                                     <EditInformationRow 
                                         title={field.label} 
@@ -155,15 +156,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                 {!isChange && <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
                                     onPress={submit}/> }
-                                    {/* !isAdd && !isChange && (
-                                    <View>
-                                        <RemoveButton/>
-                                        <AppButton
-                                            title={"EDIT"}
-                                            //Send to backend with callback
-                                        />
-                                    </View>
-                                )} */}
                                      {isChange && (
                                     <AppButton
                                     title={"Confirm"}

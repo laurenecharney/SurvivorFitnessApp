@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 
 const TextBoxSingleLine = ({initValue, updateInputText}) => {
-  const [value, changeValue] = useState(initValue.toString() || "");
+  const [value, changeValue] = useState(initValue ? initValue.toString() : "");
 
   return (
     <TextInput

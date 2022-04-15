@@ -180,13 +180,9 @@ export function formatParticipants(rawParticipants) {
     tempItem.nutritionist = item.nutritionist ? item.nutritionist : "unassigned";
     tempItem.office = item.dietitianLocation.name ? item.dietitianLocation.name : "unassigned";
     // tempItem.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-    if (i == 0) {
-      i++; 
-      console.log(tempItem)
-    }
     return tempItem;
   })
-  // console.log(formattedParticipants);
+
   return formattedParticipants;
 }
 

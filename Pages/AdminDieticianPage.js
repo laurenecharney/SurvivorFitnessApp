@@ -4,7 +4,7 @@ import {
     View,
     Alert
 } from 'react-native';
-import { getDietitians, createUser, getLocations, updateProfile, getLocationByID} from "../APIServices/APIUtilities";
+import { getDietitians, createUser, getLocations, updateProfile, getLocationByID, formatSpecialists} from "../APIServices/APIUtilities";
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { Heading } from '../Components/Heading';
@@ -15,15 +15,8 @@ import { ParticipantsList } from '../Components/ParticipantsList';
     {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
     {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
-    {key: "locations",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
+    {key: "locationsString",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
   ];
-  
-  const displayCategories = {
-      value: "Name: ",
-      gym: "Affiliate Location: ",
-      phoneNumber: "Phone Number: ",
-      email: "Email: "
-  };
 
 export default class AdminDieticianPage extends Component {
     state = {
@@ -83,7 +76,7 @@ export default class AdminDieticianPage extends Component {
         //update categories with locations
         let tempCat = JSON.parse(JSON.stringify(this.state.categories));
         for (field of tempCat) {
-            if(field.key == "locations") field.options = this.state.adminLocations;
+            if(field.key == "locationsString") field.options = this.state.adminLocations;
         }
         this.setState({categories: tempCat})
         //console.log("Categories", this.state.categories)
@@ -95,15 +88,8 @@ export default class AdminDieticianPage extends Component {
             this.props.route.params.locationId : null;
             const arr = await getDietitians(locationId);
             this.setState({
-               calls: arr.map(
-                item => {
-                    let newI = item;
-                    newI.value = item.firstName + " " + item.lastName
-                    newI.key = parseInt(item.id)
-                    newI.gym = item.locations[0] ? item.locations[0].name : '';
-                    return newI;
-                }
-           )})
+                calls: formatSpecialists(arr)
+        })
             
            ;
             } catch (e){
@@ -207,6 +193,7 @@ export default class AdminDieticianPage extends Component {
             ]
         }
         const res = await createUser(user);
+        console.log(res, "create dietitian res")
         this.refreshDietitians();
         }
     }
@@ -224,8 +211,8 @@ export default class AdminDieticianPage extends Component {
         if(newInformation.phoneNumber){
         this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
         }
-        if(newInformation.locations){
-            let selectedLocation = await getLocationByID(newInformation.locations);
+        if(newInformation.locationsString){
+            let selectedLocation = await getLocationByID(newInformation.locationsString);
             let location = [{locationId:selectedLocation.id, userRoleType:"DIETITIAN"}]
             this.state.updateUser.locationAssignments = location
         }
@@ -253,7 +240,6 @@ export default class AdminDieticianPage extends Component {
                     listType={this.state.specialistType}
                     showSpecialistLocations={true}/> 
                 <DisplayModal 
-                    categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedDietician}
                     canEdit = {true}

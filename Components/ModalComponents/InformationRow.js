@@ -15,10 +15,6 @@ export default class InformationRow extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log("props value", this.props.value)
-  }
-
   render() {
     return ( 
         <View style={styles.row}>
