@@ -16,37 +16,39 @@ import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
 const displayCategories = {
-    firstName: "First Name: ",
-    lastName: "Last Name: ",
-    phoneNumber: "Phone Number: ",
-    email: "Email: ",
-    age: "Age: ",
-    typeOfCancer: "Type of Cancer: ",
-    treatmentFacility: "Treatment Facility: ",
-    surgeries: "Surgeries: ",
-    formsOfTreatment: "Forms of Treatment: ",
-    physicianNotes: "Physician Notes: ",
-    trainer: "Trainer: ",
-    gym: "Gym: ",
-    nutritionist: "Dietitian: ",
-    dieticianOffice: "Dietitian Office: ",
-    //startDate: "Start Date: ",
-    goals: "Goal(s): ",
+  firstName: "First Name: ",
+  lastName: "Last Name: ",
+  phoneNumber: "Phone Number: ",
+  email: "Email: ",
+  trainer: "Trainer: ",
+  gym: "Gym: ",
+  nutritionist: "Dietitian: ",
+  office: "Dietitian Office: ",
+  age: "Age: ",
+  typeOfCancer: "Type of Cancer: ",
+  treatmentFacility: "Treatment Facility: ",
+  surgeries: "Surgeries: ",
+  formsOfTreatment: "Forms of Treatment: ",
+  physicianNotes: "Physician Notes: ",
+  goals: "Goal(s): ",
 };
 
 const templateCategories = [
-    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
-    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
-    {key: "age",                input: "text",      label: "Age: ",                         options: []},
-    {key: "email",              input: "text",      label: "Email: ",                       options: []},
-    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
-    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
-    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
-    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
-    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
-    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
-    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
-    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+  {key: "test",               input: "text",      label: "Test: ",                        displayLabel: "Test", options: [], edit: false},
+  {key: "firstName",          input: "text",      label: "First Name: ",                  displayLabel: "", options: [], edit: true},
+  {key: "lastName",           input: "text",      label: "Last Name: ",                   displayLabel: "", options: [], edit: true},
+  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                displayLabel: "", options: [], edit: true},
+  {key: "email",              input: "text",      label: "Email: ",                       displayLabel: "", options: [], edit: true},
+  {key: "trainer",            input: "picker",    label: "Trainer: ",                     displayLabel: "", options: [], edit: true},
+  {key: "gym",                input: "picker",    label: "Training Location: ",           displayLabel: "", options: [], edit: false},
+  {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   displayLabel: "", options: [], edit: true},
+  {key: "office",             input: "picker",    label: "Dieititan Office: ",            displayLabel: "", options: [], edit: false},
+  {key: "age",                input: "text",      label: "Age: ",                         displayLabel: "", options: [], edit: true},
+  {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              displayLabel: "", options: [], edit: true},
+  {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          displayLabel: "", options: [], edit: true},
+  {key: "surgeries",          input: "text",      label: "Surgeries: ",                   displayLabel: "", options: [], edit: true},
+  {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        displayLabel: "", options: [], edit: true},
+  {key: "goals",              input: "text",      label: "Goals: ",                       displayLabel: "", options: [], edit: true},
 ];
 
 export default class LocationAdminClientPage extends Component {
@@ -123,34 +125,6 @@ export default class LocationAdminClientPage extends Component {
     return isDietitian;
   }
 
-  // assignValue = (item) => {
-  //   if (item.firstName && item.lastName) {
-  //     item.value = item.firstName + " " + item.lastName;
-  //   } else {
-  //     item.value = ""
-  //   }
-  //   return item
-  // }
-
-  // assignKey = (item) => {
-  //   item.key = parseInt(item.id);
-  //   return item
-  // }
-
-  // assignSpecialists = (item) => {
-  //   if (item.trainer) {
-  //     item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
-  //   } else {
-  //     item.trainer = "";
-  //   }
-  //   if (item.dietitian) {
-  //     item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
-  //   } else {
-  //     item.nutritionist = "";
-  //   }
-  //   return item
-  // }
-
   // given a list of location ids and a location type (gymId or dietitianOfficeId), returns a participant list
   getParticipantsByLocationList = async (locationIds, locationType) => {
       let rawParticipants = [];
@@ -164,28 +138,12 @@ export default class LocationAdminClientPage extends Component {
       return rawParticipants 
   }
 
-  formatParticipants = (rawParticipants) => {
-    let formattedParticipants = rawParticipants.map(item => {
-      let tempItem = this.assignValue(item);
-      tempItem = this.assignKey(tempItem);
-      tempItem = this.assignSpecialists(tempItem);
-      return tempItem;
-    })
-    return formattedParticipants;
-  }
-
   async refreshParticipants(locations) {
     try {
       const locationIds = await getLocationIds();
       const locationType = await this.isDietitian() ? "dietitianOfficeId" : "gymId";
       const res = await this.getParticipantsByLocationList(locationIds, locationType);
-      
-      // let tempParticipants = res2.map(item => {
-      //   let tempItem = this.assignValue(item);
-      //   tempItem = this.assignKey(tempItem);
-      //   tempItem = this.assignSpecialists(tempItem);
-      //   return tempItem;
-      // })
+    
       let tempParticipants = formatParticipants(res)
 
       this.setState({participants: tempParticipants})
@@ -197,6 +155,7 @@ export default class LocationAdminClientPage extends Component {
   }
 
   openModal = async (participant) =>{
+    // console.log("openModal\n", participant) 
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant,
@@ -327,7 +286,7 @@ export default class LocationAdminClientPage extends Component {
             showDietitian={this.isDietitian()}
             listType="participants"/>
         <DisplayModal 
-            categories = {displayCategories} 
+            // categories = {displayCategories} 
             fields = {templateCategories}
             information = {this.state.selectedParticipant}
             canEdit = {true}

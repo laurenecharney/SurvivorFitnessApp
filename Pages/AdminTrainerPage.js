@@ -4,19 +4,27 @@ import {
     View,
     Alert
 } from 'react-native';
-import { getTrainers, createUser, getLocations, updateProfile, getLocationByID} from "../APIServices/APIUtilities";
+import { getTrainers, createUser, getLocations, updateProfile, getLocationByID, formatSpecialists} from "../APIServices/APIUtilities";
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
 
 const  defaultCategories  = [
-  {key: "firstName",          input: "text",      label: "First Name: ",          options: []},
-  {key: "lastName",           input: "text",      label: "Last Name: ",           options: []},
-  {key: "email",              input: "text",      label: "Email: ",               options: []},
-  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: []},
-  {key: "locations",          input: "picker",    label: "Choose Location: ",     options: []},
+  {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
+  {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
+  {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
+  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
+  {key: "locationsString",    input: "picker",    label: "Choose Location: ",     options: [], edit: true},
 ];
+
+// const defaultCategories = [
+//     {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
+//     {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
+//     {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
+//     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
+//     {key: "locationsString",    input: "picker",    label: "Location(s): ",            options: [], edit: true},
+//   ];
 
 const displayCategories = {
     value: "Name: ",
@@ -85,7 +93,7 @@ export default class AdminTrainerPage extends Component {
         //update categories with locations
         let tempCat = JSON.parse(JSON.stringify(this.state.categories));
         for (field of tempCat) {
-            if(field.key == "locations") field.options = this.state.adminLocations;
+            if(field.key == "locationsString") field.options = this.state.adminLocations;
         }
         this.setState({categories: tempCat})
     }
@@ -96,16 +104,20 @@ export default class AdminTrainerPage extends Component {
             this.props.route.params.locationId : null;
 
             const arr = await getTrainers(locationId);
+
+            let tempFormattedTrainers = formatSpecialists(arr);
             this.setState({
-               trainersData: arr.map(
-                item => {
-                    let newI = item;
-                    newI.value = item.firstName + " " + item.lastName
-                    newI.key = parseInt(item.id)
-                    newI.gym = item.locations[0] ? item.locations[0].name : '';
-                    return newI;
-                }
-           )})
+                trainersData: tempFormattedTrainers
+            //    trainersData: arr.map(
+            //     item => {
+            //         let newI = item;
+            //         newI.value = item.firstName + " " + item.lastName
+            //         newI.key = parseInt(item.id)
+            //         newI.gym = item.locations[0] ? item.locations[0].name : '';
+            //         return newI;
+            //     }
+            //    )
+        })
                 
            ;
             } catch (e){
@@ -179,10 +191,12 @@ export default class AdminTrainerPage extends Component {
         if(newInformation.phoneNumber){
             this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
         }
-        if(newInformation.locations){
-            let selectedLocation = await getLocationByID(newInformation.locations);
+        if(newInformation.locationsString){
+            let selectedLocation = await getLocationByID(newInformation.locationsString);
             let location = [{locationId:selectedLocation.id, userRoleType:this.state.specialistType}]
             this.state.updateUser.locationAssignments = location
+        } else {
+            console.log("no locations!!!!!!!")
         }
         console.log(this.state.updateUser)
         const res = await updateProfile(this.state.updateUser, this.state.updateUser.user.id)
@@ -219,7 +233,8 @@ export default class AdminTrainerPage extends Component {
     uploadUser = async newInformation => {
         if((newInformation.firstName) && (newInformation.lastName) &&
             (newInformation.phoneNumber) && 
-            (newInformation.email) && (newInformation.locations)) {
+            (newInformation.email)) {
+            if (newInformation.locationsString) {
                 let user = {
                     user: {
                     firstName: newInformation.firstName,
@@ -230,18 +245,15 @@ export default class AdminTrainerPage extends Component {
                     },
                     locationAssignments: [
                     {
-                        locationId: newInformation.locations,
+                        locationId: newInformation.locationsString,
                         userRoleType: this.state.specialistType
                     },
                     ]
                 }
                 const res = await createUser(user);
-                console.log("ASSIGNED TRAINER USER", res)
+                console.log("ASSIGNED TRAINER USER", res, "create user response")
                 this.refreshTrainers();
-            }
-            else if((newInformation.firstName) && (newInformation.lastName) &&
-                (newInformation.phoneNumber) && 
-                (newInformation.email)){
+            }  else {
                     let user = {
                         user: {
                         firstName: newInformation.firstName,
@@ -255,7 +267,11 @@ export default class AdminTrainerPage extends Component {
                     console.log("BLANK USER: ", user)
                     const res = await createUser(user);
                     this.refreshTrainers();
+            }
+        } else {
+            Alert.alert("Please fill out all fields")
         }
+    
     }
 
     render() {
@@ -274,7 +290,7 @@ export default class AdminTrainerPage extends Component {
                     listType={this.state.specialistType}
                     showSpecialistLocations={true}/> 
                <DisplayModal 
-                    categories = {displayCategories} 
+                    // categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedTrainer}
                     canEdit = {true}

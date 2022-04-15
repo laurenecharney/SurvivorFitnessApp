@@ -9,40 +9,22 @@ import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
-const displayCategories = {
-    firstName: "First Name: ",
-    lastName: "Last Name: ",
-    phoneNumber: "Phone Number: ",
-    email: "Email: ",
-    age: "Age: ",
-    typeOfCancer: "Type of Cancer: ",
-    treatmentFacility: "Treatment Facility: ",
-    surgeries: "Surgeries: ",
-    formsOfTreatment: "Forms of Treatment: ",
-    physicianNotes: "Physician Notes: ",
-    trainer: "Trainer: ",
-    gym: "Gym: ",
-    nutritionist: "Dietitian: ",
-    dieticianOffice: "Dietitian Office: ",
-    //startDate: "Start Date: ",
-    goals: "Goal(s): ",
-};
-
 const defaultCategories = [
-    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
-    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
-    {key: "age",                input: "text",      label: "Age: ",                         options: []},
-    {key: "email",              input: "text",      label: "Email: ",                       options: []},
-    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
-    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
-    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
-    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
-    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
-    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
-    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
-    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: [], edit: true},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: [], edit: true},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: [], edit: true},
+    {key: "email",              input: "text",      label: "Email: ",                       options: [], edit: true},
+    {key: "trainer",            input: "picker",    label: "Trainer: ",                     options: [], edit: false},
+    {key: "gym",                input: "picker",    label: "Choose Training Location: ",    options: [], edit: true},
+    {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
+    {key: "office",             input: "picker",    label: "Choose Dieititan Office: ",     options: [], edit: true},
+    {key: "age",                input: "text",      label: "Age: ",                         options: [], edit: true},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: [], edit: true},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: [], edit: true},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: [], edit: true},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: [], edit: true},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: [], edit: true},
 ];
-
 
 
 export default class AdminClientPage extends Component {
@@ -109,7 +91,7 @@ export default class AdminClientPage extends Component {
             this.setState({categories: temp});
         } catch (e) {
             console.log(e);
-            alert("Could not fetch locations data");
+            alert("Could not fetch locations data"); 
         }
     }
 
@@ -261,10 +243,7 @@ export default class AdminClientPage extends Component {
         if(newInformation.typeOfCancer){
             this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
         }
-        console.log("Client Obj",this.state.updateUser)
-        console.log("Client ID", this.state.updateUser.id)
         const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
-        console.log("RES", res)
         this.state.selectedUser = res
         await this.refreshParticipants()
     }
@@ -287,7 +266,6 @@ export default class AdminClientPage extends Component {
                     showDietitian={true}
                     listType="participants"/>   
                 <DisplayModal 
-                    categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedParticipant}
                     canEdit = {true}

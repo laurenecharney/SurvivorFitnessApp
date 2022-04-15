@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { getTrainers, getDietitians, createUser, getSpecialists, updateProfile, getLocationByID} from "../APIServices/APIUtilities";
+import { getTrainers, getDietitians, createUser, getSpecialists, updateProfile, getLocationByID, formatSpecialists} from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 // import { getTrainers, getDietitians, getSpecialists } from "../APIServices/APIUtilities";
 import { ParticipantsList } from '../Components/ParticipantsList';
@@ -15,19 +15,12 @@ import { Heading } from '../Components/Heading';
 import { getLocationIds } from "../APIServices/deviceStorage";
 
 const defaultCategories = [
-  {key: "firstName",          input: "text",      label: "First Name: ",          options: []},
-  {key: "lastName",           input: "text",      label: "Last Name: ",           options: []},
-  {key: "email",              input: "text",      label: "Email: ",               options: []},
-  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: []},
-  {key: "locations",          input: "picker",    label: "Choose Location: ",     options: []},
+  {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
+  {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
+  {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
+  {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
+  {key: "locationsString",    input: "picker",    label: "Location(s): ",            options: [], edit: true},
 ];
-
-const displayCategories = {
-  firstName: "First name: ",
-  lastName: "Last name: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: "
-};
 
 import { getCurrentRole, getLocationId, getSpecialistType } from '../APIServices/deviceStorage';
 
@@ -88,14 +81,16 @@ export default class LocationAdminTrainerPage extends Component {
     this.setState({specialistType: specialistTypeRes})
     this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
-    let userLocations = JSON.parse(await getUser()).locations;
+    let user = JSON.parse(await getUser())
+    let userLocations = user.locations;
+    console.log(user, "user^")
     let temp = userLocations.map(location => ({
       label: location.name, value: location.id
     }));
     this.setState({adminLocations: temp})
     let tempCat = JSON.parse(JSON.stringify(this.state.categories));
     for (field of tempCat) {
-      if(field.key == "locations") field.options = this.state.adminLocations;
+      if(field.key == "locationsString") field.options = this.state.adminLocations;
     }
     this.setState({categories: tempCat})
   }
@@ -126,17 +121,9 @@ export default class LocationAdminTrainerPage extends Component {
         rawTrainerInfo = "specialistType not set";  
       }
       rawTrainerInfo = await this.getSpecialistsByLocationList(locationIds, specialistUrlParam)
+      let formattedTrainerInfo = formatSpecialists(rawTrainerInfo)
+      this.setState({specialists: formattedTrainerInfo});
 
-      this.setState({
-        specialists: rawTrainerInfo.map(rawTrainer => {
-          let formattedTrainer = JSON.parse(JSON.stringify(rawTrainer));
-          formattedTrainer.value = rawTrainer.firstName + " " + rawTrainer.lastName;
-          formattedTrainer.id = parseInt(rawTrainer.id);
-          formattedTrainer.key = parseInt(rawTrainer.id);
-          formattedTrainer.gym = rawTrainer.locations[0] ? rawTrainer.locations[0].name : "";
-          return formattedTrainer;
-        })
-      });
     } catch (e) {
       console.log(e);
       alert("Could not fetch data.");
@@ -160,7 +147,7 @@ export default class LocationAdminTrainerPage extends Component {
         isModalVisible:true,
         selectedUser: item,
     });
-    console.log(this.state.updateUser)
+    // console.log(this.state.updateUser)
   };
 
   closeModal = () => {
@@ -239,12 +226,13 @@ export default class LocationAdminTrainerPage extends Component {
         },
         locationAssignments: [
           {
-            locationId: newInformation.locations,
+            locationId: newInformation.locationsString,
             userRoleType: this.state.specialistType
           },
         ]
       }
-      await createUser(user);
+
+      let res = await createUser(user);
       this.fetchInformation();
     }
   }
@@ -262,8 +250,8 @@ export default class LocationAdminTrainerPage extends Component {
     if(newInformation.phoneNumber){
         this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
-    if(newInformation.locations){
-        let selectedLocation = await getLocationByID(newInformation.locations);
+    if(newInformation.locationsString){
+        let selectedLocation = await getLocationByID(newInformation.locationsString);
         let location = [{locationId:selectedLocation.id, userRoleType:this.state.specialistType}]
         this.state.updateUser.locationAssignments = location
     }
@@ -291,7 +279,6 @@ export default class LocationAdminTrainerPage extends Component {
           openModal={item => this.openModal(item)}
           listType={this.state.specialistType}/>   
         <DisplayModal 
-            categories = {displayCategories} 
             fields = {this.state.categories}
             information = {this.state.selectedUser}
             canEdit = {true}

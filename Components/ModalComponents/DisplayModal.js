@@ -26,9 +26,6 @@ export const AppButton = ({ onPress, title }) => (
 export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
 
-    // console.log(information, "information")
-    console.log()
-
     const openEditModal = () =>{
         set_edit_modal(true)
 
@@ -38,7 +35,6 @@ export const DisplayModal = ({categories, visible, callback, title, information,
     }
 
     return(
-        // <View style={styles.container}>
         <Modal 
         propagateSwipe={true} 
         animationIn="slideInUp" 
@@ -64,18 +60,16 @@ export const DisplayModal = ({categories, visible, callback, title, information,
                                     </TouchableOpacity>
                                 </View>
                             }
-                            
                             {
-                                Object.keys(categories).map(key => {
-                                    // console.log("key: ", key)
-                                    return (<InformationRow title={categories[key]} value={information[key]} key={key}/>)
+                                fields.map((field) => {
+                                    return <InformationRow title={field.label} value={information[field.key]} key={field.key}/>
                                 })
                             }
                         </ScrollView>
                     </View>
             </View>
             <AddEditModal 
-                categories = {categories}
+                // categories = {categories}
                 fields = {fields}
                 information = {information}
                 isAdd = {false} 

@@ -30,38 +30,24 @@ export const showAlert = () =>
     ]
   );
 
-  const displayCategories = {
-    firstName: "First Name: ",
-    lastName: "Last Name: ",
-    phoneNumber: "Phone Number: ",
-    email: "Email: ",
-    age: "Age: ",
-    typeOfCancer: "Type of Cancer: ",
-    treatmentFacility: "Treatment Facility: ",
-    surgeries: "Surgeries: ",
-    formsOfTreatment: "Forms of Treatment: ",
-    physicianNotes: "Physician Notes: ",
-    trainer: "Trainer: ",
-    gym: "Gym: ",
-    nutritionist: "Dietitian: ",
-    dieticianOffice: "Dietitian Office: ",
-    //startDate: "Start Date: ",
-    goals: "Goal(s): ",
-};
 
 const templateCategories = [
-    {key: "firstName",          input: "text",      label: "First Name: ",                  options: []},
-    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: []},
-    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: []},
-    {key: "email",              input: "text",      label: "Email: ",                       options: []},
-    {key: "age",                input: "text",      label: "Age: ",                         options: []},
-    {key: "trainerLocation",    input: "picker",    label: "Choose Training Location: ",    options: []},
-    {key: "dietitianLocation",  input: "picker",    label: "Choose Dieititan Office: ",     options: []},
-    {key: "goals",              input: "text",      label: "Goals: ",                       options: []},
-    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: []},
-    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: []},
-    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: []},
-    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: []},
+    {key: "firstName",          input: "text",      label: "First Name: ",                  options: [], edit: false},
+    {key: "lastName",           input: "text",      label: "Last Name: ",                   options: [], edit: false},
+    {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: [], edit: false},
+    {key: "email",              input: "text",      label: "Email: ",                       options: [], edit: false},
+    {key: "goals",              input: "text",      label: "Goals: ",                       options: [], edit: false},
+    {key: "trainer",            input: "text",      label: "Trainer: ",                     options: [], edit: false},
+    {key: "gym",                input: "picker",    label: "Training Location: ",           options: [], edit: false},
+    {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
+    {key: "office",             input: "picker",    label: "Dieititan Office: ",            options: [], edit: false},
+    {key: "age",                input: "text",      label: "Age: ",                         options: [], edit: false},
+    {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: [], edit: false},
+    {key: "formsOfTreatment",   input: "text",      label: "Forms of Treatment: ",          options: [], edit: false},
+    {key: "surgeries",          input: "text",      label: "Surgeries: ",                   options: [], edit: false},
+    {key: "physicianNotes",     input: "text",      label: "Notes from Physician: ",        options: [], edit: false},
+    // {key: "treatmentFacility",  input: "text",      label: "Treatment Facility: ",          options: [], edit: false},
+    
 ]
 
 export default class AllPatientsPage extends Component {
@@ -108,19 +94,7 @@ export default class AllPatientsPage extends Component {
       ? this.props.route.params.participantsParam[paramKey]
       : null;
     const res = await getParticipants(paramKey, paramValue);
-    let temp = formatParticipants(res)
-        // let temp = res.map(
-        //   item => {
-        //     let newI = item;
-        //     newI.value = item.firstName && item.lastName ? (item.firstName + " " + item.lastName) : ""
-        //     newI.key = parseInt(item.id);
-        //     newI.gym = item.trainerLocation ? item.trainerLocation.name : '';
-        //     newI.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
-        //     newI.dietician = item.dietitianLocation ? item.dietitianLocation.name : '';
-        //     newI.nutritionist = item.dietitian ? item.dietitian.firstName + " " + item.dietitian.lastName : ''; 
-        //     return newI; 
-           
-        //    })        
+    let temp = formatParticipants(res)      
         const currentRole = await getCurrentRole();
         const specialistTypeRes = JSON.parse(await getSpecialistType());
         this.setState({
@@ -175,7 +149,7 @@ export default class AllPatientsPage extends Component {
     return (
       <View style={styles.container}>
         <Heading 
-          title = "Participants all patients"
+          title = "Participants"
           titleOnly = {false}
           displayAddButton = {false}
           displayBackButton = {this.getHideSettingsIcon()}
@@ -190,7 +164,6 @@ export default class AllPatientsPage extends Component {
             showLocations={this.state.currentRole === "SUPER_ADMIN"}
         />      
         <DisplayModal 
-            categories = {displayCategories} 
             fields = {this.state.categories}
             information = {this.state.selectedParticipant}
             canEdit = {false}
