@@ -15,8 +15,16 @@ const  defaultCategories  = [
   {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
   {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
   {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
-  {key: "locations",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
+  {key: "locationsString",          input: "picker",    label: "Choose Location: ",     options: [], edit: true},
 ];
+
+// const defaultCategories = [
+//     {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
+//     {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
+//     {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
+//     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
+//     {key: "locationsString",    input: "picker",    label: "Location(s): ",            options: [], edit: true},
+//   ];
 
 const displayCategories = {
     value: "Name: ",
@@ -85,7 +93,7 @@ export default class AdminTrainerPage extends Component {
         //update categories with locations
         let tempCat = JSON.parse(JSON.stringify(this.state.categories));
         for (field of tempCat) {
-            if(field.key == "locations") field.options = this.state.adminLocations;
+            if(field.key == "locationsString") field.options = this.state.adminLocations;
         }
         this.setState({categories: tempCat})
     }

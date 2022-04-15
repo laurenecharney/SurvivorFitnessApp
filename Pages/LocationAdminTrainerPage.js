@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { getTrainers, getDietitians, createUser, getSpecialists, updateProfile, getLocationByID} from "../APIServices/APIUtilities";
+import { getTrainers, getDietitians, createUser, getSpecialists, updateProfile, getLocationByID, formatSpecialists} from "../APIServices/APIUtilities";
 import { getUser } from "../APIServices/deviceStorage";
 // import { getTrainers, getDietitians, getSpecialists } from "../APIServices/APIUtilities";
 import { ParticipantsList } from '../Components/ParticipantsList';
@@ -81,7 +81,9 @@ export default class LocationAdminTrainerPage extends Component {
     this.setState({specialistType: specialistTypeRes})
     this.setState({pageTitle: this.getUserType(true, specialistTypeRes)})
     await this.fetchInformation();
-    let userLocations = JSON.parse(await getUser()).locations;
+    let user = JSON.parse(await getUser())
+    let userLocations = user.locations;
+    console.log(user, "user^")
     let temp = userLocations.map(location => ({
       label: location.name, value: location.id
     }));
@@ -119,23 +121,9 @@ export default class LocationAdminTrainerPage extends Component {
         rawTrainerInfo = "specialistType not set";  
       }
       rawTrainerInfo = await this.getSpecialistsByLocationList(locationIds, specialistUrlParam)
+      let formattedTrainerInfo = formatSpecialists(rawTrainerInfo)
+      this.setState({specialists: formattedTrainerInfo});
 
-      this.setState({
-        specialists: rawTrainerInfo.map(rawTrainer => {
-          let formattedTrainer = JSON.parse(JSON.stringify(rawTrainer));
-          formattedTrainer.value = rawTrainer.firstName + " " + rawTrainer.lastName;
-          formattedTrainer.id = parseInt(rawTrainer.id);
-          formattedTrainer.key = parseInt(rawTrainer.id);
-          formattedTrainer.gym = rawTrainer.locations[0] ? rawTrainer.locations[0].name : "";
-          let tempLocationsString = rawTrainer.locations[0].name
-          for (let j = 1; j < rawTrainer.locations.length; j++) {
-            tempLocationsString += ", " + rawTrainer.locations[j].name;
-          }
-          formattedTrainer.locationsString = tempLocationsString;
-
-          return formattedTrainer;
-        })
-      });
     } catch (e) {
       console.log(e);
       alert("Could not fetch data.");
@@ -238,12 +226,13 @@ export default class LocationAdminTrainerPage extends Component {
         },
         locationAssignments: [
           {
-            locationId: newInformation.locations,
+            locationId: newInformation.locationsString,
             userRoleType: this.state.specialistType
           },
         ]
       }
-      await createUser(user);
+
+      let res = await createUser(user);
       this.fetchInformation();
     }
   }

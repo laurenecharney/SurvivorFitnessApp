@@ -191,7 +191,7 @@ export function formatParticipants(rawParticipants) {
 }
 
 // helper method for transforming back-end object to front-end object
-export function assignValue(item) {
+function assignValue(item) {
   if (item.firstName && item.lastName) {
     item.value = item.firstName + " " + item.lastName;
   } else {
@@ -201,13 +201,13 @@ export function assignValue(item) {
 }
 
 // helper method for transforming back-end object to front-end object
-export function assignKey(item) {
+function assignKey(item) {
   item.key = parseInt(item.id);
   return item
 }
 
 // helper method for transforming back-end object to front-end object
-export function assignSpecialists(item) {
+function assignSpecialists(item) {
   if (item.trainer) {
     item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
   } else {
@@ -354,6 +354,30 @@ export async function getSpecialists(_locationId, _specialistType) {
   })
     .then(response => response.json());
   return res.specialists || {};
+}
+
+export function assignLocations(item) {
+  if (item.locations && item.locations[0]) {
+    let tempLocationsString = item.locations[0].name
+    for (let i = 1; i < item.locations.length; i++) {
+      tempLocationsString += ", " + item.locations[i].name;
+    }
+    item.locationsString = tempLocationsString;
+  } else {
+    item.locationsString = "unexpected locations object"
+    console.log("ERROR: unexpected locations object:\n" + JSON.stringify(item))
+  }
+  return item;
+}
+
+export function formatSpecialists(rawSpecialistsInfo) {
+  let formattedSpecialists = rawSpecialistsInfo.map(rawSpecialist => {
+    let formattedSpecialist = assignValue(rawSpecialist)
+    formattedSpecialist = assignKey(formattedSpecialist)
+    formattedSpecialist = assignLocations(formattedSpecialist)
+    return formattedSpecialist
+  })
+  return formattedSpecialists;  
 }
 
 //gets dietitians
