@@ -169,6 +169,7 @@ export async function getParticipants(paramName, paramValue) {
 
 // transform back-end participant to front-end participant object
 export function formatParticipants(rawParticipants) {
+  console.log(rawParticipants[0], "rawParticipants[0]");
   let i = 0;
   let formattedParticipants = rawParticipants.map(item => {
     
@@ -176,8 +177,8 @@ export function formatParticipants(rawParticipants) {
     tempItem = assignKey(tempItem);
     tempItem = assignSpecialists(tempItem);
     tempItem.gym = item.trainerLocation.name ? item.trainerLocation.name : "unassigned";
-    tempItem.trainer = item.trainer ? item.trainer : "unassigned";
-    tempItem.nutritionist = item.nutritionist ? item.nutritionist : "unassigned";
+    // tempItem.trainerName = item.trainer ? item.trainer : "unassigned";
+    // tempItem.nutritionist = item.nutritionist ? item.nutritionist : "unassigned";
     tempItem.office = item.dietitianLocation.name ? item.dietitianLocation.name : "unassigned";
     // tempItem.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
     return tempItem;
@@ -205,14 +206,14 @@ function assignKey(item) {
 // helper method for transforming back-end object to front-end object
 function assignSpecialists(item) {
   if (item.trainer) {
-    item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
+    item.trainerName = item.trainer.firstName + " " + item.trainer.lastName;
   } else {
-    item.trainer = "";
+    item.trainerName = "unassigned";
   }
   if (item.dietitian) {
-    item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
+    item.dietitianName = item.dietitian.firstName + " " + item.dietitian.lastName;
   } else {
-    item.nutritionist = "";
+    item.dietitianName = "unassigned";
   }
   return item
 }

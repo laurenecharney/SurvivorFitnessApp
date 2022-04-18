@@ -14,9 +14,9 @@ const defaultCategories = [
     {key: "lastName",           input: "text",      label: "Last Name: ",                   options: [], edit: true},
     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: [], edit: true},
     {key: "email",              input: "text",      label: "Email: ",                       options: [], edit: true},
-    {key: "trainer",            input: "picker",    label: "Trainer: ",                     options: [], edit: false},
+    {key: "trainerName",        input: "picker",    label: "Trainer: ",                     options: [], edit: false},
     {key: "gym",                input: "picker",    label: "Choose Training Location: ",    options: [], edit: true},
-    {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
+    {key: "dietitianName",      input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
     {key: "office",             input: "picker",    label: "Choose Dieititan Office: ",     options: [], edit: true},
     {key: "age",                input: "text",      label: "Age: ",                         options: [], edit: true},
     {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: [], edit: true},
@@ -124,11 +124,11 @@ export default class AdminClientPage extends Component {
             formsOfTreatment: participant.formsOfTreatment,
             surgeries: participant.surgeries,
             physicianNotes: participant.physicianNotes,
-            dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
+            dietitian: participant.dietitianName != "unassigned" ? {id: participant.dietitian.id} : {},
             dietitianLocation: {
                 id: participant.dietitianLocation.id
             },
-            trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
+            trainer: participant.trainerName != "unassigned" ? {id: participant.trainer.id} : {},
             trainerLocation: {
                 id: participant.trainerLocation.id
             },
