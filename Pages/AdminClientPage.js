@@ -76,6 +76,7 @@ export default class AdminClientPage extends Component {
         await this.refreshParticipants();
         try {
             const res = await getLocations();
+            console.log("GET LOCATION RES", res)
             let gyms = [], dOffices = [];
             for(const loc of res) {
                 if(loc.type == "TRAINER_GYM")
@@ -85,8 +86,8 @@ export default class AdminClientPage extends Component {
             }
             let temp = JSON.parse(JSON.stringify(this.state.categories));
             for(let category of temp) {
-                if(category.key == "trainerLocation") category.options = gyms;
-                if(category.key == "dietitianLocation") category.options = dOffices;
+                if(category.key == "gym") category.options = gyms;
+                if(category.key == "office") category.options = dOffices;
             }
             this.setState({categories: temp});
         } catch (e) {

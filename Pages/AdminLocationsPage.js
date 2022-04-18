@@ -245,6 +245,7 @@ export default class AdminLocationsPage extends Component {
             this.state.updateLocation.address = newInformation.address
         }
         const res = await updateLocation(this.state.updateLocation, this.state.updateLocation.id)
+
         this.setState({
             selectedLocation: {
                 name: res.name,

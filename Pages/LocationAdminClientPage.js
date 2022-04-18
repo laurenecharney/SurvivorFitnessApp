@@ -34,7 +34,6 @@ const displayCategories = {
 };
 
 const templateCategories = [
-  {key: "test",               input: "text",      label: "Test: ",                        displayLabel: "Test", options: [], edit: false},
   {key: "firstName",          input: "text",      label: "First Name: ",                  displayLabel: "", options: [], edit: true},
   {key: "lastName",           input: "text",      label: "Last Name: ",                   displayLabel: "", options: [], edit: true},
   {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                displayLabel: "", options: [], edit: true},

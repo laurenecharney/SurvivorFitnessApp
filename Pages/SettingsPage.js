@@ -218,7 +218,7 @@ export default class SettingsPage extends React.Component {
             user = {user}
             callback = {this.switchToSuperAdmin}/>
         )}
-        {this.state.currentRole !== "TRAINER" && (
+        {this.state.currentRole === "SUPER_ADMIN" && (
           <SettingsRow 
           title = "Download Data"
           iconName = 'get-app'
