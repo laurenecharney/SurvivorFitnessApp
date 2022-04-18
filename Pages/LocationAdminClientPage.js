@@ -7,7 +7,9 @@ import {
   getParticipants, 
   getParticipantByID, 
   updateParticipant,
-  formatParticipants
+  formatParticipants,
+  getTrainers, 
+  getDietitians
 } from '../APIServices/APIUtilities';
 import { getUser, getLocationIds, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { ParticipantsList } from '../Components/ParticipantsList';
@@ -78,16 +80,16 @@ export default class LocationAdminClientPage extends Component {
           surgeries: "",
           physicianNotes: "",
           dietitian: {
-              
+              id: ""
           },
           dietitianLocation: {
-             
+            id: ""
           },
           trainer: {
-              
+            id: ""
           },
           trainerLocation: {
-              
+            id: ""
           },
           treatmentProgramStatus: ""
       },
@@ -96,9 +98,32 @@ export default class LocationAdminClientPage extends Component {
 
   async componentDidMount() {
     let userLocations = JSON.parse(await getUser()).locations;
+    console.log("USER LOCATIONS", userLocations)
     this.setState({locations: userLocations});
-    //TODO
     await this.refreshParticipants(userLocations);
+    let trainers = [], dietitians = [];
+    for(const loc of userLocations) {
+        if(loc.type == "TRAINER_GYM"){
+          const trainerRes = await getTrainers(loc.id)
+          for(const trainer of trainerRes){
+            trainers.push({label: trainer.firstName + " " + trainer.lastName, value: trainer.id});
+          }
+        }
+        if(loc.type == "DIETICIAN_OFFICE"){
+          const dietitianRes = await getDietitians(loc.id)
+          for(const dietitian of dietitianRes){
+            dietitians.push({label: dietitian.firstName + " " + dietitian.lastName, value: dietitian.id});
+          }
+        }
+    }
+    console.log("TRAINERS", trainers)
+    console.log("DIETITIAN", dietitians)
+    let temp = JSON.parse(JSON.stringify(this.state.categories));
+    for(let category of temp) {
+        if(category.key == "trainer") category.options = trainers;
+        if(category.key == "nutritionist") category.options = dietitians;
+    }
+    this.setState({categories: temp});
   }
 
   isDietitian = async () =>{
@@ -137,7 +162,15 @@ export default class LocationAdminClientPage extends Component {
   }
 
   openModal = async (participant) =>{
-    // console.log("openModal\n", participant) 
+    console.log("openModal\n", participant)
+    let trainerId = "" 
+    let dietitianId = ""
+    if(participant.trainer.id){
+      trainerId = participant.trainer.id
+    }
+    if(participant.dietitian.id){
+      dietitianId = participant.dietitian.id
+    }
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant,
@@ -154,7 +187,7 @@ export default class LocationAdminClientPage extends Component {
          formsOfTreatment: participant.formsOfTreatment,
          surgeries: participant.surgeries,
          physicianNotes: participant.physicianNotes,
-         dietitian: {id: participant.dietitian.id},
+         dietitian: {id: dietitianId},
          dietitianLocation: {
              id: participant.dietitianLocation.id
          },
@@ -208,6 +241,7 @@ export default class LocationAdminClientPage extends Component {
 }
 
   updateInfo = async (newInformation) => {
+    console.log(newInformation)
     if(newInformation.age){
         this.state.updateUser.age = newInformation.age
     }
@@ -243,6 +277,12 @@ export default class LocationAdminClientPage extends Component {
     }
     if(newInformation.typeOfCancer){
         this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
+    }
+    if(newInformation.trainer){
+      this.state.updateUser.trainer = {id: newInformation.trainer}
+    }
+    if(newInformation.nutritionist){
+      this.state.updateUser.dietitian = {id: newInformation.nutritionist}
     }
     console.log("Client Obj",this.state.updateUser)
     console.log("Client ID", this.state.updateUser.id)
