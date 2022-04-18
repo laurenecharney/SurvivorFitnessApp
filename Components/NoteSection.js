@@ -48,7 +48,7 @@ const DeleteModal = ({isVisible, onConfirm, onCancel}) => {
     </Modal>);
 }
 
-const NotesSection = ({noteData, callback}) => {
+const NotesSection = ({noteData, callback, isEditable}) => {
     const [isNote, setIsNote] = useState(noteData != '');
     const [text, setText] = useState(noteData || "");
     const [confirmDeleteModal, showConfirmDelete] = useState(false);
@@ -90,6 +90,7 @@ const NotesSection = ({noteData, callback}) => {
             onCancel={() => showConfirmDelete(false)}/>
             {isNote!="" && 
                 <TextInput 
+                editable={isEditable}
                 style={styles.noteInputBox}
                 multiline
                 onChangeText={txt => setText(txt)}

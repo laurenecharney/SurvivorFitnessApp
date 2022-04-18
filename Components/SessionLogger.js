@@ -42,7 +42,7 @@ const ConfirmButton = ({ onPress, title, logged, disabled}) => (
     </TouchableOpacity>
 );
 
-export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSelected, refreshSidebar, isDisabled, showLoggedSessionInSidebar, currentView, refreshMeasurements}) => {
+export const SessionLogger = ({isCheckpoint, initSessionData, isDisabled, showLoggedSessionInSidebar, currentView, refreshMeasurements}) => {
     const [user, setUser] = useState({});
     const [isDateConfirmModalVisible, setIsDateConfirmModalVisible] = useState(false);
     const [sessionDate, setSessionDate] = useState(new Date());
@@ -219,10 +219,17 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                                     logging the session.
                                 </Text>
                             }
+                            {
+                            isDisabled &&
+                                <Text style={styles.sessionSubheaderWarningText}>
+                                    *View only. Please log in as a trainer or dietitian to edit the respective data.
+                                </Text>
+                            }
                         </View>
    
                     <TouchableOpacity
                         style={styles.dateBar}
+                        disabled = {isDisabled}
                         onPress={() => {setIsDateConfirmModalVisible(true);}}
                     >
                         <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -244,7 +251,8 @@ export const SessionLogger = ({isCheckpoint, initSessionData, trainerSessionSele
                     <NotesSection 
                         noteData={initSessionData.specialistNotes}
                         callback={updateNote}
-                        />
+                        isEditable={!isDisabled}
+                    />
                         {
                             Platform.OS === "ios" ?
                     <Modal
@@ -365,6 +373,13 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "400",
         color: '#838383',
+    },
+    sessionSubheaderWarningText:{
+        marginTop: 23,
+        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: "400",
+        color: '#FF4A49',
     },
     scroll: {
         overflow: 'hidden',
