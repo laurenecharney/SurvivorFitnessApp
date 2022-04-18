@@ -14,7 +14,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function SuperAdminNav() {
    return (
     <Tab.Navigator
-    initialRouteName="Location"
+    initialRouteName="Locations"
     activeColor="#A0C700"
     inactiveColor="#AFAFAF"
     barStyle={{ backgroundColor: 'white' }}

@@ -45,13 +45,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     changeView = (sessionType) => {
-        if(this.state.user !== sessionType && (this.state.user !== "SUPER_ADMIN"))
-        {
-            Alert.alert(
-                "View Only Permission",
-                ("Please log in using a trainer account to edit this information."),
-            );
-        }
         this.refreshSidebar();
         this.setState({currentView: sessionType})
 
@@ -257,7 +250,7 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
     }
 
     shouldBeDisabled() {
-        return (this.state.user != this.state.currentView) 
+        return (this.state.user != this.state.currentView) || (this.state.user == "SUPER_ADMIN");
     }
 
     render(){
@@ -311,7 +304,6 @@ export default class TrainerDieticianSessionWithSidebarPage extends Component{
                             isCheckpoint={this.isCheckpoint(this.state.sessionTrainer)} 
                             initSessionData = {this.getDataBySessionNumber()}
                             currentView = {this.state.currentView}
-                            trainerSessionSelected={this.state.currentSession !== "DIETITIAN"}
                             isDisabled={this.shouldBeDisabled()}
                             showLoggedSessionInSidebar={this.showLoggedSessionInSidebar}
                             refreshMeasurements={this.fetchSessions}

@@ -15,7 +15,6 @@ import {
   ScrollView,
   Alert
 } from "react-native";
-import { concat } from "react-native-reanimated";
 
 const contactCategories = {
   phoneNumber: "Phone Number: ",
