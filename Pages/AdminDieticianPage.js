@@ -71,15 +71,13 @@ export default class AdminDieticianPage extends Component {
         }));
 
         this.setState({adminLocations: temp})
-        console.log(this.state.adminLocations)
-        // console.log(this.state.adminLocations)
+
         //update categories with locations
         let tempCat = JSON.parse(JSON.stringify(this.state.categories));
         for (field of tempCat) {
             if(field.key == "locationsString") field.options = this.state.adminLocations;
         }
         this.setState({categories: tempCat})
-        //console.log("Categories", this.state.categories)
     }
 
     async refreshDietitians(){
@@ -113,7 +111,6 @@ export default class AdminDieticianPage extends Component {
             isModalVisible:true,
             selectedDietician: item,
         });
-        console.log(this.state.updateUser)
     }
 
     closeModal = () =>{
@@ -127,7 +124,6 @@ export default class AdminDieticianPage extends Component {
         this.setState({
           isAddModalVisible: true
         });
-        console.log("I TRIED TO OPEN THE ADD MODAL")
       };
     
     closeAddModal = async () => {
@@ -193,7 +189,6 @@ export default class AdminDieticianPage extends Component {
             ]
         }
         const res = await createUser(user);
-        console.log(res, "create dietitian res")
         this.refreshDietitians();
         }
     }
@@ -216,9 +211,7 @@ export default class AdminDieticianPage extends Component {
             let location = [{locationId:selectedLocation.id, userRoleType:"DIETITIAN"}]
             this.state.updateUser.locationAssignments = location
         }
-        console.log(this.state.updateUser)
         const res = await updateProfile(this.state.updateUser, this.state.updateUser.user.id)
-        console.log(res)
         this.state.selectedDietician = res
         await this.refreshDietitians()
         // this.closeEditModal()

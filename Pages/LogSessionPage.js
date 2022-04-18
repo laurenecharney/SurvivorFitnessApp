@@ -5,15 +5,9 @@ import Sidebar from '../Components/Sidebar.js';
 import TrainerDieticianNavBar from '../Components/TrainerDieticianNavBar';
 import NameNavBar from '../Components/NameNavBar.js';
 import { StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
-// import TrainerCheckpointPage from './TrainerCheckpointPage.js';
 import { SessionLogger } from '../Components/SessionLogger.js';
 import { getParticipantSessions } from "../APIServices/APIUtilities";
 import { getCurrentRole } from '../APIServices/deviceStorage.js';
-
-// LogSessionPage
-    // sideBarComponent
-    // TrainerDieticianHeader
-    // LogSessionComponent
 
 export default class TrainerDieticianSessionWithSidebarPage extends Component{
 

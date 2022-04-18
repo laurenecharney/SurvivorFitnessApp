@@ -37,12 +37,15 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
       ) 
     }
 
+    const getLocationsString = (locations) => {
+
+    }
+
     const SpecialistPageLocationText = ({item}) => {
-      let trainer = item.trainer;
       return (
         <View style={styles.locationContainer}>
-          {item.gym && <Icon3 name={"location"} size={20} color={"#AED803"} />}
-          <Text style={styles.gymTxt}>{item.gym}</Text>
+          <Icon3 name={"location"} size={20} color={"#AED803"} />
+          <Text style={styles.gymTxt}>{item.locationsString}</Text>
        </View>
       )
     }
