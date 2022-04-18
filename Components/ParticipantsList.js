@@ -19,7 +19,7 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
     const navigation = useNavigation();
 
     const TrainerText = ({item}) => {
-      let trainer = item.trainer;
+      let trainer = item.trainerName;
       if (!showLocations) {
           trainer = "  " + trainer;
       }
@@ -37,9 +37,6 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
       ) 
     }
 
-    const getLocationsString = (locations) => {
-
-    }
 
     const SpecialistPageLocationText = ({item}) => {
       return (
@@ -62,7 +59,7 @@ export const ParticipantsList = ({participantsInfo, openModal, showTrainer, show
 
 
     const DietitianText = ({item}) => {
-      let dietitian = item.nutritionist;
+      let dietitian = item.dietitianName;
       if (!showLocations) {
           dietitian = "  " + dietitian;
       }

@@ -23,9 +23,9 @@ const templateCategories = [
   {key: "lastName",           input: "text",      label: "Last Name: ",                   displayLabel: "", options: [], edit: true},
   {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                displayLabel: "", options: [], edit: true},
   {key: "email",              input: "text",      label: "Email: ",                       displayLabel: "", options: [], edit: true},
-  {key: "trainer",            input: "picker",    label: "Trainer: ",                     displayLabel: "", options: [], edit: true},
+  {key: "trainerName",        input: "picker",    label: "Trainer: ",                     displayLabel: "", options: [], edit: true},
   {key: "gym",                input: "picker",    label: "Training Location: ",           displayLabel: "", options: [], edit: false},
-  {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   displayLabel: "", options: [], edit: true},
+  {key: "dietitianName",      input: "picker",    label: "Dietitian: ",                   displayLabel: "", options: [], edit: true},
   {key: "office",             input: "picker",    label: "Dieititan Office: ",            displayLabel: "", options: [], edit: false},
   {key: "age",                input: "text",      label: "Age: ",                         displayLabel: "", options: [], edit: true},
   {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              displayLabel: "", options: [], edit: true},
@@ -97,6 +97,8 @@ export default class LocationAdminClientPage extends Component {
   }
 
   async componentDidMount() {
+    const specialistType = JSON.parse(await getSpecialistType())
+    this.setState({specialistType: specialistType})
     let userLocations = JSON.parse(await getUser()).locations;
     this.setState({locations: userLocations});
     await this.refreshParticipants(userLocations);
@@ -115,10 +117,18 @@ export default class LocationAdminClientPage extends Component {
           }
         }
     }
+   
     let temp = JSON.parse(JSON.stringify(this.state.categories));
     for(let category of temp) {
-        if(category.key == "trainer") category.options = trainers;
-        if(category.key == "nutritionist") category.options = dietitians;
+        if(category.key == "trainerName") {
+          category.edit = specialistType === "TRAINER";
+          category.options = trainers;
+
+        }
+        if(category.key == "dietitianName") {
+          category.edit = specialistType === "DIETITIAN";
+          category.options = dietitians;
+        }
     }
     this.setState({categories: temp});
   }
@@ -175,11 +185,11 @@ export default class LocationAdminClientPage extends Component {
          formsOfTreatment: participant.formsOfTreatment,
          surgeries: participant.surgeries,
          physicianNotes: participant.physicianNotes,
-         dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
+         dietitian: participant.dietitianName != "unassigned" ? {id: participant.dietitian.id} : {},
          dietitianLocation: {
              id: participant.dietitianLocation.id
          },
-         trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
+         trainer: participant.trainerName != "unassigned" ? {id: participant.trainer.id} : {},
          trainerLocation: {
              id: participant.trainerLocation.id
          },
@@ -265,11 +275,11 @@ export default class LocationAdminClientPage extends Component {
     if(newInformation.typeOfCancer){
         this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
     }
-    if(newInformation.trainer){
-      this.state.updateUser.trainer = {id: newInformation.trainer}
+    if(newInformation.trainerName){
+      this.state.updateUser.trainer = {id: newInformation.trainerName}
     }
-    if(newInformation.nutritionist){
-      this.state.updateUser.dietitian = {id: newInformation.nutritionist}
+    if(newInformation.dietitianName){
+      this.state.updateUser.dietitian = {id: newInformation.dietitianName}
     }
     const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
     this.state.selectedUser = res

@@ -37,9 +37,9 @@ const templateCategories = [
     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",                options: [], edit: false},
     {key: "email",              input: "text",      label: "Email: ",                       options: [], edit: false},
     {key: "goals",              input: "text",      label: "Goals: ",                       options: [], edit: false},
-    {key: "trainer",            input: "text",      label: "Trainer: ",                     options: [], edit: false},
+    {key: "trainerName",        input: "text",      label: "Trainer: ",                     options: [], edit: false},
     {key: "gym",                input: "picker",    label: "Training Location: ",           options: [], edit: false},
-    {key: "nutritionist",       input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
+    {key: "dietitianName",      input: "picker",    label: "Dietitian: ",                   options: [], edit: false},
     {key: "office",             input: "picker",    label: "Dieititan Office: ",            options: [], edit: false},
     {key: "age",                input: "text",      label: "Age: ",                         options: [], edit: false},
     {key: "typeOfCancer",       input: "text",      label: "Type of Cancer: ",              options: [], edit: false},
@@ -125,7 +125,6 @@ export default class AllPatientsPage extends Component {
   }
 
   openModal = async (participant) =>{
-    // console.lo
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant
@@ -158,8 +157,10 @@ export default class AllPatientsPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.calls}
             openModal={item => this.openModal(item)}
-            showTrainer={this.state.specialistType === "TRAINER" || this.state.currentRole === "SUPER_ADMIN"}
-            showDietitian={this.state.specialistType === "DIETITIAN" || this.state.currentRole === "SUPER_ADMIN"}
+            showTrainer={true}
+            showDietitian={true}
+            // showTrainer={this.state.specialistType === "TRAINER" || this.state.currentRole === "SUPER_ADMIN"}
+            // showDietitian={this.state.specialistType === "DIETITIAN" || this.state.currentRole === "SUPER_ADMIN"}
             listType="participants"
             showLocations={this.state.currentRole === "SUPER_ADMIN"}
         />      
