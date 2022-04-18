@@ -2,7 +2,7 @@
   "expo": {
     "name": "SurvivorFitnessApp",
     "slug": "SurvivorFitnessApp",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/home-screen-icon.png",
     "splash": {
@@ -17,8 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "buildNumber": "1.0.0",
+      "supportsTablet": false,
+      "buildNumber": "1.1.0",
       "bundleIdentifier": "com.survivorfitness.change.app"
     },
     "android": {
