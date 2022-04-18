@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant, formatParticipants} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant, formatParticipants, getTrainers, getDietitians} from '../APIServices/APIUtilities';
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
