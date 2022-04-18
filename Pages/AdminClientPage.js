@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant, formatParticipants} from '../APIServices/APIUtilities';
+import {getParticipants, getParticipantByID, addParticipant, getLocations, updateParticipant, formatParticipants, getTrainers, getDietitians} from '../APIServices/APIUtilities';
 import { ParticipantsList } from '../Components/ParticipantsList';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
@@ -76,7 +76,6 @@ export default class AdminClientPage extends Component {
         await this.refreshParticipants();
         try {
             const res = await getLocations();
-            console.log("GET LOCATION RES", res)
             let gyms = [], dOffices = [];
             for(const loc of res) {
                 if(loc.type == "TRAINER_GYM")
@@ -125,11 +124,11 @@ export default class AdminClientPage extends Component {
             formsOfTreatment: participant.formsOfTreatment,
             surgeries: participant.surgeries,
             physicianNotes: participant.physicianNotes,
-            dietitian: {id: participant.dietitian.id},
+            dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
             dietitianLocation: {
                 id: participant.dietitianLocation.id
             },
-            trainer: {id: participant.trainer.id},
+            trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
             trainerLocation: {
                 id: participant.trainerLocation.id
             },
@@ -191,10 +190,10 @@ export default class AdminClientPage extends Component {
     }
 
     createNewParticipant = async input => {
-        if(input.dietitianLocation) 
-            input.dietitianLocation = {id: input.dietitianLocation}
-        if(input.trainerLocation) 
-            input.trainerLocation = {id: input.trainerLocation}
+        if(input.office) 
+            input.dietitianLocation = {id: input.office}
+        if(input.gym) 
+            input.trainerLocation = {id: input.gym}
         if(input.age) 
             input.age = parseInt(input.age);
 

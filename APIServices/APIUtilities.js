@@ -244,7 +244,7 @@ export async function updateParticipant(__participant, id) {
     }
   })
     .then(response => response.json());
-  return res.session;
+  return res;
 }
 
 export async function getParticipantSessions(id) {

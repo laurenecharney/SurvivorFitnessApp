@@ -48,7 +48,6 @@ export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) 
 };
 
 export const LabeledPicker = ({ label, items, callback }) => {
-    console.log("ITEMS", items)
     return (
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>

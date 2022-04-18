@@ -23,7 +23,7 @@ export const AppButton = ({ onPress, title }) => (
 
 
 
-export const DisplayModal = ({categories, visible, callback, title, information, canEdit, fields}) => {
+export const DisplayModal = ({visible, callback, title, information, canEdit, fields}) => {
     const [edit_modal, set_edit_modal] = useState(false);
 
     const openEditModal = () =>{
