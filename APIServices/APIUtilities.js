@@ -169,7 +169,6 @@ export async function getParticipants(paramName, paramValue) {
 
 // transform back-end participant to front-end participant object
 export function formatParticipants(rawParticipants) {
-  console.log("RAW", rawParticipants[0])
   let i = 0;
   let formattedParticipants = rawParticipants.map(item => {
     

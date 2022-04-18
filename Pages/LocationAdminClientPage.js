@@ -98,7 +98,6 @@ export default class LocationAdminClientPage extends Component {
 
   async componentDidMount() {
     let userLocations = JSON.parse(await getUser()).locations;
-    console.log("USER LOCATIONS", userLocations)
     this.setState({locations: userLocations});
     await this.refreshParticipants(userLocations);
     let trainers = [], dietitians = [];
@@ -116,8 +115,6 @@ export default class LocationAdminClientPage extends Component {
           }
         }
     }
-    console.log("TRAINERS", trainers)
-    console.log("DIETITIAN", dietitians)
     let temp = JSON.parse(JSON.stringify(this.state.categories));
     for(let category of temp) {
         if(category.key == "trainer") category.options = trainers;
@@ -162,15 +159,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   openModal = async (participant) =>{
-    console.log("openModal\n", participant)
-    let trainerId = "" 
-    let dietitianId = ""
-    if(participant.trainer.id){
-      trainerId = participant.trainer.id
-    }
-    if(participant.dietitian.id){
-      dietitianId = participant.dietitian.id
-    }
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant,
@@ -187,11 +175,11 @@ export default class LocationAdminClientPage extends Component {
          formsOfTreatment: participant.formsOfTreatment,
          surgeries: participant.surgeries,
          physicianNotes: participant.physicianNotes,
-         dietitian: {id: dietitianId},
+         dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
          dietitianLocation: {
              id: participant.dietitianLocation.id
          },
-         trainer: {id: participant.trainer.id},
+         trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
          trainerLocation: {
              id: participant.trainerLocation.id
          },
@@ -241,7 +229,6 @@ export default class LocationAdminClientPage extends Component {
 }
 
   updateInfo = async (newInformation) => {
-    console.log(newInformation)
     if(newInformation.age){
         this.state.updateUser.age = newInformation.age
     }
@@ -284,10 +271,7 @@ export default class LocationAdminClientPage extends Component {
     if(newInformation.nutritionist){
       this.state.updateUser.dietitian = {id: newInformation.nutritionist}
     }
-    console.log("Client Obj",this.state.updateUser)
-    console.log("Client ID", this.state.updateUser.id)
     const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
-    console.log("RES", res)
     this.state.selectedUser = res
     await this.refreshParticipants()
   }
@@ -304,8 +288,8 @@ export default class LocationAdminClientPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.participants}
             openModal={item => this.openModal(item)}
-            showTrainer={!this.isDietitian()}
-            showDietitian={this.isDietitian()}
+            showTrainer={true}
+            showDietitian={true}
             listType="participants"/>
         <DisplayModal 
             // categories = {displayCategories} 
