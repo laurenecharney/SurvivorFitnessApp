@@ -212,8 +212,8 @@ export default class LoginPage extends React.Component {
                             name='email'
                             value={email}
                             style={styles.inputText}
-                            placeholder=""
-                            placeholderTextColor="#003f5c"
+                            placeholder="email"
+                            placeholderTextColor="#999999"
                             keyboardType="email-address"
                             onChangeText={this.handleEmailChange}/>
                     </View>
@@ -223,8 +223,8 @@ export default class LoginPage extends React.Component {
                             value={password}
                             secureTextEntry={hidePass ? true : false}
                             style={styles.inputText}
-                            placeholder=""
-                            placeholderTextColor="#003f5c"
+                            placeholder="password"
+                            placeholderTextColor="#999999"
                             returnKeyType='done'
                             onSubmitEditing={() => this.handleLoginPress()}
                             onChangeText={this.handlePasswordChange}/>
