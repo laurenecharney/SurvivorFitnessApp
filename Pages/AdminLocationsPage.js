@@ -7,24 +7,22 @@ import {
 import { getLocations, 
          getLocationByID, 
          createLocation,
-         getAllSpecialists } from '../APIServices/APIUtilities';
+         getAllSpecialists,
+         updateLocation,
+         getSpecificUser,
+        updateProfile} from '../APIServices/APIUtilities';
 import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 import { ParticipantsList } from '../Components/ParticipantsList';
+import { getUser } from '../APIServices/deviceStorage';
 
 const categoriesTemplate = [
-    {key: "type", input: "toggle", label: "Select Location Type: ", options: ["Gym", "Dietitian Office"]},
-    {key: "name", input: "text", label: "Location Name: ", options: []},
-    {key: "address", input: "text", label: "Address: ", options: []},
-    {key: "administrator", input: "picker", label: "Administrator: ", options: []} //options populate by getUsers on mount
+    {key: "type", input: "toggle", label: "Location Type: ", options: ["Gym", "Dietitian Office"], edit: true},
+    {key: "name", input: "text", label: "Location Name: ", options: [], edit: true},
+    {key: "address", input: "text", label: "Address: ", options: [], edit: true},
+    {key: "administrator", input: "picker", label: "Administrator: ", options: [], edit: true} //options populate by getUsers on mount
 ];
-
-const displayCategories = {
-    name: "Location Name: ",
-    address: "Address: ",
-    administrator: "Administrator: ",
-};
 
 export default class AdminLocationsPage extends Component {
     state = {
@@ -32,6 +30,7 @@ export default class AdminLocationsPage extends Component {
     }
     constructor(props) {
         super(props);
+        this.callbackAction = this.callbackAction.bind(this)
         this.state = {
             edit: false,
             isModalVisible: false,
@@ -39,24 +38,23 @@ export default class AdminLocationsPage extends Component {
             isEditModalVisible: false,
             isGymModalVisible: false,
             isDieticianModalVisible: false,
-            name:"",
-            address:"",
-            location:"",
-            admin:"",
-            calls: [
-         
-            ],
+            locationsData: [],
             categories: categoriesTemplate,
             selectedLocation: {
                 name:"",
                 address:"",
                 administrator:""
+            },
+            updateLocation: {
+                id: "",
+                name: "",
+                address: "",
+                type: "",
+                administrator: {
+                    id: ""
+                }
             }
-
         }
-        // if (Platform.OS === 'android') {
-        //     UIManager.setLayoutAnimationEnabledExperimental(true);
-        // }
     }
 
     async componentDidMount(){
@@ -66,22 +64,22 @@ export default class AdminLocationsPage extends Component {
             if(field.key == "administrator") field.options = await this.getUsers();
         }
         this.setState({categories: tempCategories})
-
     }
 
     async refreshLocations(){
         try {
             const arr = await getLocations();
+            let ids = []
             this.setState({
-               calls: arr.map(
+               locationsData: arr.map(
                 //item is a location object
                 item => {
                     let newI = item;                // set newItem to be identical to oldItem
                     newI.value = item.name          // set newItem.value to be the name of the location object
-                    newI.id = parseInt(item.id)
+                    newI.key = parseInt(item.id)
                     newI.type = item.type
                     newI.icon = item.type === "TRAINER_GYM" ? 'dumbbell' : 'food-apple'
-                    return newI;
+                    return newI; 
                 }
            )});
         } catch (e){
@@ -100,7 +98,6 @@ export default class AdminLocationsPage extends Component {
         let users = res.specialists.map(item => ({
             label: item.firstName + " " + item.lastName,
             value: item.id,
-            key: item.id,
         }))
         return users;
     }
@@ -108,18 +105,31 @@ export default class AdminLocationsPage extends Component {
     openModal = async (item) =>{
         this.setState({
             isModalVisible:true,
-            selectedLocation: item,
+            // selectedLocation: item,
         });
         try {
             const res = await getLocationByID(item.id);
+            let type;
+            if (res.type === "TRAINER_GYM") type = "Gym";
+            else if (res.type === "DIETICIAN_OFFICE") type = "Dietitian Office";
+            else type = res.type
             this.setState({
                 selectedLocation: {
                     name: res.name,
                     address: res.address,
-                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+                    administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "",
+                    type: type
+                },
+                updateLocation:{
+                    name: res.name,
+                    address: res.address,
+                    type: res.type,
+                    id: res.id,
+                    administrator: {
+                        id: res.administrator.id
+                    }
                 }
             })
-            //console.log(this.state.selectedLocation)
         } catch (e){
             alert("Could not retrieve location information")
         }
@@ -144,16 +154,105 @@ export default class AdminLocationsPage extends Component {
         })
     }
 
+    openEditModal = () => {
+        this.setState({
+          isModalVisible: false,
+          isEditModalVisible: true,
+        });
+    };
+    
+    closeEditModal = async () => {
+        this.setState({
+            isEditModalVisible: false
+        });
+    };
+
+    callbackAction(action){
+        if(action == "back"){
+            this.props.navigation.goBack()
+        }
+        else if(action == "add"){
+            this.openAddModal()
+        }
+        else if(action == "close"){
+            this.closeModal()
+        }
+        else if(action == "edit"){
+            this.openEditModal()
+        }
+    }
+
     generateNewLocation = async (locInfo) => {
+        // console.log("LOCINFO: ", locInfo)
         //preprocessing of input data. currently reorders fields
         let loc = {
             address: locInfo.address,
             administrator: {id: locInfo.administrator},
             name: locInfo.name,
-            type: locInfo.type=="Gym" ? "TRAINER_GYM" : "DIETICIAN_OFFICE",
+            type: locInfo.type=="Dietitian Office" ? "DIETICIAN_OFFICE" : "TRAINER_GYM",
         };
-        await createLocation(loc);
+        const res = await createLocation(loc);
+        const trainer = await getSpecificUser(locInfo.administrator)
+        // console.log("trainer", trainer)
+        let locations = trainer.user.locations
+        let roles = trainer.user.roles
+        let temp = []
+        for (let i = 0; i < locations.length; i++) { 
+            for (let j = 0; i < roles.length; i++) { 
+                temp.push(
+                    {locationId: locations[i].id,
+                    userRoleType: roles[j]}
+                )
+              }
+          }
+        temp.push(
+            {
+                locationId: res.location.id,
+                userRoleType: locInfo.type=="Dietitian Office" ? "DIETITIAN" : "TRAINER",
+            },
+            {
+                locationId: res.location.id,
+                userRoleType: "LOCATION_ADMINISTRATOR"
+            })
+        const trainerUpdate = {
+            user: {
+                firstName: trainer.user.firstName,
+                lastName: trainer.user.lastName,
+                email: trainer.user.email,
+                phoneNumber: trainer.user.phoneNumber,
+                id: trainer.user.id,
+                isSuperAdmin: "false"
+                },
+            locationAssignments: temp
+        }
+        const trainerRes = await updateProfile(trainerUpdate, trainer.user.id)
+        console.log(trainerRes, "trainerRes")
+        // console.log(trainerUpdate)
         await this.refreshLocations();
+    }
+
+    updateInfo = async (newInformation) => {
+        if(newInformation.type){
+            this.state.updateLocation.type = newInformation.type
+        }
+        if(newInformation.name){
+            this.state.updateLocation.name = newInformation.name
+        }
+        if(newInformation.administrator){
+            this.state.updateLocation.administrator.id = newInformation.administrator
+        }
+        if(newInformation.address){
+            this.state.updateLocation.address = newInformation.address
+        }
+        const res = await updateLocation(this.state.updateLocation, this.state.updateLocation.id)
+        this.setState({
+            selectedLocation: {
+                name: res.name,
+                address: res.address,
+                administrator: res.administrator ? res.administrator.firstName + " " + res.administrator.lastName : "" 
+            }
+        })
+        await this.refreshLocations()
     }
 
     render() {
@@ -167,18 +266,18 @@ export default class AdminLocationsPage extends Component {
                     displaySettingsButton = {false}
                     callback = {this.openAddModal}/>
                 <ParticipantsList
-                    participantsInfo={this.state.calls}
+                    showIcon = {true}
+                    participantsInfo={this.state.locationsData}
                     openModal={item => this.openModal(item)}
                     listType="locations"/>   
                 <DisplayModal 
-                    categories = {displayCategories} 
                     fields = {this.state.categories}
                     information = {this.state.selectedLocation}
                     canEdit = {true}
                     content = "Location" 
                     title = "Location Information" 
                     visible = {this.state.isModalVisible} 
-                    callback = {this.closeModal}/> 
+                    callback = {this.callbackAction}/> 
                 <AddEditModal 
                     fields = {this.state.categories}   //might be able to use keys from information instead
                     isAdd = {true}
@@ -190,6 +289,15 @@ export default class AdminLocationsPage extends Component {
                         this.closeAddModal(); 
                         if(input) this.generateNewLocation(input);}
                     }/>
+                <AddEditModal 
+                    fields = {this.state.categories} 
+                    isAdd = {false}
+                    title = {"Edit Location"} 
+                    visible = {this.state.isEditModalVisible} 
+                    information = {this.state.selectedLocation}
+                    callback = {info => {
+                        if(info) this.updateInfo(info);
+                        this.closeEditModal();}}/>
             </View>
         );
     }

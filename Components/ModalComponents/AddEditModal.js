@@ -48,7 +48,6 @@ export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) 
 };
 
 export const LabeledPicker = ({ label, items, callback }) => {
-
     return (
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>
@@ -80,8 +79,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
     }
 
     const submit = () => {
-        //for testing to make sure all fields are filled out
-
         callback(input);
     }
 
@@ -119,7 +116,9 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                             <Text style={styles.modalText} >{title}</Text>
                         </View>
                         {fields.map(field => {
-                            if (field.input == "picker") {
+                            if (!field.edit) {
+                                return null;
+                            } else if (field.input == "picker") {
                                 return (
                                     <LabeledPicker
                                         key={field.key}
@@ -140,6 +139,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                     />
                                 )
                             } else if (field.input == "text") {
+
                                 return (
                                     <EditInformationRow 
                                         title={field.label} 
@@ -156,15 +156,6 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                 {!isChange && <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
                                     onPress={submit}/> }
-                                    {/* !isAdd && !isChange && (
-                                    <View>
-                                        <RemoveButton/>
-                                        <AppButton
-                                            title={"EDIT"}
-                                            //Send to backend with callback
-                                        />
-                                    </View>
-                                )} */}
                                      {isChange && (
                                     <AppButton
                                     title={"Confirm"}

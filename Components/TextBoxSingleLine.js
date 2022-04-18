@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 
 const TextBoxSingleLine = ({initValue, updateInputText}) => {
-  const [value, changeValue] = useState(initValue || "");
+  const [value, changeValue] = useState(initValue ? initValue.toString() : "");
 
   return (
     <TextInput
@@ -18,7 +18,6 @@ const TextBoxSingleLine = ({initValue, updateInputText}) => {
       onChangeText={text => {
         changeValue(text); updateInputText(text);
       }}
-      defaultValue={initValue}
     />
   );
 }

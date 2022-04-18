@@ -1,5 +1,6 @@
 import { getItem } from "./deviceStorage";
 import {ENDPOINT} from './developerEndpoint.js';
+import { InteractionManager } from "react-native";
 
 export async function getMeasurements(participantID, sessionID) {
   const jwt = await getItem();
@@ -166,6 +167,56 @@ export async function getParticipants(paramName, paramValue) {
   return res && res.participants ? res.participants : [];
 } // ,
 
+// transform back-end participant to front-end participant object
+export function formatParticipants(rawParticipants) {
+  let i = 0;
+  let formattedParticipants = rawParticipants.map(item => {
+    
+    let tempItem = assignValue(item);
+    tempItem = assignKey(tempItem);
+    tempItem = assignSpecialists(tempItem);
+    tempItem.gym = item.trainerLocation.name ? item.trainerLocation.name : "unassigned";
+    tempItem.trainer = item.trainer ? item.trainer : "unassigned";
+    tempItem.nutritionist = item.nutritionist ? item.nutritionist : "unassigned";
+    tempItem.office = item.dietitianLocation.name ? item.dietitianLocation.name : "unassigned";
+    // tempItem.trainer = item.trainer ? item.trainer.firstName + " " + item.trainer.lastName : '';
+    return tempItem;
+  })
+
+  return formattedParticipants;
+}
+
+// helper method for transforming back-end object to front-end object
+function assignValue(item) {
+  if (item.firstName && item.lastName) {
+    item.value = item.firstName + " " + item.lastName;
+  } else {
+    item.value = ""
+  }
+  return item
+}
+
+// helper method for transforming back-end object to front-end object
+function assignKey(item) {
+  item.key = parseInt(item.id);
+  return item
+}
+
+// helper method for transforming back-end object to front-end object
+function assignSpecialists(item) {
+  if (item.trainer) {
+    item.trainer = item.trainer.firstName + " " + item.trainer.lastName;
+  } else {
+    item.trainer = "";
+  }
+  if (item.dietitian) {
+    item.nutritionist = item.dietitian.firstName + " " + item.dietitian.lastName;
+  } else {
+    item.nutritionist = "";
+  }
+  return item
+}
+
 //gets participant by id
 export async function getParticipantByID(id) {
   const jwt = await getItem();
@@ -179,6 +230,21 @@ export async function getParticipantByID(id) {
   })
     .then(response => response.json());
   return res.participant;
+}
+
+export async function updateParticipant(__participant, id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/participants/" + id, {
+    method: "PUT",
+    body: JSON.stringify(__participant),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json());
+  return res.session;
 }
 
 export async function getParticipantSessions(id) {
@@ -226,6 +292,22 @@ export async function getLocations() {
   return res && res.locations ? res.locations : [];
 }
 
+//Update profile information
+export async function updateLocation(_location, id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/locations/" + id, {
+    method: "PUT",
+    body: JSON.stringify(_location),
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json" 
+    }
+  })
+    .then(response => response.json());
+    return res
+}
+
 //retrieve specific location info
 export async function getLocationByID(id) {
   const jwt = await getItem();
@@ -238,6 +320,20 @@ export async function getLocationByID(id) {
     }
   }).then(response => response.json());
   return res && res.location ? res.location : [];
+}
+
+//retrieve specific location info
+export async function getSpecificUser(id) {
+  const jwt = await getItem();
+  const res = await fetch(ENDPOINT + "/api/v1/users/" + id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json());
+  return res;
 }
 
 export async function getSpecialists(_locationId, _specialistType) {
@@ -254,6 +350,30 @@ export async function getSpecialists(_locationId, _specialistType) {
   })
     .then(response => response.json());
   return res.specialists || {};
+}
+
+export function assignLocations(item) {
+  if (item.locations && item.locations[0]) {
+    let tempLocationsString = item.locations[0].name
+    for (let i = 1; i < item.locations.length; i++) {
+      tempLocationsString += ", " + item.locations[i].name;
+    }
+    item.locationsString = tempLocationsString;
+  } else {
+    item.locationsString = "unexpected locations object"
+    console.log("ERROR: unexpected locations object:\n" + JSON.stringify(item))
+  }
+  return item;
+}
+
+export function formatSpecialists(rawSpecialistsInfo) {
+  let formattedSpecialists = rawSpecialistsInfo.map(rawSpecialist => {
+    let formattedSpecialist = assignValue(rawSpecialist)
+    formattedSpecialist = assignKey(formattedSpecialist)
+    formattedSpecialist = assignLocations(formattedSpecialist)
+    return formattedSpecialist
+  })
+  return formattedSpecialists;  
 }
 
 //gets dietitians

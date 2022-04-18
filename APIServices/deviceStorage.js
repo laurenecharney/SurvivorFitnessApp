@@ -65,7 +65,7 @@ export async function getLocationIds() {
   let locationIds = locationObjects.map(location => {
     return location.id;
   })
-  console.log("locationIds: ", locationIds)
+  // console.log("locationIds: ", locationIds)
   return locationIds
 }
 
