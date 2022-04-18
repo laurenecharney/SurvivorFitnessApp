@@ -22,7 +22,7 @@ export const Logout = ({callback}) => {
       const createTwoButtonAlert = () =>
       Alert.alert(
       "Confirm Logout",
-      "You will not be able to undo this action",
+      "Have a nice day! :)",
       [
           {
           text: "Cancel",
