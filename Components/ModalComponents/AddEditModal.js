@@ -153,7 +153,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                         })}
                         <View>
                             <View style={{marginTop: 20}}>
-                                {!isAdd && !isChange && <RemoveButton/>}
+                                {/* {!isAdd && !isChange && <RemoveButton/>} */}
                                 {!isChange && <AppButton 
                                     title = {isAdd ? "Add" : "Confirm Edits"}
                                     onPress={submit}/> }

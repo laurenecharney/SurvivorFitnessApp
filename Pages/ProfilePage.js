@@ -100,7 +100,6 @@ export default class ProfilePage extends React.Component {
           userRoleType: role}))
       ));
 
-      console.log("TEMP ARRAY CREATED", temp)
     }
     
 
@@ -225,9 +224,7 @@ export default class ProfilePage extends React.Component {
       this.state.updateUser.user.phoneNumber = newInformation.phoneNumber
     }
     try {
-      console.log("UPDATED USER",this.state.updateUser)
       const res = await updateProfile(this.state.updateUser, this.state.userId)
-      console.log("UPDATE USER RES", res)
       this.state.contactInformation.firstName = res.user.firstName
       this.state.contactInformation.lastName = res.user.lastName
       this.state.contactInformation.email = res.user.email

@@ -15,23 +15,6 @@ import { AddEditModal } from '../Components/ModalComponents/AddEditModal';
 import { DisplayModal } from '../Components/ModalComponents/DisplayModal';
 import { Heading } from '../Components/Heading';
 
-const displayCategories = {
-  firstName: "First Name: ",
-  lastName: "Last Name: ",
-  phoneNumber: "Phone Number: ",
-  email: "Email: ",
-  trainer: "Trainer: ",
-  gym: "Gym: ",
-  nutritionist: "Dietitian: ",
-  office: "Dietitian Office: ",
-  age: "Age: ",
-  typeOfCancer: "Type of Cancer: ",
-  treatmentFacility: "Treatment Facility: ",
-  surgeries: "Surgeries: ",
-  formsOfTreatment: "Forms of Treatment: ",
-  physicianNotes: "Physician Notes: ",
-  goals: "Goal(s): ",
-};
 
 const templateCategories = [
   {key: "firstName",          input: "text",      label: "First Name: ",                  displayLabel: "", options: [], edit: true},

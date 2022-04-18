@@ -18,22 +18,6 @@ const  defaultCategories  = [
   {key: "locationsString",    input: "picker",    label: "Choose Location: ",     options: [], edit: true},
 ];
 
-// const defaultCategories = [
-//     {key: "firstName",          input: "text",      label: "First Name: ",          options: [], edit: true},
-//     {key: "lastName",           input: "text",      label: "Last Name: ",           options: [], edit: true},
-//     {key: "email",              input: "text",      label: "Email: ",               options: [], edit: true},
-//     {key: "phoneNumber",        input: "text",      label: "Phone Number: ",        options: [], edit: true},
-//     {key: "locationsString",    input: "picker",    label: "Location(s): ",            options: [], edit: true},
-//   ];
-
-const displayCategories = {
-    value: "Name: ",
-    gym: "Affiliate Location: ",
-    phoneNumber: "Phone Number: ",
-    email: "Email: "
-};
-
-
 export default class AdminTrainerPage extends Component {
     state = {
         isModalVisible:false
@@ -106,20 +90,7 @@ export default class AdminTrainerPage extends Component {
             const arr = await getTrainers(locationId);
 
             let tempFormattedTrainers = formatSpecialists(arr);
-            this.setState({
-                trainersData: tempFormattedTrainers
-            //    trainersData: arr.map(
-            //     item => {
-            //         let newI = item;
-            //         newI.value = item.firstName + " " + item.lastName
-            //         newI.key = parseInt(item.id)
-            //         newI.gym = item.locations[0] ? item.locations[0].name : '';
-            //         return newI;
-            //     }
-            //    )
-        })
-                
-           ;
+            this.setState({trainersData: tempFormattedTrainers});
             } catch (e){
                 console.log("Error fetching trainers: ", e);
             }
@@ -141,7 +112,6 @@ export default class AdminTrainerPage extends Component {
             isModalVisible:true,
             selectedTrainer: item,
         });
-        console.log(this.state.updateUser)
     }
 
     closeModal = async () =>{
@@ -198,9 +168,7 @@ export default class AdminTrainerPage extends Component {
         } else {
             console.log("no locations!!!!!!!")
         }
-        console.log(this.state.updateUser)
         const res = await updateProfile(this.state.updateUser, this.state.updateUser.user.id)
-        console.log(res)
         this.state.selectedTrainer = res
         await this.refreshTrainers()
         // this.closeEditModal()
@@ -251,7 +219,6 @@ export default class AdminTrainerPage extends Component {
                     ]
                 }
                 const res = await createUser(user);
-                console.log("ASSIGNED TRAINER USER", res, "create user response")
                 this.refreshTrainers();
             }  else {
                     let user = {
@@ -264,7 +231,6 @@ export default class AdminTrainerPage extends Component {
                         },
                         locationAssignments: []
                     }
-                    console.log("BLANK USER: ", user)
                     const res = await createUser(user);
                     this.refreshTrainers();
             }
