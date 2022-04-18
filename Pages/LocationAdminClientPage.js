@@ -137,7 +137,6 @@ export default class LocationAdminClientPage extends Component {
   }
 
   openModal = async (participant) =>{
-    // console.log("openModal\n", participant) 
     this.setState({
         isModalVisible:true,
         selectedParticipant: participant,
@@ -154,11 +153,11 @@ export default class LocationAdminClientPage extends Component {
          formsOfTreatment: participant.formsOfTreatment,
          surgeries: participant.surgeries,
          physicianNotes: participant.physicianNotes,
-         dietitian: {id: participant.dietitian.id},
+         dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
          dietitianLocation: {
              id: participant.dietitianLocation.id
          },
-         trainer: {id: participant.trainer.id},
+         trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
          trainerLocation: {
              id: participant.trainerLocation.id
          },
@@ -264,8 +263,8 @@ export default class LocationAdminClientPage extends Component {
         <ParticipantsList
             participantsInfo={this.state.participants}
             openModal={item => this.openModal(item)}
-            showTrainer={!this.isDietitian()}
-            showDietitian={this.isDietitian()}
+            showTrainer={true}
+            showDietitian={true}
             listType="participants"/>
         <DisplayModal 
             // categories = {displayCategories} 

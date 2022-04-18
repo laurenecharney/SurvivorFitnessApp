@@ -125,11 +125,11 @@ export default class AdminClientPage extends Component {
             formsOfTreatment: participant.formsOfTreatment,
             surgeries: participant.surgeries,
             physicianNotes: participant.physicianNotes,
-            dietitian: {id: participant.dietitian.id},
+            dietitian: participant.nutritionist != "unassigned" ? {id: participant.dietitian.id} : {},
             dietitianLocation: {
                 id: participant.dietitianLocation.id
             },
-            trainer: {id: participant.trainer.id},
+            trainer: participant.trainer != "unassigned" ? {id: participant.trainer.id} : {},
             trainerLocation: {
                 id: participant.trainerLocation.id
             },
@@ -192,9 +192,9 @@ export default class AdminClientPage extends Component {
 
     createNewParticipant = async input => {
         if(input.dietitianLocation) 
-            input.dietitianLocation = {id: input.dietitianLocation}
+            input.dietitianLocation = {id: input.office}
         if(input.trainerLocation) 
-            input.trainerLocation = {id: input.trainerLocation}
+            input.trainerLocation = {id: input.gym}
         if(input.age) 
             input.age = parseInt(input.age);
 
