@@ -7,7 +7,9 @@ import {
   getParticipants, 
   getParticipantByID, 
   updateParticipant,
-  formatParticipants
+  formatParticipants,
+  getTrainers, 
+  getDietitians
 } from '../APIServices/APIUtilities';
 import { getUser, getLocationIds, getCurrentRole, getSpecialistType } from "../APIServices/deviceStorage";
 import { ParticipantsList } from '../Components/ParticipantsList';
@@ -78,16 +80,16 @@ export default class LocationAdminClientPage extends Component {
           surgeries: "",
           physicianNotes: "",
           dietitian: {
-              
+              id: ""
           },
           dietitianLocation: {
-             
+            id: ""
           },
           trainer: {
-              
+            id: ""
           },
           trainerLocation: {
-              
+            id: ""
           },
           treatmentProgramStatus: ""
       },
@@ -97,8 +99,28 @@ export default class LocationAdminClientPage extends Component {
   async componentDidMount() {
     let userLocations = JSON.parse(await getUser()).locations;
     this.setState({locations: userLocations});
-    //TODO
     await this.refreshParticipants(userLocations);
+    let trainers = [], dietitians = [];
+    for(const loc of userLocations) {
+        if(loc.type == "TRAINER_GYM"){
+          const trainerRes = await getTrainers(loc.id)
+          for(const trainer of trainerRes){
+            trainers.push({label: trainer.firstName + " " + trainer.lastName, value: trainer.id});
+          }
+        }
+        if(loc.type == "DIETICIAN_OFFICE"){
+          const dietitianRes = await getDietitians(loc.id)
+          for(const dietitian of dietitianRes){
+            dietitians.push({label: dietitian.firstName + " " + dietitian.lastName, value: dietitian.id});
+          }
+        }
+    }
+    let temp = JSON.parse(JSON.stringify(this.state.categories));
+    for(let category of temp) {
+        if(category.key == "trainer") category.options = trainers;
+        if(category.key == "nutritionist") category.options = dietitians;
+    }
+    this.setState({categories: temp});
   }
 
   isDietitian = async () =>{
@@ -243,10 +265,13 @@ export default class LocationAdminClientPage extends Component {
     if(newInformation.typeOfCancer){
         this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}
     }
-    console.log("Client Obj",this.state.updateUser)
-    console.log("Client ID", this.state.updateUser.id)
+    if(newInformation.trainer){
+      this.state.updateUser.trainer = {id: newInformation.trainer}
+    }
+    if(newInformation.nutritionist){
+      this.state.updateUser.dietitian = {id: newInformation.nutritionist}
+    }
     const res = await updateParticipant(this.state.updateUser, this.state.updateUser.id)
-    console.log("RES", res)
     this.state.selectedUser = res
     await this.refreshParticipants()
   }
