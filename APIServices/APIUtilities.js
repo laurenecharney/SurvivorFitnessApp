@@ -1,6 +1,9 @@
 import { getItem } from "./deviceStorage";
-import {ENDPOINT} from './developerEndpoint.js';
+// import {ENDPOINT} from './developerEndpoint.js';
 import { InteractionManager } from "react-native";
+
+
+const ENDPOINT = "http://ec2-35-172-8-130.compute-1.amazonaws.com"
 
 export async function getMeasurements(participantID, sessionID) {
   const jwt = await getItem();
