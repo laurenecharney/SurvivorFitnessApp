@@ -138,6 +138,7 @@ export default class LoginPage extends React.Component {
             alert("Could not log in. Please try again later.");
         }
         } catch (e){
+            alert("Error logging in. Please try again later.");
             console.log("Error logging in:\n", e);
         }
     }
