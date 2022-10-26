@@ -47,11 +47,11 @@ export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) 
     );
 };
 
-export const LabeledPicker = ({ label, items, callback, previousValue }) => {
+export const LabeledPicker = ({ label, items, callback, previousValue, isAdd }) => {
     return (
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>
-        <Text style={styles.labeledPickerPrevText}>(previously: {previousValue})</Text>
+        {!isAdd && <Text style={styles.labeledPickerPrevText}>(previously: {previousValue})</Text>}
         <RNPickerSelect
             placeholder={{label: "Select...", value: "0", color: '#9ea0a4'}}
             items={items}
@@ -128,6 +128,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                         items = {field.options}
                                         callback = {val => saveInput(field.key, val)}
                                         previousValue = {information[field.key]}
+                                        isAdd = {isAdd}
                                     />
                                 )
                             } else if (field.input == "toggle") {
