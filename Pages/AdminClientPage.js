@@ -210,8 +210,8 @@ export default class AdminClientPage extends Component {
         if(newInformation.age){
             this.state.updateUser.age = newInformation.age
         }
-        if(newInformation.dietitianLocation){
-            this.state.updateUser.dietitianLocation = {id: newInformation.dietitianLocation}
+        if(newInformation.office){
+            this.state.updateUser.dietitianLocation = {id: newInformation.office}
         }
         if(newInformation.email){
             this.state.updateUser.email = newInformation.email
@@ -237,8 +237,8 @@ export default class AdminClientPage extends Component {
         if(newInformation.surgeries){
             this.state.updateUser.surgeries = newInformation.surgeries
         }
-        if(newInformation.trainerLocation){
-            this.state.updateUser.trainerLocation = {id: newInformation.trainerLocation}
+        if(newInformation.gym){
+            this.state.updateUser.trainerLocation = {id: newInformation.gym}
         }
         if(newInformation.typeOfCancer){
             this.state.updateUser.typeOfCancer = {id: newInformation.typeOfCancer}

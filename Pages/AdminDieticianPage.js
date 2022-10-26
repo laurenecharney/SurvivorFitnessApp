@@ -183,7 +183,7 @@ export default class AdminDieticianPage extends Component {
             },
             locationAssignments: [
             {
-                locationId: newInformation.locations,
+                locationId: newInformation.locationsString,
                 userRoleType: this.state.specialistType
             },
             ]
