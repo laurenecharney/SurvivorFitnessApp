@@ -47,10 +47,11 @@ export const BinaryToggle = ({ label, option1, option2, callback, defaultVal }) 
     );
 };
 
-export const LabeledPicker = ({ label, items, callback }) => {
+export const LabeledPicker = ({ label, items, callback, previousValue }) => {
     return (
     <View style={{marginBottom: 15}}>
         <Text style={styles.inputFieldLabel}>{label}</Text>
+        <Text style={styles.labeledPickerPrevText}>(previously: {previousValue})</Text>
         <RNPickerSelect
             placeholder={{label: "Select...", value: "0", color: '#9ea0a4'}}
             items={items}
@@ -126,6 +127,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
                                         label = {field.label}
                                         items = {field.options}
                                         callback = {val => saveInput(field.key, val)}
+                                        previousValue = {information[field.key]}
                                     />
                                 )
                             } else if (field.input == "toggle") {
@@ -246,8 +248,13 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 20,
         alignItems: "center",
-    }
-    
+    },
+    labeledPickerPrevText:{
+        fontSize: 14, 
+        color: "#999999", 
+        paddingBottom: 10,
+        marginTop: -5,
+    },
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -258,7 +265,7 @@ const pickerSelectStyles = StyleSheet.create({
       borderWidth: 1,
       borderColor: 'lightgray',
       borderRadius: 4,
-      color: 'lightgray',
+      color: '#797979',
       paddingRight: 30, // to ensure the text is never behind the icon
     },
     inputAndroid: {
