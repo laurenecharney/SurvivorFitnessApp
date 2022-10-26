@@ -78,6 +78,7 @@ export const AddEditModal = ({fields, isAdd, title, visible, callback,  informat
         setInput(temp);
     }
 
+    // this submits the fields that have changed to the parent component
     const submit = () => {
         callback(input);
     }
